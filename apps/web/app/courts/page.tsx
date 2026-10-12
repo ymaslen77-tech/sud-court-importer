@@ -24,6 +24,20 @@ export default async function CourtsDirectory() {
       <p className="lead">Найдите суд по названию или перейдите к региону. В справочнике отображаются только подтверждённые сведения.</p>
       <CourtSearch compact />
     </section>
+    <section className="section-wrap taxonomy-section">
+      <div className="section-intro with-action"><div>
+        <span className="eyebrow">Навигация по судебной системе</span><h2>Виды судов России</h2>
+        <p>Мировые судьи, районные и областные суды, военные суды, арбитражные, апелляционные и кассационные инстанции.</p>
+      </div><Link className="text-link" href="/courts/types">Все 15 категорий →</Link></div>
+      <div className="taxonomy-grid">
+        <Link className="taxonomy-card" href="/courts/types/general-magistrate"><span className="taxonomy-overline">Суды субъектов РФ</span><h3>Мировые судьи</h3><p>Судебные участки и компетенция мировых судей.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+        <Link className="taxonomy-card" href="/courts/types/general-district"><span className="taxonomy-overline">Общая юрисдикция</span><h3>Районные и городские</h3><p>Суды районного уровня и предусмотренный законом пересмотр.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+        <Link className="taxonomy-card" href="/courts/types/general-regional"><span className="taxonomy-overline">Суды субъектов РФ</span><h3>Областные, краевые и республиканские</h3><p>Суды уровня субъекта Российской Федерации.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+        <Link className="taxonomy-card" href="/courts/types/military-garrison"><span className="taxonomy-overline">Военные суды</span><h3>Гарнизонные и окружные военные</h3><p>Отдельная система военной подсудности.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+        <Link className="taxonomy-card" href="/courts/types/arbitration-subject"><span className="taxonomy-overline">Экономические споры</span><h3>Арбитражные суды</h3><p>Суды субъектов, апелляция и кассация.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+        <Link className="taxonomy-card" href="/courts/types/general-cassation"><span className="taxonomy-overline">Инстанции</span><h3>Апелляционные и кассационные суды</h3><p>Пересмотр судебных актов по процессуальным правилам.</p><span className="taxonomy-cta">Подробнее ↗</span></Link>
+      </div>
+    </section>
     <section className="section-wrap">
       <div className="section-intro"><span className="eyebrow">По регионам</span><h2>Опубликованные карточки судов</h2></div>
       {failed ? <div role="alert" className="notice">Не удалось получить список регионов. Попробуйте позже.</div>
