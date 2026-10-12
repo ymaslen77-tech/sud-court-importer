@@ -4,7 +4,7 @@ import { Pool, type QueryResultRow } from 'pg';
 type Court = {
   id: string; name: string; slug: string; court_type: string;
   address: string | null; phone: string | null; email: string | null;
-  official_url: string | null; verified_at: Date;
+  official_url: string | null; verified_at: Date; source_url?: string | null;
 };
 type SearchCourt = Court & { region_slug: string; region_name: string };
 type Region = { slug: string; name: string; court_count: number };
@@ -37,7 +37,10 @@ class CourtsService {
   }
   async one(regionSlug:string,courtSlug:string):Promise<Court> {
     const courts=await this.query<Court>(
-      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at ' +
+      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
+      '(SELECT s.url FROM court_facts cf JOIN sources s ON s.id=cf.source_id ' +
+      'WHERE cf.court_id=c.id AND cf.is_approved=true ' +
+      'ORDER BY cf.id DESC LIMIT 1) AS source_url ' +
       'FROM courts c JOIN regions r ON r.id=c.region_id ' +
       "WHERE r.slug=$1 AND c.slug=$2 AND c.status='verified' LIMIT 1",
        [regionSlug,courtSlug]
