@@ -54,7 +54,7 @@ export default async function CourtPage({params}:Props){
  const source=safeOfficialUrl(court.source_url);
  const kind=findCategory(court.court_kind);
  const extra=court.fields.filter(f=>f.field_name in labels);
- const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path);
+ const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path)&&safeOfficialUrl(court.photo.source_url)&&safeOfficialUrl(court.photo.license_url);
  const trustedGeo=court.coordinates&&safeOfficialUrl(court.coordinate_source_url);
  const publicUrl=process.env.PUBLIC_SITE_URL;
  const canSchema=publicUrl?.startsWith('https://')&&currentEvidence(court);
