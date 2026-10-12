@@ -71,7 +71,8 @@ class FederationTests(unittest.TestCase):
         item = row(courtCode="77AS0040",regionCode="77",regionName="Москва",
                    courtSiteUrl="https://msk.arbitr.ru",
                    sourceRecordUrl="https://arbitr.ru/?id_doc=20563&id_sec=353")
-        self.assertEqual(parse_record(item,"arbitr-courts").record.external_code,"77AS0040")
+        with self.assertRaises(ImportValidationError):
+            parse_record(item,"arbitr-courts")  # This code format is not official
 
     def test_invalid_json_and_size(self):
         with self.assertRaises(ImportValidationError):
