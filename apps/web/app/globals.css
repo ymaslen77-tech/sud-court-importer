@@ -130,3 +130,17 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 @media(max-width:800px){.header-inner{height:auto;min-height:78px;flex-wrap:wrap;padding-top:15px;padding-bottom:13px}.main-nav{order:3;width:100%;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;white-space:nowrap;padding:10px 0 2px}.main-nav a{font-size:12px}.hero{grid-template-columns:1fr;padding:38px 0 48px}.hero-copy{padding:5px 0 0}.hero h1{margin-top:24px}.hero-graphic{height:310px;min-height:310px}.building-graphic{left:27%;right:27%;top:20%}.trust-strip{grid-template-columns:1fr;gap:12px}.journey{grid-template-columns:1fr;gap:30px}.data-block{gap:28px}.footer-grid{grid-template-columns:repeat(2,1fr)}.court-detail-grid{grid-template-columns:1fr}}
 @media(max-width:580px){.container{padding-left:20px;padding-right:20px}.logo-mark{width:41px;height:41px}.logo-copy{font-size:15px}.logo-copy small{font-size:8px}.header-search{font-size:12px;padding-left:12px}.hero h1{font-size:43px}.hero-lead,.lead{font-size:15px}.hero-graphic{display:none}.search-form{flex-wrap:wrap;padding:8px}.search-form input{flex:1;width:calc(100% - 56px)}.search-form .button{width:100%}.hero-disclaimer{align-items:flex-start}.section-wrap{padding:56px 0}.with-action{align-items:flex-start;flex-direction:column}.feature-grid,.region-grid,.two-columns{grid-template-columns:1fr}.home-feature{min-height:240px}.journey{margin:0 -20px;padding:56px 20px}.journey-steps>div{grid-template-columns:48px 1fr}.data-block{grid-template-columns:1fr;padding:70px 10px}.data-stamp{width:185px;height:185px}.data-stamp strong{font-size:62px}.data-stamp span{font-size:9px}.bottom-cta{margin-bottom:55px;padding:32px 25px;align-items:flex-start;flex-direction:column}.section-hero{padding:52px 0}.callout{padding:30px 23px;margin-bottom:55px;flex-direction:column;align-items:stretch}.callout-links{flex:auto}.footer-grid{gap:25px;grid-template-columns:1fr 1fr;padding-top:45px}.footer-about{grid-column:1/-1}.footer-bottom{flex-direction:column}.court-facts>div{grid-template-columns:1fr;gap:3px}.detail-card{padding:23px}.empty-state{padding:34px 23px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Official-name directory: distinct from reviewed court cards */
+.directory-tools{display:flex;flex-wrap:wrap;gap:14px;margin:20px 0 26px}
+.directory-tools input{flex:1 1 260px;min-height:48px;padding:12px 17px;border:1px solid var(--line);color:var(--ink);background:#fff}
+.directory-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.directory-tabs button{border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12px;padding:13px 15px}
+.directory-tabs button.selected{background:var(--dark);color:#fff;border-color:var(--dark)}
+.arbitr-list{list-style:none;padding:0;margin:22px 0 0;border-top:1px solid var(--line)}
+.arbitr-list li{display:flex;align-items:center;gap:20px;padding:18px 12px;border-bottom:1px solid var(--line)}
+.arbitr-number{font-size:12px;color:var(--red);font-weight:800;width:35px;flex:none}
+.arbitr-list li>span:nth-child(2){flex:1;font-weight:750}
+.arbitr-list small{display:block;margin-top:5px;color:var(--muted);font-size:11px;font-weight:500}
+.arbitr-state{font-size:11px;color:#76686c;background:#f7f2f0;padding:7px 11px;white-space:nowrap}
+@media(max-width:600px){.arbitr-list li{gap:10px;align-items:flex-start}.arbitr-state{font-size:9px;white-space:normal;text-align:center}}
