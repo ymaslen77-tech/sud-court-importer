@@ -72,6 +72,9 @@ jobs:
           grep -Fqx '{"status":"ok"}' /tmp/api-health.json
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions > /tmp/regions.json
           grep -Fqx '[]' /tmp/regions.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/courts/categories/general-district > /tmp/courts-category.json
+          grep -Fqx '[]' /tmp/courts-category.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/courts/categories/invalid-kind)" = 404
           curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
           grep -Fqx '[]' /tmp/courts.json
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
@@ -80,6 +83,11 @@ jobs:
           grep -Fq 'Арбитражные суды России' /tmp/arbitration.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/magistrates > /tmp/magistrates.html
           grep -Fq 'Судебные участки мировых судей' /tmp/magistrates.html
+          for page in courts/types courts/types/general-district courts/types/general-regional courts/types/military-garrison courts/types/arbitration-subject; do
+            curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
+          done
+          curl --fail --silent --show-error http://127.0.0.1:4173/judges > /tmp/judges.html
+          grep -Fq 'Судьи Российской Федерации' /tmp/judges.html
           for page in courts judges laws practice guides jurisdiction services sources search; do
             curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
           done
