@@ -42,18 +42,53 @@ class CourtsService {
       [regionSlug]
     );
   }
-  async one(regionSlug:string,courtSlug:string):Promise<Court> {
-    const courts=await this.query<Court>(
-      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
+  async one(regionSlug:string,courtSlug:string) {
+    const courts=await this.query<Court & {region_name:string;court_kind:string}>(
+      'SELECT c.id::text,c.name,c.slug,c.court_type,c.court_kind,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
+      'r.name AS region_name, ' +
       '(SELECT s.url FROM court_facts cf JOIN sources s ON s.id=cf.source_id ' +
-      'WHERE cf.court_id=c.id AND cf.is_approved=true ' +
-      'ORDER BY cf.id DESC LIMIT 1) AS source_url ' +
+      'WHERE cf.court_id=c.id AND cf.is_approved=true ORDER BY cf.id DESC LIMIT 1) AS source_url ' +
       'FROM courts c JOIN regions r ON r.id=c.region_id ' +
       "WHERE r.slug=$1 AND c.slug=$2 AND c.status='verified' LIMIT 1",
        [regionSlug,courtSlug]
     );
     if(!courts.length)throw new NotFoundException('COURT_NOT_FOUND');
-    return courts[0];
+    const court=courts[0];
+    const [fields,judges,photos,changes]=await Promise.all([
+      this.query<{field_name:string;value:string;verified_at:Date;source_url:string}>(
+        'SELECT f.field_name,f.value,f.verified_at,s.url AS source_url ' +
+        'FROM court_profile_fields f JOIN sources s ON s.id=f.source_id ' +
+        'WHERE f.court_id=$1 ORDER BY f.field_name', [court.id]),
+      this.query<{full_name:string;position:string;starts_on:string|null;source_url:string}>(
+        'SELECT j.full_name,a.position,a.starts_on::text,s.url AS source_url ' +
+        'FROM judicial_appointments a JOIN judges j ON j.id=a.judge_id ' +
+        'JOIN sources s ON s.id=a.source_id WHERE a.court_id=$1 ' +
+        'AND (a.ends_on IS NULL OR a.ends_on>=CURRENT_DATE) AND s.checked_at IS NOT NULL ' +
+        'ORDER BY a.position,j.full_name LIMIT 80', [court.id]),
+      this.query<{image_path:string;author:string;license_name:string;license_url:string;source_url:string}>(
+        'SELECT image_path,author,license_name,license_url,source_url ' +
+        'FROM court_facade_media WHERE court_id=$1 AND status=$2 ' +
+        'ORDER BY verified_at DESC LIMIT 1',[court.id,'approved']),
+      this.query<{changed_field:string;old_value:string|null;new_value:string|null;occurred_at:Date}>(
+        'SELECT changed_field,old_value,new_value,occurred_at ' +
+        'FROM change_events WHERE entity_type=$1 AND entity_id=$2 ' +
+        "AND changed_field IN ('name','address','phone','email','official_url','reception_hours','office_hours','transport','accessibility') " +
+        'ORDER BY occurred_at DESC LIMIT 12', ['court',court.id])
+    ]);
+    let coords:{latitude:number;longitude:number}|null=null;
+    const rawCoordinates=fields.find(field=>field.field_name==='coordinates');
+    if(rawCoordinates){
+      try{
+        const data=JSON.parse(rawCoordinates.value) as {latitude:number;longitude:number};
+        if(Number.isFinite(data.latitude) && Number.isFinite(data.longitude) &&
+          data.latitude>=-90 && data.latitude<=90 && data.longitude>=-180 && data.longitude<=180){
+          coords={latitude:data.latitude,longitude:data.longitude};
+        }
+      }catch{ /* Never show location without validated coordinates */ }
+    }
+    return {...court,fields:fields.filter(f=>f.field_name!=='coordinates'),
+      coordinates:coords,coordinate_source_url:rawCoordinates?.source_url??null,
+      judges,photo:photos[0]??null,changes};
   }
   async byKind(kind:string, requestedPage:unknown) {
     if(!COURT_KINDS.has(kind))throw new NotFoundException('COURT_CATEGORY_NOT_FOUND');
