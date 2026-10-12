@@ -45,6 +45,12 @@ jobs:
           docker compose -f compose.local.yaml run --rm importer stage /input/contacts.json --source-url https://data.mos-gorsud.ru/opendata > /tmp/stage.json
           grep -Fq '"published": 0' /tmp/stage.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 1
+          cp importer/seeds/novosibirsk-federal-official-unreviewed.json data/import/federal.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py validate /input/federal.json --registry sudrf-federal > /tmp/federal-validate.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/federal.json --registry sudrf-federal > /tmp/federal-stage.json
+          grep -Fq '"published": 0' /tmp/federal-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 11
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
