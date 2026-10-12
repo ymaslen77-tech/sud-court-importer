@@ -12,6 +12,20 @@ export type Court = {
   region_slug?: string;
   region_name?: string;
 };
+export type CourtField = {field_name:string;value:string;verified_at:string;source_url:string};
+export type CourtJudge = {full_name:string;position:string;starts_on:string|null;source_url:string};
+export type CourtPhoto = {image_path:string;author:string;license_name:string;license_url:string;source_url:string};
+export type CourtChange = {changed_field:string;old_value:string|null;new_value:string|null;occurred_at:string};
+export type CourtDetail = Court & {
+  court_kind:string;
+  region_name:string;
+  fields:CourtField[];
+  coordinates:{latitude:number;longitude:number}|null;
+  coordinate_source_url:string|null;
+  judges:CourtJudge[];
+  photo:CourtPhoto|null;
+  changes:CourtChange[];
+};
 export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
 
@@ -28,9 +42,9 @@ export async function getRegions() {
 export async function getRegionCourts(region: string) {
   return get<Court[]>('/api/v1/regions/' + encodeURIComponent(region) + '/courts');
 }
-export async function getCourt(region: string, court: string): Promise<Court | null> {
+export async function getCourt(region: string, court: string): Promise<CourtDetail | null> {
   try {
-    return await get<Court>('/api/v1/regions/' + encodeURIComponent(region) + '/courts/' + encodeURIComponent(court));
+    return await get<CourtDetail>('/api/v1/regions/' + encodeURIComponent(region) + '/courts/' + encodeURIComponent(court));
   } catch (error) {
     if (error instanceof Error && error.message === 'NOT_FOUND') return null;
     throw error;
