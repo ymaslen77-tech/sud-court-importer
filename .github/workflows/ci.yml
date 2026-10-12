@@ -109,6 +109,16 @@ jobs:
           grep -Fq '"created": true' /tmp/watch-registered.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch;" | grep -Fqx 1
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch_events;" | grep -Fqx 0
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py nominate --court-id "$COURT_ID" --full-name "CI Test Judge Only" --position "Test judge" --source-url https://sudrf.ru/ --observer "CI Synthetic Test" > /tmp/judge-proposal.json
+          grep -Fq '"published": 0' /tmp/judge-proposal.json
+          JUDGE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/judge-proposal.json"))["candidate_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py approve --candidate-id "$JUDGE_CANDIDATE" --reviewer "CI Synthetic Test" --attest-current --attest-identity > /tmp/judge-approved.json
+          grep -Fq '"status": "approved"' /tmp/judge-approved.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/test-99/courts/test-court | grep -Fq 'CI Test Judge Only'
+          APPOINTMENT_ID="$(python3 -c 'import json;print(json.load(open("/tmp/judge-approved.json"))["appointment_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py close --appointment-id "$APPOINTMENT_ID" --ended-on "$(date -u -d yesterday +%F)" --source-url https://sudrf.ru/ --reviewer "CI Synthetic Test" --attest-current > /tmp/judge-closed.json
+          grep -Fq '"status": "closed"' /tmp/judge-closed.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='judge';" | grep -Fqx 2
           curl --fail --silent --show-error http://127.0.0.1:4173/sitemap.xml | grep -Fq '<urlset'
       - name: Shut down and clean smoke-test containers
         if: always()
