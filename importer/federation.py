@@ -31,7 +31,7 @@ REGISTRIES = {
         "publisher": "ГАС РФ «Правосудие»",
         "source_type": "official-federal-courts",
         "hosts": ("sudrf.ru",),
-        "categories": {"RS", "OS", "GV", "KV", "GS", "KS"},
+        "categories": {"RS", "OS", "KV"},  # Identifiers evidenced in source snapshots
     },
     "sudrf-magistrate": {
         "publisher": "ГАС РФ «Правосудие»",
@@ -43,7 +43,7 @@ REGISTRIES = {
         "publisher": "Федеральные арбитражные суды",
         "source_type": "official-arbitration-courts",
         "hosts": ("arbitr.ru",),
-        "categories": {"AS", "AO", "AA"},
+        "categories": set(),  # Arbitration uses A40/A56-like codes; model separately
     },
 }
 
@@ -91,6 +91,8 @@ def parse_record(raw: object, registry: str) -> FederalCandidate:
     if not isinstance(raw, dict):
         raise ImportValidationError("Record is not an object")
     code = clean(raw.get("courtCode"), "courtCode", required=True, limit=20)
+    if registry == "arbitr-courts":
+        raise ImportValidationError("Arbitration codes are not this classification format; use discovery.py until official identifiers are modeled")
     match = CODE.fullmatch(code or "")
     if match is None or match.group(2) not in REGISTRIES[registry]["categories"]:
         raise ImportValidationError("Court code is missing or incompatible with its registry")
