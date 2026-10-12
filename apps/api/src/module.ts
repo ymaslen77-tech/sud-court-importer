@@ -27,6 +27,17 @@ class CourtsService {
       throw new ServiceUnavailableException('COURTS_DATA_UNAVAILABLE');
     }
   }
+  async sitemapCourts(){
+    return this.query<{region_slug:string;slug:string;updated_at:Date}>(
+      'SELECT r.slug AS region_slug,c.slug,c.updated_at FROM courts c ' +
+      'JOIN regions r ON r.id=c.region_id ' +
+      "WHERE c.status='verified' AND c.address IS NOT NULL AND c.official_url IS NOT NULL " +
+      "AND c.verified_at > now()-interval '180 days' " +
+      'AND EXISTS (SELECT 1 FROM court_facts f JOIN sources s ON s.id=f.source_id ' +
+      'WHERE f.court_id=c.id AND f.is_approved=true AND s.url IS NOT NULL) ' +
+      'ORDER BY c.updated_at DESC,c.id LIMIT 5000'
+    );
+  }
   async regions(): Promise<Region[]> {
     return this.query<Region>(
       'SELECT r.slug, r.name, count(c.id)::integer AS court_count ' +
@@ -132,6 +143,7 @@ class CourtsController {
   constructor(private readonly service:CourtsService) {}
   @Get('health') health(){return {status:'ok'};}
   @Get('regions') regions(){return this.service.regions();}
+  @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
   @Get('courts/categories/:kind') byKind(@Param('kind') kind:string,@Query('page') page:unknown){return this.service.byKind(kind,page);}
   @Get('courts/search') search(@Query('q') q:unknown){return this.service.search(q);}
   @Get('regions/:region/courts') list(@Param('region') region:string){return this.service.list(region);}
