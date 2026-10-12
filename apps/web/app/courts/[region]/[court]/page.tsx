@@ -55,7 +55,10 @@ export default async function CourtPage({params}:Props){
  const kind=findCategory(court.court_kind);
  const extra=court.fields.filter(f=>f.field_name in labels);
  const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path)&&safeOfficialUrl(court.photo.source_url)&&safeOfficialUrl(court.photo.license_url);
- const trustedGeo=court.coordinates&&safeOfficialUrl(court.coordinate_source_url);
+ const geoAge=court.coordinate_verified_at
+   ?Date.now()-new Date(court.coordinate_verified_at).getTime():Number.POSITIVE_INFINITY;
+ const trustedGeo=court.coordinates&&safeOfficialUrl(court.coordinate_source_url)&&geoAge>=0
+   &&geoAge<=180*24*3600*1000;
  const publicUrl=process.env.PUBLIC_SITE_URL;
  const canSchema=publicUrl?.startsWith('https://')&&currentEvidence(court);
  const canonical=canSchema?new URL('/courts/'+p.region+'/'+p.court,publicUrl).toString():null;
@@ -130,7 +133,8 @@ export default async function CourtPage({params}:Props){
       return <article key={entry.field_name} className="evidence-item">
         <h3>{labels[entry.field_name]}</h3>
         <p>{href?<a href={href} rel="noopener noreferrer" target="_blank">Открыть официальный раздел ↗</a>:entry.value}</p>
-        <small>Проверено {formatted(entry.verified_at)}
+        <small>{Date.now()-new Date(entry.verified_at).getTime()>90*24*3600*1000?'Требует повторной проверки (':'Проверено '}
+          {formatted(entry.verified_at)}{Date.now()-new Date(entry.verified_at).getTime()>90*24*3600*1000?')':''}
         {' · '}<a target="_blank" rel="noopener noreferrer" href={entry.source_url}>Источник ↗</a></small>
       </article>;
     })}</div>:<div className="empty-state">Дополнительные сведения проходят проверку. Перед поездкой уточните часы приёма, порядок подачи документов и подсудность на официальном сайте суда.</div>}
