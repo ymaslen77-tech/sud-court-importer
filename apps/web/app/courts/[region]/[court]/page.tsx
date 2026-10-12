@@ -52,6 +52,11 @@ export default async function CourtPage({params}:Props){
  if(!court)notFound();
  const website=safeOfficialUrl(court.official_url);
  const source=safeOfficialUrl(court.source_url);
+ const contactSource=(field:string)=>{
+   const evidence=court.contact_sources.find(item=>item.field_name===field);
+   const href=safeOfficialUrl(evidence?.source_url);
+   return href?<small className="fact-source">Источник: <a href={href} target="_blank" rel="noopener noreferrer">официальная публикация ↗</a></small>:null;
+ };
  const kind=findCategory(court.court_kind);
  const extra=court.fields.filter(f=>f.field_name in labels);
  const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path)&&safeOfficialUrl(court.photo.source_url)&&safeOfficialUrl(court.photo.license_url);
@@ -96,9 +101,9 @@ export default async function CourtPage({params}:Props){
       <span className="eyebrow">Контакты и местоположение</span>
       <h2>Адрес и телефоны суда</h2>
       <dl className="court-facts">
-        <div><dt>Адрес</dt><dd>{court.address??'Официальный адрес пока не подтверждён'}</dd></div>
-        <div><dt>Телефон</dt><dd>{court.phone??'Нет подтверждённых данных'}</dd></div>
-        <div><dt>Электронная почта</dt><dd>{court.email??'Нет подтверждённых данных'}</dd></div>
+        <div><dt>Адрес</dt><dd>{court.address??'Официальный адрес пока не подтверждён'}{contactSource('address')}</dd></div>
+        <div><dt>Телефон</dt><dd>{court.phone??'Нет подтверждённых данных'}{contactSource('phone')}</dd></div>
+        <div><dt>Электронная почта</dt><dd>{court.email??'Нет подтверждённых данных'}{contactSource('email')}</dd></div>
         <div><dt>Дата сверки</dt><dd>{formatted(court.verified_at)}</dd></div>
       </dl>
       {website?<a className="button button-dark" href={website} target="_blank" rel="noopener noreferrer">Официальный сайт суда ↗</a>:null}
