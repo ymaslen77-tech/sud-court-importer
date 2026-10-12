@@ -51,6 +51,15 @@ jobs:
           grep -Fq '"published": 0' /tmp/federal-stage.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 11
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+          cp importer/seeds/arbitration-subjects-official-list-unreviewed.json data/import/arbitration-discoveries.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/arbitration-discoveries.json > /tmp/discovery-valid.json
+          grep -Fq '"records": 89' /tmp/discovery-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-discoveries.json --captured-on "$(date -u +%F)" > /tmp/discovery-stage.json
+          grep -Fq '"published": 0' /tmp/discovery-stage.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-discoveries.json --captured-on "$(date -u +%F)" > /tmp/discovery-repeated.json
+          grep -Fq '"created": false' /tmp/discovery-repeated.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 89
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
@@ -61,6 +70,8 @@ jobs:
           grep -Fqx '[]' /tmp/courts.json
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
           grep -Fq 'Правосудие.' /tmp/home.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/arbitration > /tmp/arbitration.html
+          grep -Fq 'Арбитражные суды России' /tmp/arbitration.html
           for page in courts judges laws practice guides jurisdiction services sources search; do
             curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
           done
