@@ -74,7 +74,8 @@ class CourtsService {
         'SELECT j.full_name,a.position,a.starts_on::text,s.url AS source_url ' +
         'FROM judicial_appointments a JOIN judges j ON j.id=a.judge_id ' +
         'JOIN sources s ON s.id=a.source_id WHERE a.court_id=$1 ' +
-        'AND (a.ends_on IS NULL OR a.ends_on>=CURRENT_DATE) AND s.checked_at IS NOT NULL ' +
+        'AND (a.ends_on IS NULL OR a.ends_on>=CURRENT_DATE) ' +
+        "AND s.checked_at > now()-interval '90 days' " +
         'ORDER BY a.position,j.full_name LIMIT 80', [court.id]),
       this.query<{image_path:string;author:string;license_name:string;license_url:string;source_url:string}>(
         'SELECT image_path,author,license_name,license_url,source_url ' +
@@ -99,6 +100,7 @@ class CourtsService {
     }
     return {...court,fields:fields.filter(f=>f.field_name!=='coordinates'),
       coordinates:coords,coordinate_source_url:rawCoordinates?.source_url??null,
+      coordinate_verified_at:rawCoordinates?.verified_at??null,
       judges,photo:photos[0]??null,changes};
   }
   async byKind(kind:string, requestedPage:unknown) {
