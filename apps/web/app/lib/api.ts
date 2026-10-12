@@ -22,6 +22,7 @@ export type CourtDetail = Court & {
   fields:CourtField[];
   coordinates:{latitude:number;longitude:number}|null;
   coordinate_source_url:string|null;
+  coordinate_verified_at:string|null;
   judges:CourtJudge[];
   photo:CourtPhoto|null;
   changes:CourtChange[];
