@@ -133,6 +133,35 @@ def check(limit=5):
     return {"checked":len(results),"results":results,"auto_published":0}
 
 
+def pending(limit=50):
+    if not 1<=limit<=200:
+        raise ImportValidationError("Review limit must be 1-200")
+    with database_connect() as conn:
+        rows=conn.execute("""SELECT e.id,w.court_id,w.scope,w.watch_url,e.detected_at
+            FROM court_source_watch_events e
+            JOIN court_source_watch w ON w.id=e.watch_id
+            WHERE e.status='pending' ORDER BY e.detected_at ASC,e.id LIMIT %s""",
+            (limit,)).fetchall()
+    return {"pending":len(rows),"events":[
+        {"id":r[0],"court_id":r[1],"scope":r[2],"source_url":r[3],
+         "detected_at":r[4].isoformat()} for r in rows
+    ]}
+
+
+def review(event_id,reviewer,attested,ignore=False):
+    if not attested or not 2<=len(reviewer.strip())<=120:
+        raise ImportValidationError("Reviewer and review attestation required")
+    with database_connect() as conn:
+        with conn.transaction():
+            event=conn.execute("""UPDATE court_source_watch_events
+                SET status=%s,reviewed_by=%s,reviewed_at=now()
+                WHERE id=%s AND status='pending' RETURNING id""",
+                ("ignored" if ignore else "reviewed",reviewer.strip(),event_id)).fetchone()
+            if event is None:
+                raise ImportValidationError("Pending event not found")
+    return {"id":event_id,"status":"ignored" if ignore else "reviewed"}
+
+
 def main():
     p=argparse.ArgumentParser(description="Conservative official-source monitor")
     sub=p.add_subparsers(dest="action",required=True)
@@ -145,14 +174,25 @@ def main():
     reg.add_argument("--attest-permission",action="store_true")
     c=sub.add_parser("check")
     c.add_argument("--limit",type=int,default=5)
+    pending_cmd=sub.add_parser("pending")
+    pending_cmd.add_argument("--limit",type=int,default=50)
+    review_cmd=sub.add_parser("review")
+    review_cmd.add_argument("--event-id",type=int,required=True)
+    review_cmd.add_argument("--reviewer",required=True)
+    review_cmd.add_argument("--attest-reviewed",action="store_true")
+    review_cmd.add_argument("--ignore",action="store_true")
     args=p.parse_args()
     try:
         if args.action=="register":
             if not args.attest_permission:
                 raise ImportValidationError("Explicit permissions and robots attestation required")
             result=register(args.court_id,args.url,args.scope,args.reviewer,args.cadence_hours)
-        else:
+        elif args.action=="check":
             result=check(args.limit)
+        elif args.action=="pending":
+            result=pending(args.limit)
+        else:
+            result=review(args.event_id,args.reviewer,args.attest_reviewed,args.ignore)
     except ImportValidationError as exc:
         p.exit(2,str(exc)+"\n")
     print(json.dumps(result,ensure_ascii=False,indent=2))
