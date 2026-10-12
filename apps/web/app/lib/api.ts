@@ -36,6 +36,9 @@ export async function getCourt(region: string, court: string): Promise<Court | n
     throw error;
   }
 }
+export async function getCourtsByKind(kind: string) {
+  return get<SearchCourt[]>('/api/v1/courts/categories/' + encodeURIComponent(kind));
+}
 export async function searchCourts(q: string) {
   return get<SearchCourt[]>('/api/v1/courts/search?q=' + encodeURIComponent(q));
 }
