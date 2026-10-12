@@ -8,6 +8,13 @@ type Court = {
 };
 type SearchCourt = Court & { region_slug: string; region_name: string };
 type Region = { slug: string; name: string; court_count: number };
+const COURT_KINDS = new Set([
+  'constitutional','supreme','general-magistrate','general-district',
+  'general-regional','general-appeal','general-cassation','military-garrison',
+  'military-district','military-appeal','military-cassation',
+  'arbitration-subject','arbitration-appeal','arbitration-district','arbitration-ip'
+]);
+
 const pool = new Pool({connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 3000});
 
 @Injectable()
@@ -48,6 +55,16 @@ class CourtsService {
     if(!courts.length)throw new NotFoundException('COURT_NOT_FOUND');
     return courts[0];
   }
+  async byKind(kind:string):Promise<SearchCourt[]> {
+    if(!COURT_KINDS.has(kind))throw new NotFoundException('COURT_CATEGORY_NOT_FOUND');
+    return this.query<SearchCourt>(
+      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
+      'r.slug AS region_slug,r.name AS region_name ' +
+      'FROM courts c JOIN regions r ON r.id=c.region_id ' +
+      "WHERE c.status='verified' AND c.court_kind=$1 ORDER BY r.name,c.name LIMIT 250",
+      [kind]
+    );
+  }
   async search(term:unknown):Promise<SearchCourt[]> {
     if(typeof term!=='string' || term.trim().length<2 || term.trim().length>100) {
       throw new BadRequestException('SEARCH_QUERY_INVALID');
@@ -68,6 +85,7 @@ class CourtsController {
   constructor(private readonly service:CourtsService) {}
   @Get('health') health(){return {status:'ok'};}
   @Get('regions') regions(){return this.service.regions();}
+  @Get('courts/categories/:kind') byKind(@Param('kind') kind:string){return this.service.byKind(kind);}
   @Get('courts/search') search(@Query('q') q:unknown){return this.service.search(q);}
   @Get('regions/:region/courts') list(@Param('region') region:string){return this.service.list(region);}
   @Get('regions/:region/courts/:court') one(@Param('region') region:string,@Param('court') court:string){
