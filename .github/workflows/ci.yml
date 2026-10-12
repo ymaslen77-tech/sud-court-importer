@@ -110,6 +110,13 @@ jobs:
           grep -Fq '"created": true' /tmp/watch-registered.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch;" | grep -Fqx 1
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch_events;" | grep -Fqx 0
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -c "INSERT INTO court_source_watch_events(watch_id,old_sha256,new_sha256) SELECT id,repeat('a',64),repeat('b',64) FROM court_source_watch LIMIT 1"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py pending > /tmp/watch-pending.json
+          grep -Fq '"pending": 1' /tmp/watch-pending.json
+          EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_source_watch_events LIMIT 1" | tr -d '\r')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py review --event-id "$EVENT_ID" --reviewer "CI Synthetic Test" --attest-reviewed > /tmp/watch-reviewed.json
+          grep -Fq '"status": "reviewed"' /tmp/watch-reviewed.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py pending | grep -Fq '"pending": 0'
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py nominate --court-id "$COURT_ID" --full-name "CI Test Judge Only" --position "Test judge" --source-url https://sudrf.ru/ --observer "CI Synthetic Test" > /tmp/judge-proposal.json
           grep -Fq '"published": 0' /tmp/judge-proposal.json
           JUDGE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/judge-proposal.json"))["candidate_id"])')"
