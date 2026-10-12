@@ -114,31 +114,67 @@ def approve(args: argparse.Namespace) -> dict:
             row = conn.execute(
                 """SELECT i.id,i.external_code,i.proposed_slug,i.court_name,i.court_type,
                           i.address,i.phone,i.email,i.official_url,i.review_status,
-                          b.source_id,b.staged_at
+                          b.source_id,b.staged_at,i.raw_record,s.source_type,s.url
                    FROM court_import_rows i JOIN court_import_batches b ON b.id=i.batch_id
+                   JOIN sources s ON s.id=b.source_id
                    WHERE i.batch_id=%s AND i.external_code=%s FOR UPDATE OF i""",
                 (args.batch,args.code)
             ).fetchone()
             if row is None:
                 raise ImportValidationError("Candidate not found in staging batch")
             (row_id,code,slug,name,court_type,address,phone,email,official_url,
-             review_status,source_id,staged_at) = row
+             review_status,source_id,staged_at,raw_record,source_type,source_listing_url) = row
             if review_status != "pending":
                 raise ImportValidationError("This candidate was already reviewed")
             # Different official page = deliberate manual mismatch; do not publish.
             a,b=urlparse(args.verification_url),urlparse(official_url)
             if (a.hostname, a.path.rstrip("/")) != (b.hostname,b.path.rstrip("/")):
                 raise ImportValidationError("Verified court page differs from candidate source URL")
+            registry = raw_record.get("_registry", REGISTRY)
+            if registry == REGISTRY:
+                if source_type != "official-court-contacts":
+                    raise ImportValidationError("Moscow candidate has the wrong source classification")
+                region_code, region_name, region_slug = "77", "Москва", "moscow"
+            else:
+                from federation import REGISTRIES, parse_record
+                if registry not in REGISTRIES or source_type != REGISTRIES[registry]["source_type"]:
+                    raise ImportValidationError("Registry does not match its official source")
+                candidate = parse_record(raw_record, registry)
+                if (candidate.record.external_code != code or candidate.record.slug != slug
+                    or candidate.record.name != name or candidate.record.address != address
+                    or candidate.record.official_url != official_url
+                    or candidate.record.court_type != court_type or candidate.record.phone != phone
+                    or candidate.record.email != email
+                    or candidate.source_record_url != source_listing_url):
+                    raise ImportValidationError("Staged record fields diverge from source evidence")
+                region_code = candidate.region_code
+                region_name = candidate.region_name
+                region_slug = "region-" + region_code
             region = conn.execute(
-                """INSERT INTO regions(code,name,slug) VALUES('77','Москва','moscow')
-                   ON CONFLICT(code) DO UPDATE SET name=EXCLUDED.name
-                   RETURNING id"""
+                "SELECT id,name,slug FROM regions WHERE code=%s FOR UPDATE", (region_code,)
             ).fetchone()
-            assert region is not None
-            region_id = region[0]
+            if region:
+                if region[1] != region_name:
+                    raise ImportValidationError("Existing region name conflicts with source candidate")
+                region_id = region[0]
+            else:
+                region = conn.execute(
+                    "INSERT INTO regions(code,name,slug) VALUES(%s,%s,%s) RETURNING id",
+                    (region_code,region_name,region_slug)
+                ).fetchone()
+                assert region is not None
+                region_id = region[0]
+            # Courts with the same classification code cannot be silently duplicated
+            # across separately curated official registries.
+            duplicate_code = conn.execute(
+                "SELECT id FROM court_external_identifiers WHERE external_code=%s AND registry<>%s LIMIT 1",
+                (code, registry)
+            ).fetchone()
+            if duplicate_code:
+                raise ImportValidationError("Court code already belongs to another registry; reconcile manually")
             linked = conn.execute(
                 "SELECT court_id FROM court_external_identifiers WHERE registry=%s AND external_code=%s FOR UPDATE",
-                (REGISTRY,code)
+                (registry,code)
             ).fetchone()
             fields = {"name":name,"slug":slug,"court_type":court_type,
                       "address":address,"phone":phone,"email":email,"official_url":official_url}
@@ -159,7 +195,7 @@ def approve(args: argparse.Namespace) -> dict:
                 court_id=created[0]
                 conn.execute(
                     "INSERT INTO court_external_identifiers(registry,external_code,court_id) VALUES(%s,%s,%s)",
-                    (REGISTRY,code,court_id)
+                    (registry,code,court_id)
                 )
             else:
                 court_id=linked[0]
