@@ -65,6 +65,7 @@ services:
       DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
     volumes:
       - ./data/import:/input:ro
+      - ./apps/web/public/court-media:/published-media
     depends_on:
       postgres:
         condition: service_healthy
