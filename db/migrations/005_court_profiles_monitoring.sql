@@ -79,5 +79,7 @@ CREATE TABLE IF NOT EXISTS court_source_watch_events (
   new_sha256 CHAR(64) NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending'
     CHECK(status IN('pending','reviewed','ignored')),
+  reviewed_by TEXT,
+  reviewed_at TIMESTAMPTZ,
   UNIQUE(watch_id,new_sha256)
 );
