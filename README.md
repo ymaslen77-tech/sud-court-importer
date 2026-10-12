@@ -4,15 +4,23 @@
 
 ## Локальный хост на Windows (рекомендуется)
 
-Потребуются установленные **Git** и работающий **Docker Desktop**. Node.js и pnpm на Windows устанавливать отдельно не требуется.
+Для запуска нужен работающий **Docker Desktop**. Git необязателен: проект можно получить ZIP-архивом. Node.js и pnpm отдельно устанавливать не требуется.
 
-В PowerShell:
+**Если Git установлен:**
 
 ```powershell
 git clone --branch feat/001-court-portal-foundation https://github.com/ymaslen77-tech/sud-court-importer.git
 cd sud-court-importer
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
 ```
+
+**Если Git не установлен:** скачайте [ZIP рабочей ветки](https://github.com/ymaslen77-tech/sud-court-importer/archive/refs/heads/feat/001-court-portal-foundation.zip), распакуйте архив, перейдите в папку с `compose.local.yaml` и выполните:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
+```
+
+Чтобы увидеть новые изменения без Git, скачайте свежий ZIP и замените код проекта. Docker-том с БД сохраняется при обычной пересборке.
 
 Скрипт поднимет базу данных, API и Next.js в изолированной Docker Compose-среде, дождётся HTTP-ответа и **откроет сайт в браузере Windows**.
 
@@ -48,9 +56,24 @@ docker compose -f compose.local.yaml up --build --detach
 - Docker Compose — выделенный локальный хост.
 - Python importer, полнотекстовый поиск и личный кабинет — **будущие задачи**, не реализованы.
 
+## Навигация и дизайн
+
+- `/` — главная страница, фирменный стиль, поиск и маршруты.
+- `/courts` — каталог опубликованных судов и регионов.
+- `/courts/moscow` — пилотный регион (без подставных данных).
+- `/search?q=...` — поиск по подтверждённым названиям судов.
+- `/judges`, `/laws`, `/practice`, `/guides`, `/jurisdiction`, `/services` — структурированные страницы направлений в разработке.
+- `/sources` — политика источников и проверяемости.
+
+Большинство ещё не наполненных разделов закрыто для индексации через `noindex`; пустые карточки не выдаются за реальные.
+
+Детальный стандарт интерфейса: [docs/interface.md](docs/interface.md).
+
 ## API
 
 - `GET /api/v1/health`
+- `GET /api/v1/regions`
+- `GET /api/v1/courts/search?q=название`
 - `GET /api/v1/regions/:region/courts`
 - `GET /api/v1/regions/:region/courts/:court`
 
