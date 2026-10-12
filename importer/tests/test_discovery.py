@@ -10,6 +10,7 @@ from discovery import parse_snapshot, parse_record, capture_date, validate_url
 
 SEED = Path(__file__).resolve().parents[1] / "seeds" / "arbitration-subjects-official-list-unreviewed.json"
 SOURCE = "https://arbitr.ru/?id_doc=20563&id_sec=353"
+MAGISTRATE_SEED = Path(__file__).resolve().parents[1] / "seeds" / "khabarovsk-magistrates-official-unreviewed.json"
 
 
 def candidate(**changes):
@@ -35,6 +36,16 @@ class DiscoveryTests(unittest.TestCase):
         self.assertTrue(all(r.external_code is None and r.address is None for r in rows))
         self.assertTrue(all(r.region_code is None for r in rows))
         self.assertEqual(len({r.row_key for r in rows}),89)
+
+    def test_source_backed_magistrate_area_codes(self):
+        records=parse_snapshot(MAGISTRATE_SEED.read_bytes())
+        self.assertEqual(len(records),75)
+        self.assertEqual(records[0].external_code,"27MS0001")
+        self.assertEqual(records[-1].external_code,"27MS0075")
+        self.assertEqual(len({r.external_code for r in records}),75)
+        self.assertTrue(all(r.region_code=="27" and r.region_name=="Хабаровский край"
+                            and r.court_kind=="magistrate-area"
+                            and r.address is None for r in records))
 
     def test_reject_duplicate_names_same_list(self):
         with self.assertRaises(ImportValidationError):
