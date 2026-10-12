@@ -56,5 +56,18 @@ services:
       retries: 30
     restart: unless-stopped
 
+  importer:
+    profiles: ["import"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+    volumes:
+      - ./data/import:/input:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
