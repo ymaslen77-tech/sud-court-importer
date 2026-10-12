@@ -1,5 +1,5 @@
 import { BadRequestException, Controller, Get, Injectable, Module, NotFoundException, Param, Query, ServiceUnavailableException } from '@nestjs/common';
-import { Pool } from 'pg';
+import { Pool, type QueryResultRow } from 'pg';
 
 type Court = {
   id: string; name: string; slug: string; court_type: string;
@@ -12,7 +12,7 @@ const pool = new Pool({connectionString: process.env.DATABASE_URL, connectionTim
 
 @Injectable()
 class CourtsService {
-  private async query<T>(sql: string, args: unknown[] = []): Promise<T[]> {
+  private async query<T extends QueryResultRow>(sql: string, args: unknown[] = []): Promise<T[]> {
     try {
       const {rows}=await pool.query<T>(sql,args);
       return rows;
