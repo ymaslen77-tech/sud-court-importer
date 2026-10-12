@@ -77,7 +77,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .highlight-feature p,.highlight-feature .feature-icon,.highlight-feature .feature-index,.highlight-feature .round-arrow{color:#fff}
 .highlight-feature .feature-bottom{border-color:rgba(255,255,255,.3)}
 .highlight-feature:hover{border-color:var(--red-dark)}
-.journey{margin:0 calc((100vw - min(1240px,100vw))/(-2) - 32px);padding:85px max(32px,calc((100vw - 1176px)/2));background:#f4f2ef;display:grid;grid-template-columns:1fr 1.23fr;gap:70px}
+.journey{margin:0 -32px;padding:85px max(32px,calc((100vw - 1176px)/2));background:#f4f2ef;display:grid;grid-template-columns:1fr 1.23fr;gap:70px}
 .journey h2{margin:15px 0 23px}.journey-heading p{color:var(--muted);max-width:400px;margin-bottom:20px}
 .journey-steps{display:flex;flex-direction:column}
 .journey-steps>div{position:relative;display:grid;grid-template-columns:60px 1fr;column-gap:17px;padding:22px 0;border-bottom:1px solid #d7d6d3}
