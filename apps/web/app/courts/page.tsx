@@ -60,7 +60,8 @@ export default async function CourtsDirectory() {
           <span className="feature-index">03 / МИРОВЫЕ СУДЬИ</span>
           <h3>Судебные участки</h3>
           <p>Информация о судебных участках и органах обеспечения деятельности мировых судей по регионам. Границы подсудности требуют отдельной проверки.</p>
-          <a className="text-link" href="https://sudrf.ru/index.php?act=go_ms_search&id=300&searchtype=ms" target="_blank" rel="noopener noreferrer">Реестр судебных участков ↗</a>
+          <Link className="text-link" href="/courts/magistrates">Пилотный список 75 участков Хабаровского края →</Link>
+          <a className="text-link" href="https://sudrf.ru/index.php?act=go_ms_search&id=300&searchtype=ms" target="_blank" rel="noopener noreferrer">Официальный реестр судебных участков ↗</a>
         </article>
       </div>
     </section>
