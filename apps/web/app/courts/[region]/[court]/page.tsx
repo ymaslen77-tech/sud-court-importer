@@ -19,6 +19,7 @@ export default async function CourtPage({params}:Props){
   const court=await getCourt(p.region,p.court);
   if(!court)notFound();
   const website=safeOfficialUrl(court.official_url);
+  const source=safeOfficialUrl(court.source_url);
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды</Link><span>/</span><Link href={'/courts/'+p.region}>Регион</Link><span>/</span>{court.name}</div>
     <section className="section-hero">
@@ -35,6 +36,7 @@ export default async function CourtPage({params}:Props){
           <div><dt>Электронная почта</dt><dd>{court.email ?? 'Нет подтверждённых данных'}</dd></div>
         </dl>
         {website ? <a className="button button-dark" target="_blank" rel="noopener noreferrer" href={website}>Официальный сайт суда ↗</a>:null}
+        {source ? <p className="court-source"><a href={source} target="_blank" rel="noopener noreferrer">Источник опубликованных сведений ↗</a></p> : <p className="court-source">Ссылка на набор данных пока не подтверждена.</p>}
       </section>
       <aside className="detail-card detail-side"><span className="eyebrow">Дополнительная информация</span><h2>Проверить перед обращением</h2><p>График приёма, территориальную подсудность, действующий состав судей и порядок подачи документов следует уточнять по официальным публикациям.</p><Link className="text-link" href="/jurisdiction">О правилах подсудности →</Link><Link className="text-link" href="/sources">Об источниках →</Link></aside>
     </div>
