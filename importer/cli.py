@@ -107,8 +107,6 @@ def approve(args: argparse.Namespace) -> dict:
     checked_at = datetime.combine(checked_on, datetime.min.time(), tzinfo=timezone.utc)
     if not args.attest_current or not args.attest_reuse_rights:
         raise ImportValidationError("Both human attestations are required")
-    if not is_official_url(args.verification_url):
-        raise ImportValidationError("Verification URL must be the current official HTTPS court page")
     with database_connect() as conn:
         with conn.transaction():
             row = conn.execute(
@@ -134,11 +132,15 @@ def approve(args: argparse.Namespace) -> dict:
             if registry == REGISTRY:
                 if source_type != "official-court-contacts":
                     raise ImportValidationError("Moscow candidate has the wrong source classification")
+                if not is_official_url(args.verification_url):
+                    raise ImportValidationError("Moscow verification URL must be official HTTPS")
                 region_code, region_name, region_slug = "77", "Москва", "moscow"
             else:
-                from federation import REGISTRIES, parse_record
+                from federation import REGISTRIES, official_url, parse_record
                 if registry not in REGISTRIES or source_type != REGISTRIES[registry]["source_type"]:
                     raise ImportValidationError("Registry does not match its official source")
+                if not official_url(args.verification_url, registry, listing=False):
+                    raise ImportValidationError("Verification URL must match this official court registry")
                 candidate = parse_record(raw_record, registry)
                 if (candidate.record.external_code != code or candidate.record.slug != slug
                     or candidate.record.name != name or candidate.record.address != address
