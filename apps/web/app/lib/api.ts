@@ -7,6 +7,7 @@ export type Court = {
   phone?: string | null;
   email?: string | null;
   official_url?: string | null;
+  source_url?: string | null;
   verified_at: string;
   region_slug?: string;
   region_name?: string;
