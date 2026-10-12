@@ -152,8 +152,8 @@ def approve(args: argparse.Namespace) -> dict:
                 created = conn.execute(
                     """INSERT INTO courts(region_id,name,slug,court_type,address,phone,email,
                                          official_url,status,verified_at)
-                       VALUES(%s,%s,%s,%s,%s,%s,%s,%s,'verified',now()) RETURNING id""",
-                    (region_id,name,slug,court_type,address,phone,email,official_url)
+                       VALUES(%s,%s,%s,%s,%s,%s,%s,%s,'verified',%s) RETURNING id""",
+                    (region_id,name,slug,court_type,address,phone,email,official_url,checked_at)
                 ).fetchone()
                 assert created is not None
                 court_id=created[0]
