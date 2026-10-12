@@ -222,6 +222,15 @@ def approve(args: argparse.Namespace) -> dict:
                        WHERE id=%s""",
                     (name,slug,court_type,address,phone,email,official_url,checked_at,court_id)
                 )
+            from court_kind import infer_verified_kind
+            proposed_kind = infer_verified_kind(registry,code,name)
+            if proposed_kind != "unclassified":
+                existing_kind = conn.execute(
+                    "SELECT court_kind FROM courts WHERE id=%s FOR UPDATE",(court_id,)
+                ).fetchone()
+                if existing_kind is None or existing_kind[0] not in ("unclassified",proposed_kind):
+                    raise ImportValidationError("Court category conflicts with previously verified kind")
+                conn.execute("UPDATE courts SET court_kind=%s WHERE id=%s", (proposed_kind,court_id))
             for field,value in fields.items():
                 if value:
                     conn.execute(
