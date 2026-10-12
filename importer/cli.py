@@ -104,6 +104,7 @@ def approve(args: argparse.Namespace) -> dict:
     if not 2 <= len(reviewer) <= 120:
         raise ImportValidationError("Reviewer name must be 2-120 characters")
     checked_on = checked_date(args.checked_on)
+    checked_at = datetime.combine(checked_on, datetime.min.time(), tzinfo=timezone.utc)
     if not args.attest_current or not args.attest_reuse_rights:
         raise ImportValidationError("Both human attestations are required")
     if not is_official_url(args.verification_url):
@@ -179,9 +180,9 @@ def approve(args: argparse.Namespace) -> dict:
                         )
                 conn.execute(
                     """UPDATE courts SET name=%s,slug=%s,court_type=%s,address=%s,phone=%s,
-                       email=%s,official_url=%s,status='verified',verified_at=now(),updated_at=now()
+                       email=%s,official_url=%s,status='verified',verified_at=%s,updated_at=now()
                        WHERE id=%s""",
-                    (name,slug,court_type,address,phone,email,official_url,court_id)
+                    (name,slug,court_type,address,phone,email,official_url,checked_at,court_id)
                 )
             for field,value in fields.items():
                 if value:
@@ -196,7 +197,7 @@ def approve(args: argparse.Namespace) -> dict:
                 (reviewer,args.verification_url,row_id)
             )
             conn.execute(
-                "UPDATE sources SET checked_at=now() WHERE id=%s", (source_id,)
+                "UPDATE sources SET checked_at=%s WHERE id=%s", (checked_at,source_id)
             )
         return {"court_id":court_id,"external_code":code,"published":1,
                 "checked_on":str(checked_on),"verified_by":reviewer}
