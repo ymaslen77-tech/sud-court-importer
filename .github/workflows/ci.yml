@@ -36,6 +36,15 @@ jobs:
         run: docker compose -f compose.local.yaml config --quiet
       - name: Build and start the dedicated local host
         run: docker compose -f compose.local.yaml up --build --detach --wait --wait-timeout 240
+      - name: Stage synthetic candidate without publication
+        run: |
+          mkdir -p data/import
+          cp importer/tests/fixtures/synthetic_contacts.json data/import/contacts.json
+          docker compose -f compose.local.yaml build importer
+          docker compose -f compose.local.yaml run --rm importer validate /input/contacts.json > /tmp/validate.json
+          docker compose -f compose.local.yaml run --rm importer stage /input/contacts.json --source-url https://data.mos-gorsud.ru/opendata > /tmp/stage.json
+          grep -Fq '"published": 0' /tmp/stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 1
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
