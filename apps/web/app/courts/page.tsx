@@ -53,7 +53,8 @@ export default async function CourtsDirectory() {
           <span className="feature-index">02 / АРБИТРАЖНЫЕ СУДЫ</span>
           <h3>Арбитражная система</h3>
           <p>Арбитражные суды субъектов, апелляционные и окружные суды, Суд по интеллектуальным правам. Территориальные округа учитываются отдельно.</p>
-          <a className="text-link" href="https://arbitr.ru/?id_doc=20563&id_sec=353" target="_blank" rel="noopener noreferrer">Официальный реестр арбитражных судов ↗</a>
+          <Link className="text-link" href="/courts/arbitration">Посмотреть 89 наименований судов и присутствий →</Link>
+          <a className="text-link" href="https://arbitr.ru/?id_doc=20563&id_sec=353" target="_blank" rel="noopener noreferrer">Официальный первоисточник ↗</a>
         </article>
         <article className="feature-card">
           <span className="feature-index">03 / МИРОВЫЕ СУДЬИ</span>
