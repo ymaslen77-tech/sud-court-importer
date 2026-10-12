@@ -18,6 +18,15 @@ jobs:
       - run: pnpm check
       - run: pnpm build
 
+  importer-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s importer/tests -v
+
   local-host-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -30,21 +39,13 @@ jobs:
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
-          grep -q '"status":"ok"' /tmp/api-health.json
+          grep -Fqx '{"status":"ok"}' /tmp/api-health.json
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions > /tmp/regions.json
-          grep -q '^\[\]
-      - name: Shut down and clean smoke-test containers
-        if: always()
-        run: docker compose -f compose.local.yaml down --volumes
- /tmp/regions.json
+          grep -Fqx '[]' /tmp/regions.json
           curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
-          grep -q '^\[\]
-      - name: Shut down and clean smoke-test containers
-        if: always()
-        run: docker compose -f compose.local.yaml down --volumes
- /tmp/courts.json
+          grep -Fqx '[]' /tmp/courts.json
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
-          grep -q 'Правосудие.' /tmp/home.html
+          grep -Fq 'Правосудие.' /tmp/home.html
           for page in courts judges laws practice guides jurisdiction services sources search; do
             curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
           done
