@@ -31,7 +31,7 @@ REGISTRIES = {
         "publisher": "ГАС РФ «Правосудие»",
         "source_type": "official-federal-courts",
         "hosts": ("sudrf.ru",),
-        "categories": {"RS", "OS", "GV", "KV", "GS", "AS", "KS"},
+        "categories": {"RS", "OS", "GV", "KV", "GS", "KS"},
     },
     "sudrf-magistrate": {
         "publisher": "ГАС РФ «Правосудие»",
