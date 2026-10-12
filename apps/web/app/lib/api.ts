@@ -24,6 +24,7 @@ export type CourtDetail = Court & {
   coordinate_source_url:string|null;
   coordinate_verified_at:string|null;
   judges:CourtJudge[];
+  contact_sources:{field_name:string;source_url:string;retrieved_at:string}[];
   photo:CourtPhoto|null;
   changes:CourtChange[];
 };
