@@ -116,6 +116,9 @@ def approve(candidate_id,reviewer,current,rights):
                         ST_SetSRID(ST_MakePoint(%s,%s),4326)::geography,
                         updated_at=now() WHERE id=%s""",
                         (loc["longitude"],loc["latitude"],cid))
+            conn.execute("""INSERT INTO court_facts
+                (court_id,field_name,value,source_id,retrieved_at,is_approved)
+                VALUES(%s,%s,%s,%s,now(),true)""",(cid,field,value,sid))
             if old!=value:
                 conn.execute("""INSERT INTO change_events
                     (entity_type,entity_id,changed_field,old_value,new_value,source_id)
