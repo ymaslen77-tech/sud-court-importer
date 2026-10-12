@@ -29,8 +29,25 @@ jobs:
         run: docker compose -f compose.local.yaml up --build --detach --wait --wait-timeout 240
       - name: Check API and HTML response
         run: |
-          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health | grep '"status":"ok"'
-          curl --fail --silent --show-error http://127.0.0.1:4173/ | grep 'Суды Российской Федерации'
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
+          grep -q '"status":"ok"' /tmp/api-health.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions > /tmp/regions.json
+          grep -q '^\[\]
+      - name: Shut down and clean smoke-test containers
+        if: always()
+        run: docker compose -f compose.local.yaml down --volumes
+ /tmp/regions.json
+          curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
+          grep -q '^\[\]
+      - name: Shut down and clean smoke-test containers
+        if: always()
+        run: docker compose -f compose.local.yaml down --volumes
+ /tmp/courts.json
+          curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
+          grep -q 'Правосудие.' /tmp/home.html
+          for page in courts judges laws practice guides jurisdiction services sources search; do
+            curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
+          done
       - name: Shut down and clean smoke-test containers
         if: always()
         run: docker compose -f compose.local.yaml down --volumes
