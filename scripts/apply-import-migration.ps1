@@ -1,7 +1,14 @@
 $ErrorActionPreference = 'Stop'
 Set-Location (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$path = '.\db\migrations\002_court_import_staging.sql'
-if (-not (Test-Path $path)) { throw "Missing migration file: $path" }
-Get-Content $path -Raw | docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts
-if ($LASTEXITCODE -ne 0) { throw 'Import staging migration failed. Database was not fully upgraded.' }
-Write-Host 'Import staging migration applied successfully.'
+
+$files = @(
+  '.\db\migrations\002_court_import_staging.sql',
+  '.\db\migrations\003_court_discovery.sql'
+)
+foreach ($file in $files) {
+  if (-not (Test-Path $file)) { throw "Missing migration file: $file" }
+  Write-Host "Applying $file"
+  Get-Content $file -Raw | docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts
+  if ($LASTEXITCODE -ne 0) { throw "Migration failed: $file" }
+}
+Write-Host 'All import and discovery staging migrations applied successfully.'
