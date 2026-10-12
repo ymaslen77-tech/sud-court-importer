@@ -3,10 +3,15 @@ import type { Metadata } from 'next';
 import { CourtSearch } from '../_components/court-search';
 import { getRegions } from '../lib/api';
 
-export const metadata: Metadata = {
-  title: 'Каталог судов Российской Федерации',
-  description: 'Поиск судов Российской Федерации, проверенных адресов и контактных данных.',
-};
+export const dynamic = 'force-dynamic';
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const regions = await getRegions();
+    return { title: 'Каталог судов Российской Федерации', description: 'Поиск судов Российской Федерации, проверенных адресов и контактных данных.', robots: { index: regions.length > 0, follow: true } };
+  } catch {
+    return { title: 'Каталог судов Российской Федерации', robots: { index: false, follow: true } };
+  }
+}
 export default async function CourtsDirectory() {
   let regions: Awaited<ReturnType<typeof getRegions>> = [];
   let failed = false;
