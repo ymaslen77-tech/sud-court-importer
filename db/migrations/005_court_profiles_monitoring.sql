@@ -83,3 +83,7 @@ CREATE TABLE IF NOT EXISTS court_source_watch_events (
   reviewed_at TIMESTAMPTZ,
   UNIQUE(watch_id,new_sha256)
 );
+
+-- Backward-compatible upgrade if an earlier 005 version was already applied.
+ALTER TABLE court_source_watch_events ADD COLUMN IF NOT EXISTS reviewed_by TEXT;
+ALTER TABLE court_source_watch_events ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
