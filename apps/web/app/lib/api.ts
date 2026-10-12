@@ -11,6 +11,7 @@ export type Court = {
   region_slug?: string;
   region_name?: string;
 };
+export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
 
 const api = process.env.API_URL ?? 'http://localhost:4000';
@@ -35,7 +36,7 @@ export async function getCourt(region: string, court: string): Promise<Court | n
   }
 }
 export async function searchCourts(q: string) {
-  return get<Court[]>('/api/v1/courts/search?q=' + encodeURIComponent(q));
+  return get<SearchCourt[]>('/api/v1/courts/search?q=' + encodeURIComponent(q));
 }
 export function safeOfficialUrl(value: string | null | undefined): string | null {
   if (!value) return null;
