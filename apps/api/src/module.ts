@@ -65,7 +65,7 @@ class CourtsService {
     );
     if(!courts.length)throw new NotFoundException('COURT_NOT_FOUND');
     const court=courts[0];
-    const [fields,judges,photos,changes]=await Promise.all([
+    const [fields,judges,photos,changes,contactSources]=await Promise.all([
       this.query<{field_name:string;value:string;verified_at:Date;source_url:string}>(
         'SELECT f.field_name,f.value,f.verified_at,s.url AS source_url ' +
         'FROM court_profile_fields f JOIN sources s ON s.id=f.source_id ' +
@@ -85,7 +85,12 @@ class CourtsService {
         'SELECT changed_field,old_value,new_value,occurred_at ' +
         'FROM change_events WHERE entity_type=$1 AND entity_id=$2 ' +
         "AND changed_field IN ('name','address','phone','email','official_url','reception_hours','office_hours','transport','accessibility') " +
-        'ORDER BY occurred_at DESC LIMIT 12', ['court',court.id])
+        'ORDER BY occurred_at DESC LIMIT 12', ['court',court.id]),
+      this.query<{field_name:string;source_url:string;retrieved_at:Date}>(
+        'SELECT DISTINCT ON(f.field_name) f.field_name,s.url AS source_url,f.retrieved_at ' +
+        'FROM court_facts f JOIN sources s ON s.id=f.source_id ' +
+        "WHERE f.court_id=$1 AND f.is_approved=true AND f.field_name IN ('name','address','phone','email','official_url') " +
+        'ORDER BY f.field_name,f.retrieved_at DESC,f.id DESC', [court.id])
     ]);
     let coords:{latitude:number;longitude:number}|null=null;
     const rawCoordinates=fields.find(field=>field.field_name==='coordinates');
@@ -101,7 +106,7 @@ class CourtsService {
     return {...court,fields:fields.filter(f=>f.field_name!=='coordinates'),
       coordinates:coords,coordinate_source_url:rawCoordinates?.source_url??null,
       coordinate_verified_at:rawCoordinates?.verified_at??null,
-      judges,photo:photos[0]??null,changes};
+      judges,photo:photos[0]??null,changes,contact_sources:contactSources};
   }
   async byKind(kind:string, requestedPage:unknown) {
     if(!COURT_KINDS.has(kind))throw new NotFoundException('COURT_CATEGORY_NOT_FOUND');
