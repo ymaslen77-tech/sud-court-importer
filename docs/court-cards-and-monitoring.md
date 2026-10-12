@@ -33,6 +33,18 @@ CLI `importer/watch.py check`: выбирает due источники, пров
     docker compose -f compose.local.yaml --profile watch up -d court-watch
     docker compose -f compose.local.yaml logs -f court-watch
 
+### Обработка обнаруженных изменений
+
+После периодического запуска можно посмотреть очередь изменений:
+
+    docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py pending --limit 50
+
+По официальному первоисточнику проверьте конкретные поля и назначения. При необходимости внесите отдельное предложение через profile.py propose или judges.py nominate, затем утвердите его независимо. Только после обработки изменения пометьте событие как проверенное:
+
+    docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py review --event-id 1 --reviewer "Имя редактора" --attest-reviewed
+
+Если HTML поменялся несущественно, допустим --ignore с аудиторским следом. В базе хранятся reviewed_by и reviewed_at. Проверки не являются гарантией непрерывной доступности сайтов или круглосуточной свежести данных.
+
 ## Карты и фотографии
 
 - Карта отображается только при подтверждённых координатах. Встраивание OpenStreetMap выполняется лишь после клика пользователя; с открытой атрибуцией © OSM contributors/ODbL, ссылкой на карты и официальным источником координат. Для массовой нагрузки нужен лицензированный tile provider или собственные тайлы: https://operations.osmfoundation.org/policies/tiles/.
