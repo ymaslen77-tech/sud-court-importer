@@ -69,5 +69,20 @@ services:
       postgres:
         condition: service_healthy
 
+  court-watch:
+    profiles: ["watch"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "while true; do python /work/importer/watch.py check --limit 5 || true; sleep 86400; done"
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   postgres_data:
