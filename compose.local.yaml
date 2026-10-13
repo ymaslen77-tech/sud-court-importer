@@ -70,6 +70,7 @@ services:
       DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
     volumes:
       - ./data/import:/input:ro
+      - ./data/import/normalized:/output
       - ./apps/web/public/court-media:/published-media
     depends_on:
       postgres:
