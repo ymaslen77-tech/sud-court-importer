@@ -27,6 +27,7 @@ export type CourtDetail = Court & {
   contact_sources:{field_name:string;source_url:string;retrieved_at:string}[];
   photo:CourtPhoto|null;
   changes:CourtChange[];
+  cases:{case_uid:string;case_number:string;page_url:string;verified_at:string}[];
 };
 export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
