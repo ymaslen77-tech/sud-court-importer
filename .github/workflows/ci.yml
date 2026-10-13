@@ -109,7 +109,15 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-new.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-second.json
           grep -Fq '"changed_fields": 1' /tmp/moscow-second.json
           grep -Fq '"auto_published": 0' /tmp/moscow-second.json
-          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-new.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-repeat.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=json.loads(Path("data/import/moscow-new.json").read_text(encoding="utf-8"))
+          Path("data/import/moscow-reformatted.json").write_text(
+            json.dumps(rows,ensure_ascii=False,sort_keys=True,indent=4),encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-reformatted.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-repeat.json
           grep -Fq '"created": false' /tmp/moscow-repeat.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='phone';" | grep -Fqx 1
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
