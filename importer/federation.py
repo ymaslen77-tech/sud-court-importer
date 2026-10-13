@@ -31,7 +31,7 @@ REGISTRIES = {
         "publisher": "ГАС РФ «Правосудие»",
         "source_type": "official-federal-courts",
         "hosts": ("sudrf.ru",),
-        "categories": {"RS", "OS", "KV"},  # Identifiers evidenced in source snapshots
+        "categories": {"RS", "OS", "KV", "GV", "AJ"},  # Codes evidenced in sudrf Novosibirsk listing
     },
     "sudrf-magistrate": {
         "publisher": "ГАС РФ «Правосудие»",
