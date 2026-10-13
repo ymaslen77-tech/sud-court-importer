@@ -57,6 +57,10 @@ def report():
                       count(*) FILTER(WHERE review_status='pending')::integer
                FROM court_staff_roster_rows"""
         ).fetchone()
+        roster_changes=conn.execute(
+            """SELECT count(*)::integer FROM court_staff_roster_diff_items
+               WHERE review_status='pending'"""
+        ).fetchone()
         last=conn.execute(
             "SELECT max(checked_at) FROM court_source_watch WHERE last_error IS NULL"
         ).fetchone()
@@ -79,6 +83,7 @@ def report():
             "court_field_proposals":profile[0],
             "judge_appointment_proposals":judges[0],
             "staff_roster_observations_pending":staff[1],
+            "staff_roster_changes_pending":roster_changes[0],
         },
         "staff_roster_observation_rows_including_history":staff[0],
         "monitor":{
