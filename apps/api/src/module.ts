@@ -41,7 +41,7 @@ class CourtsService {
     }
   }
   async editorOverview() {
-    const [verified, queues, sources, byRegion, items] = await Promise.all([
+    const [verified, queues, sources, byRegion, items, intake] = await Promise.all([
       this.query<{published:number;stale:number}>(
         "SELECT count(*)::integer AS published," +
         "count(*) FILTER (WHERE verified_at < now()-interval '180 days')::integer AS stale " +
@@ -101,13 +101,17 @@ class CourtsService {
             WHERE e.status='pending' ORDER BY e.detected_at DESC LIMIT 15
         ) source
         ORDER BY observed_at DESC LIMIT 60
+      `),
+      this.query<{id:string;finished_at:Date;handled:number;failed:number;manifest_count:number}>(`
+        SELECT id::text,finished_at,handled,failed,manifest_count
+        FROM court_intake_runs ORDER BY id DESC LIMIT 10
       `)
     ]);
     return {
       generated_at:new Date().toISOString(),
       public_courts:verified[0]??{published:0,stale:0},
       review_queues:queues, source_monitor:sources[0]??{enabled:0,overdue:0,failed:0,last_checked:null},
-      by_region:byRegion, recent_review_items:items,
+      by_region:byRegion, recent_review_items:items, intake_recent_runs:intake,
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
   }
