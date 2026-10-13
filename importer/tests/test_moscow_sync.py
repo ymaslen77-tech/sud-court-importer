@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from contacts import ImportValidationError
-from moscow_sync import capture_date, dataset_url, read_file
+from moscow_sync import capture_date, canonical_records, dataset_url, read_file
 from registry_diff import compare
 
 FIXTURE = Path(__file__).parent / "fixtures" / "synthetic_contacts.json"
@@ -65,6 +65,17 @@ class MoscowSyncTests(unittest.TestCase):
             self.assertEqual(len(diffs), 1)
             self.assertEqual(diffs[0].field, "phone")
             self.assertEqual(diffs[0].kind, "changed")
+
+    def test_reformatted_export_has_stable_content(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            first = Path(tmp) / "compact.json"
+            second = Path(tmp) / "pretty.json"
+            original = json.loads(FIXTURE.read_text(encoding="utf-8"))
+            first.write_text(json.dumps(original, ensure_ascii=False, sort_keys=False), encoding="utf-8")
+            second.write_text(json.dumps(original, ensure_ascii=False, sort_keys=True, indent=4), encoding="utf-8")
+            _, a = read_file(first)
+            _, b = read_file(second)
+            self.assertEqual(canonical_records(a), canonical_records(b))
 
     def test_reject_fake_official_court(self):
         with tempfile.TemporaryDirectory() as tmp:
