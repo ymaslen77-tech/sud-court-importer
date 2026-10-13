@@ -26,6 +26,10 @@ def infer_verified_kind(registry: str, code: str, name: str) -> str:
             return "general-regional"
         if len(code)==8 and code[2:4] == "RS":
             return "general-district"
+        if len(code)==8 and code[2:4]=="GV" and "гарнизонный военный суд" in name.lower():
+            return "military-garrison"
+        if len(code)==8 and code[2:4]=="AJ" and "апелляционный суд общей юрисдикции" in name.lower():
+            return "general-appeal"
         if len(code)==8 and code[2:4] == "KV" and code.endswith("KV0000") and name.strip().lower().startswith("кассационный военный суд"):
             return "military-cassation"
     # Arbitration codes, magistrate areas and many military levels need
