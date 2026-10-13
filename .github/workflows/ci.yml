@@ -52,6 +52,20 @@ jobs:
           grep -Fq '"published": 0' /tmp/federal-stage.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 11
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+          cp importer/tests/fixtures/official_sudrf_novosibirsk_excerpt.txt data/import/regional-snapshot.txt
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py validate /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' > /tmp/regional-valid.json
+          grep -Fq '"records": 4' /tmp/regional-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py stage /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' > /tmp/regional-stage.json
+          grep -Fq '"published": 0' /tmp/regional-stage.json
+          OLD_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/federal-stage.json"))["batch_id"])')"
+          NEW_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/regional-stage.json"))["batch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/registry_diff.py queue --older-batch "$OLD_BATCH" --newer-batch "$NEW_BATCH" > /tmp/courts-diff.json
+          grep -Fq '"new": 2' /tmp/courts-diff.json
+          grep -Fq '"missing": 0' /tmp/courts-diff.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 15
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_registry_diff_runs;' | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+
           cp importer/seeds/arbitration-subjects-official-list-unreviewed.json data/import/arbitration-discoveries.json
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/arbitration-discoveries.json > /tmp/discovery-valid.json
           grep -Fq '"records": 89' /tmp/discovery-valid.json
