@@ -23,14 +23,14 @@ class Difference:
         return vars(self)
 
 
-def compare(old:dict,new:dict):
+def compare(old:dict,new:dict,include_missing=False):
     changes=[]
     for code in sorted(old.keys()|new.keys()):
         before,after=old.get(code),new.get(code)
         if before is None:
             changes.append(Difference(code,"__record__","new",None,
                 json.dumps(after,ensure_ascii=False,sort_keys=True)))
-        elif after is None:
+        elif after is None and include_missing:
             changes.append(Difference(code,"__record__","missing",
                 json.dumps(before,ensure_ascii=False,sort_keys=True),None))
         else:
@@ -68,8 +68,10 @@ def from_database(conn,batch):
     return info,{r[0]:dict(zip(FIELDS,r[1:])) for r in rows}
 
 
-def queue(older_id,newer_id):
+def queue(older_id,newer_id,attest_complete=False,reviewer=None):
     if older_id==newer_id:raise ImportValidationError("Cannot compare same batch")
+    if attest_complete and (not reviewer or not 2<=len(reviewer.strip())<=120):
+        raise ImportValidationError("Complete snapshots require a named reviewer")
     with database_connect() as conn:
         with conn.transaction():
             old_info,old=from_database(conn,older_id)
@@ -78,12 +80,13 @@ def queue(older_id,newer_id):
                 raise ImportValidationError("Cross-source comparisons are forbidden")
             if old_info[1]>new_info[1]:
                 raise ImportValidationError("Snapshot order is reversed")
-            changes=compare(old,new)
+            changes=compare(old,new,include_missing=attest_complete)
             newrun=conn.execute(
-                """INSERT INTO court_registry_diff_runs(source_id,older_batch_id,newer_batch_id)
-                VALUES(%s,%s,%s) ON CONFLICT(older_batch_id,newer_batch_id)
+                """INSERT INTO court_registry_diff_runs
+                (source_id,older_batch_id,newer_batch_id,include_absences,completeness_asserted_by)
+                VALUES(%s,%s,%s,%s,%s) ON CONFLICT(older_batch_id,newer_batch_id)
                 DO NOTHING RETURNING id""",
-                (old_info[0],older_id,newer_id)
+                (old_info[0],older_id,newer_id,attest_complete,reviewer.strip() if attest_complete else None)
             ).fetchone()
             if newrun:
                 run_id=newrun[0]
@@ -144,9 +147,12 @@ def main():
     local.add_argument("older",type=Path)
     local.add_argument("newer",type=Path)
     local.add_argument("--registry",required=True)
+    local.add_argument("--attest-both-complete",action="store_true")
     db=sub.add_parser("queue")
     db.add_argument("--older-batch",type=int,required=True)
     db.add_argument("--newer-batch",type=int,required=True)
+    db.add_argument("--attest-both-complete",action="store_true")
+    db.add_argument("--reviewer")
     wait=sub.add_parser("pending")
     wait.add_argument("--limit",type=int,default=100)
     ack=sub.add_parser("acknowledge")
@@ -161,14 +167,14 @@ def main():
             new_url,new=listing_file(args.newer,args.registry)
             if old_url!=new_url:
                 raise ImportValidationError("Comparison requires same official URL")
-            changes=compare(old,new)
+            changes=compare(old,new,include_missing=args.attest_both_complete)
             result={"differences":len(changes),
                     "new":sum(x.kind=="new" for x in changes),
                     "missing":sum(x.kind=="missing" for x in changes),
                     "changed_fields":sum(x.kind=="changed" for x in changes),
                     "items":[x.as_dict() for x in changes],"auto_published":0}
         elif args.action=="queue":
-            result=queue(args.older_batch,args.newer_batch)
+            result=queue(args.older_batch,args.newer_batch,args.attest_both_complete,args.reviewer)
         elif args.action=="pending":
             result=pending(args.limit)
         else:
