@@ -129,8 +129,18 @@ class CourtsService {
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
   }
-  async acknowledgeRosterChange(id:string,body:unknown){
-    if(!/^[1-9][0-9]{0,14}$/.test(id) || !body || typeof body!=='object'){
+  async acknowledgeEvidenceSignal(kind:string,id:string,body:unknown){
+    // This API acknowledges an observation only. It never approves a court,
+    // alters an appointment, or applies proposed values to public facts.
+    const reviewTables:Record<string,string>={
+      staff_roster_diffs:'court_staff_roster_diff_items',
+      registry_diffs:'court_registry_diff_items',
+      source_changes:'court_source_watch_events'
+    };
+    if(!Object.prototype.hasOwnProperty.call(reviewTables,kind)){
+      throw new NotFoundException('REVIEW_KIND_UNSUPPORTED');
+    }
+    if(!/^[1-9][0-9]{0,14}$/.test(id) || !body || typeof body!=='object' || Array.isArray(body)){
       throw new BadRequestException('INVALID_REVIEW_REQUEST');
     }
     const {decision,reviewer,attested}=body as Record<string,unknown>;
@@ -138,14 +148,22 @@ class CourtsService {
        typeof reviewer!=='string' || reviewer.trim().length<3 || reviewer.trim().length>120){
       throw new BadRequestException('INVALID_REVIEW_REQUEST');
     }
+    // Table names are static server-side literals from the allowlist above.
+    // Decision/reviewer/id are bound query parameters.
+    const table=reviewTables[kind];
     const result=await this.query<{id:string}>(
-      `UPDATE court_staff_roster_diff_items SET review_status=$1,
-       reviewed_by=$2,reviewed_at=now()
-       WHERE id=$3 AND review_status='pending' RETURNING id::text`,
+      `UPDATE ${table} SET review_status=$1,reviewed_by=$2,reviewed_at=now()
+       WHERE id=$3 AND review_status='pending' RETURNING id::text`.replace(
+         kind==='source_changes'?'review_status=$1':'__no_rewrite__',
+         kind==='source_changes'?'status=$1':'__no_rewrite__'
+       ).replace(
+         kind==='source_changes'?"review_status='pending'":'__no_rewrite__',
+         kind==='source_changes'?"status='pending'":'__no_rewrite__'
+       ),
       [decision,reviewer.trim(),id]
     );
     if(result.length===0)throw new NotFoundException('REVIEW_ITEM_NOT_PENDING');
-    return {id:result[0].id,status:decision,publications:0,appointments_mutated:0};
+    return {id:result[0].id,kind,status:decision,publications:0,appointments_mutated:0};
   }
   async sitemapCourts(){
     return this.query<{region_slug:string;slug:string;updated_at:Date}>(
@@ -280,7 +298,13 @@ class CourtsController {
   @Post('internal/editor/roster-diffs/:id/review')
   rosterReview(@Headers('authorization') auth:string|undefined,@Param('id') id:string,@Body() payload:unknown){
     editorAuth(auth);
-    return this.service.acknowledgeRosterChange(id,payload);
+    return this.service.acknowledgeEvidenceSignal('staff_roster_diffs',id,payload);
+  }
+  @Post('internal/editor/signals/:kind/:id/review')
+  signalReview(@Headers('authorization') auth:string|undefined,@Param('kind') kind:string,
+    @Param('id') id:string,@Body() payload:unknown){
+    editorAuth(auth);
+    return this.service.acknowledgeEvidenceSignal(kind,id,payload);
   }
   @Get('regions') regions(){return this.service.regions();}
   @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
