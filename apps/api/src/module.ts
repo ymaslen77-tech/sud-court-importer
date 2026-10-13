@@ -1,4 +1,5 @@
-import { BadRequestException, Controller, Get, Injectable, Module, NotFoundException, Param, Query, ServiceUnavailableException } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Headers, Injectable, Module, NotFoundException, Param, Query, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
+import {createHash, timingSafeEqual} from 'node:crypto';
 import { Pool, type QueryResultRow } from 'pg';
 
 type Court = {
@@ -15,6 +16,18 @@ const COURT_KINDS = new Set([
   'arbitration-subject','arbitration-appeal','arbitration-district','arbitration-ip'
 ]);
 
+function editorAuth(header:string|undefined):void {
+  const configured=process.env.EDITOR_API_TOKEN;
+  if(!configured || configured.length<32 || !header?.startsWith('Bearer ')) {
+    throw new UnauthorizedException('EDITOR_ACCESS_DENIED');
+  }
+  const received=header.slice(7);
+  if(received.length>512)return void (()=>{throw new UnauthorizedException('EDITOR_ACCESS_DENIED')})();
+  const left=createHash('sha256').update(configured,'utf8').digest();
+  const right=createHash('sha256').update(received,'utf8').digest();
+  if(!timingSafeEqual(left,right))throw new UnauthorizedException('EDITOR_ACCESS_DENIED');
+}
+
 const pool = new Pool({connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 3000});
 
 @Injectable()
@@ -26,6 +39,40 @@ class CourtsService {
     } catch {
       throw new ServiceUnavailableException('COURTS_DATA_UNAVAILABLE');
     }
+  }
+  async editorOverview() {
+    const [verified, queues, sources, byRegion] = await Promise.all([
+      this.query<{published:number;stale:number}>(
+        "SELECT count(*)::integer AS published," +
+        "count(*) FILTER (WHERE verified_at < now()-interval '180 days')::integer AS stale " +
+        "FROM courts WHERE status='verified'"),
+      this.query<{kind:string;count:number}>(`
+        SELECT 'court_profiles' AS kind,count(*)::integer AS count FROM court_profile_candidates WHERE status='pending'
+        UNION ALL SELECT 'judge_appointments',count(*)::integer FROM judicial_appointment_candidates WHERE status='pending'
+        UNION ALL SELECT 'staff_rosters',count(*)::integer FROM court_staff_roster_rows WHERE review_status='pending'
+        UNION ALL SELECT 'registry_diffs',count(*)::integer FROM court_registry_diff_items WHERE review_status='pending'
+        UNION ALL SELECT 'source_changes',count(*)::integer FROM court_source_watch_events WHERE status='pending'
+        UNION ALL SELECT 'case_references',count(*)::integer FROM court_case_candidates WHERE status='pending'
+      `),
+      this.query<{enabled:number;overdue:number;failed:number;last_checked:Date|null}>(`
+        SELECT count(*) FILTER(WHERE enabled)::integer AS enabled,
+        count(*) FILTER(WHERE enabled AND next_check_at<now())::integer AS overdue,
+        count(*) FILTER(WHERE enabled AND last_error IS NOT NULL)::integer AS failed,
+        max(checked_at) AS last_checked FROM court_source_watch
+      `),
+      this.query<{code:string;name:string;published:number}>(`
+        SELECT r.code,r.name,count(c.id)::integer AS published
+        FROM regions r JOIN courts c ON c.region_id=r.id AND c.status='verified'
+        GROUP BY r.code,r.name ORDER BY r.name LIMIT 120
+      `)
+    ]);
+    return {
+      generated_at:new Date().toISOString(),
+      public_courts:verified[0]??{published:0,stale:0},
+      review_queues:queues, source_monitor:sources[0]??{enabled:0,overdue:0,failed:0,last_checked:null},
+      by_region:byRegion,
+      warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
+    };
   }
   async sitemapCourts(){
     return this.query<{region_slug:string;slug:string;updated_at:Date}>(
@@ -153,6 +200,10 @@ class CourtsService {
 class CourtsController {
   constructor(private readonly service:CourtsService) {}
   @Get('health') health(){return {status:'ok'};}
+  @Get('internal/editor/overview') overview(@Headers('authorization') authorization:string|undefined){
+    editorAuth(authorization);
+    return this.service.editorOverview();
+  }
   @Get('regions') regions(){return this.service.regions();}
   @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
   @Get('courts/categories/:kind') byKind(@Param('kind') kind:string,@Query('page') page:unknown){return this.service.byKind(kind,page);}
