@@ -66,6 +66,16 @@ def read_file(path: Path) -> tuple[bytes, list]:
     return raw, records
 
 
+
+def canonical_records(records: list) -> bytes:
+    """Stable batch identity when the same official records are reformatted."""
+    ordered = sorted(records, key=lambda item: item.external_code)
+    return json.dumps(
+        [item.raw_record for item in ordered],
+        ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+
+
 def synchronize(raw: bytes, records: list, source: str, captured: date,
                 reviewer: str, rights_attested: bool) -> dict:
     """Idempotent, write-only to PRIVATE import and diff queues."""
@@ -76,10 +86,7 @@ def synchronize(raw: bytes, records: list, source: str, captured: date,
     # Normalize ordering and JSON whitespace: harmless re-exports should not
     # create historical batches or new editorial diffs.
     ordered = sorted(records, key=lambda item: item.external_code)
-    canonical = json.dumps(
-        [item.raw_record for item in ordered],
-        ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+    canonical = canonical_records(records)
     canonical_digest = sha256(canonical).hexdigest()
     original_sha = sha256(raw).hexdigest()
 
