@@ -172,6 +172,18 @@ jobs:
           grep -Fq '"auto_published": 0' /tmp/inbox-stage.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Stage 11 official roster references without verifying appointments
+        run: |
+          cp importer/seeds/lefortovsky-judges-official-page-unreviewed.json data/import/lef-roster.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py validate /input/lef-roster.json > /tmp/lef-roster-valid.json
+          grep -Fq '"rows": 11' /tmp/lef-roster-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-stage.json
+          grep -Fq '"published": 0' /tmp/lef-roster-stage.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-repeat.json
+          grep -Fq '"created": false' /tmp/lef-roster-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_rows;" | grep -Fqx 11
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
