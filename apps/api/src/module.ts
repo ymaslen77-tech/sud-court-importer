@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, Headers, Injectable, Module, NotFoundException, Param, Query, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, Injectable, Module, NotFoundException, Param, Post, Query, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import {createHash, timingSafeEqual} from 'node:crypto';
 import { Pool, type QueryResultRow } from 'pg';
 
@@ -101,6 +101,19 @@ class CourtsService {
             JOIN court_source_watch w ON w.id=e.watch_id JOIN courts c ON c.id=w.court_id
             WHERE e.status='pending' ORDER BY e.detected_at DESC LIMIT 15
         ) source
+        UNION ALL
+        SELECT * FROM (
+          SELECT 'staff_roster_diffs'::text,d.id::text,
+            ('Состав судей: '||d.full_name)::text,
+            (d.change_kind||' / '||d.field_name)::text,
+            left(COALESCE(d.old_value,'')||' → '||COALESCE(d.new_value,''),350)::text,
+            s.url::text,r.created_at
+            FROM court_staff_roster_diff_items d
+            JOIN court_staff_roster_diff_runs r ON r.id=d.run_id
+            JOIN court_staff_roster_batches b ON b.id=r.newer_batch_id
+            JOIN sources s ON s.id=b.source_id
+            WHERE d.review_status='pending' ORDER BY r.created_at DESC LIMIT 15
+        ) roster
         ORDER BY observed_at DESC LIMIT 60
       `),
       this.query<{id:string;finished_at:Date;handled:number;failed:number;manifest_count:number}>(`
@@ -115,6 +128,24 @@ class CourtsService {
       by_region:byRegion, recent_review_items:items, intake_recent_runs:intake,
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
+  }
+  async acknowledgeRosterChange(id:string,body:unknown){
+    if(!/^[1-9][0-9]{0,14}$/.test(id) || !body || typeof body!=='object'){
+      throw new BadRequestException('INVALID_REVIEW_REQUEST');
+    }
+    const {decision,reviewer,attested}=body as Record<string,unknown>;
+    if((decision!=='reviewed' && decision!=='ignored') || attested!==true ||
+       typeof reviewer!=='string' || reviewer.trim().length<3 || reviewer.trim().length>120){
+      throw new BadRequestException('INVALID_REVIEW_REQUEST');
+    }
+    const result=await this.query<{id:string}>(
+      `UPDATE court_staff_roster_diff_items SET review_status=$1,
+       reviewed_by=$2,reviewed_at=now()
+       WHERE id=$3 AND review_status='pending' RETURNING id::text`,
+      [decision,reviewer.trim(),id]
+    );
+    if(result.length===0)throw new NotFoundException('REVIEW_ITEM_NOT_PENDING');
+    return {id:result[0].id,status:decision,publications:0,appointments_mutated:0};
   }
   async sitemapCourts(){
     return this.query<{region_slug:string;slug:string;updated_at:Date}>(
@@ -245,6 +276,11 @@ class CourtsController {
   @Get('internal/editor/overview') overview(@Headers('authorization') authorization:string|undefined){
     editorAuth(authorization);
     return this.service.editorOverview();
+  }
+  @Post('internal/editor/roster-diffs/:id/review')
+  rosterReview(@Headers('authorization') auth:string|undefined,@Param('id') id:string,@Body() payload:unknown){
+    editorAuth(auth);
+    return this.service.acknowledgeRosterChange(id,payload);
   }
   @Get('regions') regions(){return this.service.regions();}
   @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
