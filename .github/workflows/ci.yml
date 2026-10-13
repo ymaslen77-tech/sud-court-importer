@@ -389,9 +389,10 @@ jobs:
           echo 'CSRF and origin negative tests passed'
           COURTS_BEFORE="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')"
           APPOINTMENTS_BEFORE="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')"
-          EDITOR_REVIEW_CODE="$(curl --silent --show-error --output /tmp/editor-review-result.txt --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)"
+          EDITOR_REVIEW_CODE="$(curl --silent --show-error --output /tmp/editor-review-result.txt --dump-header /tmp/editor-review-headers.txt --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)"
           echo "Authorized editor review returned HTTP $EDITOR_REVIEW_CODE"
           if [ "$EDITOR_REVIEW_CODE" != 303 ]; then head -c 450 /tmp/editor-review-result.txt; echo; exit 1; fi
+          grep -Eiq '^location: http://127\.0\.0\.1:4173/editor/dashboard' /tmp/editor-review-headers.txt
           echo 'web POST returned expected redirect'
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_diff_items WHERE id=$ROSTER_EVENT_ID AND review_status='reviewed' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL;" | grep -Fqx 1
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
