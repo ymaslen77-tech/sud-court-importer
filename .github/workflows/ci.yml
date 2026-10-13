@@ -57,6 +57,14 @@ jobs:
         run: docker compose -f compose.local.yaml config --quiet
       - name: Build and start the dedicated local host
         run: docker compose -f compose.local.yaml up --build --detach --wait --wait-timeout 240
+      - name: Check database backup and reapplicable schema migrations
+        run: |
+          docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
+          docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump | grep -Fq "DATABASE"
+          for f in db/migrations/00{2,3,4,5,6,7}_*.sql; do
+            test -f "$f"
+            docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
+          done
       - name: Stage synthetic candidate without publication
         run: |
           mkdir -p data/import
