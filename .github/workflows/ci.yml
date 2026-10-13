@@ -66,6 +66,10 @@ jobs:
           grep -Fq '"missing": 0' /tmp/courts-diff.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 15
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_registry_diff_runs;' | grep -Fqx 1
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py sync /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/regional-repeat.json
+          grep -Fq '"created": false' /tmp/regional-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_registry_diff_runs;' | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 15
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
 
           cp importer/seeds/arbitration-subjects-official-list-unreviewed.json data/import/arbitration-discoveries.json
