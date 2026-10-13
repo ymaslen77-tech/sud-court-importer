@@ -219,6 +219,8 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/full-inbox-stage.json
           grep -Fq '"handled": 2' /tmp/full-inbox-stage.json
           grep -Fq '"auto_published": 0' /tmp/full-inbox-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_intake_runs;" | grep -Fqx 2
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_intake_runs WHERE failed=0;" | grep -Fqx 2
 
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
@@ -330,6 +332,7 @@ jobs:
           curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
           grep -Fq '"published":' /tmp/editor-overview.json
           grep -Fq '"staff_rosters"' /tmp/editor-overview.json
+          grep -Fq '"intake_recent_runs"' /tmp/editor-overview.json
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor)" = 401
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor/dashboard)" = 404
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u 'ci-editor:wrong-password' http://127.0.0.1:4173/editor/dashboard)" = 404
