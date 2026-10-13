@@ -206,3 +206,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 }
 
 .fact-source{display:block;margin-top:5px;color:#808a91;font-size:11px;font-weight:500}.fact-source a{color:var(--red)}
+
+/* Private editor overview — values are live measurements, not publication controls */
+.editor-desk{padding-bottom:60px}
+.editor-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:24px}
+.editor-summary article{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);background:#fff;padding:24px}
+.editor-summary strong{font-size:33px;line-height:1;font-variant-numeric:tabular-nums}
+.editor-summary span{font-size:12px;line-height:1.6;color:var(--muted)}
+.editor-queues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.editor-queues>div{border:1px solid var(--line);padding:18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.editor-queues span{font-size:13px;line-height:1.5}
+.editor-queues strong{font-size:18px;font-variant-numeric:tabular-nums}
+@media(max-width:900px){.editor-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.editor-summary,.editor-queues{grid-template-columns:1fr}}
