@@ -219,3 +219,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .editor-queues strong{font-size:18px;font-variant-numeric:tabular-nums}
 @media(max-width:900px){.editor-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.editor-summary,.editor-queues{grid-template-columns:1fr}}
+
+.editor-review-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.editor-review-list article{border:1px solid var(--line);padding:23px;background:#fff;overflow-wrap:anywhere}
+.editor-review-title{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--red)}
+.editor-review-title span{color:var(--muted);font-variant-numeric:tabular-nums}
+.editor-review-list h3{margin:12px 0;font-size:17px}
+.editor-review-list p{font-size:13px;line-height:1.7;white-space:pre-wrap}
+.editor-review-source{margin-top:14px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.editor-review-source a{color:var(--red)}
+@media(max-width:730px){.editor-review-list{grid-template-columns:1fr}}
