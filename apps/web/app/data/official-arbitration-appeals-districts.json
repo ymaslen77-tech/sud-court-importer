@@ -1,0 +1,194 @@
+[
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Волго-Вятского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Восточно-Сибирского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Дальневосточного округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Западно-Сибирского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Московского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Поволжского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Северо-Западного округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Северо-Кавказского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Уральского округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-district",
+    "courtName": "Арбитражный суд Центрального округа",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Первый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Второй арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Третий арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Четвертый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Пятый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Шестой арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Седьмой арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Восьмой арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Девятый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Десятый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Одиннадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Двенадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Тринадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Четырнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Пятнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Шестнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Семнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Восемнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Девятнадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Двадцатый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-appeal",
+    "courtName": "Двадцать первый арбитражный апелляционный суд",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  },
+  {
+    "registry": "arbitr-courts",
+    "courtKind": "arbitration-ip",
+    "courtName": "Суд по интеллектуальным правам",
+    "sourceRecordUrl": "https://arbitr.ru/materials/as"
+  }
+]
