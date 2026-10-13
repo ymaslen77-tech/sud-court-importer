@@ -72,7 +72,7 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
           docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump > /tmp/dump-manifest.txt
           grep -Fq 'TOC Entries:' /tmp/dump-manifest.txt
-          for f in db/migrations/00{2,3,4,5,6,7,8}_*.sql; do
+          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql; do
             test -f "$f"
             docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
           done
@@ -234,6 +234,23 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-repeat.json
           grep -Fq '"created": false' /tmp/lef-roster-repeat.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_rows;" | grep -Fqx 11
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          roster=json.loads(Path("data/import/lef-roster.json").read_text(encoding="utf-8"))
+          roster["judges"][0]["telephone"]="+7 (000) 000-00-00"
+          Path("data/import/lef-roster-next.json").write_text(json.dumps(roster,ensure_ascii=False),encoding="utf-8")
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster-next.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-next.json
+          OLD_ROSTER="$(python3 -c 'import json;print(json.load(open("/tmp/lef-roster-stage.json"))["batch_id"])')"
+          NEW_ROSTER="$(python3 -c 'import json;print(json.load(open("/tmp/lef-roster-next.json"))["batch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster_diff.py queue --older-batch "$OLD_ROSTER" --newer-batch "$NEW_ROSTER" > /tmp/roster-change.json
+          grep -Fq '"differences": 1' /tmp/roster-change.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster_diff.py queue --older-batch "$OLD_ROSTER" --newer-batch "$NEW_ROSTER" > /tmp/roster-repeat.json
+          grep -Fq '"created": false' /tmp/roster-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_diff_items WHERE review_status='pending';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Stage official-page court pilot without premature publication
