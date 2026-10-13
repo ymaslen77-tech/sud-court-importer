@@ -151,15 +151,10 @@ class CourtsService {
     // Table names are static server-side literals from the allowlist above.
     // Decision/reviewer/id are bound query parameters.
     const table=reviewTables[kind];
+    const statusColumn=kind==='source_changes'?'status':'review_status';
     const result=await this.query<{id:string}>(
-      `UPDATE ${table} SET review_status=$1,reviewed_by=$2,reviewed_at=now()
-       WHERE id=$3 AND review_status='pending' RETURNING id::text`.replace(
-         kind==='source_changes'?'review_status=$1':'__no_rewrite__',
-         kind==='source_changes'?'status=$1':'__no_rewrite__'
-       ).replace(
-         kind==='source_changes'?"review_status='pending'":'__no_rewrite__',
-         kind==='source_changes'?"status='pending'":'__no_rewrite__'
-       ),
+      `UPDATE ${table} SET ${statusColumn}=$1,reviewed_by=$2,reviewed_at=now()
+       WHERE id=$3 AND ${statusColumn}='pending' RETURNING id::text`,
       [decision,reviewer.trim(),id]
     );
     if(result.length===0)throw new NotFoundException('REVIEW_ITEM_NOT_PENDING');
