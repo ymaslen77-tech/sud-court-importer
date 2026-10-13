@@ -117,10 +117,23 @@ def execute(directory: Path, apply: bool, root: Path = ROOT) -> dict:
                 })
         except (ImportValidationError, OSError) as exc:
             failures.append({"manifest": item["manifest"], "error": str(exc)[:250]})
-    return {
+    result = {
         "dry_run": not apply, "handled": len(staged), "failed": len(failures),
         "entries": staged, "errors": failures, "auto_published": 0
     }
+    if apply:
+        from cli import database_connect
+        from psycopg.types.json import Jsonb
+        with database_connect() as conn:
+            entry = conn.execute(
+                """INSERT INTO court_intake_runs
+                   (handled,failed,manifest_count,error_summary)
+                   VALUES(%s,%s,%s,%s) RETURNING id""",
+                (len(staged),len(failures),len(entries),Jsonb(failures))
+            ).fetchone()
+            assert entry
+            result["intake_run_id"] = entry[0]
+    return result
 
 
 def main() -> None:
