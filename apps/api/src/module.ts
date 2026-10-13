@@ -22,7 +22,7 @@ function editorAuth(header:string|undefined):void {
     throw new UnauthorizedException('EDITOR_ACCESS_DENIED');
   }
   const received=header.slice(7);
-  if(received.length>512)return void (()=>{throw new UnauthorizedException('EDITOR_ACCESS_DENIED')})();
+  if(received.length>512)throw new UnauthorizedException('EDITOR_ACCESS_DENIED');
   const left=createHash('sha256').update(configured,'utf8').digest();
   const right=createHash('sha256').update(received,'utf8').digest();
   if(!timingSafeEqual(left,right))throw new UnauthorizedException('EDITOR_ACCESS_DENIED');
