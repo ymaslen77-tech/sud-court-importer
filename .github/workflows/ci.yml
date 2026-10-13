@@ -293,6 +293,26 @@ jobs:
           grep -Fq '"published": 1' /tmp/case-approved.json
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/moscow/courts/sud-77rs0014 | grep -Fq '02-7949/2026'
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/moscow/sud-77rs0014 | grep -Fq '02-7949/2026'
+      - name: Assert editor closed by default, then test isolated authorized session
+        run: |
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor)" = 404
+          export EDITOR_DASHBOARD_ENABLED=true
+          export EDITOR_USERNAME=ci-editor
+          export EDITOR_PASSWORD=ci-editor-password-2026
+          export EDITOR_API_TOKEN=ci-token-for-editor-overview-must-have-more-than-32-characters
+          docker compose -f compose.local.yaml up -d --force-recreate --wait --wait-timeout 120 api web
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
+          grep -Fq '"published":' /tmp/editor-overview.json
+          grep -Fq '"staff_rosters"' /tmp/editor-overview.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor/dashboard)" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u 'ci-editor:wrong-password' http://127.0.0.1:4173/editor/dashboard)" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" http://127.0.0.1:4173/editor)" = 302
+          curl --fail --silent --show-error -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" http://127.0.0.1:4173/editor/dashboard > /tmp/editor-dashboard.html
+          grep -Fq 'Контроль наполнения судов' /tmp/editor-dashboard.html
+          grep -Fq 'name="robots" content="noindex, nofollow"' /tmp/editor-dashboard.html
       - name: Shut down and clean smoke-test containers
         if: always()
         run: docker compose -f compose.local.yaml down --volumes
