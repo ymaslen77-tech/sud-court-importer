@@ -59,7 +59,8 @@ export async function POST(request:Request){
   return new Response('Review not completed',{status:response.status===404?409:503,
     headers:{'cache-control':'no-store'}});
  }
- const result=NextResponse.redirect(new URL('/editor/dashboard',request.url),303);
+ // Redirect to the validated browser origin, never the internal Docker hostname.
+ const result=NextResponse.redirect(new URL('/editor/dashboard',origin!),303);
  result.headers.set('cache-control','private,no-store');
  result.headers.set('X-Robots-Tag','noindex,nofollow');
  return result;
