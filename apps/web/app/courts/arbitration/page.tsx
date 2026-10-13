@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArbitrationNames } from './registry';
-import all from '../../data/official-arbitration-list.json';
+import original from '../../data/official-arbitration-list.json';
+import additional from '../../data/official-arbitration-appeals-districts.json';
+const all = [...original, ...additional];
 
 export const metadata: Metadata = {
   title: 'Арбитражные суды — перечень из официального реестра',
@@ -11,6 +13,9 @@ export const metadata: Metadata = {
 export default function ArbitrationDirectory() {
   const subjects = all.filter(x=>x.courtKind==='arbitration-subject').length;
   const presences = all.filter(x=>x.courtKind==='arbitration-presence').length;
+  const appeals = all.filter(x=>x.courtKind==='arbitration-appeal').length;
+  const circuits = all.filter(x=>x.courtKind==='arbitration-district').length;
+  const specialized = all.filter(x=>x.courtKind==='arbitration-ip').length;
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
       <Link href="/courts">Суды России</Link><span>/</span>Арбитражные суды</div>
@@ -24,9 +29,9 @@ export default function ArbitrationDirectory() {
     <section className="section-wrap">
       <div className="section-intro">
         <span className="eyebrow">Источник: официальный арбитражный портал</span>
-        <h2>{subjects} наименований судов субъектов и {presences} судебных присутствия</h2>
-        <p>Отдельные апелляционные и окружные арбитражные суды будут добавляться после проверки их официальных реестров и классификации.</p>
-        <p><a className="text-link" href="https://arbitr.ru/?id_doc=20563&id_sec=353" target="_blank" rel="noopener noreferrer">Проверить первоисточник на arbitr.ru ↗</a></p>
+        <h2>{all.length} названий по официальному перечню</h2>
+        <p>{subjects} судов субъектов, {presences} судебных присутствия, {appeals} апелляционных, {circuits} окружных судов и {specialized} специализированный суд. Это количество записей из справочника, а не подтверждение их текущих контактов.</p>
+        <p><a className="text-link" href="https://arbitr.ru/materials/as" target="_blank" rel="noopener noreferrer">Проверить первоисточник на arbitr.ru ↗</a></p>
       </div>
       <ArbitrationNames items={all.map(x=>({name:x.courtName,kind:x.courtKind}))}/>
     </section>
