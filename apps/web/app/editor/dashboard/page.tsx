@@ -85,6 +85,18 @@ export default async function EditorDashboard(){
     </dl>
    </section>
    <section className="court-section">
+     <span className="eyebrow">Проверки загрузки файлов</span>
+     <h2>Последние прогоны импортёра</h2>
+     {report.intake_recent_runs.length?<div className="editor-queues">
+       {report.intake_recent_runs.map(run=><div key={run.id}>
+         <span>Прогон № {run.id} · {new Date(run.finished_at).toLocaleString('ru-RU',{timeZone:'UTC'})} UTC
+           <small> · Проверено файлов: {run.manifest_count}</small></span>
+         <strong>{run.handled} / {run.failed} ошибок</strong>
+       </div>)}
+     </div>:<div className="empty-state">Зафиксированных запусков файлового импортёра пока нет.</div>}
+     <p className="court-source">Отчёт фиксирует успешный разбор файлов и ошибки. Он не доказывает актуальность официального источника и не подтверждает круглосуточную работу внешнего сервера.</p>
+   </section>
+   <section className="court-section">
     <span className="eyebrow">Покрытие</span><h2>Опубликованные суды по регионам</h2>
     {report.by_region.length?<div className="editor-queues">
       {report.by_region.map(region=><div key={region.code}><span>{region.name}</span><strong>{region.published}</strong></div>)}
