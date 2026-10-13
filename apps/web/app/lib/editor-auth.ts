@@ -1,4 +1,4 @@
-import {createHash,timingSafeEqual} from 'node:crypto';
+import {createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {headers} from 'next/headers';
 
 /** Fail closed: editor dashboard is disabled until strong credentials exist. */
@@ -46,4 +46,20 @@ export async function loadEditorOverview():Promise<EditorOverview>{
  });
  if(!response.ok)throw new Error('PRIVATE_EDITOR_UNAVAILABLE');
  return response.json() as Promise<EditorOverview>;
+}
+
+/** Short-lived signed review intent, bound to one item and configured editor. */
+export function editorReviewToken(itemId:string, now=Math.floor(Date.now()/1000)):string{
+ if(!editorConfigured()||!/^[1-9][0-9]{0,14}$/.test(itemId))throw new Error('EDITOR_NOT_CONFIGURED');
+ const secret=process.env.EDITOR_API_TOKEN!;
+ const mac=createHmac('sha256',secret).update(`${now}:${itemId}:${process.env.EDITOR_USERNAME}`).digest('hex');
+ return `${now}.${mac}`;
+}
+
+export function validEditorReviewToken(itemId:string,token:string,now=Math.floor(Date.now()/1000)):boolean{
+ if(!editorConfigured()||!/^[1-9][0-9]{0,14}$/.test(itemId)||!/^\d{10}\.[a-f0-9]{64}$/.test(token))return false;
+ const stamp=Number(token.slice(0,10));
+ if(!Number.isSafeInteger(stamp)||stamp>now||now-stamp>900)return false;
+ const expected=editorReviewToken(itemId,stamp);
+ return timingSafeEqual(Buffer.from(token,'utf8'),Buffer.from(expected,'utf8'));
 }
