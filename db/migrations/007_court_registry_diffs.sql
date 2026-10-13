@@ -28,3 +28,9 @@ CREATE TABLE IF NOT EXISTS court_registry_diff_items (
 );
 CREATE INDEX IF NOT EXISTS court_registry_diff_items_queue_idx
   ON court_registry_diff_items(review_status,run_id,id);
+
+-- Evidence of the exact offline file used for this batch, not just normalized JSON.
+ALTER TABLE court_import_batches ADD COLUMN IF NOT EXISTS primary_snapshot_sha256 CHAR(64);
+ALTER TABLE court_import_batches ADD COLUMN IF NOT EXISTS snapshot_captured_on DATE;
+ALTER TABLE court_import_batches ADD COLUMN IF NOT EXISTS snapshot_verified_by TEXT;
+ALTER TABLE court_import_batches ADD COLUMN IF NOT EXISTS snapshot_use_attested BOOLEAN NOT NULL DEFAULT false;
