@@ -70,11 +70,14 @@ export default async function EditorDashboard(){
           {safeEvidenceUrl(item.source_url)?<a href={safeEvidenceUrl(item.source_url)!} target="_blank"
             rel="noopener noreferrer">Официальное свидетельство ↗</a>:<span>Источник требует сверки</span>}
         </div>
-        {item.kind==='staff_roster_diffs'?<form className="editor-review-form" method="post" action="/editor/review">
+        {(['staff_roster_diffs','registry_diffs','source_changes'] as string[]).includes(item.kind)?
+        <form className="editor-review-form" method="post" action="/editor/review">
+          <input type="hidden" name="kind" value={item.kind}/>
           <input type="hidden" name="itemId" value={item.item_id}/>
-          <input type="hidden" name="csrf" value={editorReviewToken(item.item_id)}/>
+          <input type="hidden" name="csrf" value={editorReviewToken(item.item_id,item.kind)}/>
           <label><input type="checkbox" name="attest" required/>
-            Я просмотрел официальный источник; это решение касается только сигнала, не назначения судьи
+            Я проверил первоисточник. Рассматривается только обнаруженное расхождение,
+            без утверждения фактов о суде или должности судьи
           </label>
           <div>
             <button name="decision" value="reviewed" type="submit">Сигнал рассмотрен</button>
