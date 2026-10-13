@@ -163,7 +163,10 @@ def approve(args: argparse.Namespace) -> dict:
                     )
                 region_code = candidate.region_code
                 region_name = candidate.region_name
-                region_slug = "region-" + region_code
+                # Match the established public route for Moscow regardless of
+                # whether the evidence came from the Moscow contacts export or
+                # the direct official court page registry.
+                region_slug = "moscow" if (region_code, region_name) == ("77", "Москва") else "region-" + region_code
             region = conn.execute(
                 "SELECT id,name,slug FROM regions WHERE code=%s FOR UPDATE", (region_code,)
             ).fetchone()
