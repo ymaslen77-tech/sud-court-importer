@@ -184,6 +184,15 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_rows;" | grep -Fqx 11
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Stage official-page court pilot without premature publication
+        run: |
+          cp importer/seeds/lefortovsky-official-page-staging-unreviewed.json data/import/lefortovsky-pilot.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py validate /input/lefortovsky-pilot.json --registry mos-gorsud-court > /tmp/lefortovsky-valid.json
+          grep -Fq '"records": 1' /tmp/lefortovsky-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/lefortovsky-pilot.json --registry mos-gorsud-court > /tmp/lefortovsky-staged.json
+          grep -Fq '"published": 0' /tmp/lefortovsky-staged.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_import_rows WHERE external_code='77RS0014' AND review_status='pending';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
