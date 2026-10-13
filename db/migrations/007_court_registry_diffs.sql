@@ -5,6 +5,9 @@ CREATE TABLE IF NOT EXISTS court_registry_diff_runs (
   source_id BIGINT NOT NULL REFERENCES sources(id),
   older_batch_id BIGINT NOT NULL REFERENCES court_import_batches(id),
   newer_batch_id BIGINT NOT NULL REFERENCES court_import_batches(id),
+  include_absences BOOLEAN NOT NULL DEFAULT false,
+  completeness_asserted_by TEXT,
+  CHECK (NOT include_absences OR completeness_asserted_by IS NOT NULL),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   CHECK (older_batch_id<>newer_batch_id),
   UNIQUE(older_batch_id,newer_batch_id)
