@@ -10,8 +10,34 @@ import argparse
 from datetime import datetime, timezone
 import json
 import os
+from urllib.parse import urlsplit
+import ipaddress
 
 from coverage import report
+
+
+
+def valid_production_origin(value:str|None)->bool:
+    if not value or not isinstance(value,str):
+        return False
+    try:
+        parsed=urlsplit(value)
+        host=parsed.hostname
+        if (parsed.scheme!='https' or not host or parsed.username is not None
+            or parsed.password is not None or parsed.port not in (None,443)
+            or parsed.path not in ('','/') or parsed.query or parsed.fragment):
+            return False
+        host=host.lower().rstrip('.')
+        if host=='localhost' or host.endswith('.localhost') or host.endswith('.local'):
+            return False
+        try:
+            ipaddress.ip_address(host)
+            return False
+        except ValueError:
+            pass
+        return '.' in host and all(part and len(part)<=63 for part in host.split('.'))
+    except ValueError:
+        return False
 
 
 def evaluate(stats:dict,public_url:str|None,now:datetime|None=None)->dict:
@@ -37,7 +63,7 @@ def evaluate(stats:dict,public_url:str|None,now:datetime|None=None)->dict:
                 issues.append("Latest source check is stale, future-dated or timezone-naive")
         except ValueError:
             issues.append("Monitoring check time invalid")
-    if not public_url or not public_url.startswith("https://") or "localhost" in public_url.lower():
+    if not valid_production_origin(public_url):
         issues.append("No reviewed HTTPS production public origin")
     queues=stats["review_queues"]
     if queues["registry_differences"]>0 or queues["court_field_proposals"]>0 or queues["watched_page_changes"]>0:
