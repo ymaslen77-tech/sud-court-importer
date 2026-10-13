@@ -65,7 +65,7 @@ class CourtsService {
     );
     if(!courts.length)throw new NotFoundException('COURT_NOT_FOUND');
     const court=courts[0];
-    const [fields,judges,photos,changes,contactSources]=await Promise.all([
+    const [fields,judges,photos,changes,contactSources,caseReferences]=await Promise.all([
       this.query<{field_name:string;value:string;verified_at:Date;source_url:string}>(
         'SELECT f.field_name,f.value,f.verified_at,s.url AS source_url ' +
         'FROM court_profile_fields f JOIN sources s ON s.id=f.source_id ' +
@@ -90,7 +90,11 @@ class CourtsService {
         'SELECT DISTINCT ON(f.field_name) f.field_name,s.url AS source_url,f.retrieved_at ' +
         'FROM court_facts f JOIN sources s ON s.id=f.source_id ' +
         "WHERE f.court_id=$1 AND f.is_approved=true AND f.field_name IN ('name','address','phone','email','official_url') " +
-        'ORDER BY f.field_name,f.retrieved_at DESC,f.id DESC', [court.id])
+        'ORDER BY f.field_name,f.retrieved_at DESC,f.id DESC', [court.id]),
+      this.query<{case_uid:string;case_number:string;page_url:string;verified_at:Date}>(
+        'SELECT case_uid,case_number,page_url,verified_at ' +
+        'FROM court_case_references WHERE court_id=$1 ' +
+        'ORDER BY verified_at DESC,id DESC LIMIT 20',[court.id])
     ]);
     let coords:{latitude:number;longitude:number}|null=null;
     const rawCoordinates=fields.find(field=>field.field_name==='coordinates');
@@ -106,7 +110,7 @@ class CourtsService {
     return {...court,fields:fields.filter(f=>f.field_name!=='coordinates'),
       coordinates:coords,coordinate_source_url:rawCoordinates?.source_url??null,
       coordinate_verified_at:rawCoordinates?.verified_at??null,
-      judges,photo:photos[0]??null,changes,contact_sources:contactSources};
+      judges,photo:photos[0]??null,changes,contact_sources:contactSources,cases:caseReferences};
   }
   async byKind(kind:string, requestedPage:unknown) {
     if(!COURT_KINDS.has(kind))throw new NotFoundException('COURT_CATEGORY_NOT_FOUND');
