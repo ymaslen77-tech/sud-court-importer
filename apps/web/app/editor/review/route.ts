@@ -9,7 +9,17 @@ export async function POST(request:Request){
   return new Response('Not found',{status:404,headers:{'cache-control':'no-store'}});
  }
  const origin=request.headers.get('origin');
- if(!origin||origin!==new URL(request.url).origin){
+ const host=request.headers.get('host');
+ // Next's internal request.url can contain the container hostname/port.
+ // Compare the browser Origin against the actual Host header instead.
+ let sameOrigin=false;
+ try{
+  const parsed=new URL(origin??'');
+  const loopback=parsed.hostname==='localhost'||parsed.hostname==='127.0.0.1'||parsed.hostname==='[::1]';
+  sameOrigin=Boolean(host) && parsed.host===host &&
+   (parsed.protocol==='https:'||(parsed.protocol==='http:'&&loopback));
+ }catch{ /* Missing or malformed origin: deny. */ }
+ if(!sameOrigin){
   return new Response('Invalid request origin',{status:403,headers:{'cache-control':'no-store'}});
  }
  if(!(request.headers.get('content-type')??'').toLowerCase().startsWith('application/x-www-form-urlencoded')){
