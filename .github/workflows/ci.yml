@@ -145,6 +145,7 @@ jobs:
           fi
       - name: Inspect and manually map raw Moscow JSON without source-trust claims
         run: |
+          mkdir -p data/import/normalized
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -162,9 +163,9 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py inspect /input/moscow-raw.json > /tmp/raw-inspect.json
           grep -Fq '"record_count": 1' /tmp/raw-inspect.json
           grep -Fq '"source_rights_verified": false' /tmp/raw-inspect.json
-          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw.json --mapping /input/moscow-raw-map.json --expected-sha256 "$RAW_DIGEST" --attest-schema-reviewed --output /input/moscow-mapped.json > /tmp/raw-mapped-report.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw.json --mapping /input/moscow-raw-map.json --expected-sha256 "$RAW_DIGEST" --attest-schema-reviewed --output /output/moscow-mapped.json > /tmp/raw-mapped-report.json
           grep -Fq '"auto_published": 0' /tmp/raw-mapped-report.json
-          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/moscow-mapped.json > /tmp/raw-mapped-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/normalized/moscow-mapped.json > /tmp/raw-mapped-valid.json
           grep -Fq '"records": 1' /tmp/raw-mapped-valid.json
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | tr -d '\r')" = 0
       - name: Exercise Moscow normalized contact snapshot and retry-safe diff
