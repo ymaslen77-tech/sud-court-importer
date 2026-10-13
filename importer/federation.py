@@ -33,6 +33,12 @@ REGISTRIES = {
         "hosts": ("sudrf.ru",),
         "categories": {"RS", "OS", "KV", "GV", "AJ"},  # Codes evidenced in sudrf Novosibirsk listing
     },
+    "mos-gorsud-court": {
+        "publisher": "Официальный портал судов общей юрисдикции города Москвы",
+        "source_type": "official-moscow-court-page",
+        "hosts": ("mos-gorsud.ru",),
+        "categories": {"RS", "OS"},
+    },
     "sudrf-magistrate": {
         "publisher": "ГАС РФ «Правосудие»",
         "source_type": "official-magistrate-areas",
@@ -60,6 +66,13 @@ def official_url(value: str, registry: str, *, listing: bool) -> bool:
         if parsed.username or parsed.password or parsed.fragment or parsed.port not in (None, 80, 443):
             return False
         host = parsed.hostname.lower()
+        if registry == "mos-gorsud-court":
+            # This is a per-court official page, NOT a guessed bulk feed.
+            segments = parsed.path.strip("/").split("/")
+            valid_path = (len(segments) == 2 and segments[0] == "rs"
+                          and re.fullmatch(r"[a-z0-9-]+", segments[1])) or segments == ["mgs"]
+            return (parsed.scheme == "https" and host in ("mos-gorsud.ru", "www.mos-gorsud.ru")
+                    and bool(valid_path) and not parsed.query and parsed.port in (None,443))
         if listing:
             # HTTPS is required for the primary listing / provenance URL.
             return parsed.scheme == "https" and host_in(host, REGISTRIES[registry]["hosts"])
@@ -102,6 +115,8 @@ def parse_record(raw: object, registry: str) -> FederalCandidate:
         raise ImportValidationError("Invalid region code")
     if region_code != match.group(1):
         raise ImportValidationError("Region code disagrees with court classification code")
+    if registry == "mos-gorsud-court" and (region_code != "77" or region_name != "Москва"):
+        raise ImportValidationError("Moscow direct court page must identify region 77 / Москва")
     name = clean(raw.get("courtName"), "courtName", required=True, limit=250)
     court_type = clean(raw.get("courtType"), "courtType", required=True, limit=100)
     address = clean(raw.get("courtAddress"), "courtAddress", required=True, limit=500)
@@ -111,6 +126,18 @@ def parse_record(raw: object, registry: str) -> FederalCandidate:
         raise ImportValidationError("Court website is not in the official domain allowlist")
     if not source_url or not official_url(source_url, registry, listing=True):
         raise ImportValidationError("Listing URL is not an official HTTPS URL")
+    if registry == "mos-gorsud-court":
+        # A single named official court page must be both the factual
+        # evidence and the court's own official URL.
+        a, b = urlparse(source_url), urlparse(website)
+        if (a.path.rstrip("/"),a.hostname.replace("www.","")) != (
+            b.path.rstrip("/"),b.hostname.replace("www.","")
+        ):
+            raise ImportValidationError("Direct Moscow court record must cite its own official page")
+        if code.startswith("77RS") and not a.path.startswith("/rs/"):
+            raise ImportValidationError("District court source must be the /rs/ official page")
+        if code.startswith("77OS") and a.path.rstrip("/") != "/mgs":
+            raise ImportValidationError("Moscow City Court source must be the /mgs official page")
     phone = clean(raw.get("courtTelephone"), "courtTelephone", limit=500)
     email = clean(raw.get("courtEmail"), "courtEmail", limit=500)
     if email and not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
