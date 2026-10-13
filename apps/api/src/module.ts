@@ -41,7 +41,7 @@ class CourtsService {
     }
   }
   async editorOverview() {
-    const [verified, queues, sources, byRegion] = await Promise.all([
+    const [verified, queues, sources, byRegion, items] = await Promise.all([
       this.query<{published:number;stale:number}>(
         "SELECT count(*)::integer AS published," +
         "count(*) FILTER (WHERE verified_at < now()-interval '180 days')::integer AS stale " +
@@ -64,13 +64,50 @@ class CourtsService {
         SELECT r.code,r.name,count(c.id)::integer AS published
         FROM regions r JOIN courts c ON c.region_id=r.id AND c.status='verified'
         GROUP BY r.code,r.name ORDER BY r.name LIMIT 120
+      `),
+      this.query<{kind:string;item_id:string;court:string;field:string;value:string;source_url:string;observed_at:Date}>(`
+        SELECT * FROM (
+          SELECT 'court_profiles'::text AS kind,p.id::text AS item_id,
+            c.name::text AS court,p.field_name::text AS field,
+            left(p.proposed_value,350)::text AS value,s.url::text AS source_url,
+            p.observed_at FROM court_profile_candidates p
+            JOIN courts c ON c.id=p.court_id JOIN sources s ON s.id=p.source_id
+            WHERE p.status='pending' ORDER BY p.observed_at DESC LIMIT 15
+        ) profile
+        UNION ALL
+        SELECT * FROM (
+          SELECT 'judge_appointments'::text, p.id::text,c.name::text,
+            p.position::text,left(p.full_name,350)::text,s.url::text,p.observed_at
+            FROM judicial_appointment_candidates p
+            JOIN courts c ON c.id=p.court_id JOIN sources s ON s.id=p.source_id
+            WHERE p.status='pending' ORDER BY p.observed_at DESC LIMIT 15
+        ) judge
+        UNION ALL
+        SELECT * FROM (
+          SELECT 'registry_diffs'::text,i.id::text,
+            i.external_code::text,i.field_name::text,
+            left(COALESCE(i.old_value,'')||' → '||COALESCE(i.new_value,''),350)::text,
+            s.url::text,r.created_at
+            FROM court_registry_diff_items i
+            JOIN court_registry_diff_runs r ON r.id=i.run_id JOIN sources s ON s.id=r.source_id
+            WHERE i.review_status='pending' ORDER BY r.created_at DESC LIMIT 15
+        ) diff
+        UNION ALL
+        SELECT * FROM (
+          SELECT 'source_changes'::text,e.id::text,c.name::text,
+            w.scope::text,left(e.new_sha256,64)::text,w.watch_url::text,e.detected_at
+            FROM court_source_watch_events e
+            JOIN court_source_watch w ON w.id=e.watch_id JOIN courts c ON c.id=w.court_id
+            WHERE e.status='pending' ORDER BY e.detected_at DESC LIMIT 15
+        ) source
+        ORDER BY observed_at DESC LIMIT 60
       `)
     ]);
     return {
       generated_at:new Date().toISOString(),
       public_courts:verified[0]??{published:0,stale:0},
       review_queues:queues, source_monitor:sources[0]??{enabled:0,overdue:0,failed:0,last_checked:null},
-      by_region:byRegion,
+      by_region:byRegion, recent_review_items:items,
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
   }
