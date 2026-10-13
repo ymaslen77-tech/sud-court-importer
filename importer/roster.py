@@ -150,6 +150,13 @@ def stage(data:dict,captured_on:date,reviewer:str) -> dict:
                 return {"batch_id":existing[0],"created":False,"rows":len(data["judges"]),
                         "published":0}
             batch_id=inserted[0]
+            prior=conn.execute(
+                """SELECT id FROM court_staff_roster_batches
+                   WHERE source_id=%s AND official_court_url=%s AND id<>%s
+                   AND (captured_on,id)<=(%s,%s)
+                   ORDER BY captured_on DESC,id DESC LIMIT 1""",
+                (source[0],data["courtUrl"],batch_id,captured_on,batch_id)
+            ).fetchone()
             for item in data["judges"]:
                 conn.execute(
                     """INSERT INTO court_staff_roster_rows
@@ -159,7 +166,13 @@ def stage(data:dict,captured_on:date,reviewer:str) -> dict:
                     (batch_id,item["fullName"],item["position"],item.get("decreeNumber"),
                      item.get("decreeDate"),item.get("room"),item.get("telephone"),Jsonb(item))
                 )
-    return {"batch_id":batch_id,"created":True,"rows":len(data["judges"]),"published":0}
+    result={"batch_id":batch_id,"created":True,"rows":len(data["judges"]),"published":0}
+    if prior:
+        # Only stage a review signal; never infer an active appointment.
+        # A previous snapshot must be of the same official source and court.
+        from roster_diff import queue as queue_roster_diff
+        result["diff_run"]=queue_roster_diff(prior[0],batch_id)
+    return result
 
 
 def main():
