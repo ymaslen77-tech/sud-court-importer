@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 from hashlib import sha256
+from datetime import date, timedelta
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -169,14 +170,64 @@ def extract(raw:bytes,region:str,region_name:str,source_url:str):
     return data,results
 
 
+def synchronize(raw,normalized,reviewer,captured_on,rights):
+    """Stage a new snapshot and automatically queue semantic field diffs."""
+    if not rights or not 2<=len(reviewer.strip())<=120:
+        raise ImportValidationError("Named reviewer and source reuse attestation are required")
+    try:
+        captured=date.fromisoformat(captured_on)
+    except (ValueError,TypeError) as exc:
+        raise ImportValidationError("--captured-on must be a real YYYY-MM-DD date") from exc
+    if not timedelta(0)<=date.today()-captured<=timedelta(days=30):
+        raise ImportValidationError("Source capture must be from the last 30 days")
+
+    from cli import database_connect
+    from registry_diff import queue
+    staged=stage_federal(normalized,validate_export(normalized,"sudrf-federal"),"sudrf-federal")
+    batch_id=staged["batch_id"]
+    raw_sha=sha256(raw).hexdigest()
+    with database_connect() as conn:
+        with conn.transaction():
+            entry=conn.execute(
+                """SELECT source_id,primary_snapshot_sha256 FROM court_import_batches
+                   WHERE id=%s FOR UPDATE""",(batch_id,)
+            ).fetchone()
+            assert entry
+            source_id,prior_sha=entry
+            if staged["created"]:
+                conn.execute(
+                    """UPDATE court_import_batches
+                    SET primary_snapshot_sha256=%s,snapshot_captured_on=%s,
+                        snapshot_verified_by=%s,snapshot_use_attested=true
+                    WHERE id=%s""",
+                    (raw_sha,captured,reviewer.strip(),batch_id)
+                )
+            prev=conn.execute(
+                """SELECT id FROM court_import_batches
+                   WHERE source_id=%s AND id<>%s AND staged_at<=(
+                     SELECT staged_at FROM court_import_batches WHERE id=%s
+                   ) ORDER BY staged_at DESC,id DESC LIMIT 1""",
+                (source_id,batch_id,batch_id)
+            ).fetchone()
+    result={**staged,"raw_source_sha256":raw_sha,
+            "source_only_changed":bool(prior_sha and prior_sha!=raw_sha and not staged["created"]),
+            "diff_run":None,"auto_published":0}
+    if staged["created"] and prev:
+        result["diff_run"]=queue(prev[0],batch_id)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description="Read a saved official sudrf page without network access")
-    p.add_argument("command",choices=("extract","validate","stage"))
+    p.add_argument("command",choices=("extract","validate","stage","sync"))
     p.add_argument("file",type=Path)
     p.add_argument("--region",required=True)
     p.add_argument("--region-name",required=True)
     p.add_argument("--source-url",required=True)
     p.add_argument("--out",type=Path)
+    p.add_argument("--captured-on")
+    p.add_argument("--reviewer")
+    p.add_argument("--attest-reuse-rights",action="store_true")
     args=p.parse_args()
     try:
         if not args.file.is_file():
@@ -196,9 +247,12 @@ def main():
         elif args.command=="validate":
             output={"records":len(records),"codes":[r["courtCode"] for r in records[:10]],
                     "published":0,"source_sha256":sha256(raw).hexdigest()}
-        else:
+        elif args.command=="stage":
             output=stage_federal(normalized,validate_export(normalized,"sudrf-federal"),"sudrf-federal")
             output["source_sha256"]=sha256(raw).hexdigest()
+        else:
+            output=synchronize(raw,normalized,args.reviewer or "",args.captured_on,
+                               args.attest_reuse_rights)
     except ImportValidationError as exc:
         p.exit(2,f"Validation error: {exc}\n")
     print(json.dumps(output,ensure_ascii=False,indent=2))
