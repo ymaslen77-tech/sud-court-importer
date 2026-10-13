@@ -72,7 +72,7 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
           docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump > /tmp/dump-manifest.txt
           grep -Fq 'TOC Entries:' /tmp/dump-manifest.txt
-          for f in db/migrations/00{2,3,4,5,6,7}_*.sql; do
+          for f in db/migrations/00{2,3,4,5,6,7,8}_*.sql; do
             test -f "$f"
             docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
           done
