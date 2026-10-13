@@ -34,6 +34,7 @@ export type EditorOverview={
  review_queues:{kind:string;count:number}[];
  source_monitor:{enabled:number;overdue:number;failed:number;last_checked:string|null};
  by_region:{code:string;name:string;published:number}[];
+ recent_review_items:{kind:string;item_id:string;court:string;field:string;value:string;source_url:string;observed_at:string}[];
  warning:string;
 };
 
