@@ -136,10 +136,10 @@ def approve(args: argparse.Namespace) -> dict:
                     raise ImportValidationError("Moscow verification URL must be official HTTPS")
                 region_code, region_name, region_slug = "77", "Москва", "moscow"
             else:
-                from federation import REGISTRIES, official_url, parse_record
+                from federation import REGISTRIES, official_url as is_registry_official_url, parse_record
                 if registry not in REGISTRIES or source_type != REGISTRIES[registry]["source_type"]:
                     raise ImportValidationError("Registry does not match its official source")
-                if not official_url(args.verification_url, registry, listing=False):
+                if not is_registry_official_url(args.verification_url, registry, listing=False):
                     raise ImportValidationError("Verification URL must match this official court registry")
                 candidate = parse_record(raw_record, registry)
                 compared = {
