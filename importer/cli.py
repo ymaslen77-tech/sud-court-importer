@@ -142,13 +142,25 @@ def approve(args: argparse.Namespace) -> dict:
                 if not official_url(args.verification_url, registry, listing=False):
                     raise ImportValidationError("Verification URL must match this official court registry")
                 candidate = parse_record(raw_record, registry)
-                if (candidate.record.external_code != code or candidate.record.slug != slug
-                    or candidate.record.name != name or candidate.record.address != address
-                    or candidate.record.official_url != official_url
-                    or candidate.record.court_type != court_type or candidate.record.phone != phone
-                    or candidate.record.email != email
-                    or candidate.source_record_url != source_listing_url):
-                    raise ImportValidationError("Staged record fields diverge from source evidence")
+                compared = {
+                    "code": (candidate.record.external_code, code),
+                    "slug": (candidate.record.slug, slug),
+                    "name": (candidate.record.name, name),
+                    "address": (candidate.record.address, address),
+                    "official_url": (candidate.record.official_url, official_url),
+                    "court_type": (candidate.record.court_type, court_type),
+                    "phone": (candidate.record.phone, phone),
+                    "email": (candidate.record.email, email),
+                    "source_record_url": (candidate.source_record_url, source_listing_url)
+                }
+                mismatched_fields = [key for key,(expected,staged) in compared.items()
+                                     if expected != staged]
+                if mismatched_fields:
+                    # Report field keys only; never dump a phone/email into CI logs.
+                    raise ImportValidationError(
+                        "Staged record fields diverge from source evidence: " +
+                        ", ".join(mismatched_fields)
+                    )
                 region_code = candidate.region_code
                 region_name = candidate.region_name
                 region_slug = "region-" + region_code
