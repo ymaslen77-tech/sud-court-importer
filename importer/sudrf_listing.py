@@ -212,7 +212,9 @@ def synchronize(raw,normalized,reviewer,captured_on,rights):
     result={**staged,"raw_source_sha256":raw_sha,
             "source_only_changed":bool(prior_sha and prior_sha!=raw_sha and not staged["created"]),
             "diff_run":None,"auto_published":0}
-    if staged["created"] and prev:
+    # Replay-safe: if a prior run crashed after staging but before queuing,
+    # the next sync must still produce the missing diff review run.
+    if prev:
         result["diff_run"]=queue(prev[0],batch_id)
     return result
 
