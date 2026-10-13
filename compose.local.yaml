@@ -85,5 +85,23 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+
+  court-intake:
+    profiles: ["intake"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "while true; do python /work/importer/inbox.py stage || true; sleep 21600; done"
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+    volumes:
+      - ./data/import:/input:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   postgres_data:
