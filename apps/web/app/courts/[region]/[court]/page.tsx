@@ -155,6 +155,28 @@ export default async function CourtPage({params}:Props){
   </section>
 
   <section className="court-section">
+    <span className="eyebrow">Проверенные официальные публикации</span>
+    <h2>Судебные дела</h2>
+    {court.cases?.length?<ol className="court-changes">
+      {court.cases.map(caseRef=>{
+        let officialCaseUrl:string|null=null;
+        try{
+          const url=new URL(caseRef.page_url);
+          if(url.protocol==='https:'&&['mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'].includes(url.hostname)){
+            officialCaseUrl=url.toString();
+          }
+        }catch{}
+        return officialCaseUrl?<li key={caseRef.case_uid}>
+          <strong>Дело № {caseRef.case_number}</strong>
+          <p>УИД: {caseRef.case_uid}</p>
+          <p><a href={officialCaseUrl} target="_blank" rel="noopener noreferrer">Открыть дело на официальном сайте ↗</a></p>
+          <small>Ссылка проверена: {formatted(caseRef.verified_at)}</small>
+        </li>:null;
+      })}
+    </ol>:<div className="empty-state">Проверенные ссылки на дела пока не добавлены. Сведения об участниках процесса и полномочиях судей по одной лишь карточке дела не выводятся.</div>}
+  </section>
+
+  <section className="court-section">
     <span className="eyebrow">История и достоверность</span><h2>Что изменилось в сведениях о суде</h2>
     {court.changes.length?<ol className="court-changes">{court.changes.map((change,i)=><li key={change.occurred_at+'-'+i}>
       <strong>{changes[change.changed_field]??change.changed_field}</strong>
