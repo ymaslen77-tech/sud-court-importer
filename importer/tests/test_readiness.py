@@ -38,6 +38,22 @@ class ReadinessTests(unittest.TestCase):
         result=evaluate(basic(self.now),"http://localhost:4173",self.now)
         self.assertFalse(result["pilot_technical_ready"])
 
+    def test_untrusted_production_origins_rejected(self):
+        for origin in (
+            "https://localhost:4173",
+            "https://127.0.0.1",
+            "https://192.168.1.1",
+            "https://[::1]",
+            "https://example.local",
+            "https://example.com.evil@localhost/",
+            "https://example.com:8443",
+            "https://example.com/path",
+            "https://example.com?token=secret",
+            "http://example.com",
+        ):
+            with self.subTest(origin=origin):
+                self.assertFalse(evaluate(basic(self.now),origin,self.now)["pilot_technical_ready"])
+
     def test_unreviewed_judges_block_release(self):
         data=basic(self.now)
         data["review_queues"]["staff_roster_observations_pending"]=11
