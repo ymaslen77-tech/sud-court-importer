@@ -63,6 +63,38 @@ class InboxTests(unittest.TestCase):
                     with self.assertRaises(ImportValidationError):
                         manifests(folder, root)
 
+    def test_official_regional_sudrf_snapshot(self):
+        fixture = Path(__file__).parent / "fixtures" / "official_sudrf_novosibirsk_excerpt.txt"
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            folder = root / "inbox"
+            folder.mkdir()
+            (folder / "federal.txt").write_bytes(fixture.read_bytes())
+            manifest_data = {
+                "format": "sudrf-federal-list-v1",
+                "file": "inbox/federal.txt",
+                "source_url": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
+                "region": "54",
+                "region_name": "Новосибирская область",
+                "captured_on": str(date.today()),
+                "reviewer": "CI Test Operator",
+                "reuse_rights_confirmed": True,
+            }
+            (folder / "federal.manifest.json").write_text(
+                json.dumps(manifest_data, ensure_ascii=False), encoding="utf-8"
+            )
+            result = execute(folder, apply=False, root=root)
+            self.assertEqual(result["handled"], 1)
+            self.assertEqual(result["failed"], 0)
+            self.assertEqual(result["entries"][0]["format"], "sudrf-federal-list-v1")
+            self.assertEqual(result["entries"][0]["records"], 4)
+            manifest_data["region"] = "77"
+            (folder / "federal.manifest.json").write_text(
+                json.dumps(manifest_data, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaises(ImportValidationError):
+                manifests(folder, root)
+
     def test_wrong_directory_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
