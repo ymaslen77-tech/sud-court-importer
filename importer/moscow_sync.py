@@ -22,6 +22,7 @@ from urllib.parse import urlsplit
 from contacts import ImportValidationError, MAX_BYTES, parse_export
 from cli import database_connect, stage as stage_contacts
 from registry_diff import queue
+from moscow_details import extract as detail_fields
 
 
 def dataset_url(url: str) -> str:
@@ -63,6 +64,10 @@ def read_file(path: Path) -> tuple[bytes, list]:
         raise ImportValidationError("Snapshot missing or larger than 5 MB")
     raw = path.read_bytes()
     records = parse_export(raw)
+    # Validate optional work-hours/office detail fields before any database writes.
+    # An unfamiliar or oversized nested field must not silently enter staging.
+    for item in records:
+        detail_fields(item.raw_record)
     return raw, records
 
 
