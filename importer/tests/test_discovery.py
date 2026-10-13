@@ -11,6 +11,7 @@ from discovery import parse_snapshot, parse_record, capture_date, validate_url
 SEED = Path(__file__).resolve().parents[1] / "seeds" / "arbitration-subjects-official-list-unreviewed.json"
 SOURCE = "https://arbitr.ru/?id_doc=20563&id_sec=353"
 MAGISTRATE_SEED = Path(__file__).resolve().parents[1] / "seeds" / "khabarovsk-magistrates-official-unreviewed.json"
+ARBITR_ALL_LEVELS = Path(__file__).resolve().parents[1] / "seeds" / "arbitration-appellate-district-ip-official-unreviewed.json"
 
 
 def candidate(**changes):
@@ -36,6 +37,16 @@ class DiscoveryTests(unittest.TestCase):
         self.assertTrue(all(r.external_code is None and r.address is None for r in rows))
         self.assertTrue(all(r.region_code is None for r in rows))
         self.assertEqual(len({r.row_key for r in rows}),89)
+
+    def test_official_appeal_circuit_and_ip_names(self):
+        rows = parse_snapshot(ARBITR_ALL_LEVELS.read_bytes())
+        self.assertEqual(len(rows), 32)
+        self.assertEqual(len([x for x in rows if x.court_kind=="arbitration-appeal"]), 21)
+        self.assertEqual(len([x for x in rows if x.court_kind=="arbitration-district"]), 10)
+        self.assertEqual(len([x for x in rows if x.court_kind=="arbitration-ip"]), 1)
+        self.assertEqual(len({x.court_name for x in rows}), 32)
+        self.assertTrue(all(x.external_code is None and x.address is None for x in rows))
+        self.assertTrue(all(x.source_record_url=="https://arbitr.ru/materials/as" for x in rows))
 
     def test_source_backed_magistrate_area_codes(self):
         records=parse_snapshot(MAGISTRATE_SEED.read_bytes())
