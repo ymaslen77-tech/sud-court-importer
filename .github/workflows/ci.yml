@@ -18,6 +18,26 @@ jobs:
       - run: pnpm check
       - run: pnpm build
 
+  windows-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Windows PowerShell update scripts
+        shell: pwsh
+        run: |
+          foreach ($file in @('scripts/safe-update-local.ps1','scripts/apply-import-migration.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Join-Path $PWD $file), [ref]$tokens, [ref]$errors
+            )
+            if ($errors.Count -ne 0) {
+              $errors | ForEach-Object { Write-Error $_.ToString() }
+              throw "PowerShell parse errors in $file"
+            }
+          }
+          Write-Host 'PowerShell source parsed successfully'
+
   importer-tests:
     runs-on: ubuntu-latest
     steps:
