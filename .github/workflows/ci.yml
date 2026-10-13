@@ -126,6 +126,13 @@ jobs:
           grep -Fq '"public_courts_verified": 0' /tmp/coverage-report.json
           grep -Fq '"registry_differences": 4' /tmp/coverage-report.json
           grep -Fq '"registered_enabled": 0' /tmp/coverage-report.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/readiness.py --public-url https://courts.example > /tmp/court-readiness.json
+          grep -Fq '"pilot_technical_ready": false' /tmp/court-readiness.json
+          grep -Fq '"nationwide_complete": "NOT_ASSESSED"' /tmp/court-readiness.json
+          if docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/readiness.py --public-url https://courts.example --fail-if-not-ready; then
+            echo "Unexpected green production gate against empty synthetic CI database" >&2
+            exit 1
+          fi
       - name: Exercise Moscow normalized contact snapshot and retry-safe diff
         run: |
           cp importer/tests/fixtures/synthetic_contacts.json data/import/moscow-old.json
