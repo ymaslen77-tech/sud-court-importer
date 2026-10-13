@@ -15,7 +15,7 @@ KNOWN = frozenset({
 
 
 def infer_verified_kind(registry: str, code: str, name: str) -> str:
-    if registry == "mos-gorsud-courts":
+    if registry in ("mos-gorsud-courts","mos-gorsud-court"):
         # Exact code is a valid discriminator of the named Moscow City Court;
         # do NOT treat every court with "городской" in its name as a regional court.
         if code == "77OS0000" and name == "Московский городской суд":
