@@ -73,9 +73,31 @@ def synchronize(raw: bytes, records: list, source: str, captured: date,
     if not rights_attested or not 2 <= len(reviewer.strip()) <= 120:
         raise ImportValidationError("Named editorial reviewer and source reuse attestation are required")
 
-    staged = stage_contacts(raw, records, source)
-    batch_id = staged["batch_id"]
+    # Normalize ordering and JSON whitespace: harmless re-exports should not
+    # create historical batches or new editorial diffs.
+    ordered = sorted(records, key=lambda item: item.external_code)
+    canonical = json.dumps(
+        [item.raw_record for item in ordered],
+        ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    canonical_digest = sha256(canonical).hexdigest()
     original_sha = sha256(raw).hexdigest()
+
+    # Prevent a newly arriving stale snapshot from being compared as though
+    # it followed a newer one. Exact replays remain allowed.
+    with database_connect() as conn:
+        prior = conn.execute(
+            """SELECT b.content_sha256,b.snapshot_captured_on FROM court_import_batches b
+               JOIN sources s ON s.id=b.source_id
+               WHERE s.url=%s
+               ORDER BY b.id DESC LIMIT 1""",
+            (source,)
+        ).fetchone()
+        if prior and prior[0] != canonical_digest and prior[1] and captured < prior[1]:
+            raise ImportValidationError("This snapshot predates the latest staged capture")
+
+    staged = stage_contacts(canonical, ordered, source)
+    batch_id = staged["batch_id"]
     with database_connect() as conn:
         with conn.transaction():
             batch = conn.execute(
