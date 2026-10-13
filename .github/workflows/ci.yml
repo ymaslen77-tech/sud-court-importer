@@ -196,6 +196,30 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/inbox-stage.json
           grep -Fq '"created": false' /tmp/inbox-stage.json
           grep -Fq '"auto_published": 0' /tmp/inbox-stage.json
+          cp importer/tests/fixtures/official_sudrf_novosibirsk_excerpt.txt data/import/inbox/federal.txt
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          manifest={
+            "format":"sudrf-federal-list-v1",
+            "file":"inbox/federal.txt",
+            "source_url":"https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
+            "region":"54","region_name":"Новосибирская область",
+            "captured_on":str(date.today()),
+            "reviewer":"CI Test Operator","reuse_rights_confirmed":True
+          }
+          Path("data/import/inbox/federal.manifest.json").write_text(
+            json.dumps(manifest,ensure_ascii=False),encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py check > /tmp/full-inbox-check.json
+          grep -Fq '"handled": 2' /tmp/full-inbox-check.json
+          grep -Fq '"format": "sudrf-federal-list-v1"' /tmp/full-inbox-check.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/full-inbox-stage.json
+          grep -Fq '"handled": 2' /tmp/full-inbox-stage.json
+          grep -Fq '"auto_published": 0' /tmp/full-inbox-stage.json
+
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Stage 11 official roster references without verifying appointments
