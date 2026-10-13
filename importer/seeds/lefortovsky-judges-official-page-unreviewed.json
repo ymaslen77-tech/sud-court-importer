@@ -1,0 +1,74 @@
+{
+  "courtName": "Лефортовский районный суд",
+  "courtUrl": "https://mos-gorsud.ru/rs/lefortovskij",
+  "sourceUrl": "https://www.mos-gorsud.ru/rs/lefortovskij/structure/judges",
+  "pageLastUpdated": "2026-04-22",
+  "judges": [
+    {
+      "fullName": "Антипова Анна Вячеславовна",
+      "position": "судья",
+      "decreeNumber": "111",
+      "decreeDate": "2016-03-11"
+    },
+    {
+      "fullName": "Краснова Екатерина Федоровна",
+      "position": "судья",
+      "decreeNumber": "827",
+      "decreeDate": "2024-09-30"
+    },
+    {
+      "fullName": "Рябцев Сергей Алексеевич",
+      "position": "судья",
+      "decreeNumber": "408",
+      "decreeDate": "2018-07-07"
+    },
+    {
+      "fullName": "Боронина Евгения Вячеславовна",
+      "position": "судья",
+      "decreeNumber": "208",
+      "decreeDate": "2015-04-23"
+    },
+    {
+      "fullName": "Дмитриева Татьяна Владимировна",
+      "position": "судья",
+      "decreeNumber": "237",
+      "decreeDate": "2026-04-09"
+    },
+    {
+      "fullName": "Алтынникова Лиля Игоревна",
+      "position": "судья",
+      "decreeNumber": "1",
+      "decreeDate": "2023-01-04"
+    },
+    {
+      "fullName": "Игонина Ольга Леонидовна",
+      "position": "судья",
+      "decreeNumber": "514",
+      "decreeDate": "2013-05-23"
+    },
+    {
+      "fullName": "Каргальцев Антон Игоревич",
+      "position": "судья",
+      "decreeNumber": "246",
+      "decreeDate": "2017-05-31"
+    },
+    {
+      "fullName": "Федюнина Светлана Васильевна",
+      "position": "судья",
+      "decreeNumber": "1482",
+      "decreeDate": "2010-11-27"
+    },
+    {
+      "fullName": "Шидлов Николай Николаевич",
+      "position": "судья",
+      "decreeNumber": "211",
+      "decreeDate": "2021-04-12"
+    },
+    {
+      "fullName": "Щукина Ирина Александровна",
+      "position": "судья",
+      "decreeNumber": "274",
+      "decreeDate": "2024-04-19"
+    }
+  ]
+}
