@@ -50,6 +50,7 @@ class CourtsService {
         SELECT 'court_profiles' AS kind,count(*)::integer AS count FROM court_profile_candidates WHERE status='pending'
         UNION ALL SELECT 'judge_appointments',count(*)::integer FROM judicial_appointment_candidates WHERE status='pending'
         UNION ALL SELECT 'staff_rosters',count(*)::integer FROM court_staff_roster_rows WHERE review_status='pending'
+        UNION ALL SELECT 'staff_roster_diffs',count(*)::integer FROM court_staff_roster_diff_items WHERE review_status='pending'
         UNION ALL SELECT 'registry_diffs',count(*)::integer FROM court_registry_diff_items WHERE review_status='pending'
         UNION ALL SELECT 'source_changes',count(*)::integer FROM court_source_watch_events WHERE status='pending'
         UNION ALL SELECT 'case_references',count(*)::integer FROM court_case_candidates WHERE status='pending'
