@@ -99,11 +99,15 @@ def queue(older_id,newer_id,attest_complete=False,reviewer=None):
                     )
             else:
                 prev=conn.execute(
-                    """SELECT id FROM court_registry_diff_runs
+                    """SELECT id,include_absences FROM court_registry_diff_runs
                        WHERE older_batch_id=%s AND newer_batch_id=%s""",
                     (older_id,newer_id)
                 ).fetchone()
                 assert prev
+                if prev[1] != attest_complete:
+                    raise ImportValidationError(
+                        "Existing diff run has a different completeness attestation"
+                    )
                 run_id=prev[0]
     return {"run_id":run_id,"created":bool(newrun),"differences":len(changes),
         "new":sum(d.kind=="new" for d in changes),
