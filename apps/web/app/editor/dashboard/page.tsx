@@ -9,7 +9,7 @@ export const metadata:Metadata={
 };
 const labels:Record<string,string>={
  court_profiles:'Изменения карточек',judge_appointments:'Назначения судей',
- staff_rosters:'Наблюдения о составе судов',registry_diffs:'Сравнение реестров',
+ staff_rosters:'Наблюдения о составе судов',staff_roster_diffs:'Изменения списков судей (требуют проверки)',registry_diffs:'Сравнение реестров',
  source_changes:'Изменения страниц источников',case_references:'Ссылки на дела'
 };
 
