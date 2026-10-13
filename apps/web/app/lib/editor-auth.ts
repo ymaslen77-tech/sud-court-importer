@@ -35,6 +35,7 @@ export type EditorOverview={
  source_monitor:{enabled:number;overdue:number;failed:number;last_checked:string|null};
  by_region:{code:string;name:string;published:number}[];
  recent_review_items:{kind:string;item_id:string;court:string;field:string;value:string;source_url:string;observed_at:string}[];
+ intake_recent_runs:{id:string;finished_at:string;handled:number;failed:number;manifest_count:number}[];
  warning:string;
 };
 
