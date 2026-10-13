@@ -8,7 +8,8 @@ $files = @(
   '.\db\migrations\005_court_profiles_monitoring.sql',
   '.\db\migrations\006_judge_appointment_review.sql',
   '.\db\migrations\007_court_registry_diffs.sql',
-  '.\db\migrations\008_court_staff_rosters.sql'
+  '.\db\migrations\008_court_staff_rosters.sql',
+  '.\db\migrations\008_official_case_references.sql'
 )
 foreach ($file in $files) {
   if (-not (Test-Path $file)) { throw "Missing migration file: $file" }
