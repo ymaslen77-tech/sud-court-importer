@@ -30,9 +30,12 @@ def compare(old:dict,new:dict,include_missing=False):
         if before is None:
             changes.append(Difference(code,"__record__","new",None,
                 json.dumps(after,ensure_ascii=False,sort_keys=True)))
-        elif after is None and include_missing:
-            changes.append(Difference(code,"__record__","missing",
-                json.dumps(before,ensure_ascii=False,sort_keys=True),None))
+        elif after is None:
+            if include_missing:
+                changes.append(Difference(code,"__record__","missing",
+                    json.dumps(before,ensure_ascii=False,sort_keys=True),None))
+            # Do not infer court retirement from an incomplete later snapshot.
+            continue
         else:
             for field in FIELDS:
                 a,b=before.get(field),after.get(field)
