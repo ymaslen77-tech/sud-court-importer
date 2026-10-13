@@ -1,5 +1,5 @@
 import {NextResponse} from 'next/server';
-import {editorConfigured,hasEditorCredentials,validEditorReviewToken} from '../../lib/editor-auth';
+import {editorConfigured,hasEditorCredentials,validEditorReviewToken,validReviewKind} from '../../lib/editor-auth';
 
 export const dynamic='force-dynamic';
 
@@ -28,15 +28,16 @@ export async function POST(request:Request){
  const raw=await request.text();
  if(raw.length>2048)return new Response('Form too large',{status:413});
  const form=new URLSearchParams(raw);
- const validKeys=['itemId','csrf','decision','attest'];
+ const validKeys=['kind','itemId','csrf','decision','attest'];
  if([...form.keys()].some(k=>!validKeys.includes(k))||validKeys.some(k=>form.getAll(k).length!==1)){
   return new Response('Invalid review fields',{status:400});
  }
+ const kind=form.get('kind')??'';
  const itemId=form.get('itemId')??'';
  const csrf=form.get('csrf')??'';
  const decision=form.get('decision');
- if(!['reviewed','ignored'].includes(decision??'')||form.get('attest')!=='on'||
-    !validEditorReviewToken(itemId,csrf)){
+ if(!validReviewKind(kind)||!['reviewed','ignored'].includes(decision??'')||form.get('attest')!=='on'||
+    !validEditorReviewToken(itemId,csrf,kind)){
   return new Response('Review attestation or request token invalid',{status:403,
    headers:{'cache-control':'no-store'}});
  }
@@ -44,7 +45,7 @@ export async function POST(request:Request){
  const api=process.env.API_URL??'http://localhost:4000';
  let response:Response;
  try{
-  response=await fetch(api+'/api/v1/internal/editor/roster-diffs/'+itemId+'/review',{
+  response=await fetch(api+'/api/v1/internal/editor/signals/'+kind+'/'+itemId+'/review',{
    method:'POST',cache:'no-store',headers:{
     authorization:'Bearer '+process.env.EDITOR_API_TOKEN,
     'content-type':'application/json',
