@@ -8,6 +8,7 @@ from pathlib import Path
 from contacts import ImportValidationError, MAX_BYTES
 from cli import database_connect
 from federation import parse_export
+from moscow_details import extract as detail_fields, REVIEW_FIELDS
 
 FIELDS=("court_name","court_type","address","phone","email","official_url")
 
@@ -37,7 +38,7 @@ def compare(old:dict,new:dict,include_missing=False):
             # Do not infer court retirement from an incomplete later snapshot.
             continue
         else:
-            for field in FIELDS:
+            for field in FIELDS + REVIEW_FIELDS:
                 a,b=before.get(field),after.get(field)
                 if a!=b:changes.append(Difference(code,field,"changed",a,b))
     return changes
@@ -53,7 +54,8 @@ def listing_file(path,registry):
         r.record.external_code:{
             "court_name":r.record.name,"court_type":r.record.court_type,
             "address":r.record.address,"phone":r.record.phone,
-            "email":r.record.email,"official_url":r.record.official_url
+            "email":r.record.email,"official_url":r.record.official_url,
+            **detail_fields(r.record.raw_record)
         } for r in rows
     }
 
@@ -64,11 +66,13 @@ def from_database(conn,batch):
     ).fetchone()
     if not info:raise ImportValidationError("Court import batch not found")
     rows=conn.execute(
-        """SELECT external_code,court_name,court_type,address,phone,email,official_url
+        """SELECT external_code,court_name,court_type,address,phone,email,official_url,raw_record
            FROM court_import_rows WHERE batch_id=%s""",(batch,)
     ).fetchall()
     if not rows:raise ImportValidationError("Cannot compare empty batch")
-    return info,{r[0]:dict(zip(FIELDS,r[1:])) for r in rows}
+    return info,{
+        r[0]:{**dict(zip(FIELDS,r[1:7])),**detail_fields(r[7])} for r in rows
+    }
 
 
 def queue(older_id,newer_id,attest_complete=False,reviewer=None):
