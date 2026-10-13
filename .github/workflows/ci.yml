@@ -80,12 +80,18 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-discoveries.json --captured-on "$(date -u +%F)" > /tmp/discovery-repeated.json
           grep -Fq '"created": false' /tmp/discovery-repeated.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 89
+          cp importer/seeds/arbitration-appellate-district-ip-official-unreviewed.json data/import/arbitration-all-levels.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/arbitration-all-levels.json > /tmp/arbitration-all-levels-valid.json
+          grep -Fq '"records": 32' /tmp/arbitration-all-levels-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-all-levels.json --captured-on "$(date -u +%F)" > /tmp/arbitration-all-levels-stage.json
+          grep -Fq '"published": 0' /tmp/arbitration-all-levels-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 121
           cp importer/seeds/khabarovsk-magistrates-official-unreviewed.json data/import/magistrates.json
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/magistrates.json > /tmp/magistrates-valid.json
           grep -Fq '"records": 75' /tmp/magistrates-valid.json
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/magistrates.json --captured-on "$(date -u +%F)" > /tmp/magistrates-stage.json
           grep -Fq '"published": 0' /tmp/magistrates-stage.json
-          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 164
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 196
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/coverage.py > /tmp/coverage-report.json
           grep -Fq '"public_courts_verified": 0' /tmp/coverage-report.json
