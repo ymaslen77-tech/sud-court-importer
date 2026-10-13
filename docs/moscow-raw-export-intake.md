@@ -62,19 +62,22 @@ export URL и схема полного актуального JSON **пока �
    названий/случайных чисел: отклонить файл и выполнить отдельную
    доказательную сверку с другим официальным реестром.
 
-5. Проверить контрольную сумму оригинала и явно подтвердить ручное
+5. Создать каталог выходных файлов `data/import/normalized` (в PowerShell:
+   `New-Item -ItemType Directory -Force data/import/normalized`).
+   Исходный `/input` монтируется read-only, отдельно `/output` — writable.
+   Проверить контрольную сумму оригинала и явно подтвердить ручное
    сопоставление схемы; создать новый нормализованный файл:
 
    ```powershell
    # Сначала возьмите raw_sha256 из результата inspect
-   docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw-YYYY-MM-DD.json --mapping /input/moscow-map.json --expected-sha256 ACTUAL_64_HEX_SHA256 --attest-schema-reviewed --output /input/moscow-normalized-YYYY-MM-DD.json
+   docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw-YYYY-MM-DD.json --mapping /input/moscow-map.json --expected-sha256 ACTUAL_64_HEX_SHA256 --attest-schema-reviewed --output /output/moscow-normalized-YYYY-MM-DD.json
    ```
 
    Нормализатор проверяет JSON, коды судов, уникальность записей,
    допустимость официальных URL и вложенных дополнительных полей.
    Отчёт **не утверждает** юридическую актуальность или права
    повторного использования. Выходной файл не перезаписывается.
-6. Отдельно выполнить `moscow_sync.py validate`, затем проверить каждую
+6. Отдельно выполнить `moscow_sync.py validate /input/normalized/moscow-normalized-YYYY-MM-DD.json`, затем проверить каждую
    запись по официальной веб-странице и правила использования источника.
    Только после этого формировать inbox manifest с действительным
    `dataset_url`, фактической датой `captured_on` и честной
