@@ -13,6 +13,15 @@ const labels:Record<string,string>={
  source_changes:'Изменения страниц источников',case_references:'Ссылки на дела'
 };
 
+
+function safeEvidenceUrl(value:string):string|null{
+ try{
+  const u=new URL(value);
+  const host=u.hostname.toLowerCase();
+  const permitted=['sudrf.ru','msudrf.ru','mos-gorsud.ru','arbitr.ru','pravo.gov.ru'];
+  return u.protocol==='https:' && permitted.some(h=>host===h||host.endsWith('.'+h))?u.toString():null;
+ }catch{return null;}
+}
 export default async function EditorDashboard(){
  if(!editorConfigured()||!await hasEditorCredentials())notFound();
  let report:Awaited<ReturnType<typeof loadEditorOverview>>|null=null;
@@ -46,6 +55,24 @@ export default async function EditorDashboard(){
      <span>{labels[item.kind]??item.kind}</span><strong>{item.count}</strong>
     </div>)}</div>
     <p className="court-source">Числа показывают ожидающие рассмотрения записи. Они не доказывают фактическое изменение сведений в конкретном суде.</p>
+   </section>
+   <section className="court-section">
+    <span className="eyebrow">Разбор фактических изменений</span>
+    <h2>Последние записи в очереди</h2>
+    {report.recent_review_items.length?<div className="editor-review-list">
+      {report.recent_review_items.map(item=><article key={item.kind+':'+item.item_id}>
+        <div className="editor-review-title"><strong>{labels[item.kind]??item.kind}</strong>
+          <span>№ {item.item_id}</span></div>
+        <h3>{item.court}</h3>
+        <p><b>{item.field}</b>: {item.value}</p>
+        <div className="editor-review-source">
+          <span>Обнаружено: {new Date(item.observed_at).toLocaleString('ru-RU',{timeZone:'UTC'})} UTC</span>
+          {safeEvidenceUrl(item.source_url)?<a href={safeEvidenceUrl(item.source_url)!} target="_blank"
+            rel="noopener noreferrer">Официальное свидетельство ↗</a>:<span>Источник требует сверки</span>}
+        </div>
+      </article>)}
+    </div>:<div className="empty-state">В этих очередях пока нет неподтверждённых изменений.</div>}
+    <p className="court-source">Просмотр записи или открытие источника не меняет её статус. Для подтверждения используйте отдельный механизм редакционной проверки.</p>
    </section>
    <section className="court-section">
     <span className="eyebrow">Источники</span><h2>Работа фонового мониторинга</h2>
