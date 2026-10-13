@@ -113,6 +113,31 @@ jobs:
           grep -Fq '"created": false' /tmp/moscow-repeat.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='phone';" | grep -Fqx 1
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Verify approved offline inbox scan and idempotent sync
+        run: |
+          mkdir -p data/import/inbox
+          cp data/import/moscow-new.json data/import/inbox/contacts.json
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          manifest={
+            "format":"moscow-contacts-v1",
+            "file":"inbox/contacts.json",
+            "dataset_url":"https://data.mos-gorsud.ru/opendata/TEST-ONLY-DATASET-00001",
+            "captured_on":str(date.today()),
+            "reviewer":"CI Test Operator",
+            "reuse_rights_confirmed":True
+          }
+          Path("data/import/inbox/contacts.manifest.json").write_text(json.dumps(manifest),encoding="utf-8")
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py check > /tmp/inbox-check.json
+          grep -Fq '"handled": 1' /tmp/inbox-check.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/inbox-stage.json
+          grep -Fq '"created": false' /tmp/inbox-stage.json
+          grep -Fq '"auto_published": 0' /tmp/inbox-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
