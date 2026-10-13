@@ -52,6 +52,11 @@ def report():
             """SELECT count(*)::integer FROM judicial_appointment_candidates
                WHERE status='pending'"""
         ).fetchone()
+        staff=conn.execute(
+            """SELECT count(*)::integer,
+                      count(*) FILTER(WHERE review_status='pending')::integer
+               FROM court_staff_roster_rows"""
+        ).fetchone()
         last=conn.execute(
             "SELECT max(checked_at) FROM court_source_watch WHERE last_error IS NULL"
         ).fetchone()
@@ -73,7 +78,9 @@ def report():
             "watched_page_changes":watcher[0],
             "court_field_proposals":profile[0],
             "judge_appointment_proposals":judges[0],
+            "staff_roster_observations_pending":staff[1],
         },
+        "staff_roster_observation_rows_including_history":staff[0],
         "monitor":{
             "registered_enabled":monitor[0],
             "due_or_overdue":monitor[1],
