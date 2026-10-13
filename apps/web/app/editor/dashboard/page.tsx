@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {editorConfigured,hasEditorCredentials,loadEditorOverview} from '../../lib/editor-auth';
+import {editorConfigured,hasEditorCredentials,loadEditorOverview,editorReviewToken} from '../../lib/editor-auth';
 
 export const dynamic='force-dynamic';
 export const metadata:Metadata={
@@ -70,6 +70,17 @@ export default async function EditorDashboard(){
           {safeEvidenceUrl(item.source_url)?<a href={safeEvidenceUrl(item.source_url)!} target="_blank"
             rel="noopener noreferrer">Официальное свидетельство ↗</a>:<span>Источник требует сверки</span>}
         </div>
+        {item.kind==='staff_roster_diffs'?<form className="editor-review-form" method="post" action="/editor/review">
+          <input type="hidden" name="itemId" value={item.item_id}/>
+          <input type="hidden" name="csrf" value={editorReviewToken(item.item_id)}/>
+          <label><input type="checkbox" name="attest" required/>
+            Я просмотрел официальный источник; это решение касается только сигнала, не назначения судьи
+          </label>
+          <div>
+            <button name="decision" value="reviewed" type="submit">Сигнал рассмотрен</button>
+            <button name="decision" value="ignored" type="submit">Игнорировать сигнал</button>
+          </div>
+        </form>:null}
       </article>)}
     </div>:<div className="empty-state">В этих очередях пока нет неподтверждённых изменений.</div>}
     <p className="court-source">Просмотр записи или открытие источника не меняет её статус. Для подтверждения используйте отдельный механизм редакционной проверки.</p>
