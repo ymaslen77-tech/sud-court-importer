@@ -229,3 +229,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .editor-review-source{margin-top:14px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font-size:11px;color:var(--muted)}
 .editor-review-source a{color:var(--red)}
 @media(max-width:730px){.editor-review-list{grid-template-columns:1fr}}
+
+
+.editor-review-form{margin-top:18px;border-top:1px solid var(--line);padding-top:13px;display:grid;gap:12px}
+.editor-review-form label{display:flex;align-items:start;gap:9px;font-size:12px;line-height:1.5}
+.editor-review-form label input{margin-top:3px;flex:none}
+.editor-review-form>div{display:flex;gap:8px;flex-wrap:wrap}
+.editor-review-form button{border:1px solid var(--line);background:#fff;padding:10px 13px;font:inherit;font-size:12px;cursor:pointer}
+.editor-review-form button:hover{border-color:var(--red)}
+.editor-review-form button:first-child{background:var(--red);color:#fff;border-color:var(--red)}
