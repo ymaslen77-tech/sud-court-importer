@@ -345,6 +345,8 @@ jobs:
           export EDITOR_USERNAME=ci-editor
           export EDITOR_PASSWORD=ci-editor-password-2026
           export EDITOR_API_TOKEN=ci-token-for-editor-overview-must-have-more-than-32-characters
+          # CI synthetic pending source event; does not modify the published court.
+          docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO court_source_watch_events(watch_id,old_sha256,new_sha256) SELECT id,repeat('b',64),repeat('c',64) FROM court_source_watch LIMIT 1"
           docker compose -f compose.local.yaml up -d --force-recreate --wait --wait-timeout 120 api web
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
           curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
@@ -365,7 +367,21 @@ jobs:
           ROSTER_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_staff_roster_diff_items WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
           test -n "$ROSTER_EVENT_ID"
           echo 'roster diff item exists'
-          CSRF="$(python3 -c 'import re; s=open("/tmp/editor-dashboard.html",encoding="utf-8").read(); m=re.search(r"name=\"csrf\" value=\"([^\"]+)\"",s); assert m,"editor form CSRF missing"; print(m.group(1))')"
+          extract_csrf() {
+            python3 - "$1" "$2" <<'PY'
+          import re,sys
+          s=open("/tmp/editor-dashboard.html",encoding="utf-8").read()
+          forms=re.findall(r'<form\b[^>]*action="/editor/review"[^>]*>(.*?)</form>',s,re.S)
+          for html in forms:
+              fields=dict(re.findall(r'<input\b[^>]*name="([^"]+)"[^>]*value="([^"]*)"',html))
+              if fields.get("kind")==sys.argv[1] and fields.get("itemId")==sys.argv[2]:
+                  print(fields["csrf"])
+                  break
+          else:
+              raise SystemExit("Missing scoped editor review token")
+          PY
+          }
+          CSRF="$(extract_csrf staff_roster_diffs "$ROSTER_EVENT_ID")"
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H "Content-Type: application/json" -d '{}' "http://127.0.0.1:4174/api/v1/internal/editor/roster-diffs/$ROSTER_EVENT_ID/review")" = 401
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H "Authorization: Bearer $EDITOR_API_TOKEN" -H "Content-Type: application/json" -d "{\"decision\":\"reviewed\",\"reviewer\":\"CI Editor\",\"attested\":false}" "http://127.0.0.1:4174/api/v1/internal/editor/roster-diffs/$ROSTER_EVENT_ID/review")" = 400
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: https://attacker.invalid' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 403
@@ -381,6 +397,23 @@ jobs:
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 409
+
+          REGISTRY_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_registry_diff_items WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          SOURCE_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_source_watch_events WHERE status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          test -n "$REGISTRY_EVENT_ID" && test -n "$SOURCE_EVENT_ID"
+          REGISTRY_CSRF="$(extract_csrf registry_diffs "$REGISTRY_EVENT_ID")"
+          SOURCE_CSRF="$(extract_csrf source_changes "$SOURCE_EVENT_ID")"
+          # A token for a record ID in one queue must not authorize a different queue.
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=source_changes' --data-urlencode "itemId=$SOURCE_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 403
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" -H 'Content-Type: application/json' -d '{"decision":"reviewed","reviewer":"CI Editor","attested":true}' -X POST "http://127.0.0.1:4174/api/v1/internal/editor/signals/court_profiles/$REGISTRY_EVENT_ID/review")" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=registry_diffs' --data-urlencode "itemId=$REGISTRY_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE id=$REGISTRY_EVENT_ID AND review_status='reviewed' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL" | grep -Fqx 1
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=source_changes' --data-urlencode "itemId=$SOURCE_EVENT_ID" --data-urlencode "csrf=$SOURCE_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=ignored' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch_events WHERE id=$SOURCE_EVENT_ID AND status='ignored' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL" | grep -Fqx 1
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=registry_diffs' --data-urlencode "itemId=$REGISTRY_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 409
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          echo 'Registry and source monitoring signals reviewed without publication'
       - name: Shut down and clean smoke-test containers
         if: always()
         run: docker compose -f compose.local.yaml down --volumes
