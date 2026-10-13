@@ -143,6 +143,30 @@ jobs:
             echo "Unexpected green production gate against empty synthetic CI database" >&2
             exit 1
           fi
+      - name: Inspect and manually map raw Moscow JSON without source-trust claims
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path("importer/tests/fixtures/synthetic_contacts.json").read_text(encoding="utf-8"))[0]
+          raw={
+            "code":row["courtCode"],"title":row["courtName"],
+            "place":row["courtAddress"],"site":row["courtSiteUrl"],
+            "telephone":row["courtTelephone"],"office":"Пн 09:00-18:00"}
+          Path("data/import/moscow-raw.json").write_text(json.dumps([raw],ensure_ascii=False),encoding="utf-8")
+          mapping={"fields":{"courtCode":"code","courtName":"title","courtAddress":"place",
+            "courtSiteUrl":"site","courtTelephone":"telephone","courtWorkHours":"office"}}
+          Path("data/import/moscow-raw-map.json").write_text(json.dumps(mapping),encoding="utf-8")
+          PY
+          RAW_DIGEST="$(sha256sum data/import/moscow-raw.json | cut -d' ' -f1)"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py inspect /input/moscow-raw.json > /tmp/raw-inspect.json
+          grep -Fq '"record_count": 1' /tmp/raw-inspect.json
+          grep -Fq '"source_rights_verified": false' /tmp/raw-inspect.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw.json --mapping /input/moscow-raw-map.json --expected-sha256 "$RAW_DIGEST" --attest-schema-reviewed --output /input/moscow-mapped.json > /tmp/raw-mapped-report.json
+          grep -Fq '"auto_published": 0' /tmp/raw-mapped-report.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/moscow-mapped.json > /tmp/raw-mapped-valid.json
+          grep -Fq '"records": 1' /tmp/raw-mapped-valid.json
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | tr -d '\r')" = 0
       - name: Exercise Moscow normalized contact snapshot and retry-safe diff
         run: |
           cp importer/tests/fixtures/synthetic_contacts.json data/import/moscow-old.json
