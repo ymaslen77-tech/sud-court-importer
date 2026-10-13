@@ -150,7 +150,10 @@ jobs:
           import json
           from pathlib import Path
           source=json.loads(Path("data/import/moscow-old.json").read_text(encoding="utf-8"))
+          source[0]["courtWorkHours"]="Пн-чт 09:00-18:00; пт 09:00-16:45"
+          Path("data/import/moscow-old.json").write_text(json.dumps(source,ensure_ascii=False),encoding="utf-8")
           source[0]["courtTelephone"]="+7 000 111 00 00"
+          source[0]["courtWorkHours"]="Пн-чт 09:00-17:00; пт 09:00-16:45"
           Path("data/import/moscow-new.json").write_text(json.dumps(source,ensure_ascii=False),encoding="utf-8")
           PY
           URL="https://data.mos-gorsud.ru/opendata/TEST-ONLY-DATASET-00001"
@@ -159,7 +162,7 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-old.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-first.json
           grep -Fq '"auto_published": 0' /tmp/moscow-first.json
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-new.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-second.json
-          grep -Fq '"changed_fields": 1' /tmp/moscow-second.json
+          grep -Fq '"changed_fields": 2' /tmp/moscow-second.json
           grep -Fq '"auto_published": 0' /tmp/moscow-second.json
           python3 - <<'PY'
           import json
@@ -172,6 +175,7 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-reformatted.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-repeat.json
           grep -Fq '"created": false' /tmp/moscow-repeat.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='phone';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='office_hours_observed' AND change_kind='changed' AND review_status='pending';" | grep -Fqx 1
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
       - name: Verify approved offline inbox scan and idempotent sync
         run: |
