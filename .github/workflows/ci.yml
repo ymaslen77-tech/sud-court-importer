@@ -55,8 +55,10 @@ jobs:
           cp importer/tests/fixtures/official_sudrf_novosibirsk_excerpt.txt data/import/regional-snapshot.txt
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py validate /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' > /tmp/regional-valid.json
           grep -Fq '"records": 4' /tmp/regional-valid.json
-          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py stage /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' > /tmp/regional-stage.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py sync /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/regional-stage.json
           grep -Fq '"published": 0' /tmp/regional-stage.json
+          grep -Fq '"auto_published": 0' /tmp/regional-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_batches WHERE primary_snapshot_sha256 IS NOT NULL AND snapshot_use_attested=true;' | grep -Fqx 1
           OLD_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/federal-stage.json"))["batch_id"])')"
           NEW_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/regional-stage.json"))["batch_id"])')"
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/registry_diff.py queue --older-batch "$OLD_BATCH" --newer-batch "$NEW_BATCH" > /tmp/courts-diff.json
