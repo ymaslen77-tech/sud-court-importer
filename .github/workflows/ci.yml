@@ -435,6 +435,25 @@ jobs:
           done
       - name: Validate research court pages and prevent premature indexing
         run: |
+          # Dropdown filters, address jurisdiction navigation and detailed court dossiers
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts > /tmp/courts-directory-filters.html
+          grep -Fq 'directory-court-kind' /tmp/courts-directory-filters.html
+          grep -Fq 'directory-region' /tmp/courts-directory-filters.html
+          grep -Fq 'general-magistrate' /tmp/courts-directory-filters.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-district&region=region-54' > /tmp/courts-kind-region-filter.html
+          grep -Fq 'Барабинский районный суд' /tmp/courts-kind-region-filter.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-magistrate&region=region-27' > /tmp/courts-magistrates-filter.html
+          grep -Fq '27MS0001' /tmp/courts-magistrates-filter.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/jurisdiction > /tmp/jurisdiction-lookup.html
+          grep -Fq 'Адрес заявителя' /tmp/jurisdiction-lookup.html
+          grep -Fq 'Подсудность по адресу' /tmp/jurisdiction-lookup.html
+          grep -Fq 'noindex' /tmp/jurisdiction-lookup.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54/sud-54rs0012 > /tmp/barabinsk-dossier.html
+          grep -Fq 'Постоянное судебное присутствие' /tmp/barabinsk-dossier.html
+          grep -Fq 'Телефоны отделов и канцелярий' /tmp/barabinsk-dossier.html
+          grep -Fq 'noindex' /tmp/barabinsk-dossier.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55/sud-55os0000 > /tmp/omsk-dossier.html
+          grep -Fq 'Личный приём' /tmp/omsk-dossier.html || grep -Fq 'личный приём' /tmp/omsk-dossier.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/coverage > /tmp/courts-coverage.html
           grep -Fq 'Наполненность каталога судов' /tmp/courts-coverage.html
           grep -Fq '151' /tmp/courts-coverage.html
