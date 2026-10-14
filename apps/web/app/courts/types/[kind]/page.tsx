@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {findCategory,COURT_CATEGORIES} from '../../../lib/court-taxonomy';
 import {getCourtsByKind, type CourtCategoryResult} from '../../../lib/api';
+import {researchCourtsByKind} from '../../../lib/research-courts';
 
 type Props={params:Promise<{kind:string}>;searchParams:Promise<{page?:string|string[]}>};
 export const dynamic='force-dynamic';
@@ -26,6 +27,7 @@ export default async function KindPage({params,searchParams}:Props){
  let failed=false;
  try{result=await getCourtsByKind(kind,requested);}catch{failed=true;}
  const pages=Math.ceil(result.total/result.pageSize);
+ const preliminary=researchCourtsByKind(kind);
  const base='/courts/types/'+c.slug;
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span><Link href="/courts/types">Виды судов</Link><span>/</span>{c.short}</div>
@@ -48,6 +50,18 @@ export default async function KindPage({params,searchParams}:Props){
      {result.page<pages?<Link href={base+'?page='+(result.page+1)}>Следующая →</Link>:<span/>}
    </nav>:null}
   </section>
+  {preliminary.length>0?<section className="section-wrap" aria-labelledby="research-kind">
+    <div className="section-intro">
+      <span className="eyebrow">Исследовательские карточки — не проверенный реестр</span>
+      <h2 id="research-kind">Предварительные записи этой категории ({preliminary.length})</h2>
+      <p>Названия и классификационные коды перенесены из открытых государственных списков. До подтверждения актуальности карточки закрыты от поисковой индексации и не считаются опубликованными судами.</p>
+    </div>
+    <div className="results">{preliminary.map(x=><Link className="result-row" key={x.code}
+      href={'/courts/'+x.region+'/sud-'+x.code.toLowerCase()}>
+      <span><strong>{x.name}</strong><small>{x.regionName} · код {x.code}</small>
+        <small>Требует редакционной проверки</small></span><span aria-hidden="true">↗</span>
+    </Link>)}</div>
+  </section>:null}
   <section className="callout"><div><span className="eyebrow">Проверка первоисточника</span><h2>Официальный справочник</h2>
   <p>Сведения о действующем суде, его составе и компетенции уточняйте на официальном ресурсе.</p></div>
   <div className="callout-links"><a href={c.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>
