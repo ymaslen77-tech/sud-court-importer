@@ -7,17 +7,17 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from contacts import ImportValidationError
 from official_contact_html import extract,compare,official_hours_url,MAX_HTML_BYTES
 
-BASE=b"""<html><body><h1>Test court</h1><main><h2>Контакты суда</h2>
+BASE="""<html><body><h1>Test court</h1><main><h2>Контакты суда</h2>
 <p>Приёмная суда +7 (495) 678-05-22</p>
 <p>Почта: info@example.ru</p><script>fake +7 (999) 999-99-99</script>
 <p>Последнее обновление выполнено 08.07.2026 12:02:18</p>
-</main></body></html>"""
-NEW=b"""<html><body><h1>Test court</h1><main><h2>Контакты суда</h2>
+</main></body></html>""".encode("utf-8")
+NEW="""<html><body><h1>Test court</h1><main><h2>Контакты суда</h2>
 <p>Приёмная суда 8 (495) 678-05-22</p>
 <p>Телефон архива +7 (499) 530-08-08</p>
 <p>Почта: new@example.ru</p>
 <p>Последнее обновление выполнено 09.07.2026 12:02:18</p>
-</main></body></html>"""
+</main></body></html>""".encode("utf-8")
 URL="https://mos-gorsud.ru/rs/lefortovskij/help/hours"
 
 
