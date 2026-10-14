@@ -44,7 +44,7 @@ export default async function RegionPage({params,searchParams}:Props){
   try{
     const [found,regions]=await Promise.all([getRegionCourtsPage(region,page),getRegions()]);
     result=found;
-    label=regionName(region,regions);
+    label=regions.find(r=>r.slug===region)?.name??candidates[0]?.regionName??regionName(region,regions);
   }catch{failed=true;}
   const totalPages=Math.ceil(result.total/result.pageSize);
   const base='/courts/'+encodeURIComponent(region);
