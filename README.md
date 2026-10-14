@@ -1,3 +1,18 @@
+## Official-source access assessment (14 October 2026)
+
+Access to the official Sudrf federal/magistrate directories, arbitr.ru registry and Moscow open-data directory has been inventoried. Source discovery **does not** certify permission for an automated feed: the checked catalogs currently have **zero** confirmed machine-access grants.
+
+```powershell
+docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/source_channels.py
+docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/seed_audit.py
+```
+
+The offline preliminary source corpus now contains **232 rows** (the historical 206 plus 26 additional candidates transcribed from the accessible official Novosibirsk regional court listing). These are **not** 232 verified courts or public pages; the additional 26 are held in `importer/seeds/novosibirsk-federal-additional-official-unreviewed.json`. They still require current primary-source and editorial review. Automated publication: **0**.
+
+See [source verification and blocking permissions](docs/source-channel-verification-2026-10-14.md), [unsent operator inquiry](docs/draft-official-court-data-request.md), and [acceptance status](docs/acceptance-status.md). Do not enable live crawling until official access terms and exact feed schemas have been verified.
+
+---
+
 # Суды России — единый правовой портал
 
 Фундамент независимого справочно-информационного портала судов РФ. Текущая версия не публикует вымышленные сведения. Реализованы закрытые очереди официальных исходных выборок, проверка источников, контроль изменений и ручное утверждение каждой карточки. Эти выборки не равнозначны опубликованному проверенному реестру.
