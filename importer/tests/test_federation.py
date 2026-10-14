@@ -43,6 +43,24 @@ class FederationTests(unittest.TestCase):
         self.assertEqual(len(codes), len(set(codes)))
         self.assertTrue(all(c.region_code == "54" and c.source_record_url == LISTING for c in rows))
 
+    def test_omsk_list_from_open_official_public_source(self):
+        seed = SEED.with_name("omsk-federal-official-unreviewed.json")
+        records = parse_export(seed.read_bytes(), "sudrf-federal")
+        self.assertEqual(len(records), 40)
+        self.assertEqual(len({x.record.external_code for x in records}), 40)
+        self.assertTrue(all(x.region_code == "55" for x in records))
+        self.assertTrue(all(x.source_record_url ==
+            "https://sudrf.ru/index.php?act=go_search&court_subj=55&id=300&searchtype=fs"
+            for x in records))
+        by_code = {x.record.external_code: x for x in records}
+        self.assertEqual(by_code["55RS0009"].record.name,
+                         "Большереченский районный суд Омской области")
+        self.assertEqual(by_code["55RS0014"].record.name,
+                         "Калачинский городской суд Омской области")
+        self.assertEqual(by_code["55RS0027"].record.name,
+                         "Оконешниковский районный суд Омской области")
+        self.assertNotIn("54GV0008", by_code)
+
     def test_bad_registry_and_code(self):
         for registry in ["arbitr-courts", "sudrf-magistrate"]:
             with self.subTest(registry=registry), self.assertRaises(ImportValidationError):
