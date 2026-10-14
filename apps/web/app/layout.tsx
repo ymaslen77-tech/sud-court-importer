@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SiteHeader } from './_components/site-header';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4173')),
+  metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4173')),
   title: { default: 'Суды России — информационный правовой портал', template: '%s | Суды России' },
   description: 'Суды Российской Федерации: поиск, официальные контакты, судьи, подсудность, законодательство и судебная практика.',
   robots: { index: true, follow: true },
