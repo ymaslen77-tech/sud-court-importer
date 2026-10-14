@@ -200,6 +200,32 @@ class CourtsService {
       [regionSlug]
     );
   }
+  async byRegion(regionSlug:string, requestedPage:unknown) {
+    if(!/^[a-z0-9-]{1,100}$/.test(regionSlug)) {
+      throw new BadRequestException('INVALID_REGION_SLUG');
+    }
+    const pageString=requestedPage===undefined?'1':requestedPage;
+    if(typeof pageString!=='string' || !/^[1-9][0-9]{0,3}$/.test(pageString)) {
+      throw new BadRequestException('INVALID_PAGE_NUMBER');
+    }
+    const page=Number(pageString);
+    const pageSize=50;
+    const counts=await this.query<{total:string}>(
+      'SELECT count(*)::text AS total FROM courts c ' +
+      'JOIN regions r ON r.id=c.region_id ' +
+      "WHERE c.status='verified' AND r.slug=$1",
+      [regionSlug]
+    );
+    const total=Number(counts[0]?.total??'0');
+    const items=await this.query<Court>(
+      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at ' +
+      'FROM courts c JOIN regions r ON r.id=c.region_id ' +
+      "WHERE c.status='verified' AND r.slug=$1 " +
+      'ORDER BY c.name,c.id LIMIT $2 OFFSET $3',
+      [regionSlug,pageSize,(page-1)*pageSize]
+    );
+    return {items,total,page,pageSize};
+  }
   async one(regionSlug:string,courtSlug:string) {
     const courts=await this.query<Court & {region_name:string;court_kind:string}>(
       'SELECT c.id::text,c.name,c.slug,c.court_type,c.court_kind,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
@@ -320,6 +346,7 @@ class CourtsController {
   @Get('courts/categories/:kind') byKind(@Param('kind') kind:string,@Query('page') page:unknown){return this.service.byKind(kind,page);}
   @Get('courts/search') search(@Query('q') q:unknown){return this.service.search(q);}
   @Get('regions/:region/courts') list(@Param('region') region:string){return this.service.list(region);}
+  @Get('regions/:region/courts/page') regionPage(@Param('region') region:string,@Query('page') page:unknown){return this.service.byRegion(region,page);}
   @Get('regions/:region/courts/:court') one(@Param('region') region:string,@Param('court') court:string){
     return this.service.one(region,court);
   }
