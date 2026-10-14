@@ -406,6 +406,25 @@ jobs:
           for page in courts judges laws practice guides jurisdiction services sources search; do
             curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
           done
+      - name: Validate research court pages and prevent premature indexing
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54 > /tmp/court-region54.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55 > /tmp/court-region55.html
+          grep -Fq '36 предварительных карточек' /tmp/court-region54.html
+          grep -Fq '40 предварительных карточек' /tmp/court-region55.html
+          for entry in 'region-54/sud-54rs0012' 'region-55/sud-55os0000'; do
+            curl --fail --silent --show-error "http://127.0.0.1:4173/courts/$entry" > /tmp/court-research.html
+            grep -Fq 'Требует повторной сверки' /tmp/court-research.html
+            grep -Fq 'noindex' /tmp/court-research.html
+            grep -Fq 'ГАС' /tmp/court-research.html
+          done
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?q=55OS0000' > /tmp/court-research-search.html
+          grep -Fq 'Омский областной суд' /tmp/court-research-search.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/sitemap.xml > /tmp/court-sitemap.xml
+          if grep -Fq '/courts/region-54/sud-54rs0012' /tmp/court-sitemap.xml; then
+            echo 'Unreviewed court leaked into sitemap' >&2
+            exit 1
+          fi
       - name: Verify reviewed profile updates and monitoring storage (ephemeral CI only)
         run: |
           docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO regions(code,name,slug) VALUES('99','TEST ONLY REGION','test-99') ON CONFLICT DO NOTHING"
