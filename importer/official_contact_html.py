@@ -104,6 +104,10 @@ def extract(data:bytes)->dict:
             key=match.group().lower()
             if ("email",key) not in found:
                 found[("email",key)]=Evidence("email",key,match.group(),line[:320])
+    # Fail closed when the official page is a placeholder, blocked screen,
+    # or incomplete response rather than declaring all prior contacts gone.
+    if not found:
+        raise ImportValidationError("No visible contacts; refusing to infer disappearance")
     updated=PAGE_DATE.search(" ".join(lines))
     return {"html_sha256":sha256(data).hexdigest(),
             "page_last_updated": (" ".join(updated.groups(default="")).strip() if updated else None),
