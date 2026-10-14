@@ -19,13 +19,13 @@ export default async function SearchPage({searchParams}:Props) {
     <section className="section-hero">
       <span className="kicker">Поиск по реестру</span>
       <h1>Найти суд</h1>
-      <p className="lead">Введите часть официального названия. Поиск работает только по подтверждённым карточкам.</p>
+      <p className="lead">Ищите по названию суда, адресу или официальному классификационному коду. В результатах только проверенные карточки.</p>
       <CourtSearch initialValue={q}/>
     </section>
     <section className="section-wrap">
       <div className="section-intro"><span className="eyebrow">Результаты</span>
       <h2>{q ? 'По запросу «' + q + '»' : 'Начните поиск'}</h2></div>
-      {!q ? <div className="empty-state">Укажите название суда в строке поиска.</div>
+      {!q ? <div className="empty-state">Укажите название, адрес или классификационный код суда.</div>
         : !valid ? <div className="notice">Используйте запрос от 2 до 100 символов.</div>
         : failed ? <div className="notice" role="alert">Поиск временно недоступен. Повторите попытку позднее.</div>
         : courts.length ? <div className="results">
