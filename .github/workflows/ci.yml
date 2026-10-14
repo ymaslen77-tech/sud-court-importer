@@ -275,6 +275,29 @@ jobs:
 
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Compare saved official court contact HTML without publication
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path("data/import")
+          root.joinpath("hours-old.html").write_text(
+            '<html><h1>Контакты суда</h1><p>Приёмная +7 (495) 678-05-22</p>'
+            '<p>Почта: info@example.ru</p>'
+            '<p>Последнее обновление выполнено 08.07.2026 12:02:18</p></html>',
+            encoding="utf-8"
+          )
+          root.joinpath("hours-new.html").write_text(
+            '<html><h1>Контакты суда</h1><p>Приёмная 8 (495) 678-05-22</p>'
+            '<p>Архив +7 (499) 530-08-08</p><p>Почта: new@example.ru</p>'
+            '<p>Последнее обновление выполнено 09.07.2026 12:02:18</p></html>',
+            encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_html.py compare /input/hours-old.html /input/hours-new.html --source-url https://mos-gorsud.ru/rs/lefortovskij/help/hours > /tmp/court-contact-delta.json
+          grep -Fq '"signal_count": 3' /tmp/court-contact-delta.json
+          grep -Fq '"removals_verified": false' /tmp/court-contact-delta.json
+          grep -Fq '"auto_published": 0' /tmp/court-contact-delta.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts" | grep -Fqx 0
       - name: Stage 11 official roster references without verifying appointments
         run: |
           cp importer/seeds/lefortovsky-judges-official-page-unreviewed.json data/import/lef-roster.json
