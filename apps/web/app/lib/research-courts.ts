@@ -24,7 +24,11 @@ function validRow(court: ResearchCourt): boolean {
   if(!court.name.trim()||!court.regionName.trim())return false;
   if(!/^https:\/\/sudrf\.ru\/index\.php\?/.test(court.source))return false;
   if(court.code.includes('MS')){
-    return court.region==='region-27' && court.website===null && court.address===null
+    const match=/^27MS([0-9]{4})$/.exec(court.code);
+    const number=match?Number(match[1]):0;
+    return court.region==='region-27' && number>=1 && number<=75
+      && court.website==='http://'+number+'.hbr.msudrf.ru'
+      && court.address===null
       && court.source.includes('act=go_ms_search');
   }
   return (codeRegion==='54'||codeRegion==='55') && Boolean(court.address?.trim())
