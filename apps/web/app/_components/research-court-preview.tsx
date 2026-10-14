@@ -27,15 +27,15 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
         <span className="eyebrow">Сведения из исходного официального реестра</span>
         <h2>Адрес и контакты</h2>
         <dl className="court-facts">
-          <div><dt>Адрес из реестра</dt><dd>{court.address}</dd></div>
+          <div><dt>Адрес из реестра</dt><dd>{court.address??'В этом исследовательском списке адрес не указан'}</dd></div>
           <div><dt>Телефон из реестра</dt><dd>{court.phone??'Не указан в исходной записи'}</dd></div>
           <div><dt>Электронная почта из реестра</dt><dd>{court.email??'Не указана в исходной записи'}</dd></div>
           <div><dt>Актуальность</dt><dd>Не подтверждена на дату посещения этой страницы</dd></div>
         </dl>
-        <p className="court-source">
+        {court.website?<p className="court-source">
           <a href={court.website} target="_blank" rel="noopener noreferrer">Перейти на официальный сайт суда ↗</a>
           {court.website.startsWith('http:')?' (ссылка реестра использует HTTP)':''}
-        </p>
+        </p>:<p className="court-source">В исходном списке персональная ссылка на сайт судебного участка отсутствует. Используйте официальный региональный справочник.</p>}
       </section>
       <aside className="detail-card detail-side">
         <span className="eyebrow">Проверка перед обращением</span>
