@@ -50,6 +50,30 @@ export default async function EditorDashboard(){
     </div>
    </section>
    <section className="court-section">
+    <span className="eyebrow">Содержимое публичных карточек</span>
+    <h2>Фактическая полнота проверенных данных</h2>
+    <p>Счётчики показывают, в скольких из опубликованных судов присутствует конкретное проверенное поле. Присутствие сведений не гарантирует их актуальность вне указанного окна контроля.</p>
+    <div className="editor-summary">
+      {([
+        ['Классификационный код','with_identifier'],
+        ['Адрес','with_address'],
+        ['Телефон','with_phone'],
+        ['E-mail','with_email'],
+        ['Официальный сайт','with_official_url'],
+        ['Часы работы или приёма','with_hours'],
+        ['Ссылка на подсудность','with_jurisdiction'],
+        ['Актуально подтверждённые судьи','with_current_judge'],
+        ['Проверенные ссылки на дела','with_case'],
+        ['Фото фасада с лицензией','with_facade'],
+        ['Координаты, проверенные за 180 дней','with_recent_coordinates']
+      ] as const).map(([label,key])=><article key={key}>
+        <strong>{report.quality_metrics[key]}<span className="editor-quality-total"> / {report.public_courts.published}</span></strong>
+        <span>{label}</span>
+      </article>)}
+    </div>
+    <p className="court-source">Показатели относятся только к опубликованным судам в текущей базе. Они не измеряют количество всех действующих судов России и не допускают автоматической публикации предварительных данных.</p>
+   </section>
+   <section className="court-section">
     <span className="eyebrow">Кандидаты официальных судов</span>
     <h2>Записи, ожидающие редакционного подтверждения</h2>
     <p>Просматривайте идентификаторы, актуальную версию каждого снимка, адрес, URL суда и контрольную сумму источника. Открытие списка не публикует данные.</p>
