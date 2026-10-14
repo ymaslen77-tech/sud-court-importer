@@ -43,6 +43,25 @@ class ResearchPreviewTests(unittest.TestCase):
                 website_host = urlsplit(preview["website"]).hostname
                 self.assertTrue(website_host and website_host.endswith(".sudrf.ru"))
 
+    def test_magistrate_previews_keep_missing_fields_empty(self):
+        previews = json.loads((WEB_DATA.with_name("research-magistrates.json"))
+                              .read_text(encoding="utf-8"))
+        originals = json.loads((SEEDS / "khabarovsk-magistrates-official-unreviewed.json")
+                              .read_text(encoding="utf-8"))
+        self.assertEqual(len(previews), 75)
+        by_code = {row["courtCode"]: row for row in originals}
+        self.assertEqual(len(by_code), 75)
+        for preview in previews:
+            with self.subTest(code=preview["code"]):
+                source = by_code[preview["code"]]
+                self.assertEqual(preview["name"], source["courtName"])
+                self.assertEqual(preview["source"], source["sourceRecordUrl"])
+                self.assertEqual(preview["region"], "region-27")
+                self.assertEqual(preview["status"], "unreviewed")
+                self.assertTrue(preview["code"].startswith("27MS"))
+                for field in ("address", "phone", "email", "website"):
+                    self.assertIsNone(preview[field])
+
     def test_no_research_card_can_be_marked_verified_in_static_data(self):
         previews = json.loads(WEB_DATA.read_text(encoding="utf-8"))
         self.assertTrue(all(c["status"] == "unreviewed" for c in previews))
