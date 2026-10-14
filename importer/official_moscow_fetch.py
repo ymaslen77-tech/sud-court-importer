@@ -162,14 +162,22 @@ def write_evidence(directory: Path, content: bytes, config: dict, now: datetime 
         "record_currentness_verified": False,
         "auto_published": 0
     }
+    data_created = False
+    receipt_created = False
     try:
         with destination.open("xb") as stream:
+            data_created = True
             stream.write(content)
         with receipt.open("x", encoding="utf-8") as stream:
+            receipt_created = True
             json.dump(audit, stream, ensure_ascii=False, sort_keys=True, indent=2)
     except OSError:
-        if destination.exists() and not receipt.exists():
-            destination.unlink()
+        # Never remove a pre-existing file/symlink when exclusive creation
+        # fails. Only roll back objects created by this invocation.
+        if receipt_created:
+            receipt.unlink(missing_ok=True)
+        if data_created:
+            destination.unlink(missing_ok=True)
         raise
     return {"raw_file": str(destination), "evidence_file": str(receipt),
             "raw_sha256": digest, "records": report["record_count"],
