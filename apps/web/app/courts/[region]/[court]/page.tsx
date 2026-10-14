@@ -59,7 +59,7 @@ export default async function CourtPage({params}:Props){
  };
  const kind=findCategory(court.court_kind);
  const identifiers=court.identifiers??[];
- const courtPracticeDirectory=court.court_kind.startsWith('arbitration-')?'https://sudact.ru/arbitral/':'https://sudact.ru/regular/';
+ const courtPracticeDirectory=court.court_kind.startsWith('arbitration-')?'https://sudact.ru/arbitral/':court.court_kind==='general-magistrate'?'https://sudact.ru/magistrate/':'https://sudact.ru/regular/';
  const extra=court.fields.filter(f=>f.field_name in labels);
  const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path)&&safeOfficialUrl(court.photo.source_url)&&safeOfficialUrl(court.photo.license_url);
  const geoAge=court.coordinate_verified_at
