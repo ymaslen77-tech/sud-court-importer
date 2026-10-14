@@ -1,0 +1,32 @@
+[
+  {
+    "registry": "sudrf-federal",
+    "courtKind": "federal-district",
+    "courtName": "Калачинский городской суд Оской области",
+    "courtCode": "55RS0014",
+    "regionCode": "55",
+    "regionName": "Омская область",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=55&id=300&searchtype=fs",
+    "reviewIssue": "Official listing appears to misspell region Оской; confirm current legal name before publication"
+  },
+  {
+    "registry": "sudrf-federal",
+    "courtKind": "federal-district",
+    "courtName": "Оконешниковский районный уд Омской области",
+    "courtCode": "55RS0027",
+    "regionCode": "55",
+    "regionName": "Омская область",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=55&id=300&searchtype=fs",
+    "reviewIssue": "Official listing appears to omit the letter 'с' from суд; confirm current legal name before publication"
+  },
+  {
+    "registry": "sudrf-federal",
+    "courtKind": "federal-military",
+    "courtName": "Омский гарнизонный военный суд (Омская область)",
+    "courtCode": "54GV0008",
+    "regionCode": "55",
+    "regionName": "Омская область",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=55&id=300&searchtype=fs",
+    "reviewIssue": "Official classification code prefix 54 does not match listing region 55. Military courts can use separate identifiers; confirm identity and category before reconciliation"
+  }
+]
