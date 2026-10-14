@@ -33,6 +33,16 @@ class FederationTests(unittest.TestCase):
         self.assertEqual(result[0].record.slug, "sud-54rs0012")
         self.assertTrue(all(item.record.raw_record["_registry"] == "sudrf-federal" for item in result))
 
+    def test_additional_official_candidates_stay_unreviewed(self):
+        supplemental = SEED.with_name("novosibirsk-federal-additional-official-unreviewed.json")
+        rows = parse_export(supplemental.read_bytes(), "sudrf-federal")
+        original = parse_export(SEED.read_bytes(), "sudrf-federal")
+        self.assertEqual(len(rows), 26)
+        self.assertEqual(len(original) + len(rows), 36)
+        codes = [c.record.external_code for c in original + rows]
+        self.assertEqual(len(codes), len(set(codes)))
+        self.assertTrue(all(c.region_code == "54" and c.source_record_url == LISTING for c in rows))
+
     def test_bad_registry_and_code(self):
         for registry in ["arbitr-courts", "sudrf-magistrate"]:
             with self.subTest(registry=registry), self.assertRaises(ImportValidationError):
