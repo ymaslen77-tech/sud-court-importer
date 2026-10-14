@@ -32,6 +32,12 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
           <div><dt>Электронная почта из реестра</dt><dd>{court.email??'Не указана в исходной записи'}</dd></div>
           <div><dt>Актуальность</dt><dd>Не подтверждена на дату посещения этой страницы</dd></div>
         </dl>
+        {court.address?<p className="court-source">
+          <a href={'https://www.openstreetmap.org/search?query='+encodeURIComponent(court.address)}
+            target="_blank" rel="noopener noreferrer">
+            Найти этот адрес на OpenStreetMap ↗
+          </a> — поиск по тексту адреса, точные координаты и вход в суд пока не проверены.
+        </p>:null}
         {court.website?<p className="court-source">
           <a href={court.website} target="_blank" rel="noopener noreferrer">Перейти на официальный сайт суда ↗</a>
           {court.website.startsWith('http:')?' (ссылка реестра использует HTTP)':''}
@@ -49,6 +55,10 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
       <h2>Официальный источник и редакционный статус</h2>
       <p>Название, классификационный код и справочные контакты перенесены в исследовательский набор из открытого регионального перечня ГАС «Правосудие». Перенос данных в исследовательский набор не означает редакционное утверждение.</p>
       <p><a href={court.source} target="_blank" rel="noopener noreferrer">Открыть региональный перечень ГАС «Правосудие» ↗</a></p>
+      <p className="court-source">Дополнительный справочный поиск судебной практики:
+        {' '}<a href={court.code.includes('MS')?'https://sudact.ru/magistrate/':'https://sudact.ru/regular/'}
+          target="_blank" rel="noopener noreferrer">СудАкт ↗</a>.
+        Это независимый агрегатор, не государственный первоисточник судебных сведений.</p>
       <p className="court-source">После повторной проверки сведения могут быть перенесены в основной подтверждённый реестр. Пока карточка не включается в индекс поисковых систем и sitemap.</p>
     </section>
     <section className="callout">
