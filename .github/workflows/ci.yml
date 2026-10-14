@@ -446,7 +446,7 @@ jobs:
           CASE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/case-proposal.json"))["candidate_id"])')"
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/cases.py approve --candidate-id "$CASE_CANDIDATE" --reviewer "CI simulated editor - test only" --attest-current --attest-reuse-rights > /tmp/case-approved.json
           grep -Fq '"published": 1' /tmp/case-approved.json
-          curl --fail --silent --show-error --get --data-urlencode 'q=77RS0014' http://127.0.0.1:4174/api/v1/courts/search | grep -Fq '77RS0014'
+          curl --fail --silent --show-error --get --data-urlencode 'q=77RS0014' http://127.0.0.1:4174/api/v1/courts/search | grep -Fq 'sud-77rs0014'
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/moscow/courts/sud-77rs0014 | grep -Fq '02-7949/2026'
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/moscow/sud-77rs0014 | grep -Fq '02-7949/2026'
       - name: Assert editor closed by default, then test isolated authorized session
