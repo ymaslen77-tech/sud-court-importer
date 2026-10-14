@@ -59,8 +59,10 @@ class ResearchPreviewTests(unittest.TestCase):
                 self.assertEqual(preview["region"], "region-27")
                 self.assertEqual(preview["status"], "unreviewed")
                 self.assertTrue(preview["code"].startswith("27MS"))
-                for field in ("address", "phone", "email", "website"):
+                for field in ("address", "phone", "email"):
                     self.assertIsNone(preview[field])
+                number = int(preview["code"][-4:])
+                self.assertEqual(preview["website"], f"http://{number}.hbr.msudrf.ru")
 
     def test_no_research_card_can_be_marked_verified_in_static_data(self):
         previews = json.loads(WEB_DATA.read_text(encoding="utf-8"))
