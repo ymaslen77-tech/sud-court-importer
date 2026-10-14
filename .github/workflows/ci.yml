@@ -72,7 +72,7 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
           docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump > /tmp/dump-manifest.txt
           grep -Fq 'TOC Entries:' /tmp/dump-manifest.txt
-          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql db/migrations/011_court_contact_review.sql; do
+          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql db/migrations/011_court_contact_review.sql db/migrations/012_watch_permission_attestations.sql; do
             test -f "$f"
             docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
           done
@@ -403,6 +403,9 @@ jobs:
           CONTACT_URL='https://mos-gorsud.ru/rs/lefortovskij/help/hours'
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py register --court-id "$COURT_ID" --url "$CONTACT_URL" --scope contacts --reviewer 'CI fixture reviewer' --attest-permission > /tmp/contact-watch.json
           WATCH_ID="$(python3 -c 'import json;print(json.load(open("/tmp/contact-watch.json"))["watch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py renew-permission --watch-id "$WATCH_ID" --reviewer 'CI fixture reviewer' --terms-url https://mos-gorsud.ru/ --basis 'CI fixture only; operator reviewed permissible scope and archived contacts' --attest-permission > /tmp/contact-permission.json
+          grep -Fq '"operator_attestation_only": true' /tmp/contact-permission.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_watch_permission_attestations WHERE watch_id=$WATCH_ID" | grep -Fqx 1
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-old.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-first.json
           grep -Fq '"signals": 0' /tmp/contact-first.json
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-new.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-second.json
