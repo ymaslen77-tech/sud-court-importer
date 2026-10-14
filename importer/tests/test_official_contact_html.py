@@ -47,6 +47,11 @@ class OfficialContactHtmlTests(unittest.TestCase):
                       b"x"*(MAX_HTML_BYTES+1), b"\xff\xfe"):
             with self.subTest(value=value[:20]),self.assertRaises(ImportValidationError):
                 extract(value)
+    def test_placeholder_does_not_generate_false_removals(self):
+        placeholder="<html><h1>Контакты суда</h1><p>Информация обновляется</p></html>".encode("utf-8")
+        with self.assertRaises(ImportValidationError):
+            extract(placeholder)
+
     def test_official_url_gated_to_hours_page(self):
         self.assertEqual(official_hours_url(URL),URL)
         for url in ("https://mos-gorsud.ru.evil.invalid/rs/lefortovskij/help/hours",
