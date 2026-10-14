@@ -6,7 +6,7 @@ const features = [
   { index: '02', icon: '◈', title: 'Судьи', text: 'Состав судов, назначения и проверенные профессиональные сведения.', href: '/judges', tone: 'neutral' },
   { index: '03', icon: '≡', title: 'Законодательство', text: 'Кодексы, статьи, действующие редакции и история изменений.', href: '/laws', tone: 'neutral' },
   { index: '04', icon: '⌘', title: 'Судебная практика', text: 'Решения и определения судов, поиск по делам и темам.', href: '/practice', tone: 'neutral' },
-  { index: '05', icon: '⌖', title: 'Подсудность', text: 'Определение компетентного суда по характеру спора и адресу.', href: '/jurisdiction', tone: 'neutral' },
+  { index: '05', icon: '⌖', title: 'Подсудность', text: 'Подбор судов по региону, адресу заявителя или ответчика и виду спора с обязательной проверкой границ.', href: '/jurisdiction', tone: 'neutral' },
   { index: '06', icon: '↗', title: 'Документы и сервисы', text: 'Подготовка обращений, инструкции и юридические калькуляторы.', href: '/services', tone: 'neutral' },
 ];
 
@@ -43,7 +43,7 @@ export default function Home() {
     <section className="journey">
       <div className="journey-heading"><span className="eyebrow">ЛОГИКА СЕРВИСА</span><h2>От вопроса<br/>к конкретному действию</h2><p>Платформа развивается как единый правовой маршрут, а не набор несвязанных справочников.</p><Link className="text-link" href="/guides">О юридических инструкциях ↗</Link></div>
       <div className="journey-steps">
-        <div><span>01</span><h3>Найдите суд</h3><p>По названию или региону. В будущем — по правилам подсудности.</p></div>
+        <div><span>01</span><h3>Найдите суд</h3><p>По названию, виду суда, региону и адресу для предварительного подбора по подсудности.</p></div>
         <div><span>02</span><h3>Проверьте нормы</h3><p>Изучите применимое законодательство и требования к обращению.</p></div>
         <div><span>03</span><h3>Подготовьте документы</h3><p>Используйте инструкции и сервисы по мере их запуска.</p></div>
       </div>
@@ -52,6 +52,6 @@ export default function Home() {
       <div className="data-stamp" aria-hidden="true"><span>VERIFIED</span><strong>✓</strong><span>SOURCES</span></div>
       <div><span className="eyebrow">ОСНОВА ДОВЕРИЯ</span><h2>Каждый факт должен<br/>иметь источник</h2><p>Контакты, информация о судьях и границах подсудности меняются. Мы строим систему, которая сохраняет происхождение сведений, дату проверки и историю обновлений.</p><Link className="button button-dark" href="/sources">Как проверяются данные <span aria-hidden="true">→</span></Link></div>
     </section>
-    <section className="bottom-cta"><div><span className="eyebrow">НАЧНИТЕ С ПОИСКА</span><h2>Ищете конкретный суд?</h2><p>Откройте каталог регионов или воспользуйтесь поиском по названию.</p></div><Link className="button button-red" href="/courts">Перейти к каталогу <span aria-hidden="true">→</span></Link></section>
+    <section className="bottom-cta"><div><span className="eyebrow">НАЧНИТЕ С ПОИСКА</span><h2>Ищете конкретный суд?</h2><p>Выберите вид суда и регион в выпадающем списке или используйте подбор по адресу.</p></div><Link className="button button-red" href="/courts">Перейти к каталогу <span aria-hidden="true">→</span></Link></section>
   </>;
 }
