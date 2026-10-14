@@ -33,12 +33,17 @@ const pool = new Pool({connectionString: process.env.DATABASE_URL, connectionTim
 @Injectable()
 class CourtsService {
   private async query<T extends QueryResultRow>(sql: string, args: unknown[] = []): Promise<T[]> {
+    if(!process.env.DATABASE_URL)throw new ServiceUnavailableException('COURTS_DATABASE_NOT_CONFIGURED');
     try {
       const {rows}=await pool.query<T>(sql,args);
       return rows;
     } catch {
       throw new ServiceUnavailableException('COURTS_DATA_UNAVAILABLE');
     }
+  }
+  async health() {
+    await this.query<{value:number}>('SELECT 1::integer AS value');
+    return {status:'ok',database:'reachable'};
   }
   async editorOverview() {
     const [verified, queues, sources, byRegion, items, intake, quality] = await Promise.all([
@@ -453,7 +458,7 @@ class CourtsService {
 @Controller()
 class CourtsController {
   constructor(private readonly service:CourtsService) {}
-  @Get('health') health(){return {status:'ok'};}
+  @Get('health') health(){return this.service.health();}
   @Get('internal/editor/discoveries') discoveries(
     @Headers('authorization') authorization:string|undefined,
     @Query('page') page:unknown
