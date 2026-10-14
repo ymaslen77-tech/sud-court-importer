@@ -33,8 +33,22 @@ export type CourtDetail = Court & {
 export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
 
-const api = process.env.API_URL ?? 'http://localhost:4000';
+// Vercel can run the read-only source previews without a separate NestJS API.
+// Never infer a verified court or publish a candidate when API_URL is absent.
+const api = process.env.API_URL?.replace(/\/$/, '') || null;
+export const verifiedBackendConfigured = Boolean(api);
+function emptyVerifiedData<T>(path:string):T {
+  if (/^\/api\/v1\/regions\/[^/]+\/courts\/[^/]+$/.test(path))
+    throw new Error('NOT_FOUND');
+  if (/^\/api\/v1\/regions\/[^/]+\/courts\/page\?page=/.test(path)
+    || /^\/api\/v1\/courts\/categories\/[^/]+\?page=/.test(path)) {
+    const requested = Number(new URLSearchParams(path.split('?')[1]).get('page') || '1');
+    return {items:[],total:0,page:requested,pageSize:50} as T;
+  }
+  return [] as T; // Regions, category listings, and search have no verified records.
+}
 async function get<T>(path: string): Promise<T> {
+  if (!api) return emptyVerifiedData<T>(path);
   const response = await fetch(api + path, { next: { revalidate: 1800 } });
   if (response.status === 404) throw new Error('NOT_FOUND');
   if (!response.ok) throw new Error('UPSTREAM_UNAVAILABLE');
