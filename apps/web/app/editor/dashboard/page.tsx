@@ -10,7 +10,7 @@ export const metadata:Metadata={
 const labels:Record<string,string>={
  court_profiles:'Изменения карточек',judge_appointments:'Назначения судей',
  staff_rosters:'Наблюдения о составе судов',staff_roster_diffs:'Изменения списков судей (требуют проверки)',registry_diffs:'Сравнение реестров',
- source_changes:'Изменения страниц источников',case_references:'Ссылки на дела'
+ source_changes:'Изменения страниц источников',contact_deltas:'Изменения телефонов и e-mail (требуют проверки)',case_references:'Ссылки на дела'
 };
 
 
@@ -70,7 +70,7 @@ export default async function EditorDashboard(){
           {safeEvidenceUrl(item.source_url)?<a href={safeEvidenceUrl(item.source_url)!} target="_blank"
             rel="noopener noreferrer">Официальное свидетельство ↗</a>:<span>Источник требует сверки</span>}
         </div>
-        {(['staff_roster_diffs','registry_diffs','source_changes'] as string[]).includes(item.kind)?
+        {(['staff_roster_diffs','registry_diffs','source_changes','contact_deltas'] as string[]).includes(item.kind)?
         <form className="editor-review-form" method="post" action="/editor/review">
           <input type="hidden" name="kind" value={item.kind}/>
           <input type="hidden" name="itemId" value={item.item_id}/>
