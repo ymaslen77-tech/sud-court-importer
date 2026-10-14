@@ -169,5 +169,159 @@
         "last_modified": null
       }
     ]
+  },
+  "55OS0000": {
+    "court_code": "55OS0000",
+    "evidence_class": "official_page_observation_not_editorially_approved",
+    "researched_on": "2026-10-14",
+    "summary": "Областной суд Омской области. Официальная страница публикует отдельные телефоны канцелярий первой и апелляционной инстанций, электронные адреса и порядок непроцессуального личного приёма.",
+    "offices": [
+      {
+        "label": "Основное здание и почтовый адрес",
+        "address": "644112, Омская область, г. Омск, ул. Туполева, д. 12",
+        "hours": "Пн–Чт 08:30–17:30; Пт 08:30–16:15; перерыв 13:00–13:45",
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      }
+    ],
+    "departments": [
+      {
+        "label": "Приёмная Омского областного суда",
+        "phone": "+7 (3812) 358-208",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Уголовные дела — первая инстанция и суд присяжных",
+        "phone": "+7 (3812) 358-203",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Уголовные дела — апелляционная инстанция",
+        "phone": "+7 (3812) 358-201",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Административные дела — первая инстанция",
+        "phone": "+7 (3812) 358-205",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Административные дела — апелляционная инстанция",
+        "phone": "+7 (3812) 358-214",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Гражданские дела — апелляционная инстанция",
+        "phone": "+7 (3812) 358-204",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Отдел государственной службы и кадров",
+        "phone": "+7 (3812) 358-213",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Пресс-служба",
+        "phone": "+7 (3812) 358-255",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Телефон доверия по противодействию коррупции",
+        "phone": "+7 (3812) 358-254",
+        "room": null,
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      }
+    ],
+    "staff_observations": [
+      {
+        "name": "Ершова Лена Анатольевна",
+        "position": "Заместитель председателя; по публикации суда исполняет полномочия председателя с 28.06.2026 на срок до года",
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court&rid=4"
+      },
+      {
+        "name": "Осадчая Евгения Анатольевна",
+        "position": "Заместитель председателя — по публикации суда",
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court&rid=4"
+      },
+      {
+        "name": "Лопарев Александр Геннадиевич",
+        "position": "Заместитель председателя — по публикации суда",
+        "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court&rid=4"
+      }
+    ],
+    "reception": {
+      "description": "На официальной странице указан личный приём руководства по непроцессуальным вопросам по вторникам с 14:00 до 16:00 по предварительной записи. Жалобы на судебные решения таким порядком не рассматриваются.",
+      "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+    },
+    "payments": {
+      "source_updated_on": null,
+      "source_url": "https://oblsud--oms.sudrf.ru/modules.php?name=govduty",
+      "rows": [],
+      "warning": "Официальный калькулятор содержит реквизиты уплаты госпошлины. Не путайте их с депозитными счетами для внесения обеспечительных средств: сайт суда отдельно предупреждает об этом."
+    },
+    "official_services": [
+      {
+        "label": "Поиск судебных дел и заседаний",
+        "description": "Официальное судебное делопроизводство, расписание и доступные карточки дел.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=sud_delo"
+      },
+      {
+        "label": "Электронная подача процессуальных документов",
+        "description": "Подача документов через государственный сервис ГАС «Правосудие».",
+        "url": "https://ej.sudrf.ru/"
+      },
+      {
+        "label": "Государственная пошлина — калькулятор",
+        "description": "Расчёт и официальные платёжные сведения для конкретного вида обращения.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=govduty"
+      },
+      {
+        "label": "Территориальная подсудность",
+        "description": "Официальный раздел о компетенции суда.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=terr"
+      },
+      {
+        "label": "Контактная информация и приём граждан",
+        "description": "Канцелярии, телефоны, почта, часы и порядок приёма руководством.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court"
+      },
+      {
+        "label": "Руководство и судебные коллегии",
+        "description": "Руководство и состав коллегий по гражданским, уголовным и административным делам.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court&rid=4"
+      },
+      {
+        "label": "Справочная информация",
+        "description": "Порядок обращений, кассационного обжалования и справочные разделы суда.",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=information"
+      }
+    ],
+    "provenance": [
+      {
+        "label": "Контакты, часы работы и приём граждан",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court",
+        "last_modified": "2026-06-30"
+      },
+      {
+        "label": "Руководство, судебные коллегии и назначение",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court&rid=4",
+        "last_modified": "2026-06-30"
+      },
+      {
+        "label": "Калькулятор госпошлины",
+        "url": "https://oblsud--oms.sudrf.ru/modules.php?name=govduty",
+        "last_modified": null
+      }
+    ],
+    "extra_emails": [
+      "open@omskoblsud.ru"
+    ]
   }
 }
