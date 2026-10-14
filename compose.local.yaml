@@ -83,9 +83,12 @@ services:
       dockerfile: Dockerfile.importer
     entrypoint: ["/bin/sh", "-c"]
     command:
-      - "while true; do python /work/importer/watch.py check --limit 5 || true; sleep 86400; done"
+      - 'while true; do if [ "$COURT_CONTACT_SEMANTIC_ENABLED" = "true" ]; then python /work/importer/watch.py check --limit 5 --semantic-contacts --attest-automated-processing --snapshot-dir /snapshots || true; else python /work/importer/watch.py check --limit 5 || true; fi; sleep 86400; done'
     environment:
       DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+      COURT_CONTACT_SEMANTIC_ENABLED: ${COURT_CONTACT_SEMANTIC_ENABLED:-false}
+    volumes:
+      - ./data/source-snapshots:/snapshots
     depends_on:
       postgres:
         condition: service_healthy
