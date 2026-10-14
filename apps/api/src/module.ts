@@ -142,6 +142,41 @@ class CourtsService {
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
   }
+  async pendingDiscoveries(requestedPage:unknown) {
+    const rawPage=requestedPage===undefined?'1':requestedPage;
+    if(typeof rawPage!=='string' || !/^[1-9][0-9]{0,3}$/.test(rawPage)){
+      throw new BadRequestException('INVALID_PAGE_NUMBER');
+    }
+    const page=Number(rawPage);
+    const pageSize=50;
+    const rows=await this.query<{total:number;items:unknown[]}>(`
+      WITH latest AS (
+        SELECT DISTINCT ON (b.registry,r.row_key)
+          r.id::text AS discovery_id,b.id::text AS batch_id,b.registry,
+          r.row_key,r.court_name,r.court_kind,r.region_code,r.region_name,
+          r.external_code,r.official_court_url,r.source_record_url,r.address,
+          r.review_status,b.captured_on::text AS captured_on,
+          b.created_at,s.url AS list_source_url
+        FROM court_discovery_rows r
+        JOIN court_discovery_batches b ON b.id=r.batch_id
+        JOIN sources s ON s.id=b.source_id
+        ORDER BY b.registry,r.row_key,b.created_at DESC,b.id DESC,r.id DESC
+      ),
+      pending AS (SELECT * FROM latest WHERE review_status='pending'),
+      total AS (SELECT count(*)::integer AS count FROM pending),
+      selected AS (
+        SELECT * FROM pending ORDER BY created_at DESC,discovery_id DESC
+        LIMIT $1 OFFSET $2
+      )
+      SELECT total.count AS total,
+        COALESCE(jsonb_agg(to_jsonb(selected)
+            ORDER BY selected.created_at DESC,selected.discovery_id DESC)
+          FILTER (WHERE selected.discovery_id IS NOT NULL),'[]'::jsonb) AS items
+      FROM total LEFT JOIN selected ON TRUE GROUP BY total.count
+    `,[pageSize,(page-1)*pageSize]);
+    return {items:rows[0]?.items??[],total:rows[0]?.total??0,page,pageSize,
+      note:'Unverified preliminary discovery observations; may overlap across registries and snapshots.'};
+  }
   async pendingCourtCandidates(requestedPage:unknown) {
     // Latest record for each (source, court code); do not count obsolete
     // historical snapshots as distinct courts or publish candidates here.
@@ -382,6 +417,13 @@ class CourtsService {
 class CourtsController {
   constructor(private readonly service:CourtsService) {}
   @Get('health') health(){return {status:'ok'};}
+  @Get('internal/editor/discoveries') discoveries(
+    @Headers('authorization') authorization:string|undefined,
+    @Query('page') page:unknown
+  ){
+    editorAuth(authorization);
+    return this.service.pendingDiscoveries(page);
+  }
   @Get('internal/editor/court-candidates') courtCandidates(
     @Headers('authorization') authorization:string|undefined,
     @Query('page') page:unknown
