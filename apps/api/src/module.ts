@@ -41,7 +41,7 @@ class CourtsService {
     }
   }
   async editorOverview() {
-    const [verified, queues, sources, byRegion, items, intake] = await Promise.all([
+    const [verified, queues, sources, byRegion, items, intake, quality] = await Promise.all([
       this.query<{published:number;stale:number}>(
         "SELECT count(*)::integer AS published," +
         "count(*) FILTER (WHERE verified_at < now()-interval '180 days')::integer AS stale " +
@@ -132,6 +132,37 @@ class CourtsService {
       this.query<{id:string;finished_at:Date;handled:number;failed:number;manifest_count:number}>(`
         SELECT id::text,finished_at,handled,failed,manifest_count
         FROM court_intake_runs ORDER BY id DESC LIMIT 10
+      `),
+      this.query<{with_identifier:number;with_address:number;with_phone:number;
+        with_email:number;with_official_url:number;with_hours:number;with_jurisdiction:number;
+        with_current_judge:number;with_case:number;with_facade:number;with_recent_coordinates:number}>(`
+        SELECT
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_external_identifiers i WHERE i.court_id=c.id))::integer AS with_identifier,
+          count(*) FILTER(WHERE c.address IS NOT NULL AND length(trim(c.address))>0)::integer AS with_address,
+          count(*) FILTER(WHERE c.phone IS NOT NULL AND length(trim(c.phone))>0)::integer AS with_phone,
+          count(*) FILTER(WHERE c.email IS NOT NULL AND length(trim(c.email))>0)::integer AS with_email,
+          count(*) FILTER(WHERE c.official_url IS NOT NULL)::integer AS with_official_url,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_profile_fields p
+            WHERE p.court_id=c.id AND p.field_name IN ('reception_hours','office_hours')))::integer AS with_hours,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_profile_fields p
+            WHERE p.court_id=c.id AND p.field_name='jurisdiction_url'))::integer AS with_jurisdiction,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM judicial_appointments a JOIN sources s ON s.id=a.source_id
+            WHERE a.court_id=c.id AND (a.ends_on IS NULL OR a.ends_on>=CURRENT_DATE)
+              AND s.checked_at>now()-interval '90 days'))::integer AS with_current_judge,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_case_references d WHERE d.court_id=c.id))::integer AS with_case,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_facade_media m
+            WHERE m.court_id=c.id AND m.status='approved'))::integer AS with_facade,
+          count(*) FILTER(WHERE EXISTS (
+            SELECT 1 FROM court_profile_fields p
+            WHERE p.court_id=c.id AND p.field_name='coordinates'
+              AND p.verified_at>now()-interval '180 days'))::integer AS with_recent_coordinates
+        FROM courts c WHERE c.status='verified'
       `)
     ]);
     return {
@@ -139,7 +170,12 @@ class CourtsService {
       public_courts:verified[0]??{published:0,stale:0},
       review_queues:queues, source_monitor:sources[0]??{enabled:0,overdue:0,failed:0,last_checked:null},
       by_region:byRegion, recent_review_items:items, intake_recent_runs:intake,
-      warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
+      quality_metrics:quality[0]??{
+        with_identifier:0,with_address:0,with_phone:0,with_email:0,
+        with_official_url:0,with_hours:0,with_jurisdiction:0,
+        with_current_judge:0,with_case:0,with_facade:0,with_recent_coordinates:0
+      },
+      warning:'Counts describe measured verified-card fields, not nationwide completeness or validity of external sources.'
     };
   }
   async pendingDiscoveries(requestedPage:unknown) {
