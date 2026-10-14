@@ -59,6 +59,14 @@ class ReadinessTests(unittest.TestCase):
         data["review_queues"]["staff_roster_observations_pending"]=11
         self.assertFalse(evaluate(data,"https://courts.example",self.now)["pilot_technical_ready"])
 
+    def test_unreviewed_contact_changes_block_release(self):
+        data=basic(self.now)
+        data["review_queues"]["contact_changes_pending"]=3
+        result=evaluate(data,"https://courts.example",self.now)
+        self.assertFalse(result["pilot_technical_ready"])
+        self.assertIn("Court source and contact review queues still contain unresolved items",
+                      result["blockers"])
+
     def test_stale_or_unavailable_monitor_blocks(self):
         data=basic(self.now)
         data["monitor"]["last_successful_check"]=(self.now-timedelta(days=7)).isoformat()
