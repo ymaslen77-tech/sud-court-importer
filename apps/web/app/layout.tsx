@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SiteHeader } from './_components/site-header';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? 'http://localhost:4173'),
+  metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? 'https://sudy-rossii.vercel.app'),
   title: { default: 'Суды России — информационный правовой портал', template: '%s | Суды России' },
   description: 'Суды Российской Федерации: поиск, официальные контакты, судьи, подсудность, законодательство и судебная практика.',
   robots: { index: true, follow: true },
