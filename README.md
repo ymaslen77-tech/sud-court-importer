@@ -1,3 +1,14 @@
+## Public preview — Судьи и суды России (14.10.2026)
+
+- **Public Next.js website:** https://sudy-rossii.vercel.app
+- **Backend API deployment:** https://sudy-rossii-api.vercel.app/api/v1/health — returns 503 until Neon PostgreSQL is configured and migrations succeed.
+- **Live public smoke:** https://github.com/ymaslen77-tech/sud-court-importer/actions/workflows/public-site-smoke.yml — checked home, `/api/status`, court page, and noindex.
+- **Data classification:** 151 source-linked *unreviewed research previews*, not approved or indexed court cards. The website does not need a configured API to display them.
+- **Remaining deployment gate:** provision Neon PostgreSQL/PostGIS; run `importer/migrate.py --apply --confirm`; securely set `DATABASE_URL` for the API; only after health is reachable point the web app's `API_URL` to that backend.
+- **Operations:** see [Vercel/Neon launch guide](docs/vercel-neon-launch.md).
+
+---
+
 ## Official-source access assessment (14 October 2026)
 
 Access to the official Sudrf federal/magistrate directories, arbitr.ru registry and Moscow open-data directory has been inventoried. Source discovery **does not** certify permission for an automated feed: the checked catalogs currently have **zero** confirmed machine-access grants.
