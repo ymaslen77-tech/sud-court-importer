@@ -1,5 +1,7 @@
 import json
 import sys
+import tempfile
+from datetime import datetime,timedelta,timezone
 import unittest
 from pathlib import Path
 
@@ -7,7 +9,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 from contacts import ImportValidationError
 from profile import official_url, validate
-from watch import SafeRedirect, check_robots, MAX_BYTES
+from watch import SafeRedirect, check_robots, MAX_BYTES, semantic_source_allowed, archive_contact_html
 
 
 class ProfileTests(unittest.TestCase):
@@ -75,6 +77,26 @@ class MonitoringTests(unittest.TestCase):
         with self.assertRaises(ImportValidationError):
             handler.redirect_request(req,None,302,"Found",{},
                                       "http://mos-gorsud.ru/rs/lefortovskij")
+
+    def test_semantic_contact_monitor_requires_recent_permission(self):
+        now=datetime(2026,10,14,12,0,tzinfo=timezone.utc)
+        page="https://mos-gorsud.ru/rs/lefortovskij/help/hours"
+        self.assertTrue(semantic_source_allowed("contacts",page,now-timedelta(days=2),now))
+        self.assertFalse(semantic_source_allowed("contacts",page,now-timedelta(days=31),now))
+        self.assertFalse(semantic_source_allowed("general",page,now,now))
+        self.assertFalse(semantic_source_allowed("hours","https://mos-gorsud.ru/rs/lefortovskij",now,now))
+        self.assertFalse(semantic_source_allowed("contacts",page,None,now))
+
+    def test_semantic_snapshot_archive_does_not_overwrite(self):
+        with tempfile.TemporaryDirectory() as d:
+            folder=Path(d)
+            first=archive_contact_html(folder,2,b"<h1>Test court</h1>")
+            self.assertEqual(first.read_bytes(),b"<h1>Test court</h1>")
+            self.assertEqual(first,archive_contact_html(folder,2,b"<h1>Test court</h1>"))
+            first.write_bytes(b"Different content")
+            with self.assertRaises(ImportValidationError):
+                archive_contact_html(folder,2,b"<h1>Test court</h1>")
+            self.assertEqual(first.read_bytes(),b"Different content")
 
     def test_resource_limit(self):
         self.assertEqual(MAX_BYTES,1_000_000)
