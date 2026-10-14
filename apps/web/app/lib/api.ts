@@ -28,6 +28,7 @@ export type CourtDetail = Court & {
   photo:CourtPhoto|null;
   changes:CourtChange[];
   cases:{case_uid:string;case_number:string;page_url:string;verified_at:string}[];
+  identifiers:{registry:string;external_code:string}[];
 };
 export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
