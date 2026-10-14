@@ -45,6 +45,10 @@ export async function getRegions() {
 export async function getRegionCourts(region: string) {
   return get<Court[]>('/api/v1/regions/' + encodeURIComponent(region) + '/courts');
 }
+export type RegionCourtPage = {items: Court[]; total: number; page: number; pageSize: number};
+export async function getRegionCourtsPage(region: string, page = 1) {
+  return get<RegionCourtPage>('/api/v1/regions/' + encodeURIComponent(region) + '/courts/page?page=' + page);
+}
 export async function getCourt(region: string, court: string): Promise<CourtDetail | null> {
   try {
     return await get<CourtDetail>('/api/v1/regions/' + encodeURIComponent(region) + '/courts/' + encodeURIComponent(court));
