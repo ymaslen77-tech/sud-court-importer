@@ -4,12 +4,15 @@ import argparse
 import json
 from collections import Counter
 from pathlib import Path
+import re
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent / "seeds"
 FILES = (
     "novosibirsk-federal-official-unreviewed.json",
     "novosibirsk-federal-additional-official-unreviewed.json",
+    "omsk-federal-official-unreviewed.json",
+    "omsk-federal-official-ambiguous-unreviewed.json",
     "arbitration-subjects-official-list-unreviewed.json",
     "arbitration-appellate-district-ip-official-unreviewed.json",
     "khabarovsk-magistrates-official-unreviewed.json",
@@ -31,6 +34,8 @@ def audit(root: Path = ROOT) -> dict:
             raise ValueError("Seed must be an array: " + filename)
         missing_code = 0
         insecure_sites = 0
+        code_region_discrepancies = []
+        evidence_recheck_count = 0
         for index, row in enumerate(payload, 1):
             if not isinstance(row, dict):
                 raise ValueError("Non-object row: " + filename)
@@ -43,6 +48,10 @@ def audit(root: Path = ROOT) -> dict:
                 if pair in codes:
                     duplicates.append({"file": filename, "row": index, "region": region, "code": code})
                 codes.add(pair)
+                if re.fullmatch(r"[0-9]{2}[A-Z]{2,3}[0-9]{4}", code) and code[:2] != region:
+                    code_region_discrepancies.append(code)
+            if row.get("reviewIssue"):
+                evidence_recheck_count += 1
             site = row.get("courtSiteUrl")
             if isinstance(site, str) and urlsplit(site).scheme == "http":
                 insecure_sites += 1
@@ -51,6 +60,8 @@ def audit(root: Path = ROOT) -> dict:
             "file": filename, "source_records": len(payload),
             "missing_court_code": missing_code,
             "http_website_urls": insecure_sites,
+            "cross_region_code_prefixes": code_region_discrepancies,
+            "explicit_review_issues": evidence_recheck_count,
             "verified_or_published": 0,
         })
     return {
