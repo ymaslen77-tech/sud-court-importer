@@ -12,7 +12,13 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 CATALOG = Path(__file__).resolve().parent / "sources" / "official-channels.json"
-KNOWN = {"sudrf-federal", "sudrf-magistrate", "arbitr-courts", "moscow-contacts"}
+HOSTS = {
+    "sudrf-federal": "sudrf.ru",
+    "sudrf-magistrate": "sudrf.ru",
+    "arbitr-courts": "arbitr.ru",
+    "moscow-contacts": "data.mos-gorsud.ru",
+}
+KNOWN = set(HOSTS)
 REQUIRED = {
     "key", "publisher", "listing_url", "scope", "listing_observed",
     "machine_feed_url", "permission_document_url", "terms_reviewed",
@@ -57,8 +63,8 @@ def audit(path: Path = CATALOG) -> dict:
         if key not in KNOWN or key in keys:
             raise ValueError("Unknown or duplicated channel key")
         keys.add(key)
-        if not _https(channel["listing_url"]):
-            raise ValueError("Invalid official HTTPS listing URL")
+        if not _https(channel["listing_url"]) or urlsplit(channel["listing_url"]).hostname != HOSTS[key]:
+            raise ValueError("Invalid official HTTPS listing URL or host")
         if not isinstance(channel["listing_observed"], bool):
             raise ValueError("Invalid listing observation")
         if not isinstance(channel["reason"], str) or not channel["reason"].strip():
@@ -72,12 +78,12 @@ def audit(path: Path = CATALOG) -> dict:
                 raise ValueError("Invalid permission boolean")
         feed = channel["machine_feed_url"]
         proof = channel["permission_document_url"]
-        if feed is not None and not _https(feed):
-            raise ValueError("Invalid machine feed URL")
+        if feed is not None and (not _https(feed) or urlsplit(feed).hostname != HOSTS[key]):
+            raise ValueError("Invalid machine feed URL or host")
         if proof is not None and not _https(proof):
             raise ValueError("Invalid permission document URL")
         # Fail closed: only documented human-reviewed channels may be marked ready.
-        ready = (bool(feed) and bool(proof) and channel["terms_reviewed"]
+        ready = (channel["listing_observed"] and bool(feed) and bool(proof) and channel["terms_reviewed"]
                  and channel["automated_access_confirmed"]
                  and channel["reuse_rights_confirmed"])
         if channel["status"] == "approved_feed":
