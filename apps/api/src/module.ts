@@ -314,13 +314,23 @@ class CourtsService {
     if(typeof term!=='string' || term.trim().length<2 || term.trim().length>100) {
       throw new BadRequestException('SEARCH_QUERY_INVALID');
     }
+    const needle=term.trim();
     return this.query<SearchCourt>(
       'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at, ' +
       'r.slug AS region_slug,r.name AS region_name ' +
       'FROM courts c JOIN regions r ON r.id=c.region_id ' +
-      "WHERE c.status='verified' AND position(lower($1) in lower(c.name))>0 " +
-      'ORDER BY c.name,r.name LIMIT 25',
-      [term.trim()]
+      "WHERE c.status='verified' AND (" +
+      'position(lower($1) in lower(c.name))>0 OR ' +
+      "position(lower($1) in lower(coalesce(c.address,'')))>0 OR " +
+      'EXISTS (SELECT 1 FROM court_external_identifiers i ' +
+      'WHERE i.court_id=c.id AND position(lower($1) in lower(i.external_code))>0)) ' +
+      'ORDER BY CASE ' +
+      'WHEN lower(c.name)=lower($1) THEN 0 ' +
+      'WHEN EXISTS (SELECT 1 FROM court_external_identifiers i ' +
+      'WHERE i.court_id=c.id AND lower(i.external_code)=lower($1)) THEN 1 ' +
+      'WHEN position(lower($1) in lower(c.name))=1 THEN 2 ELSE 3 END, ' +
+      'c.name,r.name,c.id LIMIT 25',
+      [needle]
     );
   }
 }
