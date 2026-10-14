@@ -436,6 +436,7 @@ class CourtsService {
       "WHERE c.status='verified' AND (" +
       'position(lower($1) in lower(c.name))>0 OR ' +
       "position(lower($1) in lower(coalesce(c.address,'')))>0 OR " +
+      'position(lower($1) in lower(r.name))>0 OR ' +
       'EXISTS (SELECT 1 FROM court_external_identifiers i ' +
       'WHERE i.court_id=c.id AND position(lower($1) in lower(i.external_code))>0)) ' +
       'ORDER BY CASE ' +
