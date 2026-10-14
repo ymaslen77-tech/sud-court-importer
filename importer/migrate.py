@@ -47,19 +47,19 @@ def run(*, apply: bool, directory: Path = ROOT) -> dict:
     if not url:
         raise ValueError("DATABASE_URL is required; do not print its value")
     manifest = list_migrations(directory)
+    # One transaction for the entire migration set keeps the transaction-level
+    # advisory lock correct even with Neon's transaction-pooled connection URL.
     with psycopg.connect(url, connect_timeout=10, autocommit=True) as conn:
-        # Session-scoped lock holds across per-file transactions.
-        conn.execute("SELECT pg_advisory_lock(1602202610)")
-        try:
+        with conn.transaction():
             if apply:
-                with conn.transaction():
-                    conn.execute("""
-                        CREATE TABLE IF NOT EXISTS court_schema_migrations (
-                          filename TEXT PRIMARY KEY,
-                          sha256 TEXT NOT NULL,
-                          applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
-                        )
-                    """)
+                conn.execute("SELECT pg_advisory_xact_lock(1602202610)")
+                conn.execute("""
+                    CREATE TABLE IF NOT EXISTS court_schema_migrations (
+                      filename TEXT PRIMARY KEY,
+                      sha256 TEXT NOT NULL,
+                      applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
+                    )
+                """)
             exists = conn.execute("""
                 SELECT to_regclass('public.court_schema_migrations') IS NOT NULL
             """).fetchone()[0]
@@ -75,7 +75,6 @@ def run(*, apply: bool, directory: Path = ROOT) -> dict:
             for filename, expected in applied.items():
                 if expected != current[filename]:
                     raise ValueError("Migration hash mismatch: " + filename)
-            # Don't permit a new migration to run before older missing files.
             saw_missing = False
             for entry in manifest:
                 if entry["name"] not in applied:
@@ -86,18 +85,15 @@ def run(*, apply: bool, directory: Path = ROOT) -> dict:
             if apply:
                 for entry in pending:
                     sql = (directory / entry["name"]).read_text(encoding="utf-8")
-                    with conn.transaction():
-                        conn.execute(sql)
-                        conn.execute(
-                            "INSERT INTO court_schema_migrations(filename,sha256) VALUES(%s,%s)",
-                            (entry["name"],entry["sha256"])
-                        )
+                    conn.execute(sql)
+                    conn.execute(
+                        "INSERT INTO court_schema_migrations(filename,sha256) VALUES(%s,%s)",
+                        (entry["name"],entry["sha256"])
+                    )
             return {"mode":"apply" if apply else "check", "schema_files":len(manifest),
                     "already_applied":len(applied), "pending":len(pending),
                     "applied_now":len(pending) if apply else 0,
                     "court_records_published":0}
-        finally:
-            conn.execute("SELECT pg_advisory_unlock(1602202610)")
 
 
 def main() -> None:
