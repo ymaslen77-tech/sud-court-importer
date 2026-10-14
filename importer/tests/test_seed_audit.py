@@ -10,11 +10,11 @@ from seed_audit import FILES, ROOT, audit
 class SeedAuditTests(unittest.TestCase):
     def test_inventory_is_read_only_and_never_claims_publication(self):
         result = audit()
-        self.assertEqual(result["source_records"], 206)
+        self.assertEqual(result["source_records"], 232)
         self.assertEqual(result["published_by_this_command"], 0)
         self.assertEqual(result["actual_verified_courts"], "NOT_ASSESSED")
-        self.assertEqual(len(result["files"]), 4)
-        self.assertEqual(sum(item["source_records"] for item in result["files"]), 206)
+        self.assertEqual(len(result["files"]), 5)
+        self.assertEqual(sum(item["source_records"] for item in result["files"]), 232)
 
     def test_missing_seed_blocks_complete_inventory(self):
         with tempfile.TemporaryDirectory() as d:
