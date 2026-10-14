@@ -49,7 +49,7 @@ export async function loadEditorOverview():Promise<EditorOverview>{
 }
 
 /** Only review-only queues are allowed to receive signable form intents. */
-export const REVIEW_SIGNAL_KINDS=['staff_roster_diffs','registry_diffs','source_changes'] as const;
+export const REVIEW_SIGNAL_KINDS=['staff_roster_diffs','registry_diffs','source_changes','contact_deltas'] as const;
 export function validReviewKind(value:string):boolean{
  return REVIEW_SIGNAL_KINDS.some(kind=>kind===value);
 }
