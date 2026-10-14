@@ -48,6 +48,29 @@ export async function loadEditorOverview():Promise<EditorOverview>{
  return response.json() as Promise<EditorOverview>;
 }
 
+export type EditorCourtCandidate={
+  candidate_id:string;batch_id:string;external_code:string;
+  court_name:string;court_type:string;address:string;
+  phone:string|null;email:string|null;official_url:string;
+  review_status:string;source_url:string;source_type:string;
+  captured_on:string|null;snapshot_sha256:string|null;
+  source_rights_attested:boolean;staged_at:string;
+};
+export type EditorCandidatePage={
+  items:EditorCourtCandidate[];total:number;page:number;pageSize:number;note:string;
+};
+export async function loadEditorCandidates(page:number):Promise<EditorCandidatePage>{
+ if(!editorConfigured()||!Number.isInteger(page)||page<1||page>9999){
+  throw new Error('EDITOR_CANDIDATES_UNAVAILABLE');
+ }
+ const base=process.env.API_URL??'http://localhost:4000';
+ const response=await fetch(base+'/api/v1/internal/editor/court-candidates?page='+page,{
+  cache:'no-store',headers:{authorization:'Bearer '+process.env.EDITOR_API_TOKEN}
+ });
+ if(!response.ok)throw new Error('EDITOR_CANDIDATES_UNAVAILABLE');
+ return response.json() as Promise<EditorCandidatePage>;
+}
+
 /** Only review-only queues are allowed to receive signable form intents. */
 export const REVIEW_SIGNAL_KINDS=['staff_roster_diffs','registry_diffs','source_changes','contact_deltas'] as const;
 export function validReviewKind(value:string):boolean{
