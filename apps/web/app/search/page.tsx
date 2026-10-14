@@ -21,7 +21,7 @@ export default async function SearchPage({searchParams}:Props) {
     <section className="section-hero">
       <span className="kicker">Поиск по реестру</span>
       <h1>Найти суд</h1>
-      <p className="lead">Ищите по названию суда, адресу или официальному классификационному коду. В результатах только проверенные карточки.</p>
+      <p className="lead">Ищите по названию суда, адресу или официальному классификационному коду. Проверенные судебные карточки показаны отдельно от предварительных сведений из официальных источников.</p>
       <CourtSearch initialValue={q}/>
     </section>
     <section className="section-wrap">
@@ -29,7 +29,7 @@ export default async function SearchPage({searchParams}:Props) {
       <h2>{q ? 'По запросу «' + q + '»' : 'Начните поиск'}</h2></div>
       {!q ? <div className="empty-state">Укажите название, адрес или классификационный код суда.</div>
         : !valid ? <div className="notice">Используйте запрос от 2 до 100 символов.</div>
-        : failed ? <div className="notice" role="alert">Поиск временно недоступен. Повторите попытку позднее.</div>
+        : failed ? <div className="notice" role="alert">Подтверждённый реестр временно недоступен. Ниже могут отображаться предварительные результаты из сохранённых официальных перечней.</div>
         : courts.length ? <div className="results">
           {courts.map(court => <Link className="result-row" key={court.id} href={'/courts/' + court.region_slug + '/' + court.slug}>
             <span><strong>{court.name}</strong><small>{court.region_name}{court.address ? ' · ' + court.address : ''}</small></span><span aria-hidden="true">↗</span>
@@ -46,7 +46,7 @@ export default async function SearchPage({searchParams}:Props) {
         <Link className="result-row" key={court.code}
           href={'/courts/'+court.region+'/sud-'+court.code.toLowerCase()}>
           <span><strong>{court.name}</strong>
-            <small>{court.code} · {court.regionName} · {court.address}</small>
+            <small>{court.code} · {court.regionName}{court.address?' · '+court.address:''}</small>
             <small>Требует редакционной проверки</small></span>
           <span aria-hidden="true">↗</span>
         </Link>)}</div>
