@@ -52,12 +52,20 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
    robots:{index:currentEvidence(c),follow:true},
    openGraph:{title:c.name,description:'Проверенные данные суда и официальный первоисточник',type:'website',url:path}
   };
- }catch{return {title:'Сведения о суде',robots:{index:false,follow:true}};}
+ }catch{
+   const candidate=researchCourt(p.region,p.court);
+   return candidate?{
+     title:candidate.name+' — предварительные сведения',
+     robots:{index:false,follow:true}
+   }:{title:'Сведения о суде',robots:{index:false,follow:true}};
+ }
 }
 
 export default async function CourtPage({params}:Props){
  const p=await params;
- const court=await getCourt(p.region,p.court);
+ let court:CourtDetail|null=null;
+ try{ court=await getCourt(p.region,p.court); }
+ catch(error){ if(!researchCourt(p.region,p.court))throw error; }
  if(!court){
    const candidate=researchCourt(p.region,p.court);
    if(!candidate)notFound();
