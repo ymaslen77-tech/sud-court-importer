@@ -182,7 +182,7 @@ class CourtsService {
       "AND c.verified_at > now()-interval '180 days' " +
       'AND EXISTS (SELECT 1 FROM court_facts f JOIN sources s ON s.id=f.source_id ' +
       'WHERE f.court_id=c.id AND f.is_approved=true AND s.url IS NOT NULL) ' +
-      'ORDER BY c.updated_at DESC,c.id LIMIT 5000'
+      'ORDER BY c.updated_at DESC,c.id LIMIT 50000'
     );
   }
   async regions(): Promise<Region[]> {
