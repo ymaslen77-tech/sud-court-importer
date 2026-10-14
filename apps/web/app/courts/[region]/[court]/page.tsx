@@ -36,7 +36,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   const path='/courts/'+encodeURIComponent(p.region)+'/'+encodeURIComponent(p.court);
   const enriched=c.address?' Адрес: '+c.address+'.':'';
   return {
-   title:c.name+' — официальный адрес, телефон, судьи и подсудность',
+   title:c.name+' — адрес, контакты и судебные сведения',
    description:(c.name+'. Контакты суда и проверенные сведения.'+enriched+
       ' Источники и дата обновления данных.').slice(0,290),
    alternates:{canonical:path},
@@ -58,6 +58,8 @@ export default async function CourtPage({params}:Props){
    return href?<small className="fact-source">Источник: <a href={href} target="_blank" rel="noopener noreferrer">официальная публикация ↗</a></small>:null;
  };
  const kind=findCategory(court.court_kind);
+ const identifiers=court.identifiers??[];
+ const courtPracticeDirectory=court.court_kind.startsWith('arbitration-')?'https://sudact.ru/arbitral/':'https://sudact.ru/regular/';
  const extra=court.fields.filter(f=>f.field_name in labels);
  const hasPhoto=court.photo&&/^\/court-media\/[a-zA-Z0-9/_-]+\.(jpg|jpeg|png|webp)$/.test(court.photo.image_path)&&safeOfficialUrl(court.photo.source_url)&&safeOfficialUrl(court.photo.license_url);
  const geoAge=court.coordinate_verified_at
@@ -96,8 +98,26 @@ export default async function CourtPage({params}:Props){
     {kind?<p className="court-kind-link"><Link href={'/courts/types/'+kind.slug}>{kind.title} ↗</Link></p>:null}
   </section>
 
+  <nav className="court-toc" aria-label="Разделы страницы суда">
+    <strong>На этой странице</strong>
+    <a href="#contacts">Адрес и контакты</a>
+    <a href="#location">Карта и проезд</a>
+    <a href="#visiting">Режим работы и подача документов</a>
+    <a href="#judicial-staff">Судьи</a>
+    <a href="#cases">Судебные дела</a>
+    <a href="#provenance">Изменения и источники</a>
+  </nav>
+
+  <div className="court-identity">
+    <div><strong>Тип суда</strong><span>{court.court_type}</span></div>
+    <div><strong>Регион</strong><span>{court.region_name}</span></div>
+    <div><strong>Классификационные идентификаторы</strong>
+      <span>{identifiers.length?identifiers.map(x=>x.registry+': '+x.external_code).join(' · '):'Не опубликованы'}</span></div>
+    <div><strong>Последняя редакционная сверка</strong><span>{formatted(court.verified_at)}</span></div>
+  </div>
+
   <div className="court-detail-grid">
-    <section className="detail-card">
+    <section id="contacts" className="detail-card">
       <span className="eyebrow">Контакты и местоположение</span>
       <h2>Адрес и телефоны суда</h2>
       <dl className="court-facts">
@@ -122,7 +142,7 @@ export default async function CourtPage({params}:Props){
     </aside>
   </div>
 
-  <section className="court-section">
+  <section id="location" className="court-section">
     <span className="eyebrow">Как добраться</span>
     <h2>Расположение суда на карте</h2>
     {trustedGeo
@@ -131,7 +151,7 @@ export default async function CourtPage({params}:Props){
       :<div className="empty-state">Точные координаты ещё не проверены. Карта будет доступна после сверки местоположения по официальному источнику.</div>}
   </section>
 
-  <section className="court-section">
+  <section id="visiting" className="court-section">
     <span className="eyebrow">Практическая информация</span><h2>График, подача документов и подсудность</h2>
     {extra.length?<div className="court-evidence-grid">{extra.map(entry=>{
       const href=entry.field_name.endsWith('_url')?safeOfficialUrl(entry.value):null;
@@ -145,7 +165,7 @@ export default async function CourtPage({params}:Props){
     })}</div>:<div className="empty-state">Дополнительные сведения проходят проверку. Перед поездкой уточните часы приёма, порядок подачи документов и подсудность на официальном сайте суда.</div>}
   </section>
 
-  <section className="court-section">
+  <section id="judicial-staff" className="court-section">
     <span className="eyebrow">Судейский состав</span><h2>Судьи и должности</h2>
     {court.judges.length?<div className="judge-verified-list">{court.judges.map((judge,i)=><article key={judge.full_name+'-'+judge.position+'-'+i}>
       <h3>{judge.full_name}</h3><p>{judge.position}</p>
@@ -154,7 +174,7 @@ export default async function CourtPage({params}:Props){
     </article>)}</div>:<div className="empty-state">Персональный состав суда ещё не подтверждён. Указание должности или ФИО без действующего источника не допускается.</div>}
   </section>
 
-  <section className="court-section">
+  <section id="cases" className="court-section">
     <span className="eyebrow">Проверенные официальные публикации</span>
     <h2>Судебные дела</h2>
     {court.cases?.length?<ol className="court-changes">
@@ -174,9 +194,12 @@ export default async function CourtPage({params}:Props){
         </li>:null;
       })}
     </ol>:<div className="empty-state">Проверенные ссылки на дела пока не добавлены. Сведения об участниках процесса и полномочиях судей по одной лишь карточке дела не выводятся.</div>}
+    <p className="court-source">Дополнительно можно самостоятельно выполнить поиск в справочном агрегаторе:
+      {' '}<a href={courtPracticeDirectory} target="_blank" rel="noopener noreferrer">СудАкт · поиск судебных актов ↗</a>.
+      Публикации СудАкт не заменяют проверку документов на официальных сайтах судов.</p>
   </section>
 
-  <section className="court-section">
+  <section id="provenance" className="court-section">
     <span className="eyebrow">История и достоверность</span><h2>Что изменилось в сведениях о суде</h2>
     {court.changes.length?<ol className="court-changes">{court.changes.map((change,i)=><li key={change.occurred_at+'-'+i}>
       <strong>{changes[change.changed_field]??change.changed_field}</strong>
@@ -184,6 +207,10 @@ export default async function CourtPage({params}:Props){
       <p>{change.old_value??'Ранее не указано'} → {change.new_value??'Не указано'}</p>
     </li>)}</ol>:<div className="empty-state">Зафиксированных опубликованных изменений пока нет. Это не означает, что сведения никогда не менялись.</div>}
     <p className="court-source">Изменения сначала сверяются с первоисточником; обнаружение обновления сайта не меняет карточку автоматически.</p>
+    {source?<p className="court-source"><strong>Первичная публикация:</strong>
+      {' '}<a href={source} target="_blank" rel="noopener noreferrer">Открыть подтверждающий источник ↗</a>.
+    </p>:null}
+    <p className="court-source">Информация носит справочный характер. Перед подачей документов и поездкой в суд проверьте актуальный порядок работы на официальном сайте судебного органа.</p>
   </section>
 
   <section className="callout">
