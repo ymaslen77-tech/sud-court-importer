@@ -408,6 +408,10 @@ jobs:
           done
       - name: Validate research court pages and prevent premature indexing
         run: |
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/coverage > /tmp/courts-coverage.html
+          grep -Fq 'Наполненность каталога судов' /tmp/courts-coverage.html
+          grep -Fq '151' /tmp/courts-coverage.html
+          grep -Fq 'noindex' /tmp/courts-coverage.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54 > /tmp/court-region54.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55 > /tmp/court-region55.html
           grep -Fq '/courts/region-54/sud-54rs0012' /tmp/court-region54.html
