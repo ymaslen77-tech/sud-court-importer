@@ -4,6 +4,8 @@ import type {Metadata} from 'next';
 import {getCourt,safeOfficialUrl,type CourtDetail} from '../../../lib/api';
 import {VerifiedCourtMap} from '../../../_components/verified-court-map';
 import {findCategory} from '../../../lib/court-taxonomy';
+import {researchCourt} from '../../../lib/research-courts';
+import {ResearchCourtPreview} from '../../../_components/research-court-preview';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -32,7 +34,14 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const p=await params;
  try{
   const c=await getCourt(p.region,p.court);
-  if(!c)return {title:'Суд не найден',robots:{index:false,follow:true}};
+  if(!c){
+    const candidate=researchCourt(p.region,p.court);
+    return candidate?{
+      title:candidate.name+' — сведения из официального реестра, требуется проверка',
+      description:'Исходные сведения о суде из открытой региональной выдачи ГАС «Правосудие». Требуется редакционная проверка.',
+      robots:{index:false,follow:true}
+    }:{title:'Суд не найден',robots:{index:false,follow:true}};
+  }
   const path='/courts/'+encodeURIComponent(p.region)+'/'+encodeURIComponent(p.court);
   const enriched=c.address?' Адрес: '+c.address+'.':'';
   return {
@@ -49,7 +58,11 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 export default async function CourtPage({params}:Props){
  const p=await params;
  const court=await getCourt(p.region,p.court);
- if(!court)notFound();
+ if(!court){
+   const candidate=researchCourt(p.region,p.court);
+   if(!candidate)notFound();
+   return <ResearchCourtPreview court={candidate}/>;
+ }
  const website=safeOfficialUrl(court.official_url);
  const source=safeOfficialUrl(court.source_url);
  const contactSource=(field:string)=>{
