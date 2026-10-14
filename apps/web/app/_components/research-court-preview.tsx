@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {ResearchCourt} from '../lib/research-courts';
 import researchHours from '../lib/research-hours.json';
+import {ResearchDossier} from './research-dossier';
 
 type PreliminaryHours = {office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 export function ResearchCourtPreview({court}:{court:ResearchCourt}){
@@ -64,6 +65,7 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
         <p>Фотография фасада, карта, состав судей и судебные дела не добавляются без самостоятельной проверки первоисточников.</p>
       </aside>
     </div>
+    <ResearchDossier code={court.code}/>
     <section className="court-section">
       <span className="eyebrow">Происхождение информации</span>
       <h2>Официальный источник и редакционный статус</h2>
