@@ -466,6 +466,11 @@ jobs:
           curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=1' > /tmp/editor-candidates.json
           grep -Fq '"source_url"' /tmp/editor-candidates.json
           grep -Fq '"candidate_id"' /tmp/editor-candidates.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/discoveries)" = 401
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/discoveries?page=1' > /tmp/editor-discoveries.json
+          grep -Fq '"discovery_id"' /tmp/editor-discoveries.json
+          grep -Fq '"court_name"' /tmp/editor-discoveries.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/discoveries?page=0')" = 400
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=0')" = 400
           curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
           grep -Fq '"published":' /tmp/editor-overview.json
