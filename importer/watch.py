@@ -7,6 +7,8 @@ A changed page produces a human-review event, not a changed court field.
 """
 from __future__ import annotations
 import argparse
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
 from hashlib import sha256
 import json
 import time
@@ -48,7 +50,7 @@ def check_robots(url):
         return False
 
 
-def fetch(url,etag=None,last_modified=None):
+def fetch(url,etag=None,last_modified=None,include_body=False):
     if not official_url(url):
         raise ImportValidationError("HTTPS official source required")
     if not check_robots(url):
@@ -64,10 +66,11 @@ def fetch(url,etag=None,last_modified=None):
             body=response.read(MAX_BYTES+1)
             if len(body)>MAX_BYTES:
                 raise ImportValidationError("Source response exceeds maximum size")
-            return 200,sha256(body).hexdigest(),response.headers.get("ETag"),response.headers.get("Last-Modified")
+            return (200,sha256(body).hexdigest(),response.headers.get("ETag"),
+                    response.headers.get("Last-Modified"),body if include_body else None)
     except HTTPError as error:
         if error.code==304:
-            return 304,None,etag,last_modified
+            return 304,None,etag,last_modified,None
         raise ImportValidationError("Source HTTP status "+str(error.code)) from error
 
 
@@ -96,17 +99,63 @@ def register(court_id,url,scope,reviewer,cadence):
     return {"watch_id":row[0] if row else None,"created":bool(row)}
 
 
-def check(limit=5):
+def semantic_source_allowed(scope,url,permission_time,now=None):
+    """A monitored contact page needs a recently reviewed operator permission."""
+    from official_contact_html import official_hours_url
+    if scope not in ('contacts','hours'):
+        return False
+    try:official_hours_url(url)
+    except ImportValidationError:return False
+    now=now or datetime.now(timezone.utc)
+    if permission_time is None or permission_time.tzinfo is None:
+        return False
+    return timedelta(0) <= now-permission_time <= timedelta(days=30)
+
+
+def archive_contact_html(directory:Path,watch_id:int,raw:bytes)->Path:
+    """Keep a byte-identical source snapshot; never follow or overwrite symlinks."""
+    if not directory.is_dir() or directory.is_symlink():
+        raise ImportValidationError("A dedicated non-symlink snapshot directory is required")
+    digest=sha256(raw).hexdigest()
+    path=directory/("watch-"+str(watch_id)+"-"+digest+".html")
+    created=False
+    try:
+        with path.open("xb") as output:
+            created=True
+            output.write(raw)
+    except FileExistsError:
+        if path.is_symlink() or not path.is_file() or path.read_bytes()!=raw:
+            raise ImportValidationError("Existing stored snapshot differs from official bytes")
+    except OSError:
+        if created:path.unlink(missing_ok=True)
+        raise
+    return path
+
+
+def check(limit=5,semantic_contacts=False,snapshot_dir:Path|None=None):
+    if semantic_contacts and snapshot_dir is None:
+        raise ImportValidationError("Contact semantic mode requires an archived snapshot directory")
     if not 1<=limit<=20:
         raise ImportValidationError("Limit 1-20 required")
     results=[]
     with database_connect() as conn:
-        due=conn.execute("""SELECT id,watch_url,last_sha256,etag,last_modified,cadence_hours
+        due=conn.execute("""SELECT id,watch_url,last_sha256,etag,last_modified,cadence_hours,
+                                   scope,permission_confirmed_at
             FROM court_source_watch WHERE enabled=true AND next_check_at<=now()
             ORDER BY next_check_at,id LIMIT %s""",(limit,)).fetchall()
-    for wid,url,old_sha,etag,lm,hours in due:
+    for wid,url,old_sha,etag,lm,hours,scope,permitted_at in due:
         try:
-            status,new_sha,new_etag,new_lm=fetch(url,etag,lm)
+            if semantic_contacts and scope in ('contacts','hours') and not semantic_source_allowed(scope,url,permitted_at):
+                raise ImportValidationError("Contact source not approved or permission review older than 30 days")
+            record=semantic_contacts and scope in ('contacts','hours')
+            status,new_sha,new_etag,new_lm,body=fetch(url,etag,lm,include_body=record)
+            if record and body is not None:
+                from official_contact_stage import stage as stage_contacts
+                assert snapshot_dir is not None
+                # Preserve original bytes BEFORE recording semantic differences.
+                archive_contact_html(snapshot_dir,wid,body)
+                stage_contacts(wid,url,body,datetime.now(timezone.utc).date(),
+                               "Automated watch (permission already reviewed)",True)
             with database_connect() as conn:
                 with conn.transaction():
                     row=conn.execute("SELECT last_sha256 FROM court_source_watch WHERE id=%s FOR UPDATE",(wid,)).fetchone()
@@ -174,6 +223,9 @@ def main():
     reg.add_argument("--attest-permission",action="store_true")
     c=sub.add_parser("check")
     c.add_argument("--limit",type=int,default=5)
+    c.add_argument("--semantic-contacts",action="store_true")
+    c.add_argument("--snapshot-dir",type=Path)
+    c.add_argument("--attest-automated-processing",action="store_true")
     pending_cmd=sub.add_parser("pending")
     pending_cmd.add_argument("--limit",type=int,default=50)
     review_cmd=sub.add_parser("review")
@@ -188,7 +240,9 @@ def main():
                 raise ImportValidationError("Explicit permissions and robots attestation required")
             result=register(args.court_id,args.url,args.scope,args.reviewer,args.cadence_hours)
         elif args.action=="check":
-            result=check(args.limit)
+            if args.semantic_contacts and not args.attest_automated_processing:
+                raise ImportValidationError("Separate explicit permission attestation required for contact extraction")
+            result=check(args.limit,args.semantic_contacts,args.snapshot_dir)
         elif args.action=="pending":
             result=pending(args.limit)
         else:
