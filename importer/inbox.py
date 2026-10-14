@@ -78,10 +78,9 @@ def manifests(directory: Path, root: Path = ROOT) -> list[dict]:
         if not isinstance(reviewer, str) or not 2 <= len(reviewer.strip()) <= 120:
             raise ImportValidationError("Named reviewer required")
         expected_sha = doc.get("snapshot_sha256")
-        if expected_sha is not None and (
-            not isinstance(expected_sha, str) or re.fullmatch(r"[0-9a-f]{64}", expected_sha) is None
-        ):
-            raise ImportValidationError("snapshot_sha256 must be lowercase 64-character SHA-256")
+        if kind.endswith("-v2") or expected_sha is not None:
+            if not isinstance(expected_sha, str) or re.fullmatch(r"[0-9a-f]{64}", expected_sha) is None:
+                raise ImportValidationError("snapshot_sha256 must be lowercase 64-character SHA-256")
         result = {
             "manifest": file.name, "format": kind, "family": schema[1],
             "path": target, "captured": captured, "reviewer": reviewer.strip(),
