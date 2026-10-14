@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import type {ResearchCourt} from '../lib/research-courts';
+import researchHours from '../lib/research-hours.json';
 
+type PreliminaryHours = {office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 export function ResearchCourtPreview({court}:{court:ResearchCourt}){
+  const hours=(researchHours as Record<string,PreliminaryHours>)[court.code];
+
   const href='/courts/'+court.region;
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
@@ -22,6 +26,16 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
       <div><strong>Тип</strong><span>{court.kind}</span></div>
       <div><strong>Статус проверки</strong><span>Требует повторной сверки</span></div>
     </div>
+    {hours&&!hours.current_verified?<section className="court-section">
+      <span className="eyebrow">Расписание из открытого источника — требуется повторная проверка</span>
+      <h2>График работы суда</h2>
+      <p>{hours.office_hours}</p>
+      <p className="court-source">
+        <a href={hours.source_url} target="_blank" rel="noopener noreferrer">Проверить график на официальном сайте ↗</a>
+        {' '}· дата исследования: {hours.research_checked_on}
+      </p>
+      <p>{hours.note}. Указанный график не заменяет расписание приёма по конкретной категории обращения.</p>
+    </section>:null}
     <div className="court-detail-grid">
       <section className="detail-card">
         <span className="eyebrow">Сведения из исходного официального реестра</span>
