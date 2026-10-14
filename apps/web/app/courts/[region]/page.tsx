@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api';
+import {researchCourtsByRegion} from '../../lib/research-courts';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -37,6 +38,8 @@ export default async function RegionPage({params,searchParams}:Props){
   const page=selectPage(query.page);
   let result:RegionCourtPage={items:[],total:0,page,pageSize:50};
   let label=region==='moscow'?'Москва':region;
+  const candidates=researchCourtsByRegion(region);
+  if(candidates.length)label=candidates[0].regionName;
   let failed=false;
   try{
     const [found,regions]=await Promise.all([getRegionCourtsPage(region,page),getRegions()]);
@@ -81,6 +84,22 @@ export default async function RegionPage({params,searchParams}:Props){
         {result.page<totalPages?<Link href={base+'?page='+(result.page+1)}>Следующая →</Link>:<span/>}
       </nav>:null}
     </section>
+    {candidates.length>0?<section className="section-wrap" aria-labelledby="research-courts">
+      <div className="section-intro">
+        <span className="eyebrow">Отдельно от опубликованного реестра</span>
+        <h2 id="research-courts">Суды из открытого официального перечня: {candidates.length}</h2>
+        <p>Ниже — предварительные записи. Они не считаются подтверждёнными судами нашего каталога, не входят в счётчик опубликованных карточек и закрыты от поисковой индексации до редакционной сверки.</p>
+      </div>
+      <div className="results">
+        {candidates.map(candidate=><Link key={candidate.code} className="result-row"
+          href={'/courts/'+encodeURIComponent(region)+'/sud-'+candidate.code.toLowerCase()}>
+          <span><strong>{candidate.name}</strong>
+            <small>{candidate.code} · {candidate.address}</small>
+            <small>Источник: ГАС «Правосудие» · требуется проверка актуальности</small>
+          </span><span aria-hidden="true">↗</span>
+        </Link>)}
+      </div>
+    </section>:null}
     <section className="callout">
       <div><span className="eyebrow">Дополнительная проверка</span>
         <h2>Где искать сведения, которых ещё нет в каталоге?</h2>
