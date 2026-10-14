@@ -132,6 +132,40 @@ def archive_contact_html(directory:Path,watch_id:int,raw:bytes)->Path:
     return path
 
 
+
+def renew_permission(watch_id:int,reviewer:str,terms_url:str,basis:str,attested:bool)->dict:
+    """Append a named operator declaration; not a substitute for checking law."""
+    if (watch_id<1 or not attested or not isinstance(reviewer,str)
+        or not 2<=len(reviewer.strip())<=120
+        or not isinstance(basis,str) or not 20<=len(basis.strip())<=2000
+        or not official_url(terms_url)):
+        raise ImportValidationError("Named reviewer, official terms and explicit documented permission required")
+    with database_connect() as conn:
+        with conn.transaction():
+            row=conn.execute(
+                """SELECT w.watch_url,w.scope FROM court_source_watch w
+                   JOIN courts c ON c.id=w.court_id
+                   WHERE w.id=%s AND w.enabled=true AND c.status='verified'
+                   FOR UPDATE OF w""",(watch_id,)
+            ).fetchone()
+            if not row or not official_url(row[0]):
+                raise ImportValidationError("Verified, enabled official watch missing")
+            result=conn.execute(
+                """INSERT INTO court_watch_permission_attestations
+                   (watch_id,reviewer,terms_url,permission_basis)
+                   VALUES(%s,%s,%s,%s) RETURNING id""",
+                (watch_id,reviewer.strip(),terms_url,basis.strip())
+            ).fetchone()
+            assert result
+            conn.execute(
+                """UPDATE court_source_watch
+                   SET permission_confirmed_by=%s,permission_confirmed_at=now()
+                   WHERE id=%s""",(reviewer.strip(),watch_id)
+            )
+    return {"watch_id":watch_id,"attestation_id":result[0],
+            "operator_attestation_only":True,"auto_published":0}
+
+
 def check(limit=5,semantic_contacts=False,snapshot_dir:Path|None=None):
     if semantic_contacts and snapshot_dir is None:
         raise ImportValidationError("Contact semantic mode requires an archived snapshot directory")
@@ -221,6 +255,12 @@ def main():
     reg.add_argument("--reviewer",required=True)
     reg.add_argument("--cadence-hours",type=int,default=48)
     reg.add_argument("--attest-permission",action="store_true")
+    permission=sub.add_parser("renew-permission")
+    permission.add_argument("--watch-id",type=int,required=True)
+    permission.add_argument("--reviewer",required=True)
+    permission.add_argument("--terms-url",required=True)
+    permission.add_argument("--basis",required=True)
+    permission.add_argument("--attest-permission",action="store_true")
     c=sub.add_parser("check")
     c.add_argument("--limit",type=int,default=5)
     c.add_argument("--semantic-contacts",action="store_true")
@@ -239,6 +279,9 @@ def main():
             if not args.attest_permission:
                 raise ImportValidationError("Explicit permissions and robots attestation required")
             result=register(args.court_id,args.url,args.scope,args.reviewer,args.cadence_hours)
+        elif args.action=="renew-permission":
+            result=renew_permission(args.watch_id,args.reviewer,args.terms_url,
+                                    args.basis,args.attest_permission)
         elif args.action=="check":
             if args.semantic_contacts and not args.attest_automated_processing:
                 raise ImportValidationError("Separate explicit permission attestation required for contact extraction")
