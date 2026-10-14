@@ -53,7 +53,10 @@ export default async function EditorDashboard(){
     <span className="eyebrow">Кандидаты официальных судов</span>
     <h2>Записи, ожидающие редакционного подтверждения</h2>
     <p>Просматривайте идентификаторы, актуальную версию каждого снимка, адрес, URL суда и контрольную сумму источника. Открытие списка не публикует данные.</p>
-    <Link className="button button-outline" href="/editor/candidates">Открыть кандидатов судов →</Link>
+    <div className="editor-worklinks">
+      <Link className="button button-outline" href="/editor/candidates">Кандидаты с полным профилем →</Link>
+      <Link className="button button-outline" href="/editor/discoveries">Предварительные списки →</Link>
+    </div>
    </section>
    <section className="court-section">
     <span className="eyebrow">Очередь редактора</span><h2>Необработанные изменения</h2>
