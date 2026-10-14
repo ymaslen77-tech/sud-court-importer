@@ -238,7 +238,7 @@ class CourtsService {
     );
     if(!courts.length)throw new NotFoundException('COURT_NOT_FOUND');
     const court=courts[0];
-    const [fields,judges,photos,changes,contactSources,caseReferences]=await Promise.all([
+    const [fields,judges,photos,changes,contactSources,caseReferences,identifiers]=await Promise.all([
       this.query<{field_name:string;value:string;verified_at:Date;source_url:string}>(
         'SELECT f.field_name,f.value,f.verified_at,s.url AS source_url ' +
         'FROM court_profile_fields f JOIN sources s ON s.id=f.source_id ' +
@@ -267,7 +267,10 @@ class CourtsService {
       this.query<{case_uid:string;case_number:string;page_url:string;verified_at:Date}>(
         'SELECT case_uid,case_number,page_url,verified_at ' +
         'FROM court_case_references WHERE court_id=$1 ' +
-        'ORDER BY verified_at DESC,id DESC LIMIT 20',[court.id])
+        'ORDER BY verified_at DESC,id DESC LIMIT 20',[court.id]),
+      this.query<{registry:string;external_code:string}>(
+        'SELECT registry,external_code FROM court_external_identifiers ' +
+        'WHERE court_id=$1 ORDER BY registry',[court.id])
     ]);
     let coords:{latitude:number;longitude:number}|null=null;
     const rawCoordinates=fields.find(field=>field.field_name==='coordinates');
@@ -283,7 +286,7 @@ class CourtsService {
     return {...court,fields:fields.filter(f=>f.field_name!=='coordinates'),
       coordinates:coords,coordinate_source_url:rawCoordinates?.source_url??null,
       coordinate_verified_at:rawCoordinates?.verified_at??null,
-      judges,photo:photos[0]??null,changes,contact_sources:contactSources,cases:caseReferences};
+      judges,photo:photos[0]??null,changes,contact_sources:contactSources,cases:caseReferences,identifiers};
   }
   async byKind(kind:string, requestedPage:unknown) {
     if(!COURT_KINDS.has(kind))throw new NotFoundException('COURT_CATEGORY_NOT_FOUND');
