@@ -58,6 +58,14 @@ class DiscoveryTests(unittest.TestCase):
                             and r.court_kind=="magistrate-area"
                             and r.address is None for r in records))
 
+    def test_cross_region_military_code_is_quarantined_not_published(self):
+        path = SEED.with_name("omsk-federal-official-ambiguous-unreviewed.json")
+        records = parse_snapshot(path.read_bytes())
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0].external_code, "54GV0008")
+        self.assertEqual(records[0].region_code, "55")
+        self.assertEqual(records[0].court_kind, "federal-military")
+
     def test_reject_duplicate_names_same_list(self):
         with self.assertRaises(ImportValidationError):
             parse_snapshot(payload(candidate(),candidate()))
