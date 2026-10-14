@@ -24,6 +24,21 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
         changeFrequency:'weekly',priority:.75
       });
     }
+    // Region landing pages are included only after the API reports published courts.
+    // No phantom region pages enter search indexing.
+    try{
+      const regionsResponse=await fetch(base+'/api/v1/regions',{next:{revalidate:3600}});
+      if(regionsResponse.ok){
+        const regions=await regionsResponse.json() as {slug:string;court_count:number}[];
+        for(const region of regions){
+          if(!/^[a-z0-9-]{1,100}$/.test(region.slug) || region.court_count<=0)continue;
+          result.push({
+            url:new URL('/courts/'+region.slug,site).toString(),
+            changeFrequency:'weekly',priority:.65
+          });
+        }
+      }
+    }catch{ /* Court entries remain valid even when the regions API is unavailable. */ }
   }catch{
     // Never insert missing or unverified records into the sitemap.
   }
