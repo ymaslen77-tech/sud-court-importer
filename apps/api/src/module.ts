@@ -60,6 +60,16 @@ class CourtsService {
         UNION ALL SELECT 'source_changes',count(*)::integer FROM court_source_watch_events WHERE status='pending'
         UNION ALL SELECT 'contact_deltas',count(*)::integer FROM court_contact_change_events WHERE review_status='pending'
         UNION ALL SELECT 'case_references',count(*)::integer FROM court_case_candidates WHERE status='pending'
+        UNION ALL SELECT 'court_candidates',count(*)::integer FROM (
+          SELECT DISTINCT ON (b.source_id,i.external_code) i.review_status
+          FROM court_import_rows i JOIN court_import_batches b ON b.id=i.batch_id
+          ORDER BY b.source_id,i.external_code,b.staged_at DESC,b.id DESC,i.id DESC
+        ) current_imports WHERE review_status='pending'
+        UNION ALL SELECT 'court_discoveries',count(*)::integer FROM (
+          SELECT DISTINCT ON (b.registry,r.row_key) r.review_status
+          FROM court_discovery_rows r JOIN court_discovery_batches b ON b.id=r.batch_id
+          ORDER BY b.registry,r.row_key,b.created_at DESC,b.id DESC,r.id DESC
+        ) current_discoveries WHERE review_status='pending'
       `),
       this.query<{enabled:number;overdue:number;failed:number;last_checked:Date|null}>(`
         SELECT count(*) FILTER(WHERE enabled)::integer AS enabled,
