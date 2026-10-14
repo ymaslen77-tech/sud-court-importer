@@ -14,8 +14,9 @@ class SeedAuditTests(unittest.TestCase):
         self.assertEqual(result["published_by_this_command"], 0)
         self.assertEqual(result["actual_verified_courts"], "NOT_ASSESSED")
         self.assertEqual(len(result["files"]), 7)
-        self.assertEqual(result["files"][-2]["source_records"], 40)
-        self.assertEqual(result["files"][-1]["cross_region_code_prefixes"], ["54GV0008"])
+        by_file = {item["file"]: item for item in result["files"]}
+        self.assertEqual(by_file["omsk-federal-official-unreviewed.json"]["source_records"], 40)
+        self.assertEqual(by_file["omsk-federal-official-ambiguous-unreviewed.json"]["cross_region_code_prefixes"], ["54GV0008"])
         self.assertEqual(sum(item["source_records"] for item in result["files"]), 273)
 
     def test_missing_seed_blocks_complete_inventory(self):
