@@ -255,3 +255,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 /* Private review queue: source hashes remain readable on mobile. */
 .editor-digest{overflow-wrap:anywhere;word-break:break-all;font-family:ui-monospace,monospace;font-size:11px}
 .editor-review-list h2{font-size:18px;line-height:1.4;overflow-wrap:anywhere;margin:13px 0}
+
+/* Court research data coverage: accessible tabular view */
+.coverage-scroll{width:100%;overflow-x:auto;border:1px solid var(--line)}
+.coverage-table{width:100%;border-collapse:collapse;min-width:590px;text-align:left;font-size:13px}
+.coverage-table th,.coverage-table td{padding:17px 20px;border-bottom:1px solid var(--line);vertical-align:top}
+.coverage-table thead{background:#f7f6f4;color:#5b6670}
+.coverage-table tbody th{font-weight:700}
+.coverage-table tbody th a{color:var(--red)}
+.coverage-table td{font-variant-numeric:tabular-nums;text-align:right}
+.coverage-table .coverage-total{font-weight:800;background:#f7f6f4}
+.coverage-table tr:last-child>*{border-bottom:none}
