@@ -251,3 +251,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .court-section,.detail-card{scroll-margin-top:24px}
 @media(max-width:900px){.court-identity{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.court-identity{grid-template-columns:1fr}.court-toc{padding:19px;gap:10px 15px}.court-toc strong{width:100%}}
+
+/* Private review queue: source hashes remain readable on mobile. */
+.editor-digest{overflow-wrap:anywhere;word-break:break-all;font-family:ui-monospace,monospace;font-size:11px}
+.editor-review-list h2{font-size:18px;line-height:1.4;overflow-wrap:anywhere;margin:13px 0}
