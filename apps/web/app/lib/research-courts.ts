@@ -62,3 +62,17 @@ export function researchSearch(query: string): ResearchCourt[] {
   return candidates.filter(court=>[court.name,court.address??'',court.regionName,court.code]
     .some(value=>value.toLocaleLowerCase('ru').includes(needle))).slice(0,50);
 }
+
+export function researchCourtsByKind(kind: string): ResearchCourt[] {
+  const prefixes:Record<string,string[]> = {
+    'general-magistrate':['MS'],
+    'general-district':['RS'],
+    'general-regional':['OS'],
+    'general-appeal':['AJ'],
+    'military-garrison':['GV'],
+    'military-cassation':['KV']
+  };
+  const allowed=prefixes[kind];
+  if(!allowed)return [];
+  return candidates.filter(court=>allowed.includes(court.code.slice(2,4)));
+}
