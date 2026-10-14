@@ -142,6 +142,49 @@ class CourtsService {
       warning:'Counts describe editorial workflow, not verified completeness of courts across Russia.'
     };
   }
+  async pendingCourtCandidates(requestedPage:unknown) {
+    // Latest record for each (source, court code); do not count obsolete
+    // historical snapshots as distinct courts or publish candidates here.
+    const rawPage=requestedPage===undefined?'1':requestedPage;
+    if(typeof rawPage!=='string' || !/^[1-9][0-9]{0,3}$/.test(rawPage)){
+      throw new BadRequestException('INVALID_PAGE_NUMBER');
+    }
+    const page=Number(rawPage);
+    const pageSize=50;
+    const rows=await this.query<{total:number;items:unknown[]}>(`
+      WITH latest AS (
+        SELECT DISTINCT ON (b.source_id,i.external_code)
+          i.id::text AS candidate_id,b.id::text AS batch_id,
+          i.external_code,i.court_name,i.court_type,i.address,
+          i.phone,i.email,i.official_url,i.review_status,
+          s.url AS source_url,s.source_type,
+          b.snapshot_captured_on::text AS captured_on,
+          b.primary_snapshot_sha256 AS snapshot_sha256,
+          b.snapshot_use_attested AS source_rights_attested,
+          b.staged_at
+        FROM court_import_rows i
+        JOIN court_import_batches b ON b.id=i.batch_id
+        JOIN sources s ON s.id=b.source_id
+        ORDER BY b.source_id,i.external_code,b.staged_at DESC,b.id DESC,i.id DESC
+      ),
+      pending AS (
+        SELECT * FROM latest WHERE review_status='pending'
+      ),
+      total AS (SELECT count(*)::integer AS count FROM pending),
+      selected AS (
+        SELECT * FROM pending ORDER BY staged_at DESC,candidate_id DESC
+        LIMIT $1 OFFSET $2
+      )
+      SELECT total.count AS total,
+        COALESCE(jsonb_agg(to_jsonb(selected)
+            ORDER BY selected.staged_at DESC,selected.candidate_id DESC)
+          FILTER (WHERE selected.candidate_id IS NOT NULL),'[]'::jsonb) AS items
+      FROM total LEFT JOIN selected ON TRUE
+      GROUP BY total.count
+    `,[pageSize,(page-1)*pageSize]);
+    return {items:rows[0]?.items??[],total:rows[0]?.total??0,page,pageSize,
+      note:'Unverified latest source snapshots only. Read-only; publication requires independent editorial approval.'};
+  }
   async acknowledgeEvidenceSignal(kind:string,id:string,body:unknown){
     // This API acknowledges an observation only. It never approves a court,
     // alters an appointment, or applies proposed values to public facts.
@@ -339,6 +382,13 @@ class CourtsService {
 class CourtsController {
   constructor(private readonly service:CourtsService) {}
   @Get('health') health(){return {status:'ok'};}
+  @Get('internal/editor/court-candidates') courtCandidates(
+    @Headers('authorization') authorization:string|undefined,
+    @Query('page') page:unknown
+  ){
+    editorAuth(authorization);
+    return this.service.pendingCourtCandidates(page);
+  }
   @Get('internal/editor/overview') overview(@Headers('authorization') authorization:string|undefined){
     editorAuth(authorization);
     return this.service.editorOverview();
