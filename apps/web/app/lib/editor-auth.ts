@@ -36,6 +36,11 @@ export type EditorOverview={
  by_region:{code:string;name:string;published:number}[];
  recent_review_items:{kind:string;item_id:string;court:string;field:string;value:string;source_url:string;observed_at:string}[];
  intake_recent_runs:{id:string;finished_at:string;handled:number;failed:number;manifest_count:number}[];
+ quality_metrics:{
+  with_identifier:number;with_address:number;with_phone:number;with_email:number;
+  with_official_url:number;with_hours:number;with_jurisdiction:number;
+  with_current_judge:number;with_case:number;with_facade:number;with_recent_coordinates:number;
+ };
  warning:string;
 };
 
