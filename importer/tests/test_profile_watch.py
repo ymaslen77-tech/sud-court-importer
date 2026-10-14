@@ -1,6 +1,8 @@
 import json
 import sys
 import tempfile
+from contextlib import nullcontext
+from unittest.mock import patch
 from datetime import datetime,timedelta,timezone
 import unittest
 from pathlib import Path
@@ -9,7 +11,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 from contacts import ImportValidationError
 from profile import official_url, validate
-from watch import SafeRedirect, check_robots, MAX_BYTES, semantic_source_allowed, archive_contact_html
+from watch import SafeRedirect, check_robots, MAX_BYTES, semantic_source_allowed, archive_contact_html, check
 
 
 class ProfileTests(unittest.TestCase):
@@ -97,6 +99,39 @@ class MonitoringTests(unittest.TestCase):
             with self.assertRaises(ImportValidationError):
                 archive_contact_html(folder,2,b"<h1>Test court</h1>")
             self.assertEqual(first.read_bytes(),b"Different content")
+
+    def test_semantic_watch_stages_only_after_archiving_source(self):
+        class Result:
+            def __init__(self,rows):self.rows=rows
+            def fetchall(self):return self.rows
+            def fetchone(self):return self.rows[0] if self.rows else None
+        class FakeDB:
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def transaction(self):return nullcontext()
+            def execute(self,query,params=()):
+                if "SELECT id,watch_url,last_sha256" in query:
+                    return Result([(7,"https://mos-gorsud.ru/rs/lefortovskij/help/hours",
+                                    "oldhash",None,None,48,"contacts",datetime.now(timezone.utc))])
+                if "SELECT last_sha256" in query:return Result([("oldhash",)])
+                return Result([])
+        with patch("watch.database_connect",return_value=FakeDB()), \
+             patch("watch.fetch",return_value=(200,"newhash",None,None,b"official snapshot")) as fetch, \
+             patch("watch.archive_contact_html") as archive, \
+             patch("official_contact_stage.stage") as stage, \
+             patch("watch.time.sleep"):
+            result=check(semantic_contacts=True,snapshot_dir=Path("/test/snapshots"))
+        self.assertEqual(result["checked"],1)
+        self.assertEqual(result["results"][0]["http_status"],200)
+        self.assertTrue(fetch.call_args.kwargs["include_body"])
+        archive.assert_called_once()
+        stage.assert_called_once()
+        self.assertEqual(stage.call_args.args[:3],
+                         (7,"https://mos-gorsud.ru/rs/lefortovskij/help/hours",b"official snapshot"))
+
+    def test_semantic_watch_never_runs_without_archive_directory(self):
+        with self.assertRaises(ImportValidationError):
+            check(semantic_contacts=True)
 
     def test_resource_limit(self):
         self.assertEqual(MAX_BYTES,1_000_000)
