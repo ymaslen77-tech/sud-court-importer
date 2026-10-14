@@ -168,6 +168,28 @@ jobs:
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/normalized/moscow-mapped.json > /tmp/raw-mapped-valid.json
           grep -Fq '"records": 1' /tmp/raw-mapped-valid.json
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | tr -d '\r')" = 0
+      - name: Require recent explicit source permission before any live HTTP request
+        run: |
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          settings = {
+            "dataset_url":"https://data.mos-gorsud.ru/opendata/TEST-CONTACTS-2026-EXAMPLE",
+            "export_url":"https://data.mos-gorsud.ru/download/official-contacts.json",
+            "terms_url":"https://data.mos-gorsud.ru/terms-of-use",
+            "reviewed_on":str(date.today()), "reviewer":"CI Test Operator",
+            "permission_basis":"CI fixture only: not an authorization for external access",
+            "automatic_access_confirmed":False, "reuse_rights_confirmed":False
+          }
+          Path("data/import/moscow-live-source-test.json").write_text(json.dumps(settings),encoding="utf-8")
+          PY
+          if docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_moscow_fetch.py fetch --settings /input/moscow-live-source-test.json --output-dir /output; then
+            echo 'Permission gate incorrectly allowed live HTTP request' >&2
+            exit 1
+          fi
+          test "$(find data/import/normalized -maxdepth 1 -type f -name 'moscow-raw-*.json' | wc -l)" -eq 0
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = 0
       - name: Exercise Moscow normalized contact snapshot and retry-safe diff
         run: |
           cp importer/tests/fixtures/synthetic_contacts.json data/import/moscow-old.json
