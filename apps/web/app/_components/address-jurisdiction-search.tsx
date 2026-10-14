@@ -59,14 +59,15 @@ export function AddressJurisdictionSearch(){
  const [showAll,setShowAll]=useState(false);
  const regions=researchRegions();
  const results=useMemo(()=>{
-  if(!submitted||!region||normalize(address).length<3)return [];
+  if(!submitted||!region||normalize(address).length<3 ||
+     caseGroup==='economic'||(caseGroup==='civil'&&role==='applicant'))return [];
   return researchCourtsByRegion(region).filter(c=>candidateMatches(c,address) && (!c.code.includes('MS') || caseGroup!=='economic'))
     .sort((a,b)=>{
        const district=a.code.includes('RS')?-1:0;
        const other=b.code.includes('RS')?-1:0;
        return district-other || a.name.localeCompare(b.name,'ru');
     });
- },[region,address,submitted,caseGroup]);
+ },[region,address,submitted,caseGroup,role]);
  const valid=Boolean(region&&normalize(address).length>=3&&normalize(address).length<=180);
  const noData=region==='region-27';
  return <section className="court-address-tool" aria-labelledby="address-tool-title">
@@ -109,6 +110,8 @@ export function AddressJurisdictionSearch(){
    {submitted?<div className="court-address-results" aria-live="polite">
      <h3>Результаты предварительного подбора</h3>
      {!valid?<p>Укажите регион и адрес длиной не менее трёх символов.</p>
+     :caseGroup==='economic'?<p>Для экономических споров сначала необходимо определить компетенцию арбитражных судов по АПК РФ. Исследовательские карточки районных судов здесь намеренно не предлагаются. <Link href="/courts/arbitration">Перейти к арбитражным судам →</Link></p>
+     :caseGroup==='civil'&&role==='applicant'?<p>По общему правилу гражданский иск подаётся по адресу ответчика, а не заявителя. Выберите «Адрес ответчика», либо уточните категорию дела и предусмотренное законом исключение (ст. 29–30 ГПК РФ).</p>
      :noData?<p>По данному региону есть предварительный список участков, но сведения о границах и адресах отсутствуют. Точное определение подсудности невозможно. <Link href={'/courts/'+region}>Посмотреть судебные участки →</Link></p>
      :results.length===0?<p>Однозначных совпадений по населённому пункту не найдено. Это не означает, что суд отсутствует. <Link href={'/courts/'+region}>Посмотреть суды выбранного региона →</Link></p>
      :<>
