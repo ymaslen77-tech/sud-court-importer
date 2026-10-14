@@ -72,7 +72,7 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
           docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump > /tmp/dump-manifest.txt
           grep -Fq 'TOC Entries:' /tmp/dump-manifest.txt
-          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql; do
+          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql db/migrations/011_court_contact_review.sql; do
             test -f "$f"
             docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
           done
@@ -397,6 +397,21 @@ jobs:
           grep -Fq '"status": "closed"' /tmp/judge-closed.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='judge';" | grep -Fqx 2
           curl --fail --silent --show-error http://127.0.0.1:4173/sitemap.xml | grep -Fq '<urlset'
+      - name: Integrate saved official-contact differences into PostgreSQL review queue
+        run: |
+          COURT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM courts WHERE slug='test-court' LIMIT 1" | tr -d '\r')"
+          CONTACT_URL='https://mos-gorsud.ru/rs/lefortovskij/help/hours'
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py register --court-id "$COURT_ID" --url "$CONTACT_URL" --scope contacts --reviewer 'CI fixture reviewer' --attest-permission > /tmp/contact-watch.json
+          WATCH_ID="$(python3 -c 'import json;print(json.load(open("/tmp/contact-watch.json"))["watch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-old.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-first.json
+          grep -Fq '"signals": 0' /tmp/contact-first.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-new.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-second.json
+          grep -Fq '"signals": 3' /tmp/contact-second.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-new.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-replay.json
+          grep -Fq '"created": false' /tmp/contact-replay.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_change_events WHERE review_status='pending'" | grep -Fqx 3
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_snapshots WHERE watch_id=$WATCH_ID" | grep -Fqx 2
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='court' AND changed_field IN ('phone','email')" | tr -d '\r')" = 0
       - name: End-to-end proof for a reviewed official court-case link (ephemeral DB only)
         run: |
           PILOT_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/lefortovsky-staged.json"))["batch_id"])')"
@@ -488,6 +503,13 @@ jobs:
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=registry_diffs' --data-urlencode "itemId=$REGISTRY_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 409
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
           test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          CONTACT_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_contact_change_events WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          test -n "$CONTACT_EVENT_ID"
+          CONTACT_CSRF="$(extract_csrf contact_deltas "$CONTACT_EVENT_ID")"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=contact_deltas' --data-urlencode "itemId=$CONTACT_EVENT_ID" --data-urlencode "csrf=$CONTACT_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_change_events WHERE id=$CONTACT_EVENT_ID AND review_status='reviewed' AND reviewed_at IS NOT NULL AND reviewed_by='ci-editor'" | grep -Fqx 1
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          echo 'Semantic phone/email signals acknowledged without changing public facts'
           echo 'Registry and source monitoring signals reviewed without publication'
       - name: Shut down and clean smoke-test containers
         if: always()
