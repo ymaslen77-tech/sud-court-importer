@@ -1,0 +1,173 @@
+{
+  "54RS0012": {
+    "court_code": "54RS0012",
+    "evidence_class": "official_page_observation_not_editorially_approved",
+    "researched_on": "2026-10-14",
+    "summary": "Районный суд, оказывающий услуги в Барабинске и через постоянное судебное присутствие в селе Убинское. Сведения о конкретном графике приёма, служебных лицах и платёжных реквизитах перед использованием необходимо сверять.",
+    "offices": [
+      {
+        "label": "Основное здание",
+        "address": "632334, Новосибирская область, г. Барабинск, пер. Индустриальный, д. 7",
+        "hours": "Пн 08:00–17:00; Вт–Чт 08:00–16:30; Пт 08:00–16:00",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Постоянное судебное присутствие в с. Убинское",
+        "address": "Новосибирская область, с. Убинское, ул. Железнодорожная, д. 1",
+        "hours": "Пн 08:00–17:00; Вт–Чт 08:00–16:30; Пт 08:00–16:00",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      }
+    ],
+    "departments": [
+      {
+        "label": "Общий отдел",
+        "phone": "8 (38361) 2-91-37",
+        "room": "Кабинет № 5",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Приёмная председателя суда",
+        "phone": "8 (38361) 2-91-24",
+        "room": "Кабинет № 1",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Заместитель начальника общего отдела",
+        "phone": "8 (38361) 2-90-95",
+        "room": null,
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Администратор суда",
+        "phone": "8 (38361) 2-90-74",
+        "room": "Кабинет № 7",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Постоянное присутствие — канцелярия/аппарат суда",
+        "phone": "8 (38366) 2-14-48",
+        "room": null,
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      }
+    ],
+    "staff_observations": [
+      {
+        "name": "Сафонова Елена Владимировна",
+        "position": "Председатель суда — по опубликованной странице контактов",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "name": "Первушин Юрий Николаевич",
+        "position": "Судья постоянного присутствия — по опубликованной странице контактов",
+        "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      }
+    ],
+    "reception": {
+      "description": "Официальное положение о приёмной указывает приём граждан в рабочее время без предварительной записи, в порядке очереди, с учётом льготных категорий. Это не заменяет расписание конкретного подразделения.",
+      "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=docum_sud&rid=3"
+    },
+    "payments": {
+      "source_updated_on": "2026-04-20",
+      "source_url": "https://barabinsky--nsk.sudrf.ru/modules.php?id=3&name=information",
+      "rows": [
+        {
+          "label": "Получатель",
+          "value": "Казначейство России (ФНС России)"
+        },
+        {
+          "label": "ИНН",
+          "value": "7727406020"
+        },
+        {
+          "label": "КПП",
+          "value": "770701001"
+        },
+        {
+          "label": "БИК",
+          "value": "017003983"
+        },
+        {
+          "label": "Единый казначейский счёт",
+          "value": "40102810445370000059"
+        },
+        {
+          "label": "Казначейский счёт",
+          "value": "03100643000000018500"
+        },
+        {
+          "label": "КБК из публикации",
+          "value": "18210803010011050110"
+        },
+        {
+          "label": "ОКТМО из публикации",
+          "value": "50604000 (50554000 — с. Убинское)"
+        }
+      ],
+      "warning": "Реквизиты опубликованы судом и могут измениться; сумма и правильный КБК/ОКТМО зависят от обращения. Перед оплатой обязательно сверяйте актуальные реквизиты и используйте официальный калькулятор."
+    },
+    "official_services": [
+      {
+        "label": "Судебное делопроизводство и поиск дел",
+        "description": "Поиск номеров дел, дат заседаний и опубликованных сведений. Не все сведения доступны публично.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=sud_delo"
+      },
+      {
+        "label": "Территориальная подсудность",
+        "description": "Проверка, относится ли адрес или территория к компетенции суда.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=terr"
+      },
+      {
+        "label": "Электронная подача процессуальных документов",
+        "description": "Государственный сервис подачи документов. Выбор суда и способ подачи уточняются в сервисе.",
+        "url": "https://ej.sudrf.ru/"
+      },
+      {
+        "label": "Калькулятор государственной пошлины",
+        "description": "Расчёт платежа на официальном сайте; результат зависит от вида обращения.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=govduty"
+      },
+      {
+        "label": "Состав суда",
+        "description": "Публикуемая судом информация о составе; актуальность должностей требует проверки.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?id=1&name=info_court"
+      },
+      {
+        "label": "Контакты и аппарат суда",
+        "description": "Официальный список кабинетов, телефонов и постоянного присутствия.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2"
+      },
+      {
+        "label": "Регламент приёмной и правила посещения",
+        "description": "Порядок приёма граждан, требования и правила нахождения в суде.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=docum_sud&rid=3"
+      },
+      {
+        "label": "Реквизиты для государственной пошлины",
+        "description": "Платёжные сведения по официальной публикации; перед оплатой проверьте изменения.",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?id=3&name=information"
+      }
+    ],
+    "provenance": [
+      {
+        "label": "Контакты, дополнительные здания и должностные сведения",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2",
+        "last_modified": "2026-06-02"
+      },
+      {
+        "label": "График работы и электронная подача",
+        "url": "https://barabinsky--nsk.sudrf.ru/",
+        "last_modified": null
+      },
+      {
+        "label": "Реквизиты госпошлины",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?id=3&name=information",
+        "last_modified": "2026-04-20"
+      },
+      {
+        "label": "Приём граждан",
+        "url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=docum_sud&rid=3",
+        "last_modified": null
+      }
+    ]
+  }
+}
