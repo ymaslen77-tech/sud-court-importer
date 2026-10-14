@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { CourtSearch } from '../_components/court-search';
 import { getRegions } from '../lib/api';
+import { researchRegions } from '../lib/research-courts';
 
 export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,6 +17,7 @@ export default async function CourtsDirectory() {
   let regions: Awaited<ReturnType<typeof getRegions>> = [];
   let failed = false;
   try { regions = await getRegions(); } catch { failed = true; }
+  const research = researchRegions();
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>Суды России</div>
     <section className="section-hero">
@@ -49,6 +51,16 @@ export default async function CourtsDirectory() {
           <p>Публичных карточек ещё нет. Подготовлена загрузка из официальных источников по всей России; до редакционной проверки суды не отображаются в каталоге.</p>
           <Link className="text-link" href="/courts/moscow">Посмотреть пилотный регион →</Link>
         </div>}
+    </section>
+    <section className="section-wrap" aria-labelledby="research-regions">
+      <div className="section-intro"><span className="eyebrow">Открытые источники · исследовательские карточки</span>
+        <h2 id="research-regions">Предварительные списки по регионам</h2>
+        <p>Подготовлены персональные страницы на основе открытых официальных перечней ГАС «Правосудие». Эти записи ещё не прошли независимую актуальную проверку, не считаются опубликованными верифицированными судами и не индексируются поисковыми системами.</p>
+      </div>
+      <div className="region-grid">{research.map(region=><Link className="region-item" key={region.slug}
+        href={'/courts/'+region.slug}>
+        <span>{region.name}</span><small>{region.count} предварительных карточек</small><span aria-hidden="true">↗</span>
+      </Link>)}</div>
     </section>
     <section className="section-wrap" aria-labelledby="official-directory">
       <div className="section-intro">
