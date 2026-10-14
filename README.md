@@ -7,9 +7,9 @@ docker compose -f compose.local.yaml run --rm --entrypoint python importer /work
 docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/seed_audit.py
 ```
 
-The offline preliminary source corpus now contains **232 rows** (the historical 206 plus 26 additional candidates transcribed from the accessible official Novosibirsk regional court listing). These are **not** 232 verified courts or public pages; the additional 26 are held in `importer/seeds/novosibirsk-federal-additional-official-unreviewed.json`. They still require current primary-source and editorial review. Automated publication: **0**.
+The offline preliminary source corpus now contains **273 rows** (206 initial records + 26 Novosibirsk + 41 Omsk; all are preliminary, with a cross-region military-code exception). These are **not** 273 verified courts or public pages; the additional 26 Novosibirsk entries are held in `importer/seeds/novosibirsk-federal-additional-official-unreviewed.json`, and Omsk source records in `importer/seeds/omsk-federal-official-unreviewed.json` plus one quarantined military entry. They still require current primary-source and editorial review. Automated publication: **0**.
 
-See [source verification and blocking permissions](docs/source-channel-verification-2026-10-14.md), [unsent operator inquiry](docs/draft-official-court-data-request.md), and [acceptance status](docs/acceptance-status.md). Do not enable live crawling until official access terms and exact feed schemas have been verified.
+See [Omsk manual open-source intake](docs/omsk-public-courts-manual-intake-2026-10-14.md), [source verification and blocking permissions](docs/source-channel-verification-2026-10-14.md), [unsent operator inquiry](docs/draft-official-court-data-request.md), and [acceptance status](docs/acceptance-status.md). Do not enable live crawling until official access terms and exact feed schemas have been verified.
 
 ---
 
