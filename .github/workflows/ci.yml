@@ -383,7 +383,7 @@ jobs:
       - name: Check API and HTML response
         run: |
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
-          grep -Fqx '{"status":"ok"}' /tmp/api-health.json
+          grep -Fqx '{"status":"ok","database":"reachable"}' /tmp/api-health.json
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions > /tmp/regions.json
           grep -Fqx '[]' /tmp/regions.json
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/courts/categories/general-district > /tmp/courts-category.json
