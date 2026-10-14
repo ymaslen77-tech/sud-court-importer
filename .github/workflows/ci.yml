@@ -446,6 +446,7 @@ jobs:
           CASE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/case-proposal.json"))["candidate_id"])')"
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/cases.py approve --candidate-id "$CASE_CANDIDATE" --reviewer "CI simulated editor - test only" --attest-current --attest-reuse-rights > /tmp/case-approved.json
           grep -Fq '"published": 1' /tmp/case-approved.json
+          curl --fail --silent --show-error --get --data-urlencode 'q=77RS0014' http://127.0.0.1:4174/api/v1/courts/search | grep -Fq '77RS0014'
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/moscow/courts/sud-77rs0014 | grep -Fq '02-7949/2026'
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/moscow/sud-77rs0014 | grep -Fq '02-7949/2026'
       - name: Assert editor closed by default, then test isolated authorized session
@@ -461,6 +462,11 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO court_source_watch_events(watch_id,old_sha256,new_sha256) SELECT id,repeat('b',64),repeat('c',64) FROM court_source_watch LIMIT 1"
           docker compose -f compose.local.yaml up -d --force-recreate --wait --wait-timeout 120 api web
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/court-candidates)" = 401
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=1' > /tmp/editor-candidates.json
+          grep -Fq '"source_url"' /tmp/editor-candidates.json
+          grep -Fq '"candidate_id"' /tmp/editor-candidates.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=0')" = 400
           curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
           grep -Fq '"published":' /tmp/editor-overview.json
           grep -Fq '"staff_rosters"' /tmp/editor-overview.json
