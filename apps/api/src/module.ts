@@ -53,6 +53,7 @@ class CourtsService {
         UNION ALL SELECT 'staff_roster_diffs',count(*)::integer FROM court_staff_roster_diff_items WHERE review_status='pending'
         UNION ALL SELECT 'registry_diffs',count(*)::integer FROM court_registry_diff_items WHERE review_status='pending'
         UNION ALL SELECT 'source_changes',count(*)::integer FROM court_source_watch_events WHERE status='pending'
+        UNION ALL SELECT 'contact_deltas',count(*)::integer FROM court_contact_change_events WHERE review_status='pending'
         UNION ALL SELECT 'case_references',count(*)::integer FROM court_case_candidates WHERE status='pending'
       `),
       this.query<{enabled:number;overdue:number;failed:number;last_checked:Date|null}>(`
@@ -114,6 +115,18 @@ class CourtsService {
             JOIN sources s ON s.id=b.source_id
             WHERE d.review_status='pending' ORDER BY r.created_at DESC LIMIT 15
         ) roster
+        UNION ALL
+        SELECT * FROM (
+          SELECT 'contact_deltas'::text,e.id::text,c.name::text,
+            (e.contact_kind||' / '||e.change_kind)::text,
+            left(e.contact_key||' — '||COALESCE(e.source_context,''),350)::text,
+            s.source_url::text,e.created_at
+            FROM court_contact_change_events e
+            JOIN court_contact_snapshots s ON s.id=e.newer_snapshot_id
+            JOIN court_source_watch w ON w.id=s.watch_id
+            JOIN courts c ON c.id=w.court_id
+            WHERE e.review_status='pending' ORDER BY e.created_at DESC LIMIT 15
+        ) contacts
         ORDER BY observed_at DESC LIMIT 60
       `),
       this.query<{id:string;finished_at:Date;handled:number;failed:number;manifest_count:number}>(`
@@ -135,7 +148,8 @@ class CourtsService {
     const reviewTables:Record<string,string>={
       staff_roster_diffs:'court_staff_roster_diff_items',
       registry_diffs:'court_registry_diff_items',
-      source_changes:'court_source_watch_events'
+      source_changes:'court_source_watch_events',
+      contact_deltas:'court_contact_change_events'
     };
     if(!Object.prototype.hasOwnProperty.call(reviewTables,kind)){
       throw new NotFoundException('REVIEW_KIND_UNSUPPORTED');
