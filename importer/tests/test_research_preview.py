@@ -64,6 +64,20 @@ class ResearchPreviewTests(unittest.TestCase):
                 number = int(preview["code"][-4:])
                 self.assertEqual(preview["website"], f"http://{number}.hbr.msudrf.ru")
 
+    def test_researched_hours_are_only_unverified_official_pilot_evidence(self):
+        hours=json.loads(WEB_DATA.with_name("research-hours.json").read_text(encoding="utf-8"))
+        federal=json.loads(WEB_DATA.read_text(encoding="utf-8"))
+        known_codes={row["code"] for row in federal}
+        self.assertEqual(set(hours), {"54RS0012","55OS0000"})
+        for code,record in hours.items():
+            with self.subTest(code=code):
+                self.assertIn(code,known_codes)
+                self.assertFalse(record["current_verified"])
+                self.assertTrue(record["office_hours"])
+                self.assertTrue(record["source_url"].startswith("https://"))
+                self.assertTrue(record["source_url"].split("/")[2].endswith(".sudrf.ru"))
+                self.assertEqual(record["research_checked_on"],"2026-10-14")
+
     def test_no_research_card_can_be_marked_verified_in_static_data(self):
         previews = json.loads(WEB_DATA.read_text(encoding="utf-8"))
         self.assertTrue(all(c["status"] == "unreviewed" for c in previews))
