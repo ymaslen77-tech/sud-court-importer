@@ -18,7 +18,7 @@ export default function Home() {
         <h1>Правосудие.<br/><span className="headline-accent">Понятно и по делу.</span></h1>
         <p className="hero-lead">Суды России, судьи, законодательство и судебная практика — в единой информационной системе. Проверенные сведения и понятная навигация.</p>
         <CourtSearch/>
-        <div className="hero-disclaimer"><span className="status-indicator"/> Каталог наполняется. Поиск показывает только подтверждённые записи.</div>
+        <div className="hero-disclaimer"><span className="status-indicator"/> Каталог наполняется. Результаты разделены на проверенные и предварительные записи.</div>
       </div>
       <div className="hero-graphic" aria-hidden="true">
         <div className="graphic-label">СУДЕБНАЯ СИСТЕМА РОССИИ <span>01 / 04</span></div>
