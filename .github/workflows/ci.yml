@@ -416,6 +416,10 @@ jobs:
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55 > /tmp/court-region55.html
           grep -Fq '/courts/region-54/sud-54rs0012' /tmp/court-region54.html
           grep -Fq '/courts/region-55/sud-55os0000' /tmp/court-region55.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/types/general-magistrate > /tmp/research-magistrate-kind.html
+          grep -Fq 'sud-27ms0001' /tmp/research-magistrate-kind.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/types/general-district > /tmp/research-district-kind.html
+          grep -Fq 'sud-54rs0012' /tmp/research-district-kind.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-27 > /tmp/court-region27.html
           grep -Fq '/courts/region-27/sud-27ms0001' /tmp/court-region27.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-27/sud-27ms0001 > /tmp/court-magistrate.html
