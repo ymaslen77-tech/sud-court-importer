@@ -36,6 +36,15 @@ class OfficialChannelTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "duplicated"):
                 audit(path)
 
+    def test_official_host_spoofing_rejected(self):
+        data = json.loads(CATALOG.read_text(encoding="utf-8"))
+        data["channels"][0]["listing_url"] = "https://sudrf.ru.evil.example/index.php"
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "catalog.json"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "official HTTPS listing"):
+                audit(path)
+
     def test_http_and_fake_permission_flags_rejected(self):
         data = json.loads(CATALOG.read_text(encoding="utf-8"))
         data["channels"][0]["listing_url"] = "http://sudrf.ru/"
