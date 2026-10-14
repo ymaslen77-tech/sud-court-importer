@@ -137,6 +137,18 @@ class MoscowOfficialFetchTests(unittest.TestCase):
                 write_evidence(directory, raw, config(), now=stamp)
             self.assertEqual(source.read_bytes(), raw)
 
+    def test_preexisting_orphan_file_is_never_deleted(self):
+        raw = json.dumps([ROW], ensure_ascii=False).encode("utf-8")
+        stamp = datetime(2026, 10, 14, 8, 0, tzinfo=timezone.utc)
+        digest = __import__("hashlib").sha256(raw).hexdigest()
+        name = "moscow-raw-20261014T080000Z-" + digest[:16] + ".json"
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / name
+            target.write_bytes(b"preexisting-not-ours")
+            with self.assertRaises(FileExistsError):
+                write_evidence(Path(tmp), raw, config(), now=stamp)
+            self.assertEqual(target.read_bytes(), b"preexisting-not-ours")
+
 
 if __name__ == "__main__":
     unittest.main()
