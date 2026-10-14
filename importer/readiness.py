@@ -66,7 +66,7 @@ def evaluate(stats:dict,public_url:str|None,now:datetime|None=None)->dict:
     if not valid_production_origin(public_url):
         issues.append("No reviewed HTTPS production public origin")
     queues=stats["review_queues"]
-    if queues["registry_differences"]>0 or queues["court_field_proposals"]>0 or queues["watched_page_changes"]>0:
+    if queues["registry_differences"]>0 or queues["court_field_proposals"]>0 or queues["watched_page_changes"]>0 or queues.get("contact_changes_pending",0)>0:
         issues.append("Court source and contact review queues still contain unresolved items")
     if queues["judge_appointment_proposals"]>0 or queues.get("staff_roster_observations_pending",0)>0 or queues.get("staff_roster_changes_pending",0)>0:
         issues.append("Judicial personnel information still awaits identity/appointment review")
