@@ -55,6 +55,8 @@ def settings(document: object, today: date | None = None) -> dict:
     today = today or date.today()
     if not isinstance(document, dict) or set(document) != EXPECTED_KEYS:
         raise ImportValidationError("Source configuration has missing or unexpected fields")
+    if not isinstance(document["dataset_url"], str) or not isinstance(document["export_url"], str):
+        raise ImportValidationError("Official dataset and export URLs must be strings")
     source = dataset_url(document["dataset_url"])
     endpoint = export_url(document["export_url"])
     if source == endpoint:
