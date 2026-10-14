@@ -11,3 +11,6 @@ coverage
 data/import/
 __pycache__/
 *.pyc
+
+# Permitted source snapshots contain historical contact evidence; never commit
+data/source-snapshots/
