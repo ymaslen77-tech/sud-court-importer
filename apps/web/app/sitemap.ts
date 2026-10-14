@@ -2,13 +2,17 @@ import type {MetadataRoute} from 'next';
 export const dynamic='force-dynamic';
 
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
-  const site=process.env.PUBLIC_SITE_URL??'http://localhost:4173';
+  const site=process.env.PUBLIC_SITE_URL
+    ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://'+process.env.VERCEL_PROJECT_PRODUCTION_URL
+       : process.env.VERCEL_URL ? 'https://'+process.env.VERCEL_URL
+       : 'http://localhost:4173');
   const pages=['/','/courts','/courts/types','/sources'];
   const result:MetadataRoute.Sitemap=pages.map(path=>({
     url:new URL(path,site).toString(),changeFrequency:'monthly',priority:path==='/'?1:.6
   }));
   try{
-    const base=process.env.API_URL??'http://localhost:4000';
+    const base=process.env.API_URL?.replace(/\/$/,'');
+    if(!base)return result;
     const response=await fetch(base+'/api/v1/courts/sitemap',{next:{revalidate:3600}});
     if(!response.ok)throw new Error('unavailable');
     const courts=await response.json() as {
