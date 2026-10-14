@@ -55,6 +55,7 @@ export default async function CourtsDirectory() {
     <section className="section-wrap" aria-labelledby="research-regions">
       <div className="section-intro"><span className="eyebrow">Открытые источники · исследовательские карточки</span>
         <h2 id="research-regions">Предварительные списки по регионам</h2>
+        <p><Link className="text-link" href="/courts/coverage">Посмотреть реальную наполненность карточек по регионам →</Link></p>
         <p>Подготовлены персональные страницы на основе открытых официальных перечней ГАС «Правосудие». Эти записи ещё не прошли независимую актуальную проверку, не считаются опубликованными верифицированными судами и не индексируются поисковыми системами.</p>
       </div>
       <div className="region-grid">{research.map(region=><Link className="region-item" key={region.slug}
