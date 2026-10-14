@@ -395,6 +395,18 @@ jobs:
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='court' AND changed_field='coordinates';" | grep -Fqx 1
           curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/test-99/courts/test-court > /tmp/test-court.json
           grep -Fq '"latitude":55.75' /tmp/test-court.json
+          # Region-name search must find only the synthetic verified record.
+          curl --fail --silent --show-error --get \
+            --data-urlencode 'q=TEST ONLY REGION' \
+            http://127.0.0.1:4174/api/v1/courts/search > /tmp/search-region.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/search-region.json', encoding='utf-8') as file:
+              records = json.load(file)
+          assert len(records) == 1, records
+          assert records[0]['slug'] == 'test-court'
+          assert records[0]['region_slug'] == 'test-99'
+          PY
           docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py register --court-id "$COURT_ID" --url https://sudrf.ru/ --scope general --reviewer "CI Synthetic Test" --attest-permission > /tmp/watch-registered.json
           grep -Fq '"created": true' /tmp/watch-registered.json
           docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch;" | grep -Fqx 1
