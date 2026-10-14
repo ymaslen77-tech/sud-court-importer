@@ -50,6 +50,12 @@ export default async function EditorDashboard(){
     </div>
    </section>
    <section className="court-section">
+    <span className="eyebrow">Кандидаты официальных судов</span>
+    <h2>Записи, ожидающие редакционного подтверждения</h2>
+    <p>Просматривайте идентификаторы, актуальную версию каждого снимка, адрес, URL суда и контрольную сумму источника. Открытие списка не публикует данные.</p>
+    <Link className="button button-outline" href="/editor/candidates">Открыть кандидатов судов →</Link>
+   </section>
+   <section className="court-section">
     <span className="eyebrow">Очередь редактора</span><h2>Необработанные изменения</h2>
     <div className="editor-queues">{report.review_queues.map(item=><div key={item.kind}>
      <span>{labels[item.kind]??item.kind}</span><strong>{item.count}</strong>
