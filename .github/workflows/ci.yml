@@ -57,6 +57,30 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install 'Pillow>=11.0,<12' 'psycopg[binary]>=3.2,<4'
       - run: python -m unittest discover -s importer/tests -v
+      - name: Fail closed without documented machine-feed authorization
+        run: |
+          python importer/source_channels.py > /tmp/official-source-channels.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/official-source-channels.json').read_text(encoding='utf-8'))
+          assert report['sources_recorded']==4
+          assert report['permissioned_machine_feeds']==0
+          assert report['auto_published']==0
+          PY
+          if python importer/source_channels.py --require-machine-feed; then
+            echo 'No confirmed feed should have been approved by the initial source audit' >&2
+            exit 1
+          fi
+          python importer/seed_audit.py > /tmp/seed-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/seed-report.json').read_text(encoding='utf-8'))
+          assert report['source_records']==232
+          assert report['published_by_this_command']==0
+          assert report['actual_verified_courts']=='NOT_ASSESSED'
+          PY
 
   local-host-smoke:
     runs-on: ubuntu-latest
