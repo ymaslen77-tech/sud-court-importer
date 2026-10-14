@@ -13,3 +13,6 @@ coverage
 # Never bake unreviewed or downloaded court records into an image
 data/import/
 __pycache__
+
+# Source evidence must not be copied into images
+data/source-snapshots/
