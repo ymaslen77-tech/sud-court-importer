@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parent / "seeds"
 FILES = (
     "novosibirsk-federal-official-unreviewed.json",
+    "novosibirsk-federal-additional-official-unreviewed.json",
     "arbitration-subjects-official-list-unreviewed.json",
     "arbitration-appellate-district-ip-official-unreviewed.json",
     "khabarovsk-magistrates-official-unreviewed.json",
