@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type {Metadata} from 'next';
 import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api';
 import {researchCourtsByRegion} from '../../lib/research-courts';
+import {pilotPublicCourts} from '../../lib/pilot-public';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -26,7 +27,7 @@ export async function generateMetadata({params,searchParams}:Props):Promise<Meta
       title:'Суды: '+label+(page>1?' — страница '+page:''),
       description:'Каталог проверенных судов региона '+label+'. Адреса, телефоны, официальные сайты и судебные карточки.',
       alternates:{canonical},
-      robots:{index:result.items.length>0,follow:true}
+      robots:{index:result.items.length>0 || pilotPublicCourts().some(x=>'region-'+x.region_code===region),follow:true}
     };
   }catch{
     return {title:'Каталог судов',robots:{index:false,follow:true}};
@@ -38,7 +39,9 @@ export default async function RegionPage({params,searchParams}:Props){
   const page=selectPage(query.page);
   let result:RegionCourtPage={items:[],total:0,page,pageSize:50};
   let label=region==='moscow'?'Москва':region;
-  const candidates=researchCourtsByRegion(region);
+  const pilot=pilotPublicCourts().filter(x=>'region-'+x.region_code===region);
+  const codes=new Set(pilot.map(x=>x.external_code));
+  const candidates=researchCourtsByRegion(region).filter(x=>!codes.has(x.code));
   if(candidates.length)label=candidates[0].regionName;
   let failed=false;
   try{
@@ -84,6 +87,20 @@ export default async function RegionPage({params,searchParams}:Props){
         {result.page<totalPages?<Link href={base+'?page='+(result.page+1)}>Следующая →</Link>:<span/>}
       </nav>:null}
     </section>
+    {pilot.length>0?<section className="section-wrap" aria-labelledby="partial-pilot">
+      <div className="section-intro">
+        <span className="eyebrow">Официальные опубликованные сведения · уточнение актуальности</span>
+        <h2 id="partial-pilot">Подробные справочные карточки: {pilot.length}</h2>
+        <p>Эти карточки показывают изученные официальные публикации, но не являются полностью
+         верифицированными записями реестра. Проверяйте контакты перед визитом.</p>
+      </div>
+      <div className="results">{pilot.map(item=><Link className="result-row" key={item.external_code}
+        href={base+'/sud-'+item.external_code.toLowerCase()}>
+        <span><strong>{item.official_header_court_name}</strong>
+          <small>{item.external_code} · {item.archived_values.address}</small></span>
+        <span aria-hidden="true">↗</span>
+      </Link>)}</div>
+    </section>:null}
     {candidates.length>0?<section className="section-wrap" aria-labelledby="research-courts">
       <div className="section-intro">
         <span className="eyebrow">Отдельно от опубликованного реестра</span>
