@@ -47,11 +47,22 @@ jobs:
           assert data['verified_backend_configured'] is False,data
           assert data['automated_source_collection'] is False,data
           PY
-          curl --fail --silent --show-error http://127.0.0.1:4188/courts/region-54/sud-54rs0012 > /tmp/research-preview.html
-          grep -Fq 'noindex' /tmp/research-preview.html
+          # Ten editorially selected sourced reference cards are public,
+          # explicitly NOT the verified records in Neon.
+          curl --fail --silent --show-error http://127.0.0.1:4188/courts/region-54/sud-54rs0012 > /tmp/public-pilot.html
+          grep -Fq 'Публичная справочная карточка' /tmp/public-pilot.html
+          grep -Fq 'официальных источников' /tmp/public-pilot.html
+          if grep -Fq 'noindex' /tmp/public-pilot.html; then
+            echo 'Pilot public reference card was unexpectedly noindexed' >&2
+            exit 1
+          fi
+          # A non-pilot research-only court must still be noindex and excluded.
+          curl --fail --silent --show-error http://127.0.0.1:4188/courts/region-54/sud-54rs0005 > /tmp/private-research.html
+          grep -Fq 'noindex' /tmp/private-research.html
           curl --fail --silent --show-error http://127.0.0.1:4188/sitemap.xml > /tmp/research-sitemap.xml
-          if grep -Fq '/courts/region-54/sud-54rs0012' /tmp/research-sitemap.xml; then
-            echo 'Unverified research court leaked into production sitemap' >&2
+          grep -Fq '/courts/region-54/sud-54rs0012' /tmp/research-sitemap.xml
+          if grep -Fq '/courts/region-54/sud-54rs0005' /tmp/research-sitemap.xml; then
+            echo 'Non-pilot unverified research court leaked into sitemap' >&2
             exit 1
           fi
 
