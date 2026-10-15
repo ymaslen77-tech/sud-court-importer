@@ -1,0 +1,62 @@
+{
+  "54GV0001": {
+    "source_url": "https://gvs--nsk.sudrf.ru/",
+    "source_stated_updated": null,
+    "departments": [
+      {
+        "label": "Приёмная председателя суда",
+        "phone": "+7 (383) 216-89-90"
+      },
+      {
+        "label": "Обеспечение судопроизводства",
+        "phone": "+7 (383) 216-89-98"
+      }
+    ]
+  },
+  "54KV0000": {
+    "source_url": "https://vkas.sudrf.ru/",
+    "source_stated_updated": null,
+    "departments": [
+      {
+        "label": "Приёмная председателя суда",
+        "phone": "+7 (383) 201-16-90"
+      },
+      {
+        "label": "Факс",
+        "phone": "+7 (383) 218-51-97"
+      }
+    ]
+  },
+  "54RS0003": {
+    "source_url": "https://zaelcovsky--nsk.sudrf.ru/modules.php?id=3&name=info_court",
+    "source_stated_updated": "2026-06-02",
+    "departments": [
+      {
+        "label": "Приёмная суда",
+        "phone": "+7 (383) 225-54-58"
+      },
+      {
+        "label": "Отдел по обеспечению гражданского судопроизводства",
+        "phone": "+7 (383) 354-32-71"
+      },
+      {
+        "label": "Отдел по обеспечению уголовного судопроизводства",
+        "phone": "+7 (383) 225-04-78"
+      }
+    ]
+  },
+  "54RS0004": {
+    "source_url": "https://kalininsky--nsk.sudrf.ru/modules.php?name=info_court&rid=1",
+    "source_stated_updated": null,
+    "departments": [
+      {
+        "label": "Общий отдел / канцелярия",
+        "phone": "+7 (383) 204-22-25"
+      },
+      {
+        "label": "Факс общего отдела",
+        "phone": "+7 (383) 271-86-02"
+      }
+    ]
+  }
+}
