@@ -95,8 +95,8 @@ def observations() -> list[dict]:
             })
         elif record.get("uid_case_code_observed") is not False:
             raise ImportValidationError("Conflicting code evidence status")
-    if len(seen) != 10 or len(rows) != 45:
-        raise ImportValidationError("Expected exactly ten courts and 45 unapproved observations")
+    if len(seen) != 10 or len(rows) != 48:
+        raise ImportValidationError("Expected exactly ten courts and 48 unapproved observations")
     return rows
 
 
