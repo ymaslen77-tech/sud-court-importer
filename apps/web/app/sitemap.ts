@@ -1,4 +1,5 @@
 import type {MetadataRoute} from 'next';
+import {pilotPublicCourts} from './lib/pilot-public';
 export const dynamic='force-dynamic';
 
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
@@ -10,6 +11,22 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   const result:MetadataRoute.Sitemap=pages.map(path=>({
     url:new URL(path,site).toString(),changeFrequency:'monthly',priority:path==='/'?1:.6
   }));
+  // Pilot research cards are publicly sourced with explicit freshness notices,
+  // not verified court DB entities. Only the curated first ten are indexable.
+  const listed=new Set<string>(result.map(entry=>entry.url));
+  for(const pilot of pilotPublicCourts()){
+    const path='/courts/region-'+pilot.region_code+'/sud-'+pilot.external_code.toLowerCase();
+    const url=new URL(path,site).toString();
+    if(!listed.has(url)){
+      result.push({url,changeFrequency:'monthly',priority:.55});
+      listed.add(url);
+    }
+  }
+  const pilotRegions=new Set(pilotPublicCourts().map(court=>'region-'+court.region_code));
+  for(const region of pilotRegions){
+    const url=new URL('/courts/'+region,site).toString();
+    if(!listed.has(url)){result.push({url,changeFrequency:'monthly',priority:.55});listed.add(url);}
+  }
   try{
     const base=process.env.API_URL?.replace(/\/$/,'');
     if(!base)return result;
@@ -22,8 +39,11 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
       if(!/^[a-z0-9-]{1,100}$/.test(court.region_slug)
         || !/^[a-z0-9-]{1,100}$/.test(court.slug))continue;
       const date=new Date(court.updated_at);
+      const url=new URL('/courts/'+court.region_slug+'/'+court.slug,site).toString();
+      if(listed.has(url))continue;
+      listed.add(url);
       result.push({
-        url:new URL('/courts/'+court.region_slug+'/'+court.slug,site).toString(),
+        url,
         lastModified:Number.isFinite(date.getTime())?date:undefined,
         changeFrequency:'weekly',priority:.75
       });
@@ -36,8 +56,11 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
         const regions=await regionsResponse.json() as {slug:string;court_count:number}[];
         for(const region of regions){
           if(!/^[a-z0-9-]{1,100}$/.test(region.slug) || region.court_count<=0)continue;
+          const url=new URL('/courts/'+region.slug,site).toString();
+          if(listed.has(url))continue;
+          listed.add(url);
           result.push({
-            url:new URL('/courts/'+region.slug,site).toString(),
+            url,
             changeFrequency:'weekly',priority:.65
           });
         }
