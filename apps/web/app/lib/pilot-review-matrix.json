@@ -39,8 +39,8 @@
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
       ],
-      "uid_case_evidence_url": null,
-      "uid_case_code_observed": false,
+      "uid_case_evidence_url": "https://barabinsky--nsk.sudrf.ru/modules.php?case_id=627657975&case_uid=6200c826-58b8-436b-9fb2-123a5b5938cd&delo_id=1540005&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true,
       "official_header_court_name": "Барабинский районный суд Новосибирской области",
       "archived_name_matches_official_header": true
     },
@@ -307,8 +307,8 @@
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
       ],
-      "uid_case_evidence_url": null,
-      "uid_case_code_observed": false,
+      "uid_case_evidence_url": "https://zheleznodorozhny--nsk.sudrf.ru/modules.php?case_id=646762877&case_uid=add42e22-93fb-4bd3-87fa-3ab153866ff6&delo_id=1540006&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true,
       "official_header_court_name": "Железнодорожный районный суд г. Новосибирска",
       "archived_name_matches_official_header": true
     },
@@ -345,8 +345,8 @@
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
       ],
-      "uid_case_evidence_url": null,
-      "uid_case_code_observed": false,
+      "uid_case_evidence_url": "https://zaelcovsky--nsk.sudrf.ru/modules.php?case_id=675637361&case_uid=2b76f68b-920b-4587-a56d-bd3e8a722cc9&delo_id=1540005&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true,
       "official_header_court_name": "Заельцовский районный суд г. Новосибирска",
       "archived_name_matches_official_header": true
     },
