@@ -80,6 +80,7 @@ export default async function EditorDashboard(){
     <h2>Записи, ожидающие редакционного подтверждения</h2>
     <p>Просматривайте идентификаторы, актуальную версию каждого снимка, адрес, URL суда и контрольную сумму источника. Открытие списка не публикует данные.</p>
     <div className="editor-worklinks">
+      <Link className="button button-outline" href="/editor/pilot">Первая десятка: редакционная проверка →</Link>
       <Link className="button button-outline" href="/editor/candidates">Кандидаты с полным профилем →</Link>
       <Link className="button button-outline" href="/editor/discoveries">Предварительные списки →</Link>
     </div>
