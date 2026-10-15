@@ -59,13 +59,13 @@ class PilotTenReviewTests(unittest.TestCase):
                     self.assertIn("court_name", observation["observed_fields"])
                     self.assertTrue(set(observation["observed_fields"]).issubset(
                         {"court_name","address","phone","email","hours"}))
-        self.assertEqual(observed, 7)
+        self.assertEqual(observed, 10)
 
-    def test_unobserved_courts_have_no_fabricated_source_evidence(self):
+    def test_every_candidate_has_an_official_observation_but_no_approval(self):
         pilot=json.loads(PILOT.read_text(encoding="utf-8"))
         not_observed={r["external_code"] for r in pilot["candidates"]
                       if r["official_page_observation"] is None}
-        self.assertEqual(not_observed,{"54RS0002","54RS0003","54RS0004"})
+        self.assertEqual(not_observed,set())
 
 if __name__ == "__main__":
     unittest.main()
