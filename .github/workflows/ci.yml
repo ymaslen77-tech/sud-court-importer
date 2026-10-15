@@ -1,0 +1,706 @@
+name: CI
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pnpm install --no-frozen-lockfile
+      - name: Parse backup-first Windows update PowerShell
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $parseErrors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("./scripts/update-local-safe.ps1", [ref]$tokens, [ref]$parseErrors) | Out-Null
+          if ($parseErrors.Count -gt 0) {
+            $parseErrors | Format-List | Out-String | Write-Host
+            exit 1
+          }
+      - run: pnpm check
+      - run: pnpm build
+      - name: Smoke production Next.js without configured API or PostgreSQL
+        env:
+          API_URL: ''
+          PUBLIC_SITE_URL: https://sudy-rossii.vercel.app
+        run: |
+          pnpm --dir apps/web exec next start -p 4188 > /tmp/next-production-smoke.log 2>&1 &
+          WEB_PID=$!
+          trap 'kill "$WEB_PID" >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4188/api/status > /tmp/web-status.json; then break; fi
+            sleep 1
+          done
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('/tmp/web-status.json').read_text(encoding='utf-8'))
+          assert data['preliminary_records']==151,data
+          assert data['published_source_reference_count']==10,data
+          assert data['verified_backend_configured'] is False,data
+          assert data['automated_source_collection'] is False,data
+          PY
+          # Ten editorially selected sourced reference cards are public,
+          # explicitly NOT the verified records in Neon.
+          curl --fail --silent --show-error http://127.0.0.1:4188/courts/region-54/sud-54rs0012 > /tmp/public-pilot.html
+          grep -Fq 'Публичная справочная карточка' /tmp/public-pilot.html
+          grep -Fq 'официальных источников' /tmp/public-pilot.html
+          if grep -Fq 'noindex' /tmp/public-pilot.html; then
+            echo 'Pilot public reference card was unexpectedly noindexed' >&2
+            exit 1
+          fi
+          # A non-pilot research-only court must still be noindex and excluded.
+          curl --fail --silent --show-error http://127.0.0.1:4188/courts/region-54/sud-54rs0005 > /tmp/private-research.html
+          grep -Fq 'noindex' /tmp/private-research.html
+          curl --fail --silent --show-error http://127.0.0.1:4188/sitemap.xml > /tmp/research-sitemap.xml
+          grep -Fq '/courts/region-54/sud-54rs0012' /tmp/research-sitemap.xml
+          if grep -Fq '/courts/region-54/sud-54rs0005' /tmp/research-sitemap.xml; then
+            echo 'Non-pilot unverified research court leaked into sitemap' >&2
+            exit 1
+          fi
+
+  windows-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Windows PowerShell update scripts
+        shell: pwsh
+        run: |
+          foreach ($file in @('scripts/safe-update-local.ps1','scripts/apply-import-migration.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Join-Path $PWD $file), [ref]$tokens, [ref]$errors
+            )
+            if ($errors.Count -ne 0) {
+              $errors | ForEach-Object { Write-Error $_.ToString() }
+              throw "PowerShell parse errors in $file"
+            }
+          }
+          Write-Host 'PowerShell source parsed successfully'
+
+  importer-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'Pillow>=11.0,<12' 'psycopg[binary]>=3.2,<4'
+      - run: python -m unittest discover -s importer/tests -v
+      - name: Fail closed without documented machine-feed authorization
+        run: |
+          python importer/source_channels.py > /tmp/official-source-channels.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/official-source-channels.json').read_text(encoding='utf-8'))
+          assert report['sources_recorded']==4
+          assert report['permissioned_machine_feeds']==0
+          assert report['auto_published']==0
+          PY
+          if python importer/source_channels.py --require-machine-feed; then
+            echo 'No confirmed feed should have been approved by the initial source audit' >&2
+            exit 1
+          fi
+          python importer/seed_audit.py > /tmp/seed-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/seed-report.json').read_text(encoding='utf-8'))
+          assert report['source_records']==273
+          assert report['published_by_this_command']==0
+          assert report['actual_verified_courts']=='NOT_ASSESSED'
+          PY
+
+  local-host-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Docker Compose
+        run: docker compose -f compose.local.yaml config --quiet
+      - name: Build and start the dedicated local host
+        run: docker compose -f compose.local.yaml up --build --detach --wait --wait-timeout 240
+      - name: Check database backup and reapplicable schema migrations
+        run: |
+          docker compose -f compose.local.yaml exec -T postgres pg_dump -U courts -d courts -Fc -f /tmp/ci-preupgrade.dump
+          docker compose -f compose.local.yaml exec -T postgres pg_restore --list /tmp/ci-preupgrade.dump > /tmp/dump-manifest.txt
+          grep -Fq 'TOC Entries:' /tmp/dump-manifest.txt
+          for f in db/migrations/00{2,3,4,5,6,7,8,9}_*.sql db/migrations/010_court_staff_roster_diffs.sql db/migrations/011_court_contact_review.sql db/migrations/012_watch_permission_attestations.sql; do
+            test -f "$f"
+            docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts < "$f" > /dev/null
+          done
+      - name: Validate paginated regional court API and fail-closed page parameter
+        run: |
+          python3 - <<'PY'
+          import json
+          from urllib.request import urlopen
+          from urllib.error import HTTPError
+          base='http://127.0.0.1:4174/api/v1/regions/moscow/courts/page'
+          with urlopen(base+'?page=1',timeout=10) as response:
+              payload=json.load(response)
+          assert payload['page']==1
+          assert payload['pageSize']==50
+          assert payload['total']==0
+          assert payload['items']==[]
+          for bad in ('0','-1','abc','10000'):
+              try:
+                  urlopen(base+'?page='+bad,timeout=10)
+                  raise AssertionError('Invalid region page was accepted: '+bad)
+              except HTTPError as exc:
+                  assert exc.code==400,exc.code
+          PY
+      - name: Stage synthetic candidate without publication
+        run: |
+          mkdir -p data/import
+          cp importer/tests/fixtures/synthetic_contacts.json data/import/contacts.json
+          docker compose -f compose.local.yaml build importer
+          docker compose -f compose.local.yaml run --rm importer validate /input/contacts.json > /tmp/validate.json
+          docker compose -f compose.local.yaml run --rm importer stage /input/contacts.json --source-url https://data.mos-gorsud.ru/opendata > /tmp/stage.json
+          grep -Fq '"published": 0' /tmp/stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 1
+          cp importer/seeds/novosibirsk-federal-official-unreviewed.json data/import/federal.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py validate /input/federal.json --registry sudrf-federal > /tmp/federal-validate.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/federal.json --registry sudrf-federal > /tmp/federal-stage.json
+          grep -Fq '"published": 0' /tmp/federal-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 11
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+          cp importer/tests/fixtures/official_sudrf_novosibirsk_excerpt.txt data/import/regional-snapshot.txt
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py validate /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' > /tmp/regional-valid.json
+          grep -Fq '"records": 4' /tmp/regional-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py sync /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/regional-stage.json
+          grep -Fq '"published": 0' /tmp/regional-stage.json
+          grep -Fq '"auto_published": 0' /tmp/regional-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_batches WHERE primary_snapshot_sha256 IS NOT NULL AND snapshot_use_attested=true;' | grep -Fqx 1
+          OLD_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/federal-stage.json"))["batch_id"])')"
+          NEW_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/regional-stage.json"))["batch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/registry_diff.py queue --older-batch "$OLD_BATCH" --newer-batch "$NEW_BATCH" > /tmp/courts-diff.json
+          grep -Fq '"new": 2' /tmp/courts-diff.json
+          grep -Fq '"missing": 0' /tmp/courts-diff.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 15
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_registry_diff_runs;' | grep -Fqx 1
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/sudrf_listing.py sync /input/regional-snapshot.txt --region 54 --region-name "Новосибирская область" --source-url 'https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs' --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/regional-repeat.json
+          grep -Fq '"created": false' /tmp/regional-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_registry_diff_runs;' | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_import_rows;' | grep -Fqx 15
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+
+          cp importer/seeds/arbitration-subjects-official-list-unreviewed.json data/import/arbitration-discoveries.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/arbitration-discoveries.json > /tmp/discovery-valid.json
+          grep -Fq '"records": 89' /tmp/discovery-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-discoveries.json --captured-on "$(date -u +%F)" > /tmp/discovery-stage.json
+          grep -Fq '"published": 0' /tmp/discovery-stage.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-discoveries.json --captured-on "$(date -u +%F)" > /tmp/discovery-repeated.json
+          grep -Fq '"created": false' /tmp/discovery-repeated.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 89
+          cp importer/seeds/arbitration-appellate-district-ip-official-unreviewed.json data/import/arbitration-all-levels.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/arbitration-all-levels.json > /tmp/arbitration-all-levels-valid.json
+          grep -Fq '"records": 32' /tmp/arbitration-all-levels-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/arbitration-all-levels.json --captured-on "$(date -u +%F)" > /tmp/arbitration-all-levels-stage.json
+          grep -Fq '"published": 0' /tmp/arbitration-all-levels-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 121
+          cp importer/seeds/khabarovsk-magistrates-official-unreviewed.json data/import/magistrates.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/magistrates.json > /tmp/magistrates-valid.json
+          grep -Fq '"records": 75' /tmp/magistrates-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/magistrates.json --captured-on "$(date -u +%F)" > /tmp/magistrates-stage.json
+          grep -Fq '"published": 0' /tmp/magistrates-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM court_discovery_rows;' | grep -Fqx 196
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | grep -Fqx 0
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/coverage.py > /tmp/coverage-report.json
+          grep -Fq '"public_courts_verified": 0' /tmp/coverage-report.json
+          grep -Fq '"registry_differences": 4' /tmp/coverage-report.json
+          grep -Fq '"registered_enabled": 0' /tmp/coverage-report.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/readiness.py --public-url https://courts.example > /tmp/court-readiness.json
+          grep -Fq '"pilot_technical_ready": false' /tmp/court-readiness.json
+          grep -Fq '"nationwide_complete": "NOT_ASSESSED"' /tmp/court-readiness.json
+          if docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/readiness.py --public-url https://courts.example --fail-if-not-ready; then
+            echo "Unexpected green production gate against empty synthetic CI database" >&2
+            exit 1
+          fi
+      - name: Inspect and manually map raw Moscow JSON without source-trust claims
+        run: |
+          mkdir -p data/import/normalized
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          row=json.loads(Path("importer/tests/fixtures/synthetic_contacts.json").read_text(encoding="utf-8"))[0]
+          raw={
+            "code":row["courtCode"],"title":row["courtName"],
+            "place":row["courtAddress"],"site":row["courtSiteUrl"],
+            "telephone":row["courtTelephone"],"office":"Пн 09:00-18:00"}
+          Path("data/import/moscow-raw.json").write_text(json.dumps([raw],ensure_ascii=False),encoding="utf-8")
+          mapping={"fields":{"courtCode":"code","courtName":"title","courtAddress":"place",
+            "courtSiteUrl":"site","courtTelephone":"telephone","courtWorkHours":"office"}}
+          Path("data/import/moscow-raw-map.json").write_text(json.dumps(mapping),encoding="utf-8")
+          PY
+          RAW_DIGEST="$(sha256sum data/import/moscow-raw.json | cut -d' ' -f1)"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py inspect /input/moscow-raw.json > /tmp/raw-inspect.json
+          grep -Fq '"record_count": 1' /tmp/raw-inspect.json
+          grep -Fq '"source_rights_verified": false' /tmp/raw-inspect.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_raw_export.py normalize /input/moscow-raw.json --mapping /input/moscow-raw-map.json --expected-sha256 "$RAW_DIGEST" --attest-schema-reviewed --output /output/moscow-mapped.json > /tmp/raw-mapped-report.json
+          grep -Fq '"auto_published": 0' /tmp/raw-mapped-report.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/normalized/moscow-mapped.json > /tmp/raw-mapped-valid.json
+          grep -Fq '"records": 1' /tmp/raw-mapped-valid.json
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts;' | tr -d '\r')" = 0
+      - name: Require recent explicit source permission before any live HTTP request
+        run: |
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          settings = {
+            "dataset_url":"https://data.mos-gorsud.ru/opendata/TEST-CONTACTS-2026-EXAMPLE",
+            "export_url":"https://data.mos-gorsud.ru/download/official-contacts.json",
+            "terms_url":"https://data.mos-gorsud.ru/terms-of-use",
+            "reviewed_on":str(date.today()), "reviewer":"CI Test Operator",
+            "permission_basis":"CI fixture only: not an authorization for external access",
+            "automatic_access_confirmed":False, "reuse_rights_confirmed":False
+          }
+          Path("data/import/moscow-live-source-test.json").write_text(json.dumps(settings),encoding="utf-8")
+          PY
+          if docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_moscow_fetch.py fetch --settings /input/moscow-live-source-test.json --output-dir /output; then
+            echo 'Permission gate incorrectly allowed live HTTP request' >&2
+            exit 1
+          fi
+          test "$(find data/import/normalized -maxdepth 1 -type f -name 'moscow-raw-*.json' | wc -l)" -eq 0
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = 0
+      - name: Exercise Moscow normalized contact snapshot and retry-safe diff
+        run: |
+          cp importer/tests/fixtures/synthetic_contacts.json data/import/moscow-old.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          source=json.loads(Path("data/import/moscow-old.json").read_text(encoding="utf-8"))
+          source[0]["courtWorkHours"]="Пн-чт 09:00-18:00; пт 09:00-16:45"
+          Path("data/import/moscow-old.json").write_text(json.dumps(source,ensure_ascii=False),encoding="utf-8")
+          source[0]["courtTelephone"]="+7 000 111 00 00"
+          source[0]["courtWorkHours"]="Пн-чт 09:00-17:00; пт 09:00-16:45"
+          Path("data/import/moscow-new.json").write_text(json.dumps(source,ensure_ascii=False),encoding="utf-8")
+          PY
+          URL="https://data.mos-gorsud.ru/opendata/TEST-ONLY-DATASET-00001"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py validate /input/moscow-old.json > /tmp/moscow-valid.json
+          grep -Fq '"records": 1' /tmp/moscow-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-old.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-first.json
+          grep -Fq '"auto_published": 0' /tmp/moscow-first.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-new.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-second.json
+          grep -Fq '"changed_fields": 2' /tmp/moscow-second.json
+          grep -Fq '"auto_published": 0' /tmp/moscow-second.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=json.loads(Path("data/import/moscow-new.json").read_text(encoding="utf-8"))
+          Path("data/import/moscow-reformatted.json").write_text(
+            json.dumps(rows,ensure_ascii=False,sort_keys=True,indent=4),encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/moscow_sync.py sync /input/moscow-reformatted.json --dataset-url "$URL" --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Test" --attest-reuse-rights > /tmp/moscow-repeat.json
+          grep -Fq '"created": false' /tmp/moscow-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='phone';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE field_name='office_hours_observed' AND change_kind='changed' AND review_status='pending';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Verify approved offline inbox scan and idempotent sync
+        run: |
+          mkdir -p data/import/inbox
+          cp data/import/moscow-new.json data/import/inbox/contacts.json
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          manifest={
+            "format":"moscow-contacts-v1",
+            "file":"inbox/contacts.json",
+            "dataset_url":"https://data.mos-gorsud.ru/opendata/TEST-ONLY-DATASET-00001",
+            "captured_on":str(date.today()),
+            "reviewer":"CI Test Operator",
+            "reuse_rights_confirmed":True
+          }
+          Path("data/import/inbox/contacts.manifest.json").write_text(json.dumps(manifest),encoding="utf-8")
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py check > /tmp/inbox-check.json
+          grep -Fq '"handled": 1' /tmp/inbox-check.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/inbox-stage.json
+          grep -Fq '"created": false' /tmp/inbox-stage.json
+          grep -Fq '"auto_published": 0' /tmp/inbox-stage.json
+          cp importer/tests/fixtures/official_sudrf_novosibirsk_excerpt.txt data/import/inbox/federal.txt
+          python3 - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+          manifest={
+            "format":"sudrf-federal-list-v1",
+            "file":"inbox/federal.txt",
+            "source_url":"https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
+            "region":"54","region_name":"Новосибирская область",
+            "captured_on":str(date.today()),
+            "reviewer":"CI Test Operator","reuse_rights_confirmed":True
+          }
+          Path("data/import/inbox/federal.manifest.json").write_text(
+            json.dumps(manifest,ensure_ascii=False),encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py check > /tmp/full-inbox-check.json
+          grep -Fq '"handled": 2' /tmp/full-inbox-check.json
+          grep -Fq '"format": "sudrf-federal-list-v1"' /tmp/full-inbox-check.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/inbox.py stage > /tmp/full-inbox-stage.json
+          grep -Fq '"handled": 2' /tmp/full-inbox-stage.json
+          grep -Fq '"auto_published": 0' /tmp/full-inbox-stage.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_intake_runs;" | grep -Fqx 2
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_intake_runs WHERE failed=0;" | grep -Fqx 2
+
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_runs;" | grep -Fqx 2
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Compare saved official court contact HTML without publication
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path("data/import")
+          root.joinpath("hours-old.html").write_text(
+            '<html><h1>Контакты суда</h1><p>Приёмная +7 (495) 678-05-22</p>'
+            '<p>Почта: info@example.ru</p>'
+            '<p>Последнее обновление выполнено 08.07.2026 12:02:18</p></html>',
+            encoding="utf-8"
+          )
+          root.joinpath("hours-new.html").write_text(
+            '<html><h1>Контакты суда</h1><p>Приёмная 8 (495) 678-05-22</p>'
+            '<p>Архив +7 (499) 530-08-08</p><p>Почта: new@example.ru</p>'
+            '<p>Последнее обновление выполнено 09.07.2026 12:02:18</p></html>',
+            encoding="utf-8"
+          )
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_html.py compare /input/hours-old.html /input/hours-new.html --source-url https://mos-gorsud.ru/rs/lefortovskij/help/hours > /tmp/court-contact-delta.json
+          grep -Fq '"signal_count": 3' /tmp/court-contact-delta.json
+          grep -Fq '"removals_verified": false' /tmp/court-contact-delta.json
+          grep -Fq '"auto_published": 0' /tmp/court-contact-delta.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts" | grep -Fqx 0
+      - name: Stage 11 official roster references without verifying appointments
+        run: |
+          cp importer/seeds/lefortovsky-judges-official-page-unreviewed.json data/import/lef-roster.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py validate /input/lef-roster.json > /tmp/lef-roster-valid.json
+          grep -Fq '"rows": 11' /tmp/lef-roster-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-stage.json
+          grep -Fq '"published": 0' /tmp/lef-roster-stage.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-repeat.json
+          grep -Fq '"created": false' /tmp/lef-roster-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_rows;" | grep -Fqx 11
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          roster=json.loads(Path("data/import/lef-roster.json").read_text(encoding="utf-8"))
+          roster["judges"][0]["telephone"]="+7 (000) 000-00-00"
+          Path("data/import/lef-roster-next.json").write_text(json.dumps(roster,ensure_ascii=False),encoding="utf-8")
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster.py stage /input/lef-roster-next.json --captured-on "$(date -u +%F)" --reviewer "CI Synthetic Reviewer" --attest-source-observed > /tmp/lef-roster-next.json
+          OLD_ROSTER="$(python3 -c 'import json;print(json.load(open("/tmp/lef-roster-stage.json"))["batch_id"])')"
+          NEW_ROSTER="$(python3 -c 'import json;print(json.load(open("/tmp/lef-roster-next.json"))["batch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster_diff.py queue --older-batch "$OLD_ROSTER" --newer-batch "$NEW_ROSTER" > /tmp/roster-change.json
+          grep -Fq '"differences": 1' /tmp/roster-change.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/roster_diff.py queue --older-batch "$OLD_ROSTER" --newer-batch "$NEW_ROSTER" > /tmp/roster-repeat.json
+          grep -Fq '"created": false' /tmp/roster-repeat.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_diff_items WHERE review_status='pending';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM judicial_appointments;" | grep -Fqx 0
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Stage official-page court pilot without premature publication
+        run: |
+          cp importer/seeds/lefortovsky-official-page-staging-unreviewed.json data/import/lefortovsky-pilot.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py validate /input/lefortovsky-pilot.json --registry mos-gorsud-court > /tmp/lefortovsky-valid.json
+          grep -Fq '"records": 1' /tmp/lefortovsky-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/lefortovsky-pilot.json --registry mos-gorsud-court > /tmp/lefortovsky-staged.json
+          grep -Fq '"published": 0' /tmp/lefortovsky-staged.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_import_rows WHERE external_code='77RS0014' AND review_status='pending';" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM courts;" | grep -Fqx 0
+      - name: Check API and HTML response
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/health > /tmp/api-health.json
+          grep -Fqx '{"status":"ok","database":"reachable"}' /tmp/api-health.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions > /tmp/regions.json
+          grep -Fqx '[]' /tmp/regions.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/courts/categories/general-district > /tmp/courts-category.json
+          grep -Fqx '{"items":[],"total":0,"page":1,"pageSize":50}' /tmp/courts-category.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/categories/general-district?page=0')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/courts/categories/invalid-kind)" = 404
+          curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
+          grep -Fqx '[]' /tmp/courts.json
+          curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
+          grep -Fq 'Правосудие.' /tmp/home.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/arbitration > /tmp/arbitration.html
+          grep -Fq 'Арбитражные суды России' /tmp/arbitration.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/magistrates > /tmp/magistrates.html
+          grep -Fq 'Судебные участки мировых судей' /tmp/magistrates.html
+          for page in courts/types courts/types/general-district courts/types/general-regional courts/types/military-garrison courts/types/arbitration-subject; do
+            curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
+          done
+          curl --fail --silent --show-error http://127.0.0.1:4173/judges > /tmp/judges.html
+          grep -Fq 'Судьи Российской Федерации' /tmp/judges.html
+          for page in courts judges laws practice guides jurisdiction services sources search; do
+            curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
+          done
+      - name: Validate research court pages and source-labelled pilot indexing
+        run: |
+          set -x
+          # Dropdown filters, address jurisdiction navigation and detailed court dossiers
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts > /tmp/courts-directory-filters.html
+          grep -Fq 'directory-court-kind' /tmp/courts-directory-filters.html
+          grep -Fq 'directory-region' /tmp/courts-directory-filters.html
+          grep -Fq 'general-magistrate' /tmp/courts-directory-filters.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-district&region=region-54' > /tmp/courts-kind-region-filter.html
+          grep -Fq 'Барабинский районный суд' /tmp/courts-kind-region-filter.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-magistrate&region=region-27' > /tmp/courts-magistrates-filter.html
+          grep -Fq '27MS0001' /tmp/courts-magistrates-filter.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/jurisdiction > /tmp/jurisdiction-lookup.html
+          grep -Fq 'Адрес заявителя' /tmp/jurisdiction-lookup.html
+          grep -Fq 'Подсудность по адресу' /tmp/jurisdiction-lookup.html
+          grep -Fq 'noindex' /tmp/jurisdiction-lookup.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54/sud-54rs0012 > /tmp/barabinsk-dossier.html
+          grep -Fq 'Постоянное судебное присутствие' /tmp/barabinsk-dossier.html
+          grep -Fq 'Телефоны отделов и канцелярий' /tmp/barabinsk-dossier.html
+          if grep -Fq 'noindex' /tmp/barabinsk-dossier.html; then
+            echo 'Public pilot dossier must not be noindex' >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55/sud-55os0000 > /tmp/omsk-dossier.html
+          grep -Fq 'Личный приём' /tmp/omsk-dossier.html || grep -Fq 'личный приём' /tmp/omsk-dossier.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/coverage > /tmp/courts-coverage.html
+          grep -Fq 'Наполненность каталога судов' /tmp/courts-coverage.html
+          grep -Fq '151' /tmp/courts-coverage.html
+          grep -Fq 'noindex' /tmp/courts-coverage.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54 > /tmp/court-region54.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55 > /tmp/court-region55.html
+          grep -Fq '/courts/region-54/sud-54rs0012' /tmp/court-region54.html
+          grep -Fq '/courts/region-55/sud-55os0000' /tmp/court-region55.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/types/general-magistrate > /tmp/research-magistrate-kind.html
+          grep -Fq 'sud-27ms0001' /tmp/research-magistrate-kind.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/types/general-district > /tmp/research-district-kind.html
+          grep -Fq 'sud-54rs0012' /tmp/research-district-kind.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-27 > /tmp/court-region27.html
+          grep -Fq '/courts/region-27/sud-27ms0001' /tmp/court-region27.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-27/sud-27ms0001 > /tmp/court-magistrate.html
+          grep -Fq 'В этом исследовательском списке адрес не указан' /tmp/court-magistrate.html
+          grep -Fq 'noindex' /tmp/court-magistrate.html
+          for entry in 'region-54/sud-54rs0012' 'region-55/sud-55os0000'; do
+            curl --fail --silent --show-error "http://127.0.0.1:4173/courts/$entry" > /tmp/court-public-reference.html
+            grep -Fq 'Публичная справочная карточка' /tmp/court-public-reference.html
+            grep -Fq 'официальных источников' /tmp/court-public-reference.html
+            if grep -Fq 'noindex' /tmp/court-public-reference.html; then
+              echo 'Sourced public reference profile was unexpectedly noindex' >&2
+              exit 1
+            fi
+          done
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54/sud-54rs0005 > /tmp/court-unreviewed.html
+          grep -Fq 'noindex' /tmp/court-unreviewed.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?q=55OS0000' > /tmp/court-research-search.html
+          grep -Fq 'Омский областной суд' /tmp/court-research-search.html
+          curl --fail --silent --show-error http://127.0.0.1:4173/sitemap.xml > /tmp/court-sitemap.xml
+          grep -Fq '/courts/region-54/sud-54rs0012' /tmp/court-sitemap.xml
+          grep -Fq '/courts/region-55/sud-55os0000' /tmp/court-sitemap.xml
+          if grep -Fq '/courts/region-54/sud-54rs0005' /tmp/court-sitemap.xml; then
+            echo 'Non-pilot research court leaked into sitemap' >&2
+            exit 1
+          fi
+      - name: Verify reviewed profile updates and monitoring storage (ephemeral CI only)
+        run: |
+          docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO regions(code,name,slug) VALUES('99','TEST ONLY REGION','test-99') ON CONFLICT DO NOTHING"
+          docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO courts(region_id,name,slug,court_type,address,official_url,status,verified_at) SELECT id,'TEST ONLY COURT','test-court','TEST TYPE','synthetic no real address','https://sudrf.ru/','verified',now() FROM regions WHERE code='99'"
+          COURT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM courts WHERE slug='test-court' LIMIT 1" | tr -d '\r')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/profile.py propose --court-id "$COURT_ID" --field coordinates --value '{"latitude":55.75,"longitude":37.6}' --source-url https://sudrf.ru/ --observer "CI Synthetic Test" > /tmp/profile-proposal.json
+          grep -Fq '"published": 0' /tmp/profile-proposal.json
+          CANDIDATE_ID="$(python3 -c 'import json; print(json.load(open("/tmp/profile-proposal.json"))["candidate_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/profile.py approve --candidate-id "$CANDIDATE_ID" --reviewer "CI Synthetic Test" --attest-current --attest-rights > /tmp/profile-approved.json
+          grep -Fq '"changed": true' /tmp/profile-approved.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='court' AND changed_field='coordinates';" | grep -Fqx 1
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/test-99/courts/test-court > /tmp/test-court.json
+          grep -Fq '"latitude":55.75' /tmp/test-court.json
+          # Region-name search must find only the synthetic verified record.
+          curl --fail --silent --show-error --get \
+            --data-urlencode 'q=TEST ONLY REGION' \
+            http://127.0.0.1:4174/api/v1/courts/search > /tmp/search-region.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/search-region.json', encoding='utf-8') as file:
+              records = json.load(file)
+          assert len(records) == 1, records
+          assert records[0]['slug'] == 'test-court'
+          assert records[0]['region_slug'] == 'test-99'
+          PY
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py register --court-id "$COURT_ID" --url https://sudrf.ru/ --scope general --reviewer "CI Synthetic Test" --attest-permission > /tmp/watch-registered.json
+          grep -Fq '"created": true' /tmp/watch-registered.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch;" | grep -Fqx 1
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch_events;" | grep -Fqx 0
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -c "INSERT INTO court_source_watch_events(watch_id,old_sha256,new_sha256) SELECT id,repeat('a',64),repeat('b',64) FROM court_source_watch LIMIT 1"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py pending > /tmp/watch-pending.json
+          grep -Fq '"pending": 1' /tmp/watch-pending.json
+          EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_source_watch_events LIMIT 1" | tr -d '\r')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py review --event-id "$EVENT_ID" --reviewer "CI Synthetic Test" --attest-reviewed > /tmp/watch-reviewed.json
+          grep -Fq '"status": "reviewed"' /tmp/watch-reviewed.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py pending | grep -Fq '"pending": 0'
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py nominate --court-id "$COURT_ID" --full-name "CI Test Judge Only" --position "Test judge" --source-url https://sudrf.ru/ --observer "CI Synthetic Test" > /tmp/judge-proposal.json
+          grep -Fq '"published": 0' /tmp/judge-proposal.json
+          JUDGE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/judge-proposal.json"))["candidate_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py approve --candidate-id "$JUDGE_CANDIDATE" --reviewer "CI Synthetic Test" --attest-current --attest-identity > /tmp/judge-approved.json
+          grep -Fq '"status": "approved"' /tmp/judge-approved.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/test-99/courts/test-court | grep -Fq 'CI Test Judge Only'
+          APPOINTMENT_ID="$(python3 -c 'import json;print(json.load(open("/tmp/judge-approved.json"))["appointment_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/judges.py close --appointment-id "$APPOINTMENT_ID" --ended-on "$(date -u -d yesterday +%F)" --source-url https://sudrf.ru/ --reviewer "CI Synthetic Test" --attest-current > /tmp/judge-closed.json
+          grep -Fq '"status": "closed"' /tmp/judge-closed.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='judge';" | grep -Fqx 2
+          curl --fail --silent --show-error http://127.0.0.1:4173/sitemap.xml | grep -Fq '<urlset'
+      - name: Integrate saved official-contact differences into PostgreSQL review queue
+        run: |
+          COURT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM courts WHERE slug='test-court' LIMIT 1" | tr -d '\r')"
+          CONTACT_URL='https://mos-gorsud.ru/rs/lefortovskij/help/hours'
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py register --court-id "$COURT_ID" --url "$CONTACT_URL" --scope contacts --reviewer 'CI fixture reviewer' --attest-permission > /tmp/contact-watch.json
+          WATCH_ID="$(python3 -c 'import json;print(json.load(open("/tmp/contact-watch.json"))["watch_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/watch.py renew-permission --watch-id "$WATCH_ID" --reviewer 'CI fixture reviewer' --terms-url https://mos-gorsud.ru/ --basis 'CI fixture only; operator reviewed permissible scope and archived contacts' --attest-permission > /tmp/contact-permission.json
+          grep -Fq '"operator_attestation_only": true' /tmp/contact-permission.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_watch_permission_attestations WHERE watch_id=$WATCH_ID" | grep -Fqx 1
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-old.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-first.json
+          grep -Fq '"signals": 0' /tmp/contact-first.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-new.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-second.json
+          grep -Fq '"signals": 3' /tmp/contact-second.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/official_contact_stage.py stage /input/hours-new.html --watch-id "$WATCH_ID" --source-url "$CONTACT_URL" --captured-on "$(date -u +%F)" --reviewer 'CI fixture reviewer' --attest-authorized-source > /tmp/contact-replay.json
+          grep -Fq '"created": false' /tmp/contact-replay.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_change_events WHERE review_status='pending'" | grep -Fqx 3
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_snapshots WHERE watch_id=$WATCH_ID" | grep -Fqx 2
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM change_events WHERE entity_type='court' AND changed_field IN ('phone','email')" | tr -d '\r')" = 0
+      - name: End-to-end proof for a reviewed official court-case link (ephemeral DB only)
+        run: |
+          PILOT_BATCH="$(python3 -c 'import json;print(json.load(open("/tmp/lefortovsky-staged.json"))["batch_id"])')"
+          docker compose -f compose.local.yaml run --rm importer approve --batch "$PILOT_BATCH" --code 77RS0014 --reviewer "CI simulated editor - test only" --checked-on "$(date -u +%F)" --verification-url https://mos-gorsud.ru/rs/lefortovskij --attest-current --attest-reuse-rights > /tmp/lefortovsky-published-test.json
+          PILOT_ID="$(python3 -c 'import json;print(json.load(open("/tmp/lefortovsky-published-test.json"))["court_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/cases.py propose --court-id "$PILOT_ID" --uid 77RS0014-02-2026-011129-45 --number 02-7949/2026 --source-url https://m.mos-gorsud.ru/rs/lefortovskij/services/cases/civil/details/fef64000-869b-11f1-ade9-3f611993f6c1 --observer "CI simulated editor - test only" > /tmp/case-proposal.json
+          grep -Fq '"published": 0' /tmp/case-proposal.json
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/moscow/courts/sud-77rs0014 | grep -Fq '"cases":[]'
+          CASE_CANDIDATE="$(python3 -c 'import json;print(json.load(open("/tmp/case-proposal.json"))["candidate_id"])')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/cases.py approve --candidate-id "$CASE_CANDIDATE" --reviewer "CI simulated editor - test only" --attest-current --attest-reuse-rights > /tmp/case-approved.json
+          grep -Fq '"published": 1' /tmp/case-approved.json
+          curl --fail --silent --show-error --get --data-urlencode 'q=77RS0014' http://127.0.0.1:4174/api/v1/courts/search | grep -Fq 'sud-77rs0014'
+          curl --fail --silent --show-error http://127.0.0.1:4174/api/v1/regions/moscow/courts/sud-77rs0014 | grep -Fq '02-7949/2026'
+          curl --fail --silent --show-error http://127.0.0.1:4173/courts/moscow/sud-77rs0014 | grep -Fq '02-7949/2026'
+      - name: Assert editor closed by default, then test isolated authorized session
+        run: |
+          trap 'echo "Editorial smoke failed near script line $LINENO" >&2' ERR
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor)" = 404
+          export EDITOR_DASHBOARD_ENABLED=true
+          export EDITOR_USERNAME=ci-editor
+          export EDITOR_PASSWORD=ci-editor-password-2026
+          export EDITOR_API_TOKEN=ci-token-for-editor-overview-must-have-more-than-32-characters
+          # CI synthetic pending source event; does not modify the published court.
+          docker compose -f compose.local.yaml exec -T postgres psql -v ON_ERROR_STOP=1 -U courts -d courts -c "INSERT INTO court_source_watch_events(watch_id,old_sha256,new_sha256) SELECT id,repeat('b',64),repeat('c',64) FROM court_source_watch LIMIT 1"
+          docker compose -f compose.local.yaml up -d --force-recreate --wait --wait-timeout 120 api web
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/overview)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/court-candidates)" = 401
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=1' > /tmp/editor-candidates.json
+          grep -Fq '"source_url"' /tmp/editor-candidates.json
+          grep -Fq '"candidate_id"' /tmp/editor-candidates.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/internal/editor/discoveries)" = 401
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/discoveries?page=1' > /tmp/editor-discoveries.json
+          grep -Fq '"discovery_id"' /tmp/editor-discoveries.json
+          grep -Fq '"court_name"' /tmp/editor-discoveries.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/discoveries?page=0')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" 'http://127.0.0.1:4174/api/v1/internal/editor/court-candidates?page=0')" = 400
+          curl --fail --silent --show-error -H "Authorization: Bearer $EDITOR_API_TOKEN" http://127.0.0.1:4174/api/v1/internal/editor/overview > /tmp/editor-overview.json
+          grep -Fq '"published":' /tmp/editor-overview.json
+          grep -Fq '"staff_rosters"' /tmp/editor-overview.json
+          grep -Fq '"intake_recent_runs"' /tmp/editor-overview.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor)" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/editor/dashboard)" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u 'ci-editor:wrong-password' http://127.0.0.1:4173/editor/dashboard)" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" http://127.0.0.1:4173/editor)" = 302
+          curl --fail --silent --show-error -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" http://127.0.0.1:4173/editor/dashboard > /tmp/editor-dashboard.html
+          grep -Fq 'Контроль наполнения судов' /tmp/editor-dashboard.html
+          grep -Fq 'name="robots" content="noindex, nofollow"' /tmp/editor-dashboard.html
+
+          grep -Fq 'Сигнал рассмотрен' /tmp/editor-dashboard.html
+          grep -Fq 'staff_roster_diffs' /tmp/editor-overview.json
+          echo 'editor overview and queue tests passed'
+          ROSTER_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_staff_roster_diff_items WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          test -n "$ROSTER_EVENT_ID"
+          echo 'roster diff item exists'
+          extract_csrf() {
+            python3 - "$1" "$2" <<'PY'
+          import re,sys
+          s=open("/tmp/editor-dashboard.html",encoding="utf-8").read()
+          forms=re.findall(r'<form\b[^>]*action="/editor/review"[^>]*>(.*?)</form>',s,re.S)
+          for html in forms:
+              fields=dict(re.findall(r'<input\b[^>]*name="([^"]+)"[^>]*value="([^"]*)"',html))
+              if fields.get("kind")==sys.argv[1] and fields.get("itemId")==sys.argv[2]:
+                  print(fields["csrf"])
+                  break
+          else:
+              raise SystemExit("Missing scoped editor review token")
+          PY
+          }
+          CSRF="$(extract_csrf staff_roster_diffs "$ROSTER_EVENT_ID")"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H "Content-Type: application/json" -d '{}' "http://127.0.0.1:4174/api/v1/internal/editor/roster-diffs/$ROSTER_EVENT_ID/review")" = 401
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H "Authorization: Bearer $EDITOR_API_TOKEN" -H "Content-Type: application/json" -d "{\"decision\":\"reviewed\",\"reviewer\":\"CI Editor\",\"attested\":false}" "http://127.0.0.1:4174/api/v1/internal/editor/roster-diffs/$ROSTER_EVENT_ID/review")" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: https://attacker.invalid' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 403
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode 'csrf=not-a-token' --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 403
+          echo 'CSRF and origin negative tests passed'
+          COURTS_BEFORE="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')"
+          APPOINTMENTS_BEFORE="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')"
+          EDITOR_REVIEW_CODE="$(curl --silent --show-error --output /tmp/editor-review-result.txt --dump-header /tmp/editor-review-headers.txt --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)"
+          echo "Authorized editor review returned HTTP $EDITOR_REVIEW_CODE"
+          if [ "$EDITOR_REVIEW_CODE" != 303 ]; then head -c 450 /tmp/editor-review-result.txt; echo; exit 1; fi
+          grep -Eiq '^location: http://127\.0\.0\.1:4173/editor/dashboard' /tmp/editor-review-headers.txt
+          echo 'web POST returned expected redirect'
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_staff_roster_diff_items WHERE id=$ROSTER_EVENT_ID AND review_status='reviewed' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL;" | grep -Fqx 1
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=staff_roster_diffs' --data-urlencode "itemId=$ROSTER_EVENT_ID" --data-urlencode "csrf=$CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 409
+
+          REGISTRY_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_registry_diff_items WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          SOURCE_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_source_watch_events WHERE status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          test -n "$REGISTRY_EVENT_ID" && test -n "$SOURCE_EVENT_ID"
+          REGISTRY_CSRF="$(extract_csrf registry_diffs "$REGISTRY_EVENT_ID")"
+          SOURCE_CSRF="$(extract_csrf source_changes "$SOURCE_EVENT_ID")"
+          # A token for a record ID in one queue must not authorize a different queue.
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=source_changes' --data-urlencode "itemId=$SOURCE_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 403
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -H "Authorization: Bearer $EDITOR_API_TOKEN" -H 'Content-Type: application/json' -d '{"decision":"reviewed","reviewer":"CI Editor","attested":true}' -X POST "http://127.0.0.1:4174/api/v1/internal/editor/signals/court_profiles/$REGISTRY_EVENT_ID/review")" = 404
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=registry_diffs' --data-urlencode "itemId=$REGISTRY_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_registry_diff_items WHERE id=$REGISTRY_EVENT_ID AND review_status='reviewed' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL" | grep -Fqx 1
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=source_changes' --data-urlencode "itemId=$SOURCE_EVENT_ID" --data-urlencode "csrf=$SOURCE_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=ignored' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_source_watch_events WHERE id=$SOURCE_EVENT_ID AND status='ignored' AND reviewed_by='ci-editor' AND reviewed_at IS NOT NULL" | grep -Fqx 1
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=registry_diffs' --data-urlencode "itemId=$REGISTRY_EVENT_ID" --data-urlencode "csrf=$REGISTRY_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 409
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          CONTACT_EVENT_ID="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT id FROM court_contact_change_events WHERE review_status='pending' ORDER BY id LIMIT 1" | tr -d '\r')"
+          test -n "$CONTACT_EVENT_ID"
+          CONTACT_CSRF="$(extract_csrf contact_deltas "$CONTACT_EVENT_ID")"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' -u "$EDITOR_USERNAME:$EDITOR_PASSWORD" -H 'Origin: http://127.0.0.1:4173' --data-urlencode 'kind=contact_deltas' --data-urlencode "itemId=$CONTACT_EVENT_ID" --data-urlencode "csrf=$CONTACT_CSRF" --data-urlencode 'attest=on' --data-urlencode 'decision=reviewed' http://127.0.0.1:4173/editor/review)" = 303
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_contact_change_events WHERE id=$CONTACT_EVENT_ID AND review_status='reviewed' AND reviewed_at IS NOT NULL AND reviewed_by='ci-editor'" | grep -Fqx 1
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM judicial_appointments' | tr -d '\r')" = "$APPOINTMENTS_BEFORE"
+          echo 'Semantic phone/email signals acknowledged without changing public facts'
+          echo 'Registry and source monitoring signals reviewed without publication'
+      - name: Validate and privately stage source-backed Omsk candidates
+        run: |
+          cp importer/seeds/omsk-federal-official-unreviewed.json data/import/omsk-federal-candidates.json
+          cp importer/seeds/omsk-federal-official-ambiguous-unreviewed.json data/import/omsk-code-review.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py validate /input/omsk-federal-candidates.json --registry sudrf-federal > /tmp/omsk-federal-valid.json
+          grep -Fq '"records": 40' /tmp/omsk-federal-valid.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py validate /input/omsk-code-review.json > /tmp/omsk-quarantine-valid.json
+          grep -Fq '"records": 1' /tmp/omsk-quarantine-valid.json
+          COURTS_BEFORE="$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/omsk-federal-candidates.json --registry sudrf-federal > /tmp/omsk-federal-staged.json
+          grep -Fq '"published": 0' /tmp/omsk-federal-staged.json
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/discovery.py stage /input/omsk-code-review.json --captured-on "$(date -u +%F)" > /tmp/omsk-quarantine-staged.json
+          grep -Fq '"published": 0' /tmp/omsk-quarantine-staged.json
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_import_rows WHERE external_code LIKE '55RS%' OR external_code='55OS0000'" | grep -Fqx 40
+          docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc "SELECT count(*) FROM court_discovery_rows WHERE external_code='54GV0008' AND region_code='55'" | grep -Fqx 1
+          test "$(docker compose -f compose.local.yaml exec -T postgres psql -U courts -d courts -Atc 'SELECT count(*) FROM courts' | tr -d '\r')" = "$COURTS_BEFORE"
+          docker compose -f compose.local.yaml run --rm --entrypoint python importer /work/importer/federation.py stage /input/omsk-federal-candidates.json --registry sudrf-federal > /tmp/omsk-federal-replay.json
+          grep -Fq '"created": false' /tmp/omsk-federal-replay.json
+          echo '41 Omsk source candidates staged, 0 public courts published'
+      - name: Shut down and clean smoke-test containers
+        if: always()
+        run: docker compose -f compose.local.yaml down --volumes

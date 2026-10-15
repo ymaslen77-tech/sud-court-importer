@@ -1,0 +1,10 @@
+{
+  "name": "sud-court-portal",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter './apps/*' dev",
+    "build": "pnpm -r build",
+    "check": "pnpm -r check"
+  }
+}

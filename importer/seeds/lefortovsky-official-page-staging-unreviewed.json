@@ -1,0 +1,16 @@
+[
+  {
+    "courtCode": "77RS0014",
+    "regionCode": "77",
+    "regionName": "Москва",
+    "courtName": "Лефортовский районный суд",
+    "courtType": "Районный суд",
+    "courtAddress": "105120, г. Москва, Андроньевская пл., д. 5/9",
+    "courtTelephone": "+7 (495) 912-78-86",
+    "courtEmail": "info@14.msksud.ru",
+    "courtSiteUrl": "https://mos-gorsud.ru/rs/lefortovskij",
+    "sourceRecordUrl": "https://mos-gorsud.ru/rs/lefortovskij",
+    "courtCodeEvidenceUrl": "https://m.mos-gorsud.ru/rs/lefortovskij/services/cases/civil/details/fef64000-869b-11f1-ade9-3f611993f6c1",
+    "reviewNote": "Предварительная официальная карточка; код подтверждается УИД опубликованного дела 77RS0014-02-2026-011129-45; актуальность каждого поля проверить при ручной публикации."
+  }
+]

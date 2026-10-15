@@ -1,0 +1,122 @@
+[
+  {
+    "courtCode": "54RS0012",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Барабинский районный суд Новосибирской области",
+    "courtType": "Районный суд",
+    "courtAddress": "632334, Новосибирская обл., г. Барабинск, пер. Индустриальный, д. 7",
+    "courtTelephone": "(383) 612-91-37, 240-95-26",
+    "courtEmail": "barabinsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://barabinsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0013",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Бердский городской суд Новосибирской области",
+    "courtType": "Городской суд",
+    "courtAddress": "633010, Новосибирская обл., г. Бердск, ул. Ленина, д. 45",
+    "courtTelephone": "(383-41) 2-25-50, 2-25-44",
+    "courtEmail": "berdsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://berdsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0014",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Болотнинский районный суд Новосибирской области",
+    "courtType": "Районный суд",
+    "courtAddress": "633340, Новосибирская обл., г. Болотное, ул. Калинина, д. 13",
+    "courtTelephone": "(383-49) 22-554, 22-325, 23-313",
+    "courtEmail": "bolotninsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://bolotninsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0001",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Дзержинский районный суд г. Новосибирска",
+    "courtType": "Районный суд",
+    "courtAddress": "630015, Новосибирская обл., г. Новосибирск, ул. Промышленная, д. 1",
+    "courtTelephone": "(383) 279-23-66, 278-03-31",
+    "courtEmail": "dzerzhinsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://dzerzhinsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0003",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Заельцовский районный суд г. Новосибирска",
+    "courtType": "Районный суд",
+    "courtAddress": "630082, Новосибирская обл., г. Новосибирск, ул. Дачная, д. 35а",
+    "courtTelephone": "225-54-58, 354-32-71, 225-04-78",
+    "courtEmail": "zaelcovsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://zaelcovsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54KV0000",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Кассационный военный суд (Новосибирская область)",
+    "courtType": "Кассационный военный суд",
+    "courtAddress": "630091, Новосибирская обл., г. Новосибирск, ул. Гоголя, д. 8",
+    "courtTelephone": "(383) 201-16-90 (приемная председателя); 218-51-97 (факс)",
+    "courtEmail": "vkas@sudrf.ru",
+    "courtSiteUrl": "http://vkas.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54OS0000",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Новосибирский областной суд",
+    "courtType": "Областной суд",
+    "courtAddress": "630091, Новосибирская обл., г. Новосибирск, ул. Писарева, д. 35",
+    "courtTelephone": "(383) 221-58-10, (383) 221-95-30",
+    "courtEmail": "oblsud.nsk@sudrf.ru",
+    "courtSiteUrl": "http://oblsud.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0023",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Коченевский районный суд Новосибирской области",
+    "courtType": "Районный суд",
+    "courtAddress": "632640, Новосибирская обл., рп. Коченево, ул. Плахотного, д. 38",
+    "courtTelephone": "(383-51) 23-804, 23-266, 27-339",
+    "courtEmail": "kochenevsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://kochenevsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0025",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Куйбышевский районный суд Новосибирской области",
+    "courtType": "Районный суд",
+    "courtAddress": "632387, Новосибирская обл., г. Куйбышев, ул. Куйбышева, д. 20",
+    "courtTelephone": "(383-62) 51-731, 51-030, (383-60) 21-832",
+    "courtEmail": "kuibyshevsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://kuibyshevsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  },
+  {
+    "courtCode": "54RS0006",
+    "regionCode": "54",
+    "regionName": "Новосибирская область",
+    "courtName": "Ленинский районный суд г. Новосибирска",
+    "courtType": "Районный суд",
+    "courtAddress": "630107, Новосибирская обл., г. Новосибирск, ул. Связистов, д. 159",
+    "courtTelephone": "(383)356-90-35, (383)356-90-36 (ф.)",
+    "courtEmail": "leninsky.nsk@sudrf.ru",
+    "courtSiteUrl": "http://leninsky.nsk.sudrf.ru",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs"
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "status": "source-referenced-unapproved",
+  "notice": "Primary-source research notes only. Not automatically published. Values require fresh review and reuse-rights confirmation.",
+  "courtName": "Лефортовский районный суд города Москвы",
+  "region": "Москва",
+  "official_url": "https://mos-gorsud.ru/rs/lefortovskij",
+  "fields": [
+    {
+      "field": "address",
+      "value": "105120, г. Москва, Андроньевская пл., д. 5/9",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij/help/hours"
+    },
+    {
+      "field": "phone_expedition",
+      "value": "+7 (495) 912-78-86",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij"
+    },
+    {
+      "field": "phone_reception",
+      "value": "+7 (495) 678-05-22",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij/help/hours"
+    },
+    {
+      "field": "email",
+      "value": "info@14.msksud.ru",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij"
+    },
+    {
+      "field": "office_hours",
+      "value": "Пн–чт 09:00–18:00; пт 09:00–16:45; перерыв 13:00–13:45; сб–вс выходные.",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij/help/hours"
+    },
+    {
+      "field": "chairperson",
+      "value": "Голованов Василий Михайлович",
+      "source": "https://mos-gorsud.ru/rs/lefortovskij"
+    }
+  ],
+  "judgeRosterSource": "https://www.mos-gorsud.ru/rs/lefortovskij/structure/judges",
+  "rosterPublishedUpdate": "2026-04-22T15:34:31",
+  "judgeNamesAsListed": [
+    "Антипова Анна Вячеславовна",
+    "Краснова Екатерина Федоровна",
+    "Рябцев Сергей Алексеевич",
+    "Боронина Евгения Вячеславовна",
+    "Дмитриева Татьяна Владимировна",
+    "Алтынникова Лиля Игоревна",
+    "Игонина Ольга Леонидовна",
+    "Каргальцев Антон Игоревич",
+    "Федюнина Светлана Васильевна",
+    "Шидлов Николай Николаевич",
+    "Щукина Ирина Александровна"
+  ],
+  "otherOfficialPages": {
+    "cases": "https://mos-gorsud.ru/rs/lefortovskij/services/cases",
+    "hours": "https://mos-gorsud.ru/rs/lefortovskij/help/hours",
+    "judges": "https://www.mos-gorsud.ru/rs/lefortovskij/structure/judges"
+  },
+  "unverified": [
+    "court classification code",
+    "building coordinates",
+    "licensed facade photograph",
+    "newer judge appointments/transfers since source roster update",
+    "jurisdiction boundaries",
+    "bank details"
+  ]
+}

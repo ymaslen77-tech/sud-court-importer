@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "observed_on": "2026-10-14",
+  "attestation": "Observations of visible official indexes, not machine-access grants.",
+  "channels": [
+    {
+      "key": "sudrf-federal",
+      "publisher": "ГАС РФ «Правосудие»",
+      "listing_url": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
+      "scope": "Федеральные суды общей юрисдикции: региональная выдача",
+      "listing_observed": true,
+      "machine_feed_url": null,
+      "permission_document_url": null,
+      "terms_reviewed": false,
+      "automated_access_confirmed": false,
+      "reuse_rights_confirmed": false,
+      "status": "manual_review_only",
+      "reason": "Доступная региональная HTML-выдача; нет подтверждённого публичного машиночитаемого API или условий регулярных запросов."
+    },
+    {
+      "key": "sudrf-magistrate",
+      "publisher": "ГАС РФ «Правосудие»",
+      "listing_url": "https://sudrf.ru/index.php?act=go_ms_search&id=300&searchtype=ms",
+      "scope": "Судебные участки мировых судей",
+      "listing_observed": true,
+      "machine_feed_url": null,
+      "permission_document_url": null,
+      "terms_reviewed": false,
+      "automated_access_confirmed": false,
+      "reuse_rights_confirmed": false,
+      "status": "manual_review_only",
+      "reason": "Официальный раздел поиска известен; условия автоматизированной выгрузки участков не подтверждены."
+    },
+    {
+      "key": "arbitr-courts",
+      "publisher": "Федеральные арбитражные суды",
+      "listing_url": "https://arbitr.ru/materials/as",
+      "scope": "Арбитражные суды и постоянные судебные присутствия",
+      "listing_observed": true,
+      "machine_feed_url": null,
+      "permission_document_url": null,
+      "terms_reviewed": false,
+      "automated_access_confirmed": false,
+      "reuse_rights_confirmed": false,
+      "status": "manual_review_only",
+      "reason": "Официальный список наименований доступен; это HTML-перечень, а не подтверждённый разрешённый API."
+    },
+    {
+      "key": "moscow-contacts",
+      "publisher": "Портал открытых данных судов общей юрисдикции Москвы",
+      "listing_url": "https://data.mos-gorsud.ru/opendata",
+      "scope": "Категория «Контакты и часы приёма»",
+      "listing_observed": true,
+      "machine_feed_url": null,
+      "permission_document_url": "https://data.mos-gorsud.ru/terms-of-use",
+      "terms_reviewed": false,
+      "automated_access_confirmed": false,
+      "reuse_rights_confirmed": false,
+      "status": "manual_review_only",
+      "reason": "Портал показывает тематический набор, но URL конкретного экспорта и условия машинного доступа не установлены."
+    }
+  ]
+}

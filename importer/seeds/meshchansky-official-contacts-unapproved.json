@@ -1,0 +1,49 @@
+{
+  "status": "source-referenced-unapproved",
+  "observed_on": "2026-10-13",
+  "court": "Мещанский районный суд города Москвы",
+  "official_page": "https://www.mos-gorsud.ru/rs/meshchanskij/help/hours",
+  "alternate_source_observed": "https://helpdesk.mos-gorsud.ru/rs/meshchanskij/help/hours",
+  "observed_fields": [
+    {
+      "field": "address",
+      "value": "129090, г. Москва, ул. Каланчевская, д. 43А"
+    },
+    {
+      "field": "hotline",
+      "value": "+7 (499) 530-08-08"
+    },
+    {
+      "field": "corruption_hotline",
+      "value": "+7 (499) 680-18-66"
+    },
+    {
+      "field": "email",
+      "value": "info@16.msksud.ru"
+    },
+    {
+      "field": "office_hours",
+      "value": "Пн–чт 09:00–18:00; пт 09:00–16:45; сб–вс выходные; перерыв 13:00–13:45"
+    },
+    {
+      "field": "expedition_phone",
+      "value": "8-495-680-50-53"
+    },
+    {
+      "field": "archive_phone",
+      "value": "8-495-680-26-66"
+    },
+    {
+      "field": "chairperson_as_listed",
+      "value": "Никитин Максим Владимирович"
+    }
+  ],
+  "verification_required": [
+    "Repeat-check canonical www.mos-gorsud.ru page before publication",
+    "Confirm precise identity, court code, appointment source and current chairman status",
+    "Do not represent contact email as a channel for filing claims or complaints",
+    "Confirm conditions for automatic reuse and repeated fetching",
+    "Confirm precise geolocation and facade photo rights independently"
+  ],
+  "not_public": true
+}

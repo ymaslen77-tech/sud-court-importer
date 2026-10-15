@@ -1,0 +1,51 @@
+name: Public site smoke
+on:
+  workflow_dispatch:
+  push:
+    branches: ['feat/**']
+    paths:
+      - '.github/workflows/public-site-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  production-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check production home, public status and court research SEO
+        run: |
+          set -euo pipefail
+          base='https://sudy-rossii.vercel.app'
+          code=000
+          for attempt in $(seq 1 18); do
+            code="$(curl -L --silent --show-error --max-time 20 -o /tmp/home.html -w '%{http_code}' "$base/" || true)"
+            if [ "$code" = 200 ] && grep -Fq 'Правосудие.' /tmp/home.html; then
+              break
+            fi
+            echo "Home not ready: HTTP $code, attempt $attempt"
+            sleep 10
+          done
+          test "$code" = 200
+          grep -Fq 'Правосудие.' /tmp/home.html
+
+          curl -L --fail --silent --show-error --max-time 25 "$base/api/status" > /tmp/status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('/tmp/status.json').read_text(encoding='utf-8'))
+          assert data['preliminary_records'] == 151, data
+          assert data['verified_backend_configured'] is False, data
+          assert data['automated_source_collection'] is False, data
+          PY
+
+          curl -L --fail --silent --show-error --max-time 25 "$base/courts/region-54/sud-54rs0012" > /tmp/profile.html
+          grep -Fq 'Требует повторной сверки' /tmp/profile.html
+          grep -Fq 'noindex' /tmp/profile.html
+          curl -L --fail --silent --show-error --max-time 25 "$base/sitemap.xml" > /tmp/sitemap.xml
+          if grep -Fq '/courts/region-54/sud-54rs0012' /tmp/sitemap.xml; then
+            echo 'Unreviewed court URL leaked to public sitemap' >&2
+            exit 1
+          fi
+          echo 'Production homepage, status and noindex court page verified.'

@@ -1,0 +1,16 @@
+node_modules
+.next
+dist
+.env
+.env.*
+!.env.example
+*.log
+coverage
+
+# Downloaded court records and unreviewed imports
+data/import/
+__pycache__/
+*.pyc
+
+# Permitted source snapshots contain historical contact evidence; never commit
+data/source-snapshots/

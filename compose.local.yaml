@@ -1,0 +1,116 @@
+name: sud-court-local
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: courts
+      POSTGRES_USER: courts
+      POSTGRES_PASSWORD: courts
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U courts -d courts"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    command: ["pnpm", "--filter", "@courts/api", "dev"]
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+      API_PORT: "4000"
+      EDITOR_API_TOKEN: ${EDITOR_API_TOKEN:-}
+      WEB_ORIGIN: http://localhost:4173
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:4174:4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    command: ["pnpm", "--filter", "@courts/web", "dev", "--hostname", "0.0.0.0"]
+    environment:
+      API_URL: http://api:4000
+      EDITOR_DASHBOARD_ENABLED: ${EDITOR_DASHBOARD_ENABLED:-false}
+      EDITOR_USERNAME: ${EDITOR_USERNAME:-}
+      EDITOR_PASSWORD: ${EDITOR_PASSWORD:-}
+      EDITOR_API_TOKEN: ${EDITOR_API_TOKEN:-}
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:4173:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    restart: unless-stopped
+
+  importer:
+    profiles: ["import"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+    volumes:
+      - ./data/import:/input:ro
+      - ./data/import/normalized:/output
+      - ./apps/web/public/court-media:/published-media
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  court-watch:
+    profiles: ["watch"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'while true; do if [ "$COURT_CONTACT_SEMANTIC_ENABLED" = "true" ]; then python /work/importer/watch.py check --limit 5 --semantic-contacts --attest-automated-processing --snapshot-dir /snapshots || true; else python /work/importer/watch.py check --limit 5 || true; fi; sleep 86400; done'
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+      COURT_CONTACT_SEMANTIC_ENABLED: ${COURT_CONTACT_SEMANTIC_ENABLED:-false}
+    volumes:
+      - ./data/source-snapshots:/snapshots
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+
+  court-intake:
+    profiles: ["intake"]
+    build:
+      context: .
+      dockerfile: Dockerfile.importer
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "while true; do python /work/importer/inbox.py stage || true; sleep 21600; done"
+    environment:
+      DATABASE_URL: postgresql://courts:courts@postgres:5432/courts
+    volumes:
+      - ./data/import:/input:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

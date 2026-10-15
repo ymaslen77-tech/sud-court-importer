@@ -1,0 +1,677 @@
+[
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 1 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0001",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 2 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0002",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 3 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0003",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 4 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0004",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 5 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0005",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 6 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0006",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 7 судебного района «Железнодорожный район г. Хабаровск»",
+    "courtCode": "27MS0007",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 8 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0008",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 9 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0009",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 10 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0010",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 11 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0011",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 12 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0012",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 13 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0013",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 14 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0014",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 15 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0015",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 16 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0016",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 17 судебного района «Кировский район г. Хабаровска»",
+    "courtCode": "27MS0017",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 18 судебного района «Кировский район г. Хабаровска»",
+    "courtCode": "27MS0018",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 19 судебного района «Кировский район г. Хабаровска»",
+    "courtCode": "27MS0019",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 20 судебного района «Краснофлотский район г. Хабаровска»",
+    "courtCode": "27MS0020",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 21 судебного района «Краснофлотский район г. Хабаровска»",
+    "courtCode": "27MS0021",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 22 судебного района «Краснофлотский район г. Хабаровска»",
+    "courtCode": "27MS0022",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 23 судебного района «Краснофлотский район г. Хабаровска»",
+    "courtCode": "27MS0023",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 24 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0024",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 25 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0025",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 26 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0026",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 27 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0027",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 28 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0028",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 29 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0029",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 30 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0030",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 31 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0031",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 32 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0032",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 33 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0033",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 34 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0034",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 35 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0035",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 36 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0036",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 37 судебного района «Ленинский район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0037",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 38 судебного района «Ленинский район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0038",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 39 судебного района «Ленинский район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0039",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 40 судебного района «Город Советская Гавань Хабаровского края»",
+    "courtCode": "27MS0040",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 41 судебного района «Город Советская Гавань Хабаровского края»",
+    "courtCode": "27MS0041",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 42 судебного района «Город Николаевск-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0042",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 43 судебного района «Город Николаевск-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0043",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 44 судебного района «Город Амурск Хабаровского края»",
+    "courtCode": "27MS0044",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 45 судебного района «Город Амурск Хабаровского края»",
+    "courtCode": "27MS0045",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 46 судебного района «Город Амурск Хабаровского края»",
+    "courtCode": "27MS0046",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 47 судебного района «Город Бикин Хабаровского края»",
+    "courtCode": "27MS0047",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 48 судебного района «Город Николаевск-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0048",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 49 судебного района «Ванинский район Хабаровского края»",
+    "courtCode": "27MS0049",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 50 судебного района «Ванинский район Хабаровского края»",
+    "courtCode": "27MS0050",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 51 судебного района «Верхнебуреинский район Хабаровского края»",
+    "courtCode": "27MS0051",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 52 судебного района «Верхнебуреинский район Хабаровского края»",
+    "courtCode": "27MS0052",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 53 судебного района «Вяземский район Хабаровского края»",
+    "courtCode": "27MS0053",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 54 судебного района «Комсомольский район Хабаровского края»",
+    "courtCode": "27MS0054",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 55 судебного района «Комсомольский район Хабаровского края»",
+    "courtCode": "27MS0055",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 56 судебного района «Район имени Лазо Хабаровского края»",
+    "courtCode": "27MS0056",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 57 судебного района «Район имени Лазо Хабаровского края»",
+    "courtCode": "27MS0057",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 58 судебного района «Район имени Лазо Хабаровского края»",
+    "courtCode": "27MS0058",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 59 судебного района «Нанайский район Хабаровского края»",
+    "courtCode": "27MS0059",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 60 судебного района «Город Николаевск-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0060",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 61 судебного района «Солнечный район Хабаровского края»",
+    "courtCode": "27MS0061",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 62 судебного района «Солнечный район Хабаровского края»",
+    "courtCode": "27MS0062",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 63 судебного района «Солнечный район Хабаровского края»",
+    "courtCode": "27MS0063",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 64 судебного района «Город Николаевск-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0064",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 65 судебного района «Ульчский район Хабаровского края»",
+    "courtCode": "27MS0065",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 66 судебного района «Хабаровский район Хабаровского края»",
+    "courtCode": "27MS0066",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 67 судебного района «Хабаровский район Хабаровского края»",
+    "courtCode": "27MS0067",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 68 судебного района «Хабаровский район Хабаровского края»",
+    "courtCode": "27MS0068",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 69 судебного района «Хабаровский район Хабаровского края»",
+    "courtCode": "27MS0069",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 70 судебного района «Индустриальный район г. Хабаровска»",
+    "courtCode": "27MS0070",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 71 судебного района «Центральный район г. Хабаровска»",
+    "courtCode": "27MS0071",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 72 судебного района «Центральный район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0072",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 73 судебного района «Ленинский район г. Комсомольска-на-Амуре Хабаровского края»",
+    "courtCode": "27MS0073",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 74 судебного района «Город Амурск Хабаровского края»",
+    "courtCode": "27MS0074",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  },
+  {
+    "registry": "sudrf-magistrate",
+    "courtKind": "magistrate-area",
+    "courtName": "Судебный участок № 75 судебного района «Верхнебуреинский район Хабаровского края»",
+    "courtCode": "27MS0075",
+    "regionCode": "27",
+    "regionName": "Хабаровский край",
+    "sourceRecordUrl": "https://sudrf.ru/index.php?act=go_ms_search&court_subj=27&id=300&ms_type=ms&searchtype=ms&var=true"
+  }
+]

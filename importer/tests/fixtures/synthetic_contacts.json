@@ -1,0 +1,10 @@
+[
+  {
+    "courtCode": "77RS9999",
+    "courtName": "ДЕМОНСТРАЦИОННЫЙ РАЙОННЫЙ СУД (НЕ СУЩЕСТВУЕТ)",
+    "courtAddress": "ВЫМЫШЛЕННЫЙ АДРЕС, Москва, д. 999",
+    "courtTelephone": "+7 000 000 00 00",
+    "courtEmail": "example@example.org",
+    "courtSiteUrl": "https://www.mos-gorsud.ru/rs/demo-nonexistent"
+  }
+]
