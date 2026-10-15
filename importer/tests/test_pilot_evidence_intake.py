@@ -12,11 +12,11 @@ MIGRATION=ROOT/"db/migrations/014_candidate_evidence.sql"
 
 
 class CandidateEvidenceTests(unittest.TestCase):
-    def test_forty_five_provenance_rows_are_research_only(self):
+    def test_forty_eight_provenance_rows_are_research_only(self):
         rows=observations()
-        self.assertEqual(len(rows),45)
+        self.assertEqual(len(rows),48)
         self.assertEqual(len({r["external_code"] for r in rows}),10)
-        self.assertEqual(sum(r["channel"]=="cached_official_case_uid" for r in rows),5)
+        self.assertEqual(sum(r["channel"]=="cached_official_case_uid" for r in rows),8)
         self.assertEqual(sum(r["channel"]=="cached_official_page" for r in rows),40)
         self.assertEqual({r["field_name"] for r in rows},
             {"court_name","address","phone","email","classification_code"})
