@@ -464,7 +464,10 @@ jobs:
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-54/sud-54rs0012 > /tmp/barabinsk-dossier.html
           grep -Fq 'Постоянное судебное присутствие' /tmp/barabinsk-dossier.html
           grep -Fq 'Телефоны отделов и канцелярий' /tmp/barabinsk-dossier.html
-          grep -Fq 'noindex' /tmp/barabinsk-dossier.html
+          if grep -Fq 'noindex' /tmp/barabinsk-dossier.html; then
+            echo 'Public pilot dossier must not be noindex' >&2
+            exit 1
+          fi
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/region-55/sud-55os0000 > /tmp/omsk-dossier.html
           grep -Fq 'Личный приём' /tmp/omsk-dossier.html || grep -Fq 'личный приём' /tmp/omsk-dossier.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/coverage > /tmp/courts-coverage.html
