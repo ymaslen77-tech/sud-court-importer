@@ -48,6 +48,13 @@ class IndividualCourtEvidenceTests(unittest.TestCase):
                 review_official_site(OLD, site, EVIDENCE, "sudrf-federal",
                                      attest_site_migration=True)
 
+    def test_moscow_federal_court_path_remains_valid(self):
+        url = "https://mos-gorsud.ru/rs/lefortovskij"
+        self.assertEqual(
+            review_official_site(url, url, url, "mos-gorsud-court"),
+            (url, url, False)
+        )
+
     def test_no_subpage_as_public_site_for_sudrf(self):
         with self.assertRaisesRegex(ImportValidationError, "site root"):
             review_official_site(OLD, EVIDENCE, EVIDENCE,
