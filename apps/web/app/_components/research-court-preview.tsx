@@ -3,10 +3,13 @@ import type {ResearchCourt} from '../lib/research-courts';
 import researchHours from '../lib/research-hours.json';
 import pilotEvidence from '../lib/research-evidence-pilot.json';
 import {ResearchDossier} from './research-dossier';
+import {isPilotPublicCourt} from '../lib/pilot-public';
+import {PilotCourtPublic} from './pilot-court-public';
 
 type PreliminaryHours = {office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 type PilotSource = {official_page_url:string;researched_on:string;review_status:string;observation_kind:string;observed_fields:string[];description:string};
 export function ResearchCourtPreview({court}:{court:ResearchCourt}){
+  if(isPilotPublicCourt(court))return <PilotCourtPublic court={court}/>;
   const hours=(researchHours as Record<string,PreliminaryHours>)[court.code];
   const pilot=(pilotEvidence as Record<string,PilotSource>)[court.code];
 
