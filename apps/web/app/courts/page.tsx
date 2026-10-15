@@ -4,12 +4,13 @@ import { CourtSearch } from '../_components/court-search';
 import { getRegions } from '../lib/api';
 import { researchRegions } from '../lib/research-courts';
 import {COURT_CATEGORIES} from '../lib/court-taxonomy';
+import {pilotPublicCourts} from '../lib/pilot-public';
 
 export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const regions = await getRegions();
-    return { title: 'Каталог судов Российской Федерации', description: 'Поиск судов Российской Федерации, проверенных адресов и контактных данных.', robots: { index: regions.length > 0, follow: true } };
+    return { title: 'Каталог судов Российской Федерации', description: 'Справочные карточки судов с официальными источниками и отмеченной актуальностью сведений.', robots: { index: regions.length > 0 || pilotPublicCourts().length > 0, follow: true } };
   } catch {
     return { title: 'Каталог судов Российской Федерации', robots: { index: false, follow: true } };
   }
@@ -19,6 +20,7 @@ export default async function CourtsDirectory() {
   let failed = false;
   try { regions = await getRegions(); } catch { failed = true; }
   const research = researchRegions();
+  const pilot = pilotPublicCourts();
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>Суды России</div>
     <section className="section-hero">
@@ -65,6 +67,21 @@ export default async function CourtsDirectory() {
           <p>Публичных карточек ещё нет. Подготовлена загрузка из официальных источников по всей России; до редакционной проверки суды не отображаются в каталоге.</p>
           <Link className="text-link" href="/courts/moscow">Посмотреть пилотный регион →</Link>
         </div>}
+    </section>
+    <section className="section-wrap" aria-labelledby="first-pilot">
+      <div className="section-intro">
+        <span className="eyebrow">Официальные источники с указанием уровня достоверности</span>
+        <h2 id="first-pilot">Первые {pilot.length} подробных справочных карточек</h2>
+        <p>Карточки показывают только найденные опубликованные сведения и конкретные источники.
+         Актуальность проверяйте на официальном сайте. Это не подтверждённые редакцией записи Neon.</p>
+      </div>
+      <div className="results">{pilot.map(item=><Link className="result-row" key={item.external_code}
+        href={'/courts/region-'+item.region_code+'/sud-'+item.external_code.toLowerCase()}>
+        <span><strong>{item.official_header_court_name}</strong>
+          <small>{item.external_code} · {item.archived_values.address}</small>
+          <small>Сведения из официальной публикации · дата исследования: 15.10.2026</small></span>
+        <span aria-hidden="true">↗</span>
+      </Link>)}</div>
     </section>
     <section className="section-wrap" aria-labelledby="research-regions">
       <div className="section-intro"><span className="eyebrow">Открытые источники · исследовательские карточки</span>
