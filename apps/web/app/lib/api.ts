@@ -32,6 +32,11 @@ export type CourtDetail = Court & {
 };
 export type SearchCourt = Court & { region_slug: string; region_name: string };
 export type Region = { slug: string; name: string; court_count: number };
+export type PublicSourceReference = {
+  external_code:string;region_code:string;public_slug:string;official_header_name:string;
+  official_home_url:string;source_url:string;source_observed_on:string;
+  publication_class:'sourced_reference';current_freshness_attested:boolean;
+};
 
 // Vercel can run the read-only source previews without a separate NestJS API.
 // Never infer a verified court or publish a candidate when API_URL is absent.
@@ -53,6 +58,9 @@ async function get<T>(path: string): Promise<T> {
   if (response.status === 404) throw new Error('NOT_FOUND');
   if (!response.ok) throw new Error('UPSTREAM_UNAVAILABLE');
   return await response.json() as T;
+}
+export async function getPublicSourceReferences() {
+  return get<PublicSourceReference[]>('/api/v1/courts/reference-profiles');
 }
 export async function getRegions() {
   return get<Region[]>('/api/v1/regions');
