@@ -445,8 +445,9 @@ jobs:
           for page in courts judges laws practice guides jurisdiction services sources search; do
             curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:4173/$page"
           done
-      - name: Validate research court pages and prevent premature indexing
+      - name: Validate research court pages and source-labelled pilot indexing
         run: |
+          set -x
           # Dropdown filters, address jurisdiction navigation and detailed court dossiers
           curl --fail --silent --show-error http://127.0.0.1:4173/courts > /tmp/courts-directory-filters.html
           grep -Fq 'directory-court-kind' /tmp/courts-directory-filters.html
