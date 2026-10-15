@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import type {ResearchCourt} from '../lib/research-courts';
 import researchHours from '../lib/research-hours.json';
+import pilotEvidence from '../lib/research-evidence-pilot.json';
 import {ResearchDossier} from './research-dossier';
 
 type PreliminaryHours = {office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
+type PilotSource = {official_page_url:string;researched_on:string;review_status:string;observation_kind:string;observed_fields:string[];description:string};
 export function ResearchCourtPreview({court}:{court:ResearchCourt}){
   const hours=(researchHours as Record<string,PreliminaryHours>)[court.code];
+  const pilot=(pilotEvidence as Record<string,PilotSource>)[court.code];
 
   const href='/courts/'+court.region;
   return <>
@@ -65,6 +68,17 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
         <p>Фотография фасада, карта, состав судей и судебные дела не добавляются без самостоятельной проверки первоисточников.</p>
       </aside>
     </div>
+    {pilot&&pilot.review_status==='requires_individual_confirmation'
+      && pilot.official_page_url.startsWith('https://')
+      && new URL(pilot.official_page_url).hostname.endsWith('.sudrf.ru')
+      ?<section className="court-section">
+        <span className="eyebrow">Персональный первоисточник · исследовательский пилот</span>
+        <h2>Официальная страница для сверки данных</h2>
+        <p>Для этого суда найдена отдельная официальная страница. Дата исследовательской записи: {pilot.researched_on}.</p>
+        <p><a href={pilot.official_page_url} target="_blank" rel="noopener noreferrer">
+          Открыть персональный сайт суда и проверить сведения ↗</a></p>
+        <p className="court-source">{pilot.description} Публикация ссылки не означает, что суд, контакты или подсудность прошли окончательную приёмку.</p>
+      </section>:null}
     <ResearchDossier code={court.code}/>
     <section className="court-section">
       <span className="eyebrow">Происхождение информации</span>
