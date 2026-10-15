@@ -66,6 +66,14 @@ def publish(rows:list[dict])->dict:
                 ).fetchone()[0]
                 if match<4:
                     raise ImportValidationError("Insufficient field-level original evidence")
+                header=conn.execute(
+                    """SELECT count(*) FROM court_import_evidence
+                       WHERE import_row_id=%s AND field_name='court_name'
+                       AND observed_value=%s AND review_status='research_only'""",
+                    (row[0],item["name"])
+                ).fetchone()[0]
+                if header<1:
+                    raise ImportValidationError("Official heading missing from referenced research")
                 inserted=conn.execute(
                     """INSERT INTO court_public_references
                        (import_row_id,region_code,external_code,public_slug,
