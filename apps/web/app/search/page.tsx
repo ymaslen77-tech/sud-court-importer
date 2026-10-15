@@ -4,6 +4,7 @@ import {CourtSearch} from '../_components/court-search';
 import {getCourtsByKind,getRegionCourtsPage,searchCourts,type Court} from '../lib/api';
 import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
 import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../lib/research-courts';
+import {pilotPublicCourts} from '../lib/pilot-public';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -26,6 +27,9 @@ export default async function SearchPage({searchParams}:Props){
    (!q||[c.name,c.address??'',c.regionName,c.code].some(value=>
        value.toLocaleLowerCase('ru').includes(q.toLocaleLowerCase('ru'))
    ))):[];
+ const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
+ const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
+ const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
  let verified:Court[]=[];
  let failed=false;
  let totalVerified=0;
@@ -76,18 +80,31 @@ export default async function SearchPage({searchParams}:Props){
       </Link>)}</div></>
     :<div className="empty-state">Проверенных карточек по этим условиям пока нет. Исследовательские совпадения показаны ниже, если они доступны.</div>}
   </section>
+  {valid&&hasAny&&sourcedPublic.length>0?<section className="section-wrap" aria-labelledby="published-sourced">
+    <div className="section-intro">
+      <span className="eyebrow">Публичные справочные карточки по официальным источникам</span>
+      <h2 id="published-sourced">Найдены подробные досье: {sourcedPublic.length}</h2>
+      <p>Сведения опубликованы со ссылками на индивидуальные сайты судов и предупреждениями
+       о необходимости перепроверки актуальности. Это не подтверждённые редакцией записи Neon.</p>
+    </div>
+    <div className="results">{sourcedPublic.map(c=><Link className="result-row" key={c.code}
+      href={'/courts/'+c.region+'/sud-'+c.code.toLowerCase()}>
+      <span><strong>{c.name}</strong><small>{c.regionName} · {c.kind} · {c.code}</small>
+      <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
+    </Link>)}</div>
+  </section>:null}
   {valid&&hasAny?<section className="section-wrap" aria-labelledby="unreviewed-filters">
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
-      <h2 id="unreviewed-filters">Предварительные записи: {research.length}</h2>
+      <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>
       <p>Это результаты фильтрации открытых справочных списков, а не подтверждённый реестр. Полнота пока ограничена тремя регионами, а сами карточки закрыты от индексации.</p>
     </div>
-    {research.length?<div className="results">{research.slice(0,100).map(c=><Link className="result-row" key={c.code}
+    {researchOnly.length?<div className="results">{researchOnly.slice(0,100).map(c=><Link className="result-row" key={c.code}
       href={'/courts/'+c.region+'/sud-'+c.code.toLowerCase()}>
       <span><strong>{c.name}</strong><small>{c.regionName} · {c.kind} · {c.code}</small>
        <small>Требует проверки актуальности и подсудности</small></span><span aria-hidden="true">↗</span>
     </Link>)}</div>:<div className="empty-state">В исследовательском списке тоже нет совпадений. Это не означает, что суд отсутствует.</div>}
-    {research.length>100?<p className="court-source">Показаны первые 100 записей. Уточните регион или название.</p>:null}
+    {researchOnly.length>100?<p className="court-source">Показаны первые 100 записей. Уточните регион или название.</p>:null}
   </section>:null}
   <section className="callout">
     <div><span className="eyebrow">Поиск по адресу</span>
