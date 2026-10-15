@@ -285,7 +285,18 @@
         "source_listing_url": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
         "record_sha256": "a21dd14ad9d2c57ffc84d6279e42c26778a9eb30f8f47021de34c35833dac81c"
       },
-      "official_page_observation": null,
+      "official_page_observation": {
+        "url": "https://zheleznodorozhny--nsk.sudrf.ru/",
+        "observed_fields": [
+          "court_name",
+          "address",
+          "phone",
+          "email",
+          "hours"
+        ],
+        "note": "Официальная страница показывает адрес, контакты и режим работы; не подтверждает полноту территориальной подсудности.",
+        "observation_type": "public_search_result_not_current_human_attestation"
+      },
       "required_editorial_checks": [
         "official_identity_and_jurisdiction_level",
         "current_address_and_all_buildings",
@@ -312,7 +323,17 @@
         "source_listing_url": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
         "record_sha256": "b12033c9f68e7f0f36f2eaaeba758c3abcdb19d7b0b315222d5c7c0c5002883e"
       },
-      "official_page_observation": null,
+      "official_page_observation": {
+        "url": "https://zaelcovsky--nsk.sudrf.ru/",
+        "observed_fields": [
+          "court_name",
+          "address",
+          "phone",
+          "email"
+        ],
+        "note": "Официальная страница показывает название, адрес и общие телефоны; график приёма отдельных подразделений не проверен.",
+        "observation_type": "public_search_result_not_current_human_attestation"
+      },
       "required_editorial_checks": [
         "official_identity_and_jurisdiction_level",
         "current_address_and_all_buildings",
@@ -339,7 +360,17 @@
         "source_listing_url": "https://sudrf.ru/index.php?act=go_search&court_subj=54&id=300&searchtype=fs",
         "record_sha256": "76d9e4fab749636f05c85cafba813c6153820a7de8629dd5890befe92b1cf50e"
       },
-      "official_page_observation": null,
+      "official_page_observation": {
+        "url": "https://kalininsky--nsk.sudrf.ru/",
+        "observed_fields": [
+          "court_name",
+          "address",
+          "phone",
+          "email"
+        ],
+        "note": "Главная страница суда найдена; не утверждать персоналии, участки и дополнительные здания без проверки.",
+        "observation_type": "public_search_result_not_current_human_attestation"
+      },
       "required_editorial_checks": [
         "official_identity_and_jurisdiction_level",
         "current_address_and_all_buildings",
