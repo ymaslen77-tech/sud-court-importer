@@ -12,7 +12,7 @@ class CourtLinkedSchemaTests(unittest.TestCase):
         self.assertEqual(sql.count("review_status <> 'approved' OR"),3)
         self.assertIn("court_buildings_one_approved_primary",sql)
         self.assertIn("court_id BIGINT NOT NULL REFERENCES courts(id)",sql)
-        self.assertIn("building_id BIGINT REFERENCES court_buildings(id)",sql)
+        self.assertIn("FOREIGN KEY(building_id,court_id) REFERENCES court_buildings(id,court_id)",sql)
         self.assertIn("source_id BIGINT NOT NULL REFERENCES sources(id)",sql)
         self.assertNotIn("INSERT INTO courts",sql)
         self.assertNotIn("UPDATE courts",sql)
