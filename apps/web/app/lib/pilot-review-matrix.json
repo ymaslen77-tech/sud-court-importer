@@ -38,7 +38,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
-      ]
+      ],
+      "uid_case_evidence_url": null,
+      "uid_case_code_observed": false
     },
     {
       "external_code": "55OS0000",
@@ -73,7 +75,9 @@
       "specific_blockers": [
         "Официальный раздел территориальной подсудности отмечен как находящийся на актуализации.",
         "Сверить роли телефонов приемной и канцелярий."
-      ]
+      ],
+      "uid_case_evidence_url": "https://oblsud--oms.sudrf.ru/modules.php?case_id=27975444&case_uid=26206014-39bc-481e-90b3-ad678f870205&delo_id=1540006&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true
     },
     {
       "external_code": "54OS0000",
@@ -107,7 +111,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Официальный раздел территориальной подсудности отмечен как находящийся на актуализации."
-      ]
+      ],
+      "uid_case_evidence_url": "https://oblsud--nsk.sudrf.ru/modules.php?case_id=10299775&case_uid=3cab0efb-34b2-47c2-a2cb-04726e58ba31&delo_id=41&name=sud_delo&name_op=case&new=0&result=0&srv_num=1",
+      "uid_case_code_observed": true
     },
     {
       "external_code": "54AJ0005",
@@ -142,7 +148,9 @@
       "specific_blockers": [
         "Не смешивать контакты подразделений по гражданским, административным и уголовным делам.",
         "Уточнить правила апелляционной компетенции."
-      ]
+      ],
+      "uid_case_evidence_url": null,
+      "uid_case_code_observed": false
     },
     {
       "external_code": "54GV0001",
@@ -176,7 +184,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не выводить территориальную подсудность военного суда из регионального префикса кода."
-      ]
+      ],
+      "uid_case_evidence_url": "https://gvs--nsk.sudrf.ru/modules.php?case_id=664955070&case_uid=d8d55299-e84c-4a28-ac16-4b756aacbd7a&delo_id=1540006&name=sud_delo&name_op=case&srv_num=1",
+      "uid_case_code_observed": true
     },
     {
       "external_code": "54KV0000",
@@ -210,7 +220,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не смешивать специализацию военной кассационной инстанции и территориальную подсудность."
-      ]
+      ],
+      "uid_case_evidence_url": null,
+      "uid_case_code_observed": false
     },
     {
       "external_code": "54RS0001",
@@ -244,7 +256,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
-      ]
+      ],
+      "uid_case_evidence_url": "https://dzerzhinsky--nsk.sudrf.ru/modules.php?case_id=671563465&case_uid=912897c2-4ed0-4968-8194-995ab919d19a&delo_id=1540005&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true
     },
     {
       "external_code": "54RS0002",
@@ -278,7 +292,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
-      ]
+      ],
+      "uid_case_evidence_url": null,
+      "uid_case_code_observed": false
     },
     {
       "external_code": "54RS0003",
@@ -312,7 +328,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Не подтверждены уличные границы подсудности и актуальность подразделений."
-      ]
+      ],
+      "uid_case_evidence_url": null,
+      "uid_case_code_observed": false
     },
     {
       "external_code": "54RS0004",
@@ -346,7 +364,9 @@
       "publication_state": "pending",
       "specific_blockers": [
         "Отдельный телефонный справочник требует проверки распределения линий."
-      ]
+      ],
+      "uid_case_evidence_url": "https://kalininsky--nsk.sudrf.ru/modules.php?case_id=661263320&case_uid=1097e6d6-708e-4421-ba05-8080c477a4b5&delo_id=1540006&name=sud_delo&name_op=case&new=&srv_num=1",
+      "uid_case_code_observed": true
     }
   ]
 }
