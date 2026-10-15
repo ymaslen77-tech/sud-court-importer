@@ -1,11 +1,15 @@
-## Public preview — Судьи и суды России (14.10.2026)
+# «Суды России» — документация разработки и инфраструктуры
 
-- **Public Next.js website:** https://sudy-rossii.vercel.app
-- **Backend API deployment:** https://sudy-rossii-api.vercel.app/api/v1/health — returns 503 until Neon PostgreSQL is configured and migrations succeed.
-- **Live public smoke:** https://github.com/ymaslen77-tech/sud-court-importer/actions/workflows/public-site-smoke.yml — checked home, `/api/status`, court page, and noindex.
-- **Data classification:** 151 source-linked *unreviewed research previews*, not approved or indexed court cards. The website does not need a configured API to display them.
-- **Remaining deployment gate:** provision Neon PostgreSQL/PostGIS; run `importer/migrate.py --apply --confirm`; securely set `DATABASE_URL` for the API; only after health is reachable point the web app's `API_URL` to that backend.
-- **Operations:** see [Vercel/Neon launch guide](docs/vercel-neon-launch.md).
+**Основной обязательный стандарт:** [Полная схема разработки, размещения и работы сайта](docs/site-development-deployment-architecture.md) — локальная разработка → GitHub → GitHub Actions → Vercel ↔ Neon, DNS, эксплуатация, фоновые службы, файловое хранилище, безопасность, 10 этапов публикации и отката, текущая и целевая архитектура.
+
+## Текущий технический статус (проверено 15.10.2026)
+
+- **Next.js:** [sudy-rossii.vercel.app](https://sudy-rossii.vercel.app) — рабочее Vercel-приложение. **API:** [sudy-rossii-api.vercel.app](https://sudy-rossii-api.vercel.app) — отдельное NestJS-приложение.
+- **Neon:** PostgreSQL/PostGIS `sudy-rossii` / `courts`, 13 миграций, **273 неподтверждённые записи** (76 `court_import_rows` и 197 `court_discovery_rows`), **0** редакционно подтверждённых `courts`.
+- **Исследовательский интерфейс:** 151 целевая карточка из сохранённых открытых списков; они отделены от подтверждённой БД и защищены `noindex`.
+- **GitHub:** рабочая ветка `feat/001-court-portal-foundation`, Draft PR №1, CI последнего проверенного SHA `408b45bb` зелёный, **не** объединён в `main`.
+- **Релиз:** новые формы выбора вида и региона, подсудности по адресу и дополнительные блоки досье внесены в GitHub, но на production требуют отдельной публикации и проверки. Последняя попытка нового размещения встречала суточное ограничение Vercel `402`; фактический статус квоты проверять при следующем деплое.
+- **Процедуры:** [развёртывание и Neon](docs/vercel-neon-launch.md), [редакционная приёмка](docs/acceptance-status.md), [фактическая загрузка](docs/neon-court-staging-2026-10-14.md).
 
 ---
 
