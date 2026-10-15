@@ -303,6 +303,22 @@ class CourtsService {
     if(result.length===0)throw new NotFoundException('REVIEW_ITEM_NOT_PENDING');
     return {id:result[0].id,kind,status:decision,publications:0,appointments_mutated:0};
   }
+  async publicReferenceProfiles(){
+    // Deliberately separate from courts.status='verified': these are
+    // user-authorized, source-labelled public references with older web evidence.
+    return this.query<{
+      external_code:string;region_code:string;public_slug:string;official_header_name:string;
+      official_home_url:string;source_url:string;source_observed_on:string;
+      publication_class:string;current_freshness_attested:boolean
+    }>(`
+      SELECT external_code,region_code,public_slug,official_header_name,
+        official_home_url,source_url,source_observed_on::text,
+        publication_class,current_freshness_attested
+      FROM court_public_references
+      WHERE publication_class='sourced_reference'
+      ORDER BY region_code,external_code LIMIT 500
+    `);
+  }
   async sitemapCourts(){
     return this.query<{region_slug:string;slug:string;updated_at:Date}>(
       'SELECT r.slug AS region_slug,c.slug,c.updated_at FROM courts c ' +
@@ -500,6 +516,7 @@ class CourtsController {
   }
   @Get('regions') regions(){return this.service.regions();}
   @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
+  @Get('courts/reference-profiles') publicReferences(){return this.service.publicReferenceProfiles();}
   @Get('courts/categories/:kind') byKind(@Param('kind') kind:string,@Query('page') page:unknown){return this.service.byKind(kind,page);}
   @Get('courts/search') search(@Query('q') q:unknown){return this.service.search(q);}
   @Get('regions/:region/courts') list(@Param('region') region:string){return this.service.list(region);}
