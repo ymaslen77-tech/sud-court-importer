@@ -6,6 +6,7 @@ import {VerifiedCourtMap} from '../../../_components/verified-court-map';
 import {findCategory} from '../../../lib/court-taxonomy';
 import {researchCourt} from '../../../lib/research-courts';
 import {ResearchCourtPreview} from '../../../_components/research-court-preview';
+import {pilotPublicRecord} from '../../../lib/pilot-public';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -36,6 +37,13 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   const c=await getCourt(p.region,p.court);
   if(!c){
     const candidate=researchCourt(p.region,p.court);
+    const pilot=candidate?pilotPublicRecord(candidate.code):null;
+    if(pilot)return {
+      title:pilot.official_header_court_name+' — адрес, контакты и официальные источники',
+      description:'Справочная информация по официальным публикациям: адрес, контакты, категория суда, подача документов, подсудность и источники. Перед обращением сверяйте актуальность.',
+      alternates:{canonical:'/courts/'+p.region+'/'+p.court},
+      robots:{index:true,follow:true}
+    };
     return candidate?{
       title:candidate.name+' — сведения из официального реестра, требуется проверка',
       description:'Исходные сведения о суде из открытой региональной выдачи ГАС «Правосудие». Требуется редакционная проверка.',
@@ -54,6 +62,8 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   };
  }catch{
    const candidate=researchCourt(p.region,p.court);
+   const pilot=candidate?pilotPublicRecord(candidate.code):null;
+   if(pilot)return {title:pilot.official_header_court_name+' — справочная карточка',robots:{index:true,follow:true}};
    return candidate?{
      title:candidate.name+' — предварительные сведения',
      robots:{index:false,follow:true}
