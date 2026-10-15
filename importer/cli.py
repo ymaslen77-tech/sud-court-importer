@@ -107,6 +107,7 @@ def approve(args: argparse.Namespace) -> dict:
     checked_at = datetime.combine(checked_on, datetime.min.time(), tzinfo=timezone.utc)
     if not args.attest_current or not args.attest_reuse_rights:
         raise ImportValidationError("Both human attestations are required")
+    from verification import review_official_site
     with database_connect() as conn:
         with conn.transaction():
             row = conn.execute(
@@ -124,11 +125,12 @@ def approve(args: argparse.Namespace) -> dict:
              review_status,source_id,staged_at,raw_record,source_type,source_listing_url) = row
             if review_status != "pending":
                 raise ImportValidationError("This candidate was already reviewed")
-            # Different official page = deliberate manual mismatch; do not publish.
-            a,b=urlparse(args.verification_url),urlparse(official_url)
-            if (a.hostname, a.path.rstrip("/")) != (b.hostname,b.path.rstrip("/")):
-                raise ImportValidationError("Verified court page differs from candidate source URL")
             registry = raw_record.get("_registry", REGISTRY)
+            current_site, verification_page, site_migrated = review_official_site(
+                official_url, args.current_site_url or official_url, args.verification_url,
+                registry, attest_site_migration=args.attest_site_migration)
+            # Retain original snapshot URL; store checked current URL separately.
+            original_site_url = official_url
             if registry == REGISTRY:
                 if source_type != "official-court-contacts":
                     raise ImportValidationError("Moscow candidate has the wrong source classification")
@@ -194,7 +196,7 @@ def approve(args: argparse.Namespace) -> dict:
                 (registry,code)
             ).fetchone()
             fields = {"name":name,"slug":slug,"court_type":court_type,
-                      "address":address,"phone":phone,"email":email,"official_url":official_url}
+                      "address":address,"phone":phone,"email":email,"official_url":current_site}
             if linked is None:
                 conflicting = conn.execute(
                     "SELECT id FROM courts WHERE region_id=%s AND slug=%s",
@@ -206,7 +208,7 @@ def approve(args: argparse.Namespace) -> dict:
                     """INSERT INTO courts(region_id,name,slug,court_type,address,phone,email,
                                          official_url,status,verified_at)
                        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,'verified',%s) RETURNING id""",
-                    (region_id,name,slug,court_type,address,phone,email,official_url,checked_at)
+                    (region_id,name,slug,court_type,address,phone,email,current_site,checked_at)
                 ).fetchone()
                 assert created is not None
                 court_id=created[0]
@@ -235,7 +237,7 @@ def approve(args: argparse.Namespace) -> dict:
                     """UPDATE courts SET name=%s,slug=%s,court_type=%s,address=%s,phone=%s,
                        email=%s,official_url=%s,status='verified',verified_at=%s,updated_at=now()
                        WHERE id=%s""",
-                    (name,slug,court_type,address,phone,email,official_url,checked_at,court_id)
+                    (name,slug,court_type,address,phone,email,current_site,checked_at,court_id)
                 )
             from court_kind import infer_verified_kind
             proposed_kind = infer_verified_kind(registry,code,name)
@@ -246,12 +248,30 @@ def approve(args: argparse.Namespace) -> dict:
                 if existing_kind is None or existing_kind[0] not in ("unclassified",proposed_kind):
                     raise ImportValidationError("Court category conflicts with previously verified kind")
                 conn.execute("UPDATE courts SET court_kind=%s WHERE id=%s", (proposed_kind,court_id))
+            # Facts must cite the individual HTTPS verification page, not only
+            # the regional list which may contain obsolete HTTP hostnames.
+            individual_source = conn.execute(
+                """INSERT INTO sources(url,publisher,source_type,checked_at)
+                   VALUES(%s,%s,%s,%s)
+                   ON CONFLICT(url) DO UPDATE SET checked_at=excluded.checked_at
+                   RETURNING id""",
+                (verification_page,"Официальная страница суда","court-individual-verification",checked_at)
+            ).fetchone()
+            assert individual_source is not None
+            individual_source_id = individual_source[0]
+            if site_migrated:
+                conn.execute(
+                    """INSERT INTO change_events
+                       (entity_type,entity_id,changed_field,old_value,new_value,source_id)
+                       VALUES('court',%s,'official_url_migration',%s,%s,%s)""",
+                    (court_id,original_site_url,current_site,individual_source_id)
+                )
             for field,value in fields.items():
                 if value:
                     conn.execute(
                         """INSERT INTO court_facts(court_id,field_name,value,source_id,retrieved_at,is_approved)
                            VALUES(%s,%s,%s,%s,%s,true)""",
-                        (court_id,field,value,source_id,staged_at)
+                        (court_id,field,value,individual_source_id,checked_at)
                     )
             conn.execute(
                 """UPDATE court_import_rows SET review_status='approved',reviewed_by=%s,
@@ -279,6 +299,8 @@ def main() -> None:
     accept.add_argument("--reviewer",required=True)
     accept.add_argument("--checked-on",required=True)
     accept.add_argument("--verification-url",required=True)
+    accept.add_argument("--current-site-url",help="Reviewed HTTPS court home page; original snapshot remains unchanged")
+    accept.add_argument("--attest-site-migration",action="store_true",help="Attest changed court hostname/path after independent identity check")
     accept.add_argument("--attest-current",action="store_true")
     accept.add_argument("--attest-reuse-rights",action="store_true")
     args=parser.parse_args()
