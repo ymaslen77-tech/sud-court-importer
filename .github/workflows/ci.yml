@@ -44,6 +44,7 @@ jobs:
           from pathlib import Path
           data=json.loads(Path('/tmp/web-status.json').read_text(encoding='utf-8'))
           assert data['preliminary_records']==151,data
+          assert data['published_source_reference_count']==10,data
           assert data['verified_backend_configured'] is False,data
           assert data['automated_source_collection'] is False,data
           PY
