@@ -63,7 +63,12 @@ def observations() -> list[dict]:
         host = urlsplit(record["https_site_url"]).hostname
         if not host or not valid_evidence_url(individual, host):
             raise ImportValidationError("Unsafe official evidence URL")
-        values = {"court_name": record["court_name"], **record["archived_values"]}
+        official_heading = record.get("official_header_court_name")
+        if not isinstance(official_heading,str) or not official_heading.strip():
+            raise ImportValidationError("Official heading observation missing")
+        if record.get("archived_name_matches_official_header") != (official_heading == record["court_name"]):
+            raise ImportValidationError("Official heading mismatch status is inconsistent")
+        values = {"court_name": official_heading, **record["archived_values"]}
         for field in FIELDS:
             if field != "court_name" and values[field] != snap[field]:
                 raise ImportValidationError("Snapshot field conflict: " + field)
