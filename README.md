@@ -2,6 +2,8 @@
 
 **Основной обязательный стандарт:** [Полная схема разработки, размещения и работы сайта](docs/site-development-deployment-architecture.md) — локальная разработка → GitHub → GitHub Actions → Vercel ↔ Neon, DNS, эксплуатация, фоновые службы, файловое хранилище, безопасность, 10 этапов публикации и отката, текущая и целевая архитектура.
 
+**Операционные правила:** [подробная схема Dev → GitHub → CI → Vercel ↔ Neon, сред, миграций и rollback](docs/development-deployment-architecture.md). Различайте текущие сервисы и компоненты, запланированные к внедрению.
+
 ## Текущий технический статус (проверено 15.10.2026)
 
 - **Next.js:** [sudy-rossii.vercel.app](https://sudy-rossii.vercel.app) — рабочее Vercel-приложение. **API:** [sudy-rossii-api.vercel.app](https://sudy-rossii-api.vercel.app) — отдельное NestJS-приложение.
