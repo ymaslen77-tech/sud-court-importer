@@ -3,6 +3,7 @@ import type {ResearchCourt} from '../lib/research-courts';
 import {pilotPublicRecord} from '../lib/pilot-public';
 import researchHours from '../lib/research-hours.json';
 import {ResearchDossier} from './research-dossier';
+import departmentSources from '../lib/pilot-department-contacts.json';
 
 type Schedule={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 const hoursByCode=researchHours as Record<string,Schedule>;
@@ -29,6 +30,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
  const region='/courts/'+court.region;
  const kind=categories[court.code.slice(2,4)];
  const hours=hoursByCode[court.code];
+ const department=(departmentSources as Record<string,{source_url:string;source_stated_updated:string|null;departments:{label:string;phone:string}[]}>)[court.code];
  const individual=safeOfficialSource(record.individual_source_url);
  const site=safeOfficialSource(record.https_site_url);
  const listing=safeOfficialSource(record.source_listing_url);
@@ -96,6 +98,20 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
     <p className="court-source">График приёма отдельных подразделений может отличаться.</p>
    </div>:<p>Общий график работы не подтверждён отдельным источником для данной карточки; уточняйте его на официальном сайте суда.</p>}
   </section>
+  {department?<section className="court-section" id="pilot-departments">
+   <span className="eyebrow">Контакты специализированных отделов</span>
+   <h2>Телефоны подразделений по официальному справочнику</h2>
+   <div className="court-department-grid">
+    {department.departments.map(item=><article key={item.label}>
+     <h3>{item.label}</h3><p className="court-phone">{item.phone}</p>
+     <p className="court-source"><a href={department.source_url} target="_blank" rel="noopener noreferrer">Официальная контактная страница ↗</a></p>
+    </article>)}
+   </div>
+   <p className="court-source">
+    {department.source_stated_updated?'Дата изменения официальной публикации: '+department.source_stated_updated+'. ':''}
+    Назначение номера и доступность линии следует уточнить на сайте суда перед обращением.
+   </p>
+  </section>:null}
   <section className="court-section" id="pilot-competence">
    <span className="eyebrow">Территориальная и инстанционная подсудность</span>
    <h2>Какие дела рассматривает суд</h2>
