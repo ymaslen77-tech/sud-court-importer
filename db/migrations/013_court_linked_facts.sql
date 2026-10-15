@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS court_buildings (
   CHECK(review_status <> 'approved' OR
     (reviewed_by IS NOT NULL AND length(trim(reviewed_by)) BETWEEN 2 AND 120
      AND verified_at IS NOT NULL AND verified_at <= now())),
-  UNIQUE(court_id,building_role,address)
+  UNIQUE(court_id,building_role,address),
+  UNIQUE(id,court_id)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS court_buildings_one_approved_primary
   ON court_buildings(court_id) WHERE building_role='primary' AND review_status='approved';
@@ -27,7 +28,7 @@ CREATE INDEX IF NOT EXISTS court_buildings_review_idx
 CREATE TABLE IF NOT EXISTS court_contact_points (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   court_id BIGINT NOT NULL REFERENCES courts(id),
-  building_id BIGINT REFERENCES court_buildings(id),
+  building_id BIGINT,
   department TEXT NOT NULL CHECK(length(trim(department)) BETWEEN 2 AND 200),
   channel TEXT NOT NULL CHECK(channel IN ('phone','email','fax')),
   contact_value TEXT NOT NULL CHECK(length(trim(contact_value)) BETWEEN 4 AND 320),
@@ -40,7 +41,8 @@ CREATE TABLE IF NOT EXISTS court_contact_points (
   CHECK(review_status <> 'approved' OR
     (reviewed_by IS NOT NULL AND length(trim(reviewed_by)) BETWEEN 2 AND 120
      AND verified_at IS NOT NULL AND verified_at <= now())),
-  UNIQUE(court_id,department,channel,contact_value)
+  UNIQUE(court_id,department,channel,contact_value),
+  FOREIGN KEY(building_id,court_id) REFERENCES court_buildings(id,court_id)
 );
 CREATE INDEX IF NOT EXISTS court_contact_points_review_idx
   ON court_contact_points(court_id,review_status);
