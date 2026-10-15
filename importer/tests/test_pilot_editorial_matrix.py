@@ -50,7 +50,11 @@ class PilotEditorialResearchTests(unittest.TestCase):
                 self.assertEqual(item["publication_state"],"pending")
                 self.assertTrue(item["specific_blockers"])
                 self.assertEqual(item["source_header_observations"],
-                                 ["court_name","address","phone","email"])
+                                 (["court_name","address","phone","email"]
+                                  if item["archived_name_matches_official_header"]
+                                  else ["address","phone","email"]))
+                self.assertEqual(item["archived_name_matches_official_header"],
+                                 item["official_header_court_name"] == item["court_name"])
 
     def test_editor_page_is_authenticated_noindex_read_only(self):
         page=PAGE.read_text(encoding="utf8")
