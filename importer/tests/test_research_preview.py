@@ -69,7 +69,7 @@ class ResearchPreviewTests(unittest.TestCase):
         federal=json.loads(WEB_DATA.read_text(encoding="utf-8"))
         known_codes={row["code"] for row in federal}
         self.assertEqual(set(hours), {"54RS0012","55OS0000","54OS0000",
-                                      "54AJ0005","54KV0000","54RS0002"})
+                                      "54AJ0005","54KV0000","54RS0002","54RS0001","54RS0003"})
         for code,record in hours.items():
             with self.subTest(code=code):
                 self.assertIn(code,known_codes)
