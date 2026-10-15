@@ -61,6 +61,26 @@ class PilotTenReviewTests(unittest.TestCase):
                         {"court_name","address","phone","email","hours"}))
         self.assertEqual(observed, 10)
 
+    def test_website_pilot_primary_sources_match_the_editorial_queue(self):
+        pilot = json.loads(PILOT.read_text(encoding="utf-8"))
+        web = json.loads((ROOT / "apps" / "web" / "app" / "lib" /
+                          "research-evidence-pilot.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(web),10)
+        self.assertEqual(set(web),{r["external_code"] for r in pilot["candidates"]})
+        for item in pilot["candidates"]:
+            code=item["external_code"]
+            source=item["official_page_observation"]
+            self.assertIsNotNone(source)
+            with self.subTest(code=code):
+                self.assertEqual(web[code]["official_page_url"],source["url"])
+                self.assertEqual(web[code]["researched_on"],pilot["recorded_on"])
+                self.assertEqual(web[code]["review_status"],"requires_individual_confirmation")
+                self.assertEqual(web[code]["observation_kind"],
+                                 "public_search_result_not_current_human_attestation")
+                self.assertEqual(web[code]["observed_fields"],source["observed_fields"])
+                self.assertNotIn("verified_at", web[code])
+                self.assertNotIn("approved", web[code])
+
     def test_every_candidate_has_an_official_observation_but_no_approval(self):
         pilot=json.loads(PILOT.read_text(encoding="utf-8"))
         not_observed={r["external_code"] for r in pilot["candidates"]
