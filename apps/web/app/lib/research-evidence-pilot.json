@@ -1,0 +1,137 @@
+{
+  "54RS0012": {
+    "official_page_url": "https://barabinsky--nsk.sudrf.ru/modules.php?name=info_court&rid=2",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email",
+      "hours"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "55OS0000": {
+    "official_page_url": "https://oblsud--oms.sudrf.ru/modules.php?name=info_court",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54OS0000": {
+    "official_page_url": "https://oblsud--nsk.sudrf.ru/modules.php?id=1&name=information",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email",
+      "hours"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54AJ0005": {
+    "official_page_url": "https://5ap.sudrf.ru/modules.php?name=map",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email",
+      "hours"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54GV0001": {
+    "official_page_url": "https://gvs--nsk.sudrf.ru/",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54KV0000": {
+    "official_page_url": "https://vkas.sudrf.ru/",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email",
+      "hours"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54RS0001": {
+    "official_page_url": "https://dzerzhinsky--nsk.sudrf.ru/modules.php?name=sud_delo&srv_num=1",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54RS0002": {
+    "official_page_url": "https://zheleznodorozhny--nsk.sudrf.ru/",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email",
+      "hours"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54RS0003": {
+    "official_page_url": "https://zaelcovsky--nsk.sudrf.ru/",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  },
+  "54RS0004": {
+    "official_page_url": "https://kalininsky--nsk.sudrf.ru/",
+    "researched_on": "2026-10-15",
+    "review_status": "requires_individual_confirmation",
+    "observation_kind": "public_search_result_not_current_human_attestation",
+    "observed_fields": [
+      "court_name",
+      "address",
+      "phone",
+      "email"
+    ],
+    "description": "Справочная проверка официальной страницы. Актуальность контактов, состав суда и территориальная подсудность требуют редакционного подтверждения."
+  }
+}
