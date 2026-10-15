@@ -68,7 +68,7 @@ class ResearchPreviewTests(unittest.TestCase):
         hours=json.loads(WEB_DATA.with_name("research-hours.json").read_text(encoding="utf-8"))
         federal=json.loads(WEB_DATA.read_text(encoding="utf-8"))
         known_codes={row["code"] for row in federal}
-        self.assertEqual(set(hours), {"54RS0012","55OS0000"})
+        self.assertEqual(set(hours), {"54RS0012","55OS0000","54OS0000",\n                                      "54AJ0005","54KV0000","54RS0002"})
         for code,record in hours.items():
             with self.subTest(code=code):
                 self.assertIn(code,known_codes)
@@ -76,7 +76,7 @@ class ResearchPreviewTests(unittest.TestCase):
                 self.assertTrue(record["office_hours"])
                 self.assertTrue(record["source_url"].startswith("https://"))
                 self.assertTrue(record["source_url"].split("/")[2].endswith(".sudrf.ru"))
-                self.assertEqual(record["research_checked_on"],"2026-10-14")
+                self.assertIn(record["research_checked_on"], {"2026-10-14","2026-10-15"})
 
     def test_no_research_card_can_be_marked_verified_in_static_data(self):
         previews = json.loads(WEB_DATA.read_text(encoding="utf-8"))
