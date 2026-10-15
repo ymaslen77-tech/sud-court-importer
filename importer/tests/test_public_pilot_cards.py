@@ -34,10 +34,9 @@ class PublicPilotCourtTests(unittest.TestCase):
         self.assertNotIn("status:'verified'",s)
 
     def test_metadata_and_directory_use_distinct_public_status(self):
-        pages=(WEB/'app').exists()
         for path in ('courts/page.tsx','courts/[region]/page.tsx',
                      'courts/[region]/[court]/page.tsx','sitemap.ts'):
-            p=WEB/('app/'+path if not path=='sitemap.ts' else 'app/sitemap.ts')
+            p=WEB/path
             self.assertTrue(p.exists(),path)
             self.assertIn('pilotPublic',p.read_text(encoding='utf8'),path)
         s=(WEB/'_components/research-court-preview.tsx').read_text(encoding='utf8')
