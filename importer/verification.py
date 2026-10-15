@@ -55,7 +55,7 @@ def review_official_site(
         raise ImportValidationError("Current court site and verification page must be official HTTPS")
     if site.hostname != evidence.hostname:
         raise ImportValidationError("Individual evidence page must belong to current court host")
-    if registry == MOSCOW_REGISTRY:
+    if registry in (MOSCOW_REGISTRY, "mos-gorsud-court"):
         # Several Moscow courts share the same host; court-specific path matters.
         root = site.path.rstrip("/")
         if not root or not (evidence.path == root or evidence.path.startswith(root + "/")):
