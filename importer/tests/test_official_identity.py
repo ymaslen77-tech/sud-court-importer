@@ -31,7 +31,7 @@ class IndividualCourtEvidenceTests(unittest.TestCase):
         )
 
     def test_refuse_cross_court_evidence_even_with_attestation(self):
-        with self.assertRaisesRegex(ImportValidationError, "same court host"):
+        with self.assertRaisesRegex(ImportValidationError, "current court host"):
             review_official_site(OLD, NEW, "https://oblsud--oms.sudrf.ru/",
                                  "sudrf-federal", attest_site_migration=True)
 
