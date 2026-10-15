@@ -52,7 +52,12 @@ export default async function PilotReviewPage(){
     <div className="editor-review-title">
      <strong>{item.external_code}</strong><span>Исходный пакет № {item.batch_id}</span>
     </div>
-    <h2>{item.court_name}</h2>
+    <h2>{item.official_header_court_name}</h2>
+    {!item.archived_name_matches_official_header?<p className="court-source">
+     Исходный реестр: {item.court_name}.
+     В официальном заголовке отсутствует региональное уточнение.
+     Для публикации необходимо индивидуально подтвердить нормализованное наименование.
+    </p>:null}
     <p><strong>Статус исследовательского досье:</strong> требует индивидуальной проверки.</p>
     <dl className="court-facts">
      <div><dt>Адрес из исходного реестра</dt><dd>{item.archived_values.address}</dd></div>
