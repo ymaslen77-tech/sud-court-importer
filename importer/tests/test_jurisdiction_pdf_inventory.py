@@ -25,7 +25,8 @@ class OfficialPdfInventoryTests(unittest.TestCase):
                  ("Тестовая исходная страница. "*5),
             ):
                 page=d.new_page()
-                page.insert_text((35,75),text,fontsize=8)
+                page.insert_font(fontname='dejavu',fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf')
+                page.insert_text((35,75),text,fontname='dejavu',fontsize=8)
             d.save(p)
             d.close()
             x=pdf_inventory(p,expected=3)
