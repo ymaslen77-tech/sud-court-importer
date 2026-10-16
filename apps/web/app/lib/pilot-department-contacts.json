@@ -103,6 +103,20 @@
       }
     ]
   },
+  "54RS0001": {
+    "source_url": "https://dzerzhinsky--nsk.sudrf.ru/modules.php?id=1&name=info_court",
+    "source_stated_updated": "2026-07-30",
+    "departments": [
+      {
+        "label": "Председатель суда — кабинет 411 (справочный номер из судебной коллегии по гражданским делам)",
+        "phone": "8 (383) 279-05-90"
+      },
+      {
+        "label": "Заместитель председателя — кабинеты 302–303 (справочный номер)",
+        "phone": "8 (383) 279-12-11"
+      }
+    ]
+  },
   "54RS0002": {
     "source_url": "https://zheleznodorozhny--nsk.sudrf.ru/modules.php?id=1&name=info_court",
     "source_stated_updated": null,
