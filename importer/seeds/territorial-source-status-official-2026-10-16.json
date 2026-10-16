@@ -35,6 +35,24 @@
       "last_official_update": null,
       "researched_on": "2026-10-16",
       "notes": "Официальный раздел содержит уведомление об актуализации сведений вместо перечня улиц/домов."
+    },
+    {
+      "external_code": "55RS0001",
+      "region_code": "55",
+      "source_url": "https://kirovcourt--oms.sudrf.ru/modules.php?name=information&rid=5",
+      "source_status": "territory_published",
+      "last_official_update": "2026-03-01",
+      "researched_on": "2026-10-16",
+      "notes": "Официальный полный табличный перечень из 180 строк. Сам источник опубликован 01.03.2026. Перенесены 180 исходных описаний без автоматической аттестации актуальности и границ."
+    },
+    {
+      "external_code": "55RS0006",
+      "region_code": "55",
+      "source_url": "https://sovetsky--oms.sudrf.ru/modules.php?name=terr",
+      "source_status": "page_unfilled",
+      "last_official_update": null,
+      "researched_on": "2026-10-16",
+      "notes": "Официальная страница территориальной подсудности содержит сообщение об актуализации/наполнении информации."
     }
   ],
   "all_rows_research_only": true,
