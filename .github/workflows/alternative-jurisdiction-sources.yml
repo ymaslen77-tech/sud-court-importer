@@ -1,0 +1,54 @@
+name: Alternative official jurisdiction source check
+on:
+  push:
+    branches: [ops/alternative-official-jurisdiction-sources-2026-10-16]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check legislative archive, regional magistrate administration, official GIS
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request,urllib.parse,re
+          from html.parser import HTMLParser
+          class Forms(HTMLParser):
+            def __init__(self):super().__init__();self.forms=[];self.active=None
+            def handle_starttag(self,t,attrs):
+              a=dict(attrs)
+              if t=='form':
+                self.active={'action':a.get('action'),'method':a.get('method'),'fields':[]}
+                self.forms.append(self.active)
+              if self.active is not None and t in ('input','select'):
+                self.active['fields'].append({'name':a.get('name'),'type':a.get('type'),'value':a.get('value')})
+            def handle_endtag(self,t):
+              if t=='form':self.active=None
+          urls=[
+            'https://www1.zsnso.ru/lows/lawSearch.php',
+            'https://npazsnso.ru/',
+            'https://ums.nso.ru/',
+            'https://maps.nso.ru/arcgis2/rest/services?f=pjson',
+            'https://www.zsnso.ru/'
+          ]
+          for url in urls:
+            try:
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'SudyRossii-OfficialResearch/1.0'}),timeout=10) as r:
+                sample=r.read(500000)
+                html=sample.decode('utf8','replace')
+                x={'url':url,'status':r.status,'type':r.headers.get('content-type'),'sample_bytes':len(sample)}
+                if 'lawSearch' in url:
+                  f=Forms();f.feed(html);x['forms']=f.forms[:4]
+                  x['links_to_pdfs']=re.findall(r'href=["\']([^"\']+\.pdf[^"\']*)',html,re.I)[:5]
+                if 'arcgis2' in url:
+                  try:
+                    parsed=json.loads(html)
+                    x['folders']=parsed.get('folders',[])[:80]
+                    x['court_services']=[v.get('name') for v in parsed.get('services',[]) if re.search(r'court|judg|sud|miro',v.get('name',''),re.I)][:30]
+                  except ValueError:x['response']='Not JSON'
+                print(json.dumps(x,ensure_ascii=False),flush=True)
+            except Exception as exc:
+              print(json.dumps({'url':url,'error':type(exc).__name__,'description':str(exc)[:120]},ensure_ascii=False),flush=True)
+          PY
