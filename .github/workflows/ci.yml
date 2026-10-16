@@ -26,6 +26,8 @@ jobs:
             exit 1
           }
       - run: pnpm check
+      - name: Test strict one-court territorial resolver
+        run: pnpm --dir apps/web exec node tests/jurisdiction.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:
