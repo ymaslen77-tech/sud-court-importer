@@ -4,6 +4,9 @@ import {pilotPublicRecord} from '../lib/pilot-public';
 import researchHours from '../lib/research-hours.json';
 import {ResearchDossier} from './research-dossier';
 import departmentSources from '../lib/pilot-department-contacts.json';
+import {YandexCourtMap} from './yandex-court-map';
+import {CourtTodayHearings} from './court-today-hearings';
+import {CourtPracticalGuide} from './court-practical-guide';
 
 type Schedule={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 const hoursByCode=researchHours as Record<string,Schedule>;
@@ -57,6 +60,10 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    <strong>Разделы</strong>
    <a href="#pilot-identity">Идентификация</a>
    <a href="#pilot-contacts">Контакты</a>
+   <a href="#pilot-map">Карта и проезд</a>
+   <a href="#pilot-today">Заседания сегодня</a>
+   <a href="#pilot-practical">Порядок обращения</a>
+   <a href="#pilot-fees">Пошлина</a>
    <a href="#pilot-competence">Подсудность</a>
    <a href="#pilot-services">Электронные сервисы</a>
    <a href="#pilot-judges">Руководство</a>
@@ -89,15 +96,13 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
     <div><dt>Персональный сайт</dt><dd>{site?<a href={site} target="_blank" rel="noopener noreferrer">Перейти на сайт суда ↗</a>:'Проверьте ссылку'}</dd></div>
    </dl>
    <p className="court-source">Это справочные значения из официальной публикации, а не гарантия работы каждого телефонного номера или приёма процессуальных документов по e-mail.</p>
-   <p><a href={'https://www.openstreetmap.org/search?query='+encodeURIComponent(record.archived_values.address)}
-     target="_blank" rel="noopener noreferrer">Найти опубликованный адрес на карте ↗</a>
-     {' '}— поиск по тексту, точные координаты входа отдельно не подтверждены.</p>
    {hours?<div className="notice" role="note">
     <strong>Опубликованный общий график:</strong> {hours.office_hours}.
     <a href={hours.source_url} target="_blank" rel="noopener noreferrer"> Сверить расписание ↗</a>
     <p className="court-source">График приёма отдельных подразделений может отличаться.</p>
    </div>:<p>Общий график работы не подтверждён отдельным источником для данной карточки; уточняйте его на официальном сайте суда.</p>}
   </section>
+  <YandexCourtMap code={court.code} name={record.official_header_court_name} address={record.archived_values.address}/>
   {department?<section className="court-section" id="pilot-departments">
    <span className="eyebrow">Контакты специализированных отделов</span>
    <h2>Телефоны подразделений по официальному справочнику</h2>
@@ -121,27 +126,8 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    {record.specific_blockers.length>0?<ul>{record.specific_blockers.map(note=><li key={note}>{note}</li>)}</ul>:null}
    {site?<p><a href={site} target="_blank" rel="noopener noreferrer">Открыть официальный раздел «Территориальная подсудность» на сайте суда ↗</a></p>:null}
   </section>
-  <section className="court-section" id="pilot-services">
-   <span className="eyebrow">Обращение в суд</span>
-   <h2>Подача документов, дела, госпошлина</h2>
-   <div className="court-jurisdiction-guidance">
-    <article>
-     <h3>Электронная подача</h3>
-     <p>Используйте предназначенный для процессуальных документов сервис и проверяйте доступность электронной подачи для соответствующей инстанции. Обычная почта суда не заменяет электронную подачу.</p>
-     <a href="https://ej.sudrf.ru/" target="_blank" rel="noopener noreferrer">ГАС «Правосудие» — электронное правосудие ↗</a>
-    </article>
-    <article>
-     <h3>Судебное делопроизводство и заседания</h3>
-     <p>Поиск дел, расписания, решения и ход рассмотрения доступны на персональном сайте с учётом законных ограничений доступа.</p>
-     {site?<a href={site} target="_blank" rel="noopener noreferrer">Перейти к судебному делопроизводству ↗</a>:null}
-    </article>
-    <article>
-     <h3>Государственная пошлина</h3>
-     <p>Размер, освобождения и реквизиты зависят от вида обращения. Используйте калькулятор и реквизиты только на официальном сайте; устаревшие банковские сведения не копируются.</p>
-     {site?<a href={site} target="_blank" rel="noopener noreferrer">Открыть официальный калькулятор ↗</a>:null}
-    </article>
-   </div>
-  </section>
+  <CourtTodayHearings code={court.code}/>
+  <CourtPracticalGuide courtType={court.code.slice(2,4)}/>
   <ResearchDossier code={court.code}/>
   <section className="court-section" id="pilot-judges">
    <span className="eyebrow">Кадровая информация</span>
