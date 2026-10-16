@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {Suspense} from 'react';
 import type {ResearchCourt} from '../lib/research-courts';
 import {pilotPublicRecord} from '../lib/pilot-public';
 import researchHours from '../lib/research-hours.json';
@@ -126,7 +127,9 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    {record.specific_blockers.length>0?<ul>{record.specific_blockers.map(note=><li key={note}>{note}</li>)}</ul>:null}
    {site?<p><a href={site} target="_blank" rel="noopener noreferrer">Открыть официальный раздел «Территориальная подсудность» на сайте суда ↗</a></p>:null}
   </section>
-  <CourtTodayHearings code={court.code}/>
+  <Suspense fallback={<section className="court-section" id="pilot-today"><h2>Заседания сегодня</h2><p>Запрашиваем публикацию за сегодняшний день у суда…</p></section>}>
+    <CourtTodayHearings code={court.code}/>
+  </Suspense>
   <CourtPracticalGuide courtType={court.code.slice(2,4)}/>
   <ResearchDossier code={court.code}/>
   <section className="court-section" id="pilot-judges">
