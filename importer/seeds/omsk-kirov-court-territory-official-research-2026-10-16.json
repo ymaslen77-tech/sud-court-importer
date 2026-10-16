@@ -1,0 +1,914 @@
+{
+  "formatVersion": 1,
+  "court_code": "55RS0001",
+  "court_name": "Кировский районный суд г. Омска",
+  "region_code": "55",
+  "source_url": "https://kirovcourt--oms.sudrf.ru/modules.php?name=information&rid=5",
+  "source_published_on": "2026-03-01",
+  "research_observed_on": "2026-10-16",
+  "review_status": "research_only",
+  "allowed_for_routing": false,
+  "notice": "Ручная транскрипция официальной таблицы улиц: исправление OCR и интерпретация исключены. В некоторых строках оригинальная графа примечаний была пустой — сохранено «не указано». Не использовать для назначения суда до сопоставления с другими списками и утверждения.",
+  "excerpts": [
+    {
+      "source_item_no": 1,
+      "description": "12 ДЕКАБРЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 2,
+      "description": "5 ДЕКАБРЯ улица и переулок | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 3,
+      "description": "22 ДЕКАБРЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 4,
+      "description": "1-3 ТУПИК | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 5,
+      "description": "60 лет ПОБЕДЫ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 6,
+      "description": "20 лет ОКТЯБРЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 7,
+      "description": "70 лет ОКТЯБРЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 8,
+      "description": "2180 Ж/Д КМ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 9,
+      "description": "2890 КМ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 10,
+      "description": "АВИАГОРОДОК | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 11,
+      "description": "АВИАЦИОННАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 12,
+      "description": "АВТОМОБИЛЬНЫЕ все | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 13,
+      "description": "АРХИТЕКТОРОВ бульвар | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 14,
+      "description": "БАГНЮКА И.Н. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 15,
+      "description": "БАЗА №10 | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 16,
+      "description": "БЕЛОВА КОНДРАТИЯ бульвар | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 17,
+      "description": "БЕЛЕЛЮБСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 18,
+      "description": "БЕРЕЖНОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 19,
+      "description": "БЕТХОВЕНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 20,
+      "description": "БИЙСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 21,
+      "description": "ВАТУТИНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 22,
+      "description": "ВЕРЕТЕНО бульвар | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 23,
+      "description": "ВЗЛЕТНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 24,
+      "description": "ВОЛГОГРАДСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 25,
+      "description": "ВОЛОДАРСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 26,
+      "description": "ГЛУХОЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 27,
+      "description": "ГОРБУНОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 28,
+      "description": "ГОРСКИЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 29,
+      "description": "ГРАНИЧНЫЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 30,
+      "description": "ГРИБОЕДОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 31,
+      "description": "ДАНИЛИНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 32,
+      "description": "ДЕЛОВАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 33,
+      "description": "ДИАНОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 34,
+      "description": "ДИМИТРОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 35,
+      "description": "ДМИТРИЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 36,
+      "description": "ДНЕПРОВСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 37,
+      "description": "ДУНАЕВСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 38,
+      "description": "ЕСЕНИНА Сергея | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 39,
+      "description": "ЕНИСЕЙСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 40,
+      "description": "ЖУРАВСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 41,
+      "description": "ЗАПАДНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 42,
+      "description": "ЗАРЕЧНЫЙ бульвар | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 43,
+      "description": "ЗВЕЗДНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 44,
+      "description": "ЗЕЛЕНЫЙ бульвар | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 45,
+      "description": "ИНЖЕНЕРНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 46,
+      "description": "КАЗАХСТАНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 47,
+      "description": "КАРЕЛЬСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 48,
+      "description": "КАРПИНСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 49,
+      "description": "КАТЫШЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 50,
+      "description": "КЕРЧЕНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 51,
+      "description": "КИРОВСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 52,
+      "description": "КЛУБНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 53,
+      "description": "КЛУБНЫЙ пер. | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 54,
+      "description": "КЛЮЧЕВАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 55,
+      "description": "КОЛЬЦОВА Михаила | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 56,
+      "description": "КОМАРОВА проспект | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 57,
+      "description": "КОМБИКОРМОВЫЙ ЗАВОД | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 58,
+      "description": "КОМКОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 59,
+      "description": "КОНЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 60,
+      "description": "КОРОТКИЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 61,
+      "description": "КОСТЕРИНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 62,
+      "description": "КОШЕВОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 63,
+      "description": "КРЕСТЬЯНСКАЯ (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 64,
+      "description": "КРУПСКОЙ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 65,
+      "description": "КУЗЬМИНА М.М. бульвар | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 66,
+      "description": "КУЛОМЗИНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 67,
+      "description": "КУЛУНДИНСКОГО | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 68,
+      "description": "КУРГАНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 69,
+      "description": "КУРСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 70,
+      "description": "КУЧУМОВА П.В (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 71,
+      "description": "ЛЕСНОЙ ПРОЕЗД | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 72,
+      "description": "ЛЕСОПЕРЕВАЛКА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 73,
+      "description": "ЕСОПИТОМНИК | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 74,
+      "description": "ЛИСИЦКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 75,
+      "description": "ЛУЗИНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 76,
+      "description": "ЛОКОМОТИВНАЯ (станция Пламя) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 77,
+      "description": "ЛУКАШЕВИЧА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 78,
+      "description": "ЛУНАЧАРСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 79,
+      "description": "ЛЮБИНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 80,
+      "description": "ЛЯПИДЕВСКОГО А.В. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 81,
+      "description": "МАЛАЯ ОСТРОВКА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 82,
+      "description": "МАРИИНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 83,
+      "description": "МАТЕРИАЛЬНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 84,
+      "description": "МАТРОСОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 85,
+      "description": "МЕЖЕВОЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 86,
+      "description": "МЕЛИОРАТОРОВ пос. | не указано",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 87,
+      "description": "МЕЛЬНИЧНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 88,
+      "description": "МЕНЖИНСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 89,
+      "description": "МЕРИДИАЛЬНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 90,
+      "description": "МОЖАЙСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 91,
+      "description": "МОЛДАВСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 92,
+      "description": "МОСКАЛЕНКО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 93,
+      "description": "МОСКАЛЕНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 94,
+      "description": "МОСТООТРЯД | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 95,
+      "description": "МУРОМЦЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 96,
+      "description": "НАГОРНАЯ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 97,
+      "description": "НЕФТЕБАЗА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 98,
+      "description": "НОВООМСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 99,
+      "description": "НОВОРОССИЙСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 100,
+      "description": "НОВОСТРОЙКА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 101,
+      "description": "ОСТРОВСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 102,
+      "description": "ПАТОНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 103,
+      "description": "ПАПАНИНА Ивана | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 104,
+      "description": "ПАЦАЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 105,
+      "description": "ПЕРЕЛЕТА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 106,
+      "description": "ПЕРОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 107,
+      "description": "ПИКЕТНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 108,
+      "description": "ПИКЕТНЫЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 109,
+      "description": "ПИЛОТСКИЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 110,
+      "description": "ПЛОЩАДКА СТАЛЬМОСТА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 111,
+      "description": "ПОВОРОТНИКОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 112,
+      "description": "ПОЛЯРНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 113,
+      "description": "ПРИБРЕЖНАЯ (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 114,
+      "description": "ПРИВЕТЛИВЫЙ переулок | 1-й,2-й,3-й,4-й,5-й,6-й,7-й",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 115,
+      "description": "ПРИСТАНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 116,
+      "description": "ПРОФИНТЕРНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 117,
+      "description": "ПРОКУРЯКОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 118,
+      "description": "ПУТИЛОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 119,
+      "description": "РАДИОМАЯК | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 120,
+      "description": "РАЙОННЫЙ переулок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 121,
+      "description": "РАСТУЩАЯ | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 122,
+      "description": "РЕВОЛЮЦИОННАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 123,
+      "description": "РЕЧНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 124,
+      "description": "РЖЕВСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 125,
+      "description": "РОКОССОВСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 126,
+      "description": "РОМАШКОВАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 127,
+      "description": "РУССКО – ПОЛЯНСКИЕ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 128,
+      "description": "РЫБАЧИЙ поселок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 129,
+      "description": "САДОВАЯ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 130,
+      "description": "САДОВЫЙ поселок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 131,
+      "description": "САЛЬЦЫНА И.П. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 132,
+      "description": "САМАРСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 133,
+      "description": "САРГАТСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 134,
+      "description": "САЯНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 135,
+      "description": "СЕВАСТОПОЛЬСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 136,
+      "description": "СЕДОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 137,
+      "description": "СЕМИПАЛАТИНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 138,
+      "description": "СЕМИРЕЧЕНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 139,
+      "description": "СИБИРСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 140,
+      "description": "СМЕТНЕВА (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 141,
+      "description": "СОЛНЕЧНЫЙ поселок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 142,
+      "description": "СТАДИОННЫЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 143,
+      "description": "станция КАРБЫШЕВА-2 | не указано",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 144,
+      "description": "станция ПЛАМЯ | не указано",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 145,
+      "description": "СТЕПАНЦА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 146,
+      "description": "СТРЕЛЕЦКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 147,
+      "description": "СТРОЙПЛОЩАДКА–111 | не указано",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 148,
+      "description": "СУВОРОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 149,
+      "description": "СУРОВЦЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 150,
+      "description": "ТАЛАЛИХИНА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 151,
+      "description": "ТЕНИСТАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 152,
+      "description": "ТЕМИРЯЗЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 153,
+      "description": "ТИТОВА Г. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 154,
+      "description": "ТОЛМАЧЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 155,
+      "description": "ТОРГОВАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 156,
+      "description": "ТРАНССИБИРСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 157,
+      "description": "ТРОИЦКАЯ (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 158,
+      "description": "ТУПОЛЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 159,
+      "description": "ТУРГЕНЕВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 160,
+      "description": "ТЮКАЛИНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 161,
+      "description": "УРЯДОВА В.Е. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 162,
+      "description": "УЮТНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 163,
+      "description": "ФАБРИЧНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 164,
+      "description": "ФИАЛКОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 165,
+      "description": "ФУГЕНФИРОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 166,
+      "description": "ХЛЕБНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 167,
+      "description": "ХЛЕБНИКОВА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 168,
+      "description": "ХОЛОДНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 169,
+      "description": "ЦЕНТРАЛЬНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 170,
+      "description": "ЧИТИНСКИЕ | все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 171,
+      "description": "ЧУКРЕЕВКА поселок | весь",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 172,
+      "description": "ЧУКРЕЕВСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 173,
+      "description": "ЧУХНОВСКОГО | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 174,
+      "description": "ШАДРИНСКАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 175,
+      "description": "ШАРОНОВА Б.Г. | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 176,
+      "description": "ШТУМПФА Ф.Ф. (пос. Мелиораторов) | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 177,
+      "description": "ЭНГЕЛЬСА | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 178,
+      "description": "ЮГО-ЗАПАДНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 179,
+      "description": "ЮЖНАЯ | вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 180,
+      "description": "ЯЛТИНСКАЯ | вся",
+      "review_status": "research_only"
+    }
+  ]
+}

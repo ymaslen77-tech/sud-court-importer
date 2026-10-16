@@ -1,0 +1,841 @@
+{
+  "act_code": "Новосибирская область: 149-ОЗ от 01.10.2026",
+  "region_code": "54",
+  "act_date": "2026-10-01",
+  "official_document_url": "https://publication.pravo.gov.ru/document/5400202610010007",
+  "title": "О создании и упразднении судебных участков мировых судей Новосибирской области и введении картографического и координатного описания границ",
+  "expected_annex_count": 138,
+  "pending_annexes": [
+    {
+      "annex_no": 1,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 2,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 3,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 4,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 5,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 6,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 7,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 8,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 9,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 10,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 11,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 12,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 13,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 14,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 15,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 16,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 17,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 18,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 19,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 20,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 21,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 22,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 23,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 24,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 25,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 26,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 27,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 28,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 29,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 30,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 31,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 32,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 33,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 34,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 35,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 36,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 37,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 38,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 39,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 40,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 41,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 42,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 43,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 44,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 45,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 46,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 47,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 48,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 49,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 50,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 51,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 52,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 53,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 54,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 55,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 56,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 57,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 58,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 59,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 60,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 61,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 62,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 63,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 64,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 65,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 66,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 67,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 68,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 69,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 70,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 71,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 72,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 73,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 74,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 75,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 76,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 77,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 78,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 79,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 80,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 81,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 82,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 83,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 84,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 85,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 86,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 87,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 88,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 89,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 90,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 91,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 92,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 93,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 94,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 95,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 96,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 97,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 98,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 99,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 100,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 101,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 102,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 103,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 104,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 105,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 106,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 107,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 108,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 109,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 110,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 111,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 112,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 113,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 114,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 115,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 116,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 117,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 118,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 119,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 120,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 121,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 122,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 123,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 124,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 125,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 126,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 127,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 128,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 129,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 130,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 131,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 132,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 133,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 134,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 135,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 136,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 137,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    },
+    {
+      "annex_no": 138,
+      "status": "awaiting_official_attachment",
+      "court_code": null,
+      "coordinates": null
+    }
+  ],
+  "review_status": "research_only",
+  "allowed_for_routing": false,
+  "notes": "Официальный документ указан в законе от 01.10.2026 № 149-ОЗ. В открытом тексте закона подтверждена замена старого приложения к закону № 374-ОЗ на 138 новых. PDF/географические данные приложений ещё не прочитаны и не проверены, соответствие номера приложения участку не известно; нельзя назначать участки адресам."
+}

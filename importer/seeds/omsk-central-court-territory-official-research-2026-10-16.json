@@ -1,0 +1,531 @@
+{
+  "formatVersion": 1,
+  "source_kind": "official_court_publication_research",
+  "court_code": "55RS0007",
+  "court_name": "Центральный районный суд г. Омска",
+  "region_code": "55",
+  "source_url": "https://centralcourt--oms.sudrf.ru/modules.php?name=information&rid=3",
+  "published_on": "2024-11-13",
+  "last_source_update_on": "2025-05-26",
+  "research_observed_on": "2026-10-16",
+  "evidence_status": "research_only",
+  "usable_for_address_routing": false,
+  "notice": "Сохранено 103 смысловых пунктов из официального опубликованного перечня. Пунктуация и пробелы нормализованы вручную; это не заверенная дословная копия. Части территории/исключения не превращены в адресные соответствия. Актуальность на 2026 год и пересечения с другими судами не подтверждены.",
+  "excerpts": [
+    {
+      "source_item_no": 1,
+      "description": "1 Кирпичный поселок (в том числе Завертяева, Донецкая, Петровского, Каховского, Каховская, Краснознаменная, Сибмисовская, Полуэктова, Стороженко, Комнатова, Донецкие переулки 1–6, Казанская, Ситникова)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 2,
+      "description": "5 Кирпичный поселок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 3,
+      "description": "17 Военный городок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 4,
+      "description": "22 Партсъезда",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 5,
+      "description": "5 Северная — с дома 191 и с дома 198",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 6,
+      "description": "7 Северная — с дома 215 и с дома 368",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 7,
+      "description": "24 Северная — с дома 125 (кроме 125А) и с дома 174; также 172В и 172Г",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 8,
+      "description": "27 Северная — с дома 52 (в том числе дом 32) и с дома 73",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 9,
+      "description": "30 Северная — с дома 74 и с дома 73",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 10,
+      "description": "33 Северная — с дома 33 и с дома 50",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 11,
+      "description": "36 Северная — с дома 68 и с дома 15",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 12,
+      "description": "35 лет Советской Армии",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 13,
+      "description": "5 Армии — с дома 133 и с дома 130",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 14,
+      "description": "Авангардная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 15,
+      "description": "Аврорская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 16,
+      "description": "Алтайская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 17,
+      "description": "Амурские",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 18,
+      "description": "Аносова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 19,
+      "description": "Арктическая",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 20,
+      "description": "Арсеньева",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 21,
+      "description": "Багратиона",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 22,
+      "description": "Банковский переулок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 23,
+      "description": "Барнаульские (в том числе переулок Барнаульский)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 24,
+      "description": "Баррикадная (Щербанёва)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 25,
+      "description": "Береговые с 1 по 3",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 26,
+      "description": "Больничный переулок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 27,
+      "description": "Бородинская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 28,
+      "description": "Бударина",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 29,
+      "description": "Булатова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 30,
+      "description": "Воронкова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 31,
+      "description": "Восточные",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 32,
+      "description": "Гагарина",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 33,
+      "description": "Газетный переулок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 34,
+      "description": "Герцена — по дом 36 и дом 37",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 35,
+      "description": "Голика",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 36,
+      "description": "Госпитальная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 37,
+      "description": "Госплемстанция и улица Дорожная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 38,
+      "description": "Гражданская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 39,
+      "description": "Гусарова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 40,
+      "description": "площадь Дзержинского (не улица)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 41,
+      "description": "Достоевского",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 42,
+      "description": "Ершова и проезд Ершова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 43,
+      "description": "Загородный поселок (1–2 Проселочная, Кедровая, 1–5 Кленовая, Загородный микрорайон)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 44,
+      "description": "Зеленая",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 45,
+      "description": "Интернациональная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 46,
+      "description": "Иммуногенетическая и молочная лаборатория",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 47,
+      "description": "Кемеровская — с дома 172 и с дома 115; Кемеровский переулок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 48,
+      "description": "Козицкого поселок",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 49,
+      "description": "Коммунистическая",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 50,
+      "description": "Косарева",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 51,
+      "description": "Красный Пахарь — четные",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 52,
+      "description": "Красина",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 53,
+      "description": "Красногвардейская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 54,
+      "description": "Краснофлотская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 55,
+      "description": "Краснознаменная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 56,
+      "description": "Красный путь — по дом 19 и по дом 14",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 57,
+      "description": "Ленина — по дом 18 и по дом 21",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 58,
+      "description": "Либкнехта К.",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 59,
+      "description": "Лигетти К. (И. Алексеева)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 60,
+      "description": "Луганская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 61,
+      "description": "Марата",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 62,
+      "description": "Музейная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 63,
+      "description": "набережная Тухачевского — с дома 2 по дом 16, дополнительно дома 1 и 1А",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 64,
+      "description": "Нахимова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 65,
+      "description": "Некрасова (Петра Некрасова)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 66,
+      "description": "Новаторов",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 67,
+      "description": "Октябрьская — с дома 170 и с дома 137",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 68,
+      "description": "Орджоникидзе — дома 1–11 и 2–36",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 69,
+      "description": "Партизанская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 70,
+      "description": "Певцова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 71,
+      "description": "Победы (улица и площадь, но не бульвар)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 72,
+      "description": "Пристанционная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 73,
+      "description": "Рабиновича — с дома 68 и с дома 93 (в публикации окончание не указано)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 74,
+      "description": "Раздольные",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 75,
+      "description": "Разъездная 1-я, 2-я, 3-я",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 76,
+      "description": "Ремесленные",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 77,
+      "description": "Северо-восточное кладбище",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 78,
+      "description": "Сенная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 79,
+      "description": "Сибмисовская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 80,
+      "description": "Славянская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 81,
+      "description": "Славянский проезд",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 82,
+      "description": "Смоленская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 83,
+      "description": "Сочинская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 84,
+      "description": "Спартаковская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 85,
+      "description": "Степной поселок (40 лет ракетных войск, Новаторов, Смоленская)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 86,
+      "description": "Сурикова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 87,
+      "description": "Сыропятская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 88,
+      "description": "СНТ по Пушкинскому тракту: только «Учитель» и «Патриот»",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 89,
+      "description": "Тарская — по дом 25 и дом 46",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 90,
+      "description": "Таубе",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 91,
+      "description": "Тюменская",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 92,
+      "description": "Успешная",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 93,
+      "description": "Фрунзе — вся, кроме домов 1, 1А, 1 корп. 1, 1 корп. 3, 1 корп. 4",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 94,
+      "description": "Чапаева",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 95,
+      "description": "Челюскинцев — все",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 96,
+      "description": "Чернышевского — четная сторона",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 97,
+      "description": "Чехова",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 98,
+      "description": "Шевченко — с дома 11 и с дома 20",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 99,
+      "description": "Щербанёва (ранее Баррикадная)",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 100,
+      "description": "Щетинкина",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 101,
+      "description": "Яковлева — с дома 162 и с дома 163",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 102,
+      "description": "Ядринцева — вся",
+      "review_status": "research_only"
+    },
+    {
+      "source_item_no": 103,
+      "description": "Ульяновская подстанция — вся",
+      "review_status": "research_only"
+    }
+  ]
+}

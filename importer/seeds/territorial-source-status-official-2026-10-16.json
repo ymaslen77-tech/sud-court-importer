@@ -1,0 +1,60 @@
+{
+  "sources": [
+    {
+      "external_code": "55RS0007",
+      "region_code": "55",
+      "source_url": "https://centralcourt--oms.sudrf.ru/modules.php?name=information&rid=3",
+      "source_status": "territory_published",
+      "last_official_update": "2025-05-26",
+      "researched_on": "2026-10-16",
+      "notes": "103 территориальных пункта из опубликованного перечня Центрального районного суда г. Омска. Не сверены с другими районами на октябрь 2026; адресная выдача запрещена."
+    },
+    {
+      "external_code": "54RS0001",
+      "region_code": "54",
+      "source_url": "https://dzerzhinsky--nsk.sudrf.ru/modules.php?name=terr",
+      "source_status": "page_unfilled",
+      "last_official_update": null,
+      "researched_on": "2026-10-16",
+      "notes": "Официальный раздел прямо сообщает об актуализации и наполнении данных по территориальной подсудности."
+    },
+    {
+      "external_code": "54RS0010",
+      "region_code": "54",
+      "source_url": "https://centralny--nsk.sudrf.ru/modules.php?name=terr",
+      "source_status": "page_unfilled",
+      "last_official_update": null,
+      "researched_on": "2026-10-16",
+      "notes": "Официальный раздел содержит уведомление об актуализации сведений вместо перечня улиц/домов."
+    },
+    {
+      "external_code": "54RS0030",
+      "region_code": "54",
+      "source_url": "https://novosibirsky--nsk.sudrf.ru/modules.php?name=terr",
+      "source_status": "page_unfilled",
+      "last_official_update": null,
+      "researched_on": "2026-10-16",
+      "notes": "Официальный раздел содержит уведомление об актуализации сведений вместо перечня улиц/домов."
+    },
+    {
+      "external_code": "55RS0001",
+      "region_code": "55",
+      "source_url": "https://kirovcourt--oms.sudrf.ru/modules.php?name=information&rid=5",
+      "source_status": "territory_published",
+      "last_official_update": "2026-03-01",
+      "researched_on": "2026-10-16",
+      "notes": "Официальный полный табличный перечень из 180 строк. Сам источник опубликован 01.03.2026. Перенесены 180 исходных описаний без автоматической аттестации актуальности и границ."
+    },
+    {
+      "external_code": "55RS0006",
+      "region_code": "55",
+      "source_url": "https://sovetsky--oms.sudrf.ru/modules.php?name=terr",
+      "source_status": "page_unfilled",
+      "last_official_update": null,
+      "researched_on": "2026-10-16",
+      "notes": "Официальная страница территориальной подсудности содержит сообщение об актуализации/наполнении информации."
+    }
+  ],
+  "all_rows_research_only": true,
+  "approved_for_address_lookup": 0
+}
