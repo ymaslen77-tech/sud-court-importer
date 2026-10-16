@@ -63,6 +63,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    <a href="#pilot-contacts">Контакты</a>
    <a href="#pilot-map">Карта и проезд</a>
    <a href="#pilot-today">Заседания сегодня</a>
+   <a href="#pilot-case-search">Поиск дела</a>
    <a href="#pilot-practical">Порядок обращения</a>
    <a href="#pilot-fees">Пошлина</a>
    <a href="#pilot-competence">Подсудность</a>
