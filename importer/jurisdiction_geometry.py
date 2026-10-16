@@ -134,6 +134,20 @@ def _coordinate_points(obj: object):
     return count
 
 
+def _validate_closed_rings(geom_data: dict):
+    coords = geom_data["coordinates"]
+    polygons = [coords] if geom_data["type"] == "Polygon" else coords
+    if not isinstance(polygons, list) or not polygons:
+        raise BoundaryValidationError("Missing polygon coordinates")
+    for rings in polygons:
+        if not isinstance(rings, list) or not rings:
+            raise BoundaryValidationError("Missing polygon rings")
+        for ring in rings:
+            if not isinstance(ring, list) or len(ring) < 4:
+                raise BoundaryValidationError("Polygon ring must have at least four points")
+            if ring[0] != ring[-1]:
+                raise BoundaryValidationError("Polygon ring must be explicitly closed")
+
 def validate_geojson(value: object) -> list[CandidatePolygon]:
     if not isinstance(value, dict) or value.get("type") != "FeatureCollection":
         raise BoundaryValidationError("Expected GeoJSON FeatureCollection")
@@ -160,6 +174,7 @@ def validate_geojson(value: object) -> list[CandidatePolygon]:
         geom_data = feature.get("geometry")
         if not isinstance(geom_data, dict) or geom_data.get("type") not in ("Polygon", "MultiPolygon"):
             raise BoundaryValidationError("Only Polygon and MultiPolygon are accepted")
+        _validate_closed_rings(geom_data)
         pts = _coordinate_points(geom_data.get("coordinates"))
         try:
             geom = shape(geom_data)
