@@ -1,0 +1,31 @@
+name: Official hearing connection probe
+on:
+  push:
+    paths: [.github/workflows/official-hearing-probe.yml]
+    branches: [feat/002-court-content-hearings-yandex]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check two public official schedules without extracting personal data
+        run: |
+          python3 - <<'PY'
+          import datetime,urllib.request,urllib.error,re
+          from zoneinfo import ZoneInfo
+          for host,zone in [('oblsud--oms.sudrf.ru','Asia/Omsk'),('barabinsky--nsk.sudrf.ru','Asia/Novosibirsk')]:
+              date=datetime.datetime.now(ZoneInfo(zone)).strftime('%d.%m.%Y')
+              url='https://'+host+'/modules.php?name=sud_delo&srv_num=1&H_date='+date
+              try:
+                  req=urllib.request.Request(url,headers={'Accept':'text/html','User-Agent':'SudyRossii-PilotResearch/1.0'})
+                  with urllib.request.urlopen(req,timeout=10) as r:
+                      raw=r.read(1000000).decode('utf-8','replace')
+                      matches=re.findall(r'Список дел,\s*назначенных к слушанию на\s*(\d\d\.\d\d\.\d\d\d\d)',raw)
+                      tr_count=len(re.findall(r'<tr\b',raw,re.I))
+                      print(host,'HTTP',r.status,'DATE_EXPECTED',date,'HEADINGS',matches[:2],'ROWS',tr_count,
+                        'RESPONSE_BYTES',len(raw), 'CONTENT_TYPE',r.headers.get('content-type'))
+              except Exception as e:
+                  print(host,'FETCH_ERROR',type(e).__name__,str(e)[:200])
+          PY
