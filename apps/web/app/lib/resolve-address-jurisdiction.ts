@@ -70,8 +70,8 @@ export function resolveAddressJurisdiction(input:ResolverRequest,
   return deny('incomplete_address','Адрес не определён с точностью до населённого пункта, улицы и дома.',
     'Укажите область, населённый пункт, улицу и номер дома. Не вводите ФИО и квартиру.');
  const regionalNames:Record<string,string>={'region-27':'хабаровск','region-54':'новосибирск','region-55':'омск'};
- const markers:Object=regionalNames;
- const normalizedNames=Object.entries(regionalNames).filter(([,n])=>address.includes(n));
+ const normalizedNames=Object.entries(regionalNames).filter(([key,n])=>
+   address.includes(n) || (key==='region-55' && address.includes('омская')));
  if(normalizedNames.length>0 && !normalizedNames.some(([k])=>k===input.region))
   return deny('region_conflict','Адрес противоречит выбранному региону.',
     'Проверьте субъект Российской Федерации и населённый пункт.');
@@ -115,6 +115,11 @@ export function resolveAddressJurisdiction(input:ResolverRequest,
  if(codes.length!==1)
   return deny('ambiguous_boundaries','Официальные правила дают более одного возможного суда.',
     'Требуется разрешить пересечение территорий и проверить правило вручную; варианты не публикуются.');
+ const permittedCode=input.courtLevel==='district'?/^\\d{2}RS\\d{4}$/.test(codes[0]):
+    input.courtLevel==='magistrate'?/^\\d{2}MS\\d{4}$/.test(codes[0]):false;
+ if(!permittedCode)
+  return deny('court_level_mismatch','Найденный код суда не соответствует выбранному уровню судопроизводства.',
+    'Требуется независимая проверка родовой подсудности и идентификации суда.');
  const court=pilotPublicCourts().find(c=>c.external_code===codes[0]);
  if(!court)
   return deny('court_not_published','Подтверждённая территориальная привязка указывает на суд, которого нет в проверяемом каталоге.',
