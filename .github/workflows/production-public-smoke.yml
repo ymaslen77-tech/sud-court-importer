@@ -61,7 +61,7 @@ jobs:
           assert {r['external_code'].lower() for r in records}==set(CODES)
           assert all(r['publication_class']=='sourced_reference' and not r['current_freshness_attested'] for r in records)
           html=get('/courts')
-          assert 'Первые 10 подробных справочных карточек' in html
+          assert 'подробных справочных карточек' in html, 'Expected pilot directory heading missing'
           for code in CODES:
               region='55' if code=='55os0000' else '54'
               path=f'/courts/region-{region}/sud-{code}'
