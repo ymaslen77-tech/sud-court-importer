@@ -337,3 +337,22 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .court-source-details li{padding:8px 0}
 .court-source-details a{color:var(--red);font-weight:700}
 @media(max-width:710px){.court-yandex-frame{height:300px}.court-practical-steps,.court-practical-grid{grid-template-columns:1fr}.court-practical-steps li{padding:18px}}
+
+
+/* Court case search: distinct today's verified-list search and official archive */
+.court-case-search-form{border:1px solid var(--line);padding:22px 24px;background:#faf9f7;margin:22px 0}
+.court-case-search-form label{display:block;font-size:13px;font-weight:800;margin-bottom:10px}
+.court-case-search-row{display:flex;gap:12px;align-items:stretch}
+.court-case-search-row input{width:100%;min-width:0;padding:12px 15px;border:1px solid #ccd1d4;background:#fff;color:var(--ink)}
+.court-case-search-row button:disabled{opacity:.5;cursor:not-allowed}
+.court-case-search-official{padding:23px 25px;margin-top:22px;background:var(--soft);border-left:3px solid var(--red)}
+.court-case-search-official strong{display:block;font-size:17px;margin-bottom:8px}
+.court-case-search-official p{color:var(--muted);font-size:13px;max-width:780px}
+.court-case-search-official small{display:block;color:var(--muted);margin-top:12px}
+.court-case-results{padding:15px 0}
+.court-case-results h3{font-size:20px}
+.court-case-hit-list{display:grid;gap:9px}
+.court-case-hit-list article{display:flex;align-items:center;justify-content:space-between;gap:15px;border:1px solid var(--line);padding:17px 20px}
+.court-case-hit-list p{color:var(--muted);font-size:12px;margin:6px 0 0}
+.court-case-hit-list a{color:var(--red);font-size:13px;font-weight:800}
+@media(max-width:680px){.court-case-search-row,.court-case-hit-list article{flex-direction:column;align-items:stretch}.court-case-search-form{padding:18px}}
