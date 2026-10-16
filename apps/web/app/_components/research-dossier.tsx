@@ -81,15 +81,17 @@ export function ResearchDossier({code}:{code:string}){
    </section>
 
    <section className="court-section" id="court-online-services">
-     <span className="eyebrow">Справочная информация и государственные сервисы</span>
-     <h2>Документы, подсудность и судебные дела</h2>
-     <div className="court-jurisdiction-guidance">
-       {record.official_services.map((service,i)=><article key={service.label+'-'+i}>
-         <h3>{service.label}</h3>
-         <p>{service.description}</p>
-         <p className="court-source"><a href={service.url} rel="noopener noreferrer" target="_blank">Перейти на официальный сайт ↗</a></p>
-       </article>)}
-     </div>
+     <span className="eyebrow">Подтверждающие страницы первоисточника</span>
+     <h2>Официальные сервисы и нормативные публикации</h2>
+     <p>Основные практические сведения, порядок подачи и размеры пошлины изложены непосредственно выше на этой странице.
+      Внешние ссылки сохранены только для проверки, личного кабинета, поиска конкретного дела и подтверждения официального статуса.</p>
+     <details className="court-source-details">
+       <summary>Показать {record.official_services.length} официальных источников и сервисов</summary>
+       <ul>{record.official_services.map((service,i)=><li key={service.url+'-'+i}>
+         <strong>{service.label}</strong> — {service.description}
+         {' '}<a href={service.url} rel="noopener noreferrer" target="_blank">Источник ↗</a>
+       </li>)}</ul>
+     </details>
    </section>
 
    {record.staff_observations.length>0?<section className="court-section" id="court-staff-observations">
