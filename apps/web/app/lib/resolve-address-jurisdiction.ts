@@ -115,8 +115,8 @@ export function resolveAddressJurisdiction(input:ResolverRequest,
  if(codes.length!==1)
   return deny('ambiguous_boundaries','Официальные правила дают более одного возможного суда.',
     'Требуется разрешить пересечение территорий и проверить правило вручную; варианты не публикуются.');
- const permittedCode=input.courtLevel==='district'?/^\\d{2}RS\\d{4}$/.test(codes[0]):
-    input.courtLevel==='magistrate'?/^\\d{2}MS\\d{4}$/.test(codes[0]):false;
+ const permittedCode=input.courtLevel==='district'?/^\d{2}RS\d{4}$/.test(codes[0]):
+    input.courtLevel==='magistrate'?/^\d{2}MS\d{4}$/.test(codes[0]):false;
  if(!permittedCode)
   return deny('court_level_mismatch','Найденный код суда не соответствует выбранному уровню судопроизводства.',
     'Требуется независимая проверка родовой подсудности и идентификации суда.');
