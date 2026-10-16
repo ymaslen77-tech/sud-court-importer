@@ -1,14 +1,16 @@
 import {getCourtHearingsToday} from '../lib/official-hearings';
+import {CourtCaseSearch} from './court-case-search';
 export async function CourtTodayHearings({code}:{code:string}){
  const report=await getCourtHearingsToday(code);
  const day=report.date.split('-').reverse().join('.');
- return <section className="court-section" id="pilot-today">
+ return <>
+ <section className="court-section" id="pilot-today">
   <span className="eyebrow">Официальное судебное делопроизводство</span>
   <h2>Заседания на сегодня — {day}</h2>
   <p>Показаны только дела, назначенные на выбранную календарную дату по местному времени суда.
     Доступность списка зависит от официального сервиса. Сведения могут изменяться в течение дня.</p>
   {report.state==='available'?<>
-    <p className="court-source">Получено {report.checkedAt?new Date(report.checkedAt).toLocaleString('ru-RU',{timeZone:'Asia/Omsk'}):''}. 
+    <p className="court-source">Получено {report.checkedAt?new Date(report.checkedAt).toLocaleString('ru-RU',{timeZone:code.startsWith('55')?'Asia/Omsk':'Asia/Novosibirsk'}):''}. 
       {report.truncated?' Показаны первые 400 позиций по порядку официальной таблицы.':''}
       {' '}Участники дел и прочие персональные данные не копируются.</p>
     <div className="court-today-table-wrap"><table className="court-today-table">
@@ -27,5 +29,7 @@ export async function CourtTodayHearings({code}:{code:string}){
    <a href={report.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть расписание на указанную дату на сайте суда ↗</a>
    {' '}Расписание не является полным перечнем всех производств суда.
   </p>
- </section>;
+ </section>
+ <CourtCaseSearch report={report}/>
+ </>;
 }
