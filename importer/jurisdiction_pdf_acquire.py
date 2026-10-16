@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler
+from urllib.error import URLError, HTTPError
 
 MAX_BYTES=250_000_000
 PUBLICATION_HOST="publication.pravo.gov.ru"
@@ -92,7 +93,7 @@ def main():
     args=p.parse_args()
     try:
         print(json.dumps(acquire(args.publication_number,args.output),ensure_ascii=False,indent=2))
-    except (AcquisitionError,OSError,TimeoutError) as exc:
+    except (AcquisitionError,OSError,TimeoutError,URLError,HTTPError) as exc:
         p.exit(2,"Official PDF could not be obtained: "+str(exc)+"\n")
 
 
