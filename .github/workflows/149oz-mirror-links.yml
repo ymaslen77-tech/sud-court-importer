@@ -1,0 +1,27 @@
+name: Research PDF mirror extraction check
+on:
+  push:
+    branches: [ops/149oz-mirror-link-inspection]
+permissions:
+  contents: read
+jobs:
+  mirror-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect downloadable URL declarations on IPBD mirror without downloading data
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,re,json
+          url="https://ipbd.ru/doc/5400202610010007/"
+          with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'SudyRossii-Research/1.0'}),timeout=15) as r:
+              text=r.read(250000).decode('utf-8','replace')
+          for needle in ['pdf','download','скачать','2477','attachment','base64','onclick','href','api/','documentUrl']:
+              matches=list(re.finditer(re.escape(needle),text,re.I))
+              snippets=[]
+              for m in matches[:6]:
+                  start=max(0,m.start()-110);end=min(len(text),m.end()+170)
+                  snippets.append(re.sub(r'\s+',' ',text[start:end])[:280])
+              print(json.dumps({'term':needle,'count':len(matches),'snippets':snippets},ensure_ascii=False),flush=True)
+          PY
