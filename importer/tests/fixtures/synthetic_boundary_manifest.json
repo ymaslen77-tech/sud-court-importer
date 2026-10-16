@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "region_code": "54",
+  "source_url": "https://publication.pravo.gov.ru/document/5400202610010007",
+  "source_document_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "source_observed_on": "2026-10-16",
+  "source_kind": "official_legal_annex",
+  "act_code": "Новосибирская область: 149-ОЗ от 01.10.2026",
+  "annex_no": 1,
+  "crs": "EPSG:4326",
+  "conversion_method": "Synthetic CI polygon fixture; not derived from official attachment or suitable for routing"
+}
