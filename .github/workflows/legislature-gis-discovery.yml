@@ -1,0 +1,46 @@
+name: Official legislature and GIS territory discovery
+on:
+  push:
+    branches: [ops/alternative-official-jurisdiction-sources-2026-10-16]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Search legislature archive by law number and inventory GIS services
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.parse,json,re
+          from html.parser import HTMLParser
+          class Links(HTMLParser):
+             def __init__(self):super().__init__();self.links=[]
+             def handle_starttag(self,tag,attrs):
+                if tag=='a':
+                   a=dict(attrs);href=a.get('href','')
+                   if href and ('pdf' in href.lower() or 'law' in href.lower() or 'file' in href.lower() or '149' in href):
+                      self.links.append(href[:160])
+          base="https://www1.zsnso.ru/lows/lawSearch.php"
+          for number in ("149-ОЗ","149","149-ЗС"):
+             values={'ndat':'0','dtyp':'','doctype':'','num':number,'nam':'','dat1':'','dat2':'','search':'Искать'}
+             payload=urllib.parse.urlencode(values,encoding='cp1251').encode('ascii')
+             try:
+                req=urllib.request.Request(base,data=payload,headers={'Content-Type':'application/x-www-form-urlencoded','User-Agent':'SudyRossii-OfficialResearch/1.0'},method='POST')
+                with urllib.request.urlopen(req,timeout=11) as r:
+                   sample=r.read(160000).decode('cp1251','replace')
+                   x=Links();x.feed(sample)
+                   lines=[re.sub(r'\s+',' ',s).strip() for s in re.findall(r'<tr[^>]*>.*?</tr>',sample,re.I|re.S) if re.search(r'149|судебн|приложен',s,re.I)]
+                   print(json.dumps({'query':number,'http':r.status,'bytes':len(sample),'matching_table_rows':[re.sub(r'<[^>]*>',' ',s)[:500] for s in lines[:12]],'links':x.links[:16]},ensure_ascii=False),flush=True)
+             except Exception as e:print(json.dumps({'query':number,'error':str(e)[:170]},ensure_ascii=False),flush=True)
+          for folder in ("Administration","BIPD","Common","OMS","Other"):
+             url='https://maps.nso.ru/arcgis2/rest/services/'+folder+'?f=pjson'
+             try:
+                req=urllib.request.Request(url,headers={'User-Agent':'SudyRossii-OfficialGISResearch/1.0'})
+                with urllib.request.urlopen(req,timeout=10) as r:
+                    body=json.load(r)
+                names=[x['name'] for x in body.get('services',[])]
+                print(json.dumps({'gis_folder':folder,'service_count':len(names),'service_names':names[:125]},ensure_ascii=False),flush=True)
+             except Exception as e:print(json.dumps({'gis_folder':folder,'error':str(e)[:140]},ensure_ascii=False),flush=True)
+          PY
