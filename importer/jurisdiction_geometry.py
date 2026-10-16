@@ -53,11 +53,9 @@ def official_source(value: str) -> bool:
     try:
         u = urlsplit(value)
         host = (u.hostname or "").lower()
-        return (u.scheme == "https" and not u.username and not u.password
-                and u.port in (None, 443) and host in (
-                 "publication.pravo.gov.ru", "pravo.gov.ru", "sudrf.ru"
-                ) or u.scheme == "https" and not u.username and not u.password
-                and u.port in (None, 443) and host.endswith(".sudrf.ru"))
+        host_allowed = host in ("publication.pravo.gov.ru", "pravo.gov.ru", "sudrf.ru") or host.endswith(".sudrf.ru")
+        return (u.scheme == "https" and not u.username and not u.password and
+                u.port in (None, 443) and bool(host) and host_allowed)
     except ValueError:
         return False
 
