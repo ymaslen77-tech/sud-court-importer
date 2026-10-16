@@ -1,0 +1,43 @@
+name: Official 149-OZ document availability
+on:
+  push:
+    branches: [ops/official-149oz-document-probe]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-source-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe publication.pravo.gov.ru PDF without a bulk download
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,json
+          from urllib.parse import urlsplit
+          urls=[
+           "https://publication.pravo.gov.ru/File/Pdf?eoNumber=5400202610010007",
+           "https://publication.pravo.gov.ru/File/Zip?eoNumber=5400202610010007",
+           "https://publication.pravo.gov.ru/document/5400202610010007"
+          ]
+          for url in urls:
+             p=urlsplit(url)
+             assert p.scheme=="https" and p.netloc=="publication.pravo.gov.ru"
+             for mode in ("HEAD","GET_PARTIAL"):
+                try:
+                   headers={'User-Agent':'SudyRossii-OfficialLegalResearch/1.0'}
+                   if mode=="GET_PARTIAL":headers["Range"]="bytes=0-1023"
+                   req=urllib.request.Request(url,headers=headers,method="HEAD" if mode=="HEAD" else "GET")
+                   with urllib.request.urlopen(req,timeout=17) as response:
+                       meta={"path":p.path,"mode":mode,"http":response.status,
+                       "content_type":response.headers.get('content-type'),
+                       "content_length":response.headers.get('content-length'),
+                       "content_range":response.headers.get('content-range'),
+                       "disposition":response.headers.get('content-disposition'),
+                       "bytes_sampled":len(response.read(16)) if mode=="GET_PARTIAL" else 0}
+                       print(json.dumps(meta,ensure_ascii=False),flush=True)
+                except Exception as exc:
+                   print(json.dumps({"path":p.path,"mode":mode,"error_type":type(exc).__name__,
+                                     "message":str(exc)[:160]},ensure_ascii=False),flush=True)
+          PY
