@@ -1,0 +1,73 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_id": "TEST-A",
+        "court_code": "54MS0001"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82.9,
+              55
+            ],
+            [
+              82.91,
+              55
+            ],
+            [
+              82.91,
+              55.01
+            ],
+            [
+              82.9,
+              55.01
+            ],
+            [
+              82.9,
+              55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "feature_id": "TEST-B",
+        "court_code": "54MS0002"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82.905,
+              55.005
+            ],
+            [
+              82.915,
+              55.005
+            ],
+            [
+              82.915,
+              55.015
+            ],
+            [
+              82.905,
+              55.015
+            ],
+            [
+              82.905,
+              55.005
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
