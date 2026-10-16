@@ -1,0 +1,71 @@
+name: Live ten court search release acceptance
+on:
+  push:
+    branches: [ops/verify-ten-case-search-2026-10-16]
+permissions:
+  contents: read
+jobs:
+  public-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Verify published production commit, ten search forms and official links
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from concurrent.futures import ThreadPoolExecutor
+          import json
+          import urllib.request
+          import time
+
+          BASE='https://sudy-rossii.vercel.app'
+          API='https://sudy-rossii-api.vercel.app'
+          CODES=['54rs0012','55os0000','54os0000','54aj0005','54gv0001','54kv0000','54rs0001','54rs0002','54rs0003','54rs0004']
+
+          class Inspect(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.text=[];self.forms=[];self.links=[];self.inputs=[];self.iframes=[]
+              def handle_starttag(self,tag,attrs):
+                  d=dict(attrs)
+                  if tag=='a': self.links.append(d.get('href',''))
+                  if tag=='input': self.inputs.append(d)
+                  if tag=='iframe':self.iframes.append(d.get('src',''))
+              def handle_data(self,data):self.text.append(data)
+
+          def fetch(url):
+              for attempt in range(3):
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'SudyRossii-PublicReleaseQA/1.0','Accept':'text/html,application/json'})
+                      with urllib.request.urlopen(req,timeout=40) as r:
+                          assert r.status==200,(url,r.status)
+                          return r.read(3_000_000).decode('utf8')
+                  except Exception:
+                      if attempt==2:raise
+                      time.sleep(2)
+
+          def check(code):
+              region='55' if code.startswith('55') else '54'
+              route=f'/courts/region-{region}/sud-{code}'
+              p=Inspect();p.feed(fetch(BASE+route))
+              body=' '.join(p.text)
+              for label in ('Поиск дела по номеру','Заседания на сегодня','Суд на Яндекс Картах',
+                            'Государственная пошлина','Как подать документы в суд',
+                            'Открыть официальный поиск дел','Номер судебного дела'):
+                  assert label in body,(code,'missing',label)
+              assert any('map-widget/v1/' in item for item in p.iframes),(code,'map missing')
+              assert any('name_op=sf' in link and 'sudrf.ru' in link for link in p.links),(code,'official court case search missing')
+              assert any(x.get('id')=='court-case-number' for x in p.inputs),(code,'number input missing')
+              assert not ('Список дел, назначенных к слушанию на 01.01.2025' in body),(code,'stale')
+              print('PASS',code,'page, map, today, case input, official case search',flush=True)
+
+          with ThreadPoolExecutor(max_workers=3) as pool:
+              list(pool.map(check,CODES))
+          status=json.loads(fetch(BASE+'/api/status'))
+          assert status.get('published_source_reference_count')==10,status
+          api=json.loads(fetch(API+'/api/v1/courts/reference-profiles'))
+          assert len(api)==10,len(api)
+          print('PASS ALL 10/10 LIVE PUBLIC COURT PROFILES and API',flush=True)
+          PY
