@@ -4,6 +4,8 @@ import unittest
 ROOT=Path(__file__).resolve().parents[2]/"apps/web/app"
 
 class CourtCaseSearchTests(unittest.TestCase):
+ def read_case_search(self):
+  return (ROOT/'_components/court-case-search.tsx').read_text(encoding='utf8')
  def test_official_target_within_court(self):
   source=(ROOT/"_components/court-case-search.tsx").read_text(encoding="utf8")
   self.assertIn("url.hostname.endsWith('.sudrf.ru')",source)
@@ -26,7 +28,8 @@ class CourtCaseSearchTests(unittest.TestCase):
   today=(ROOT/"_components/court-today-hearings.tsx").read_text(encoding="utf8")
   card=(ROOT/"_components/pilot-court-public.tsx").read_text(encoding="utf8")
   self.assertIn("<CourtCaseSearch report={report}/>",today)
-  self.assertIn("id=\"pilot-case-search\"",card)
+  self.assertIn('href="#pilot-case-search"',card)
+  self.assertIn('id="pilot-case-search"',self.read_case_search())
   self.assertIn("Asia/Novosibirsk",today)
   self.assertIn("Asia/Omsk",today)
   self.assertIn("h.url",today)
