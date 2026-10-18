@@ -79,7 +79,7 @@ export function resolveMoscowTerritory(
  today:string=new Date().toISOString().slice(0,10)
 ):TerritoryResult{
  const st=normalizeMoscowStreet(input.street),h=house(input.house),c=annex(input.corpus),s=annex(input.structure);
- if(/(?:^|\\W)(?:кв\\.?|квартира|офис|помещение)(?:\\W|$)/i.test([input.street,input.house,input.corpus,input.structure].join(' ')))
+ if(/(?:^|\W)(?:кв\.?|квартира|офис|помещение)(?:\W|$)/i.test([input.street,input.house,input.corpus,input.structure].join(' ')))
   return {kind:'unknown',code:'personal_data',reason:'Номер квартиры и другие персональные сведения для проверки не нужны.'};
  if([input.street,input.house,input.corpus,input.structure].some(v=>v.length>140)||
    !validStreet(st)||!validHouse(h)||!validAnnex(c)||!validAnnex(s)){
