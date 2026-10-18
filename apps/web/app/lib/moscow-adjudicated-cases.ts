@@ -2,13 +2,13 @@ import raw from './moscow-adjudicated-cases.json';
 import {moscowCourt} from './moscow-courts';
 import {MOSCOW_CASE_TOPICS} from './moscow-case-topics';
 export type CourtPublishedDocument={
- kind:'pdf'|'text';localPath:string;sha256:string;verifiedOn:string;redactionReviewed:boolean;reusePermissionConfirmed:boolean;
+ kind:'pdf'|'text';localPath:string;sha256:string;verifiedOn:string;redactionReviewed:boolean;reusePermissionConfirmed:boolean;statutoryPublicationChecked:boolean;
 };
 export type AdjudicatedCase={
  court_slug:string;slug:string;number:string;topic_id:string;subject:string;
  decision_date:string;disposition:string;source_url:string;
  status:'official_docket_result';document_status:'awaiting_official_publication'|'source_document_not_ingested'|'published_verified';
- published_document:CourtPublishedDocument|null;researched_on:string;
+ published_document:CourtPublishedDocument|null;researched_on:string;official_file_listed:boolean;official_listing_checked_on:string|null;
 };
 const records=raw as unknown as AdjudicatedCase[];
 export function officialCourtDocketUrl(raw:string,courtSlug:string):string|null{
@@ -20,7 +20,7 @@ export function officialCourtDocketUrl(raw:string,courtSlug:string):string|null{
 function permittedDocument(d:AdjudicatedCase):boolean{
  const doc=d.published_document;
  if(!doc||d.document_status!=='published_verified')return false;
- return doc.reusePermissionConfirmed&&doc.redactionReviewed&&/^[a-f0-9]{64}$/.test(doc.sha256)&&
+ return d.topic_id!=='family'&&doc.reusePermissionConfirmed&&doc.redactionReviewed&&doc.statutoryPublicationChecked&&/^[a-f0-9]{64}$/.test(doc.sha256)&&
   /^\/court-decisions\/[a-z0-9/_-]+\.(?:pdf|txt)$/.test(doc.localPath)&&
   doc.localPath.endsWith(doc.kind==='pdf'?'.pdf':'.txt');
 }
@@ -34,7 +34,9 @@ export function adjudicatedCase(courtSlug:string,slug:string):AdjudicatedCase|nu
  return adjudicatedCasesFor(courtSlug).find(d=>d.slug===slug)??null;
 }
 export const REQUIRED_DOCUMENTS_PER_COURT_TOPIC=50;
-export function courtTopicCoverage(courtSlug:string,topicId:string):{confirmedResults:number;verifiedDocuments:number;target:number}{
+export const EXCLUDED_FULL_TEXT_TOPICS=new Set(['family']);
+export function isFullTextTopicEligible(topicId:string):boolean{return !EXCLUDED_FULL_TEXT_TOPICS.has(topicId);}
+export function courtTopicCoverage(courtSlug:string,topicId:string):{confirmedResults:number;verifiedDocuments:number;target:number|null}{
  const records=adjudicatedCasesFor(courtSlug).filter(d=>d.topic_id===topicId);
- return {confirmedResults:records.length,verifiedDocuments:records.filter(isVerifiedDocument).length,target:REQUIRED_DOCUMENTS_PER_COURT_TOPIC};
+ return {confirmedResults:records.length,verifiedDocuments:records.filter(isVerifiedDocument).length,target:isFullTextTopicEligible(topicId)?REQUIRED_DOCUMENTS_PER_COURT_TOPIC:null};
 }

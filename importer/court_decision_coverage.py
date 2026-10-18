@@ -11,6 +11,7 @@ APP=Path(__file__).resolve().parents[1]/"apps/web/app/lib"
 VALID_TOPICS={"family","labor","housing","property","consumer","credit","damage","fraud",
               "other-criminal","bailiffs","kas","social","other"}
 TARGET=50
+EXCLUDED_TOPICS={"family"}
 
 def audit():
     courts=json.loads((APP/"moscow-court-dossiers.json").read_text(encoding="utf-8"))
@@ -40,8 +41,12 @@ def audit():
             raise ValueError("unconfirmed or missing result "+repr(key))
         review[(c["court_slug"],c["topic_id"])]+=1
         d=c["published_document"]
+        if c.get("official_file_listed") and not re.fullmatch(r"20\d\d-\d\d-\d\d",c.get("official_listing_checked_on") or ""):
+            raise ValueError("official availability date missing "+repr(key))
         if c["document_status"]=="published_verified":
-            if not d or not d.get("reusePermissionConfirmed") or not d.get("redactionReviewed") or not re.fullmatch(r"[a-f0-9]{64}",d.get("sha256","")) or not re.fullmatch(r"/court-decisions/[a-z0-9/_-]+\.(?:pdf|txt)",d.get("localPath","")):
+            if c["topic_id"] in EXCLUDED_TOPICS:
+                raise ValueError("full text publication excluded by law "+repr(key))
+            if not d or not d.get("reusePermissionConfirmed") or not d.get("redactionReviewed") or not d.get("statutoryPublicationChecked") or not re.fullmatch(r"[a-f0-9]{64}",d.get("sha256","")) or not re.fullmatch(r"/court-decisions/[a-z0-9/_-]+\.(?:pdf|txt)",d.get("localPath","")):
                 raise ValueError("unreviewed or invalid local document "+repr(key))
             file_path=Path(__file__).resolve().parents[1]/"apps/web/public"/d["localPath"].lstrip("/")
             if not file_path.is_file():
@@ -56,12 +61,12 @@ def audit():
         elif d is not None:
             raise ValueError("unpublished document cannot have attached payload "+repr(key))
     coverage=[{"court_slug":court,"topic_id":topic,"docket_results":review[(court,topic)],
-               "verified_documents":doc_counts[(court,topic)],"target":TARGET,
-               "remaining":max(0,TARGET-doc_counts[(court,topic)])}
+               "verified_documents":doc_counts[(court,topic)],"target":(None if topic in EXCLUDED_TOPICS else TARGET),
+               "remaining":(None if topic in EXCLUDED_TOPICS else max(0,TARGET-doc_counts[(court,topic)]))}
               for court in sorted(slugs) for topic in sorted(VALID_TOPICS)]
     return {"courts":len(slugs),"topics":len(VALID_TOPICS),"verified_docket_results":len(records),
             "verified_full_document_count":sum(doc_counts.values()),"target_each_court_topic":TARGET,
-            "full_document_slots":len(slugs)*len(VALID_TOPICS)*TARGET,
+            "full_document_slots":len(slugs)*(len(VALID_TOPICS)-len(EXCLUDED_TOPICS))*TARGET,
             "coverage":coverage}
 
 if __name__=="__main__":

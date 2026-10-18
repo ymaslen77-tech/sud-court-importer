@@ -9,9 +9,11 @@
     "disposition": "Требования удовлетворены частично",
     "source_url": "https://m.mos-gorsud.ru/rs/lefortovskij/services/cases/civil/details/2a265841-4f75-11f1-91d7-95bef732a182",
     "status": "official_docket_result",
-    "document_status": "awaiting_official_publication",
+    "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": true,
+    "official_listing_checked_on": "2026-10-18"
   },
   {
     "court_slug": "lefortovskij",
@@ -25,7 +27,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "lefortovskij",
@@ -39,7 +43,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "lefortovskij",
@@ -53,7 +59,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "lefortovskij",
@@ -67,7 +75,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": true,
+    "official_listing_checked_on": "2026-10-18"
   },
   {
     "court_slug": "lefortovskij",
@@ -81,7 +91,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": true,
+    "official_listing_checked_on": "2026-10-18"
   },
   {
     "court_slug": "lefortovskij",
@@ -95,7 +107,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "lefortovskij",
@@ -109,7 +123,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": true,
+    "official_listing_checked_on": "2026-10-18"
   },
   {
     "court_slug": "lefortovskij",
@@ -123,7 +139,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "lefortovskij",
@@ -137,7 +155,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": true,
+    "official_listing_checked_on": "2026-10-18"
   },
   {
     "court_slug": "nikulinskij",
@@ -151,7 +171,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -165,7 +187,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -179,7 +203,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -193,7 +219,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -207,7 +235,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -221,7 +251,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -235,7 +267,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -249,7 +283,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "nikulinskij",
@@ -263,7 +299,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "babushkinskij",
@@ -277,7 +315,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "babushkinskij",
@@ -291,7 +331,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "basmannyj",
@@ -305,7 +347,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "basmannyj",
@@ -319,7 +363,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "gagarinskij",
@@ -333,7 +379,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "gagarinskij",
@@ -347,7 +395,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "meshchanskij",
@@ -361,7 +411,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "meshchanskij",
@@ -375,7 +427,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "presnenskij",
@@ -389,7 +443,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "zamoskvoreckij",
@@ -403,7 +459,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "shcherbinskij",
@@ -417,7 +475,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "taganskij",
@@ -431,7 +491,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "kuzminskij",
@@ -445,7 +507,9 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   },
   {
     "court_slug": "hamovnicheskij",
@@ -459,6 +523,8 @@
     "status": "official_docket_result",
     "document_status": "source_document_not_ingested",
     "published_document": null,
-    "researched_on": "2026-10-18"
+    "researched_on": "2026-10-18",
+    "official_file_listed": false,
+    "official_listing_checked_on": null
   }
 ]

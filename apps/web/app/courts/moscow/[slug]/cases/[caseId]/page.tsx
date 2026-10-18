@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import {moscowCourt,moscowCourts} from '../../../../../lib/moscow-courts';
 import {adjudicatedCasesFor,adjudicatedCase,isVerifiedDocument} from '../../../../../lib/moscow-adjudicated-cases';
 import {MOSCOW_CASE_TOPICS} from '../../../../../lib/moscow-case-topics';
+import {isFullTextTopicEligible} from '../../../../../lib/moscow-adjudicated-cases';
 type Params={params:Promise<{slug:string;caseId:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){
@@ -61,7 +62,9 @@ export default async function CourtDecisionPage({params}:Params){
     </div>:
     <div className="notice" role="note">
      <strong>Полный текст судебного акта пока не размещён на нашем сайте.</strong>
-     <p>{c.document_status==='awaiting_official_publication'?
+     <p>{!isFullTextTopicEligible(c.topic_id)?
+      'Публикация полных текстов актов по семейно-правовым делам исключена статьёй 15 Федерального закона № 262-ФЗ. Доступны только допустимые обезличенные справочные сведения.':c.official_file_listed?
+      'Официальная карточка указывает на наличие файла судебного акта. На нашем сайте текст пока не получен и не прошёл проверку, поэтому документ здесь не показывается.':c.document_status==='awaiting_official_publication'?
       'В официальной карточке найдено указание, что текст готовится к публикации. Полный документ нельзя предоставлять как опубликованный.':
       'Результат решения подтверждён, но файл судебного акта ещё не получен, не проверен или его повторное размещение не разрешено.'}</p>
      <p><a href={c.source_url} target="_blank" rel="noopener noreferrer">Проверить наличие полного судебного акта в официальной карточке дела ↗</a></p>

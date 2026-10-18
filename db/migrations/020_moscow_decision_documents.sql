@@ -22,11 +22,13 @@ CREATE TABLE IF NOT EXISTS moscow_decision_document_review (
   source_reuse_confirmed boolean NOT NULL DEFAULT false,
   verified_redaction boolean NOT NULL DEFAULT false,
   editor_approved boolean NOT NULL DEFAULT false,
+  statutory_publication_checked boolean NOT NULL DEFAULT false,
   reviewed_on date,
   source_observed_on date NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now(),
   CHECK (publication_state <> 'approved_document' OR (
     source_reuse_confirmed=true AND verified_redaction=true AND editor_approved=true
+    AND statutory_publication_checked=true AND law_topic <> 'family'
     AND original_source_sha256 ~ '^[a-f0-9]{64}$'
     AND file_storage_key IS NOT NULL AND length(file_storage_key)>12
     AND media_type IS NOT NULL AND reviewed_on IS NOT NULL
@@ -41,6 +43,6 @@ CREATE OR REPLACE VIEW moscow_verified_document_coverage AS
 SELECT court_slug, law_topic,
        count(*) FILTER (WHERE publication_state='approved_document')::integer AS verified_document_count,
        count(*)::integer AS researched_case_count,
-       50::integer AS documents_target,
-       greatest(50 - count(*) FILTER (WHERE publication_state='approved_document'),0)::integer AS documents_remaining
+       CASE WHEN law_topic='family' THEN NULL ELSE 50 END::integer AS documents_target,
+       CASE WHEN law_topic='family' THEN NULL ELSE greatest(50 - count(*) FILTER (WHERE publication_state='approved_document'),0) END::integer AS documents_remaining
 FROM moscow_decision_document_review GROUP BY court_slug,law_topic;

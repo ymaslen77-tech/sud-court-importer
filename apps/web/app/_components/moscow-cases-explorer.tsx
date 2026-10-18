@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type {MoscowCourt} from '../lib/moscow-courts';
 import type {AdjudicatedCase} from '../lib/moscow-adjudicated-cases';
 import {MOSCOW_CASE_TOPICS} from '../lib/moscow-case-topics';
-import {REQUIRED_DOCUMENTS_PER_COURT_TOPIC,isVerifiedDocument} from '../lib/moscow-adjudicated-cases';
+import {REQUIRED_DOCUMENTS_PER_COURT_TOPIC,isVerifiedDocument,isFullTextTopicEligible} from '../lib/moscow-adjudicated-cases';
 
 export function MoscowCasesExplorer({court,decisions}:{court:MoscowCourt;decisions:AdjudicatedCase[]}){
  const [search,setSearch]=useState('');
@@ -30,10 +30,10 @@ export function MoscowCasesExplorer({court,decisions}:{court:MoscowCourt;decisio
   <label className="moscow-case-search" htmlFor={'cases-'+court.slug}>Поиск по номеру или теме среди размещённых дел
    <input id={'cases-'+court.slug} type="search" placeholder="Например, 02-5195/2026 или алименты" value={search} onChange={event=>setSearch(event.target.value)} maxLength={90}/>
   </label>
-  <p className="court-source">Найдено в нашей подборке: {total}. Цель: {REQUIRED_DOCUMENTS_PER_COURT_TOPIC} полных проверенных судебных актов на категорию в каждом суде. Счётчик не включает дела без текста опубликованного акта.</p>
+  <p className="court-source">Найдено в нашей подборке: {total}. Цель: до {REQUIRED_DOCUMENTS_PER_COURT_TOPIC} проверенных судебных актов на разрешённую к публикации категорию в каждом суде. Для семейно-правовых дел полные тексты не публикуются в силу статьи 15 Закона № 262-ФЗ. Счётчик не включает дела без текста опубликованного акта.</p>
   <div className="moscow-case-topics">
    {groups.map(topic=><details key={topic.id} className="moscow-case-topic">
-    <summary><span>{topic.title}</span><small>С известным результатом: {topic.allConfirmedCount} · документы: {topic.documentCount}/{REQUIRED_DOCUMENTS_PER_COURT_TOPIC}</small></summary>
+    <summary><span>{topic.title}</span><small>С известным результатом: {topic.allConfirmedCount} · {isFullTextTopicEligible(topic.id)?'документы: '+topic.documentCount+'/'+REQUIRED_DOCUMENTS_PER_COURT_TOPIC:'полный текст: публикация исключена законом'}</small></summary>
     <div className="moscow-case-topic-content">
      <p>{topic.description}</p><p className="court-source">Правовая основа: {topic.law}.</p>
      {topic.confirmed.length>0?<ul className="moscow-case-list">
@@ -41,7 +41,7 @@ export function MoscowCasesExplorer({court,decisions}:{court:MoscowCourt;decisio
        <strong>Дело № {item.number}</strong>
        <p><b>Суть:</b> {item.subject}</p>
        <p><b>Решение:</b> {item.disposition}, {item.decision_date} (первая инстанция).</p>
-       <p className="court-source">Полный текст: {isVerifiedDocument(item)?'проверен и доступен':'пока не подтверждён для размещения'}</p>
+       <p className="court-source">Полный текст: {isVerifiedDocument(item)?'проверен и доступен':!isFullTextTopicEligible(item.topic_id)?'публикация исключена законом':item.official_file_listed?'размещён на официальном портале, перенос не выполнен':'пока не подтверждён для размещения'}</p>
        <Link className="text-link" href={'/courts/moscow/'+court.slug+'/cases/'+item.slug}>
         Подробнее о решении и открыть документ →
        </Link>

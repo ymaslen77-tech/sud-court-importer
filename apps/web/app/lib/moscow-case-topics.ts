@@ -1,6 +1,6 @@
-export type CaseTopic={id:string;title:string;description:string;law:string;source:'civil'|'criminal'|'kas'|''};
+export type CaseTopic={id:string;title:string;description:string;law:string;source:'civil'|'criminal'|'kas'|'';publicationPolicy?:'excluded_by_262_fz'};
 export const MOSCOW_CASE_TOPICS:CaseTopic[]=[
- {id:'family',title:'Семейные споры',description:'Алименты, лишение родительских прав, раздел имущества и другие семейные споры — при соблюдении правил подсудности.',law:'СК РФ; ст. 23–24 ГПК РФ',source:'civil'},
+ {id:'family',publicationPolicy:'excluded_by_262_fz',title:'Семейные споры',description:'Алименты, лишение родительских прав, раздел имущества и другие семейные споры — при соблюдении правил подсудности.',law:'СК РФ; ст. 23–24 ГПК РФ',source:'civil'},
  {id:'labor',title:'Трудовые споры',description:'Взыскание заработной платы, увольнение, восстановление на работе и компенсации.',law:'ТК РФ; ГПК РФ',source:'civil'},
  {id:'housing',title:'Жилищные споры',description:'Жилищно-коммунальные платежи, права на жилые помещения, выселение и иные жилищные дела.',law:'ЖК РФ; ГПК РФ',source:'civil'},
  {id:'property',title:'Недвижимость, строительство и договоры',description:'Долевое строительство, права собственности, аренда, договоры и неосновательное обогащение.',law:'ГК РФ; ГПК РФ',source:'civil'},
