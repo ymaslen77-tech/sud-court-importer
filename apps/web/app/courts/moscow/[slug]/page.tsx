@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import {moscowCourt,moscowCourts,officialMoscowUrl,type MoscowCourt} from '../../../lib/moscow-courts';
 import {MoscowYandexMap} from '../../../_components/moscow-yandex-map';
 import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
+import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 
 type Props={params:Promise<{slug:string}>};
@@ -119,7 +120,7 @@ export default async function MoscowCourtPage({params}:Props){
    </article>)}
    </div>
   </section>
-  <MoscowCasesExplorer court={c}/>
+  <MoscowCasesExplorer court={c} decisions={adjudicatedCasesFor(c.slug)}/>
   <section className="court-section" id="msk-hearings">
    <span className="eyebrow">Поиск информации о процессе</span>
    <h2>Заседания, стадия дела, номер зала и движение производства</h2>

@@ -383,3 +383,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .moscow-lead-form button{justify-self:start}
 .moscow-honey{position:absolute;left:-9999px;opacity:0;pointer-events:none}
 @media(max-width:680px){.moscow-case-list,.moscow-lead-form{grid-template-columns:1fr}.moscow-case-topic summary{flex-wrap:wrap}.moscow-case-topic summary small{white-space:normal}.moscow-lead-panel{padding:16px}}
+
+/* Judicial case previews and document viewer */
+.moscow-decision-card{background:#fff!important;border-left:3px solid var(--red)!important}
+.moscow-decision-card p{line-height:1.55}
+.moscow-secondary-cases{margin:18px 0;border:1px solid var(--line);padding:12px}
+.moscow-secondary-cases summary{cursor:pointer;font-weight:700}
+.court-decision-document iframe{width:100%;height:min(78vh,850px);border:1px solid var(--line);background:white}
