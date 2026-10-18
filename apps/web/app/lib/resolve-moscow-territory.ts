@@ -38,6 +38,7 @@ function annex(value:string):string {
 }
 function validStreet(value:string):boolean {
  return value.length>=4&&value.length<=120&&/[а-я]/.test(value)&&
+ value!=='москва'&&value!=='город москва'&&value!=='г. москва'&&
  !/(?:^|\s)(?:кв|квартира|помещение|офис|этаж)(?:\s|$)/i.test(value);
 }
 function validHouse(s:string):boolean{return /^\d{1,5}[а-яa-z]?(?:\/\d{1,5}[а-яa-z]?)?$/.test(s);}
