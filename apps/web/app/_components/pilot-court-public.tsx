@@ -9,6 +9,7 @@ import {YandexCourtMap} from './yandex-court-map';
 import {CourtTodayHearings} from './court-today-hearings';
 import {CourtPracticalGuide} from './court-practical-guide';
 import {PilotPracticalFacts} from './pilot-practical-facts';
+import {PublishedCourtRoster} from './published-court-roster';
 
 type Schedule={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 const hoursByCode=researchHours as Record<string,Schedule>;
@@ -71,6 +72,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    <a href="#pilot-competence">Подсудность</a>
    <a href="#pilot-services">Электронные сервисы</a>
    <a href="#pilot-judges">Руководство</a>
+   {court.code==='54OS0000'||court.code==='54AJ0005'?<a href="#pilot-roster-publication">Опубликованный состав</a>:null}
    <a href="#pilot-sources">Источники</a>
   </nav>
   <section className="court-section" id="pilot-identity">
@@ -143,6 +145,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
      Исследовательские сведения, если они приведены выше, не являются актуальным кадровым реестром.</p>
    {site?<a href={site} target="_blank" rel="noopener noreferrer">Проверить руководство и состав на сайте суда ↗</a>:null}
   </section>
+  <PublishedCourtRoster code={court.code}/>
   <section className="court-section" id="pilot-sources">
    <span className="eyebrow">Прозрачность публикации</span>
    <h2>Источники, дата и ограничения</h2>
