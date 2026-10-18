@@ -410,3 +410,25 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .moscow-territory-result a{text-decoration:underline;font-weight:800}
 @media(max-width:1100px){.moscow-territory-form{grid-template-columns:repeat(3,minmax(0,1fr))}.moscow-territory-street{grid-column:span 2}}
 @media(max-width:640px){.moscow-territory-checker{padding:16px}.moscow-territory-form{grid-template-columns:repeat(2,minmax(0,1fr))}.moscow-territory-street{grid-column:1/-1}.moscow-territory-form .moscow-territory-city{width:100%}}
+
+
+/* Searchable legal topics: category-level discoverability, clear distinction from case hits. */
+.moscow-case-search{max-width:940px}
+.moscow-case-search-controls{display:flex;gap:8px;align-items:stretch}
+.moscow-case-search-controls input{flex:1;min-width:0}
+.moscow-case-search-controls>button{border:1px solid #bcc4cb;background:#fff;color:var(--ink);padding:10px 14px;font-weight:700}
+.moscow-case-suggestions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:7px 0 10px}
+.moscow-case-suggestions span{color:var(--muted);font-size:12px}
+.moscow-case-suggestions button{padding:6px 11px;border-radius:18px;background:#f4f5f6;border:1px solid #dadee2;color:var(--ink);font-size:12px}
+.moscow-case-suggestions button[aria-pressed="true"]{background:#f6eeee;border-color:#bd2a32;font-weight:800}
+.moscow-search-feedback{margin:16px 0;background:#eff6fb;border-left:4px solid #236890;padding:14px 18px;line-height:1.6}
+.moscow-search-feedback strong{font-weight:800}
+.moscow-search-feedback p{margin:6px 0 0}
+.moscow-search-empty{background:#f7f7f8;border:1px solid var(--line);padding:18px;margin:18px 0}
+.moscow-search-empty a{font-weight:800;text-decoration:underline}
+.moscow-case-topic.moscow-case-topic-matched{border:2px solid #ddab51;background:#fffdf6;box-shadow:0 2px 6px rgba(30,30,30,.05)}
+.moscow-case-topic-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.moscow-topic-match-label{display:inline-flex;padding:3px 8px;border-radius:3px;background:#f9e5bd;font-weight:750;font-size:11px;color:#724512}
+.moscow-case-topic mark{background:#fff0a7;color:#202020;padding:0 2px}
+.moscow-topic-no-exact{background:#fff8ea;border-left:3px solid #cd9f36;padding:12px 15px;font-size:13px}
+@media(max-width:680px){.moscow-case-search-controls{flex-wrap:wrap}.moscow-case-search-controls>button{width:100%}.moscow-case-topic summary small{display:block;width:100%}}
