@@ -38,7 +38,7 @@ class MoscowDossierTests(unittest.TestCase):
 
     def test_real_case_examples_have_court_specific_provenance_and_no_personal_details(self):
         rows=json.loads(MOSCOW.read_text(encoding='utf-8'))
-        self.assertEqual(sum(len(x['case_examples']) for x in rows),27)
+        self.assertEqual(sum(len(x['case_examples']) for x in rows),36)
         for court in rows:
             with self.subTest(slug=court['slug']):
                 self.assertGreaterEqual(len(court['case_examples']),1)
