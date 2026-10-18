@@ -4,7 +4,7 @@ import departments from '../lib/pilot-department-contacts.json';
 import facts from '../lib/pilot-practical-source-facts.json';
 
 type Hours={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean};
-type Dossier={offices:{label:string;address:string;hours:string;source_url:string}[];staff_observations:{name:string;position:string;source_url:string}[];payments:{source_url:string;source_updated_on:string|null;rows:{label:string;value:string}[];warning:string};reception:{description:string;source_url:string}};
+type Dossier={departments:{label:string;phone:string}[];offices:{label:string;address:string;hours:string;source_url:string}[];staff_observations:{name:string;position:string;source_url:string}[];payments:{source_url:string;source_updated_on:string|null;rows:{label:string;value:string}[];warning:string};reception:{description:string;source_url:string}};
 type Department={source_url:string;departments:{label:string;phone:string}[]};
 type Facts={source_url:string;items:{category:string;title:string;description:string}[]};
 const allHours=hours as Record<string,Hours>;
