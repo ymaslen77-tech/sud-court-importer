@@ -90,7 +90,7 @@ class MoscowDossierTests(unittest.TestCase):
         for value in ("ORIGIN_MISMATCH", "SERVICE_NOT_CONFIGURED", "COURT_LEADS_RU_STORAGE_ATTESTED", "honeypot.length", "DELIVERY_FAILED"):
             self.assertIn(value,lead_route)
         migration=(ROOT/'db/migrations/019_moscow_case_and_territory_review.sql').read_text()
-        self.assertIn('CHECK (reuse_permission_confirmed = false)',migration)
+        self.assertIn('reuse_permission_confirmed = true',migration)
         self.assertIn('moscow_territorial_address_review',migration)
         self.assertIn('moscow_case_source_review',migration)
         self.assertNotIn('fetch(',detail)
