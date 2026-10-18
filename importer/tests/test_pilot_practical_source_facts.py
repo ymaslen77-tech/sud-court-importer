@@ -30,7 +30,7 @@ class PilotLocalFactTests(unittest.TestCase):
                         source=urlsplit(item['source_url'])
                         self.assertEqual(source.scheme,'https')
                         self.assertTrue(source.hostname=='sudrf.ru' or source.hostname.endswith('.sudrf.ru'))
-                        self.assertRegex(item['researched_on'],r'^20\d\d-\d\d-\d\d$')
+                        self.assertRegex(item['researched_on'],r'^20\d\d-\d\d-\d\d
 
     def test_dated_reception_and_e_filing_details_only_on_two_courts(self):
         data=json.loads((APP/'lib/pilot-practical-source-facts.json').read_text())
@@ -71,6 +71,16 @@ if __name__=='__main__':
     unittest.main()
 )
                         self.assertEqual(item['current_status'],'research_only')
+
+    def test_dated_reception_and_e_filing_details_only_on_two_courts(self):
+        data=json.loads((APP/'lib/pilot-practical-source-facts.json').read_text())
+        self.assertEqual(len(data['54RS0012']['items']),7)
+        self.assertEqual(len(data['54GV0001']['items']),5)
+        self.assertEqual(sum(bool(i.get('source_url')) for r in data.values() for i in r['items']),8)
+        ui=(APP/'_components/pilot-practical-facts.tsx').read_text()
+        self.assertIn('isOfficial(fact.source_url)',ui)
+        self.assertIn('Первоисточник этого сведения',ui)
+        self.assertIn('Действие правил сегодня отдельно не подтверждено',ui)
 
     def test_new_department_numbers_are_labelled_as_publication_research(self):
         departments=json.loads((APP/'lib/pilot-department-contacts.json').read_text())
