@@ -28,7 +28,7 @@ export function isVerifiedDocument(d:AdjudicatedCase):boolean{return permittedDo
 export function adjudicatedCasesFor(courtSlug:string):AdjudicatedCase[]{
  if(!moscowCourt(courtSlug))return [];
  return records.filter(d=>d.court_slug===courtSlug&&officialCourtDocketUrl(d.source_url,courtSlug)
- &&MOSCOW_CASE_TOPICS.some(t=>t.id===d.topic_id)&&/^[0-9]{2}-[0-9]+\/20[0-9]{2}$/.test(d.number));
+ &&MOSCOW_CASE_TOPICS.some(t=>t.id===d.topic_id)&&/^0[12](?:а)?-[0-9]+\/20[0-9]{2}$/.test(d.number));
 }
 export function adjudicatedCase(courtSlug:string,slug:string):AdjudicatedCase|null{
  return adjudicatedCasesFor(courtSlug).find(d=>d.slug===slug)??null;
