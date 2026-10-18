@@ -10,7 +10,7 @@ class MoscowCaseSearchTests(unittest.TestCase):
         assert "labor:['увол','увольн'" in search
         for phrase in ('topicMatchesSearch','caseMatchesSearch','collectSearchMatches','exactDecidedCount'):
             self.assertIn(phrase,search)
-        for phrase in ('defaultOpen={searching}','moscow-case-topic-matched',
+        for phrase in ('open={searching}','moscow-case-topic-matched',
                        'Подходящая тема','Дел', 'role="status"', 'Другие дела этой категории'):
             self.assertIn(phrase,explorer)
         self.assertIn('судебных дел непосредственно по этому запросу в нашей подборке пока нет',explorer)
