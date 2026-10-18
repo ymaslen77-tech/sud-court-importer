@@ -28,7 +28,7 @@ class PublishedRosterTests(unittest.TestCase):
                 for name,role,act in group['people']:
                     self.assertGreaterEqual(len(name.split()),3)
                     self.assertTrue(role.strip())
-                    self.assertRegex(act,r'\b№\s?\d+\b')
+                    self.assertRegex(act,r'№\s?\d+\b')
 
     def test_leadership_newer_publication_supersedes_obsolete_source(self):
         leader=json.loads(DATA.read_text())['54AJ0005']['leadership']
