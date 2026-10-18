@@ -62,7 +62,7 @@ assert.equal(search.normalizeCaseQuery('  МОШЕННИЧЕСТВО Ёж  '),'�
 
 const explorer=fs.readFileSync(path.join(__dirname,'../app/_components/moscow-cases-explorer.tsx'),'utf8');
 const page=fs.readFileSync(path.join(__dirname,'../app/courts/moscow/[slug]/page.tsx'),'utf8');
-for(const phrase of ['defaultOpen={searching}','moscow-case-topic-matched','matchedCases===0',
+for(const phrase of ['open={searching}','moscow-case-topic-matched','matchedCases===0',
  'matchedTopic','<Highlight','Другие дела этой категории','topic.allDecidedCount',
  'setSearch(term)','role="status"','case_service_url']){
  assert.ok(explorer.includes(phrase),'Explorer search behavior is missing: '+phrase);

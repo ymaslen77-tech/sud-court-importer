@@ -58,9 +58,9 @@ export function isBroadTopicQuery(topic:CaseTopic,query:string):boolean{
  const title=normalizeCaseQuery(topic.title);
  return title.includes(q) || q===title;
 }
-export function collectSearchMatches(
+export function collectSearchMatches<D extends SearchCase,O extends SearchCase>(
  topic:CaseTopic,query:string,
- decided:ReadonlyArray<SearchCase>,other:ReadonlyArray<SearchCase>
+ decided:ReadonlyArray<D>,other:ReadonlyArray<O>
 ){
  const searching=normalizeCaseQuery(query).length>0;
  const matchedTopic=searching&&topicMatchesSearch(topic,query);

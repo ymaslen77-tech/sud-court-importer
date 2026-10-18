@@ -87,7 +87,7 @@ export function MoscowCasesExplorer({court,decisions}:{court:MoscowCourt;decisio
     const hasExact=exact>0;
     const topicOnly=searching&&topic.matchedTopic&&!hasExact&&!topic.broadTopic;
     return <details key={topic.id+'-'+query} className={'moscow-case-topic'+(searching?' moscow-case-topic-matched':'')}
-      defaultOpen={searching} data-topic={topic.id}>
+      open={searching} data-topic={topic.id}>
      <summary>
       <span className="moscow-case-topic-title">
        <Highlight text={topic.title} query={query}/>
