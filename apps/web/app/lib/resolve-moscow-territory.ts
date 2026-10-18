@@ -77,12 +77,13 @@ export function resolveMoscowTerritory(
  today:string=new Date().toISOString().slice(0,10)
 ):TerritoryResult{
  const st=normalizeMoscowStreet(input.street),h=house(input.house),c=annex(input.corpus),s=annex(input.structure);
+ if(/(?:^|\\W)(?:кв\\.?|квартира|офис|помещение)(?:\\W|$)/i.test([input.street,input.house,input.corpus,input.structure].join(' ')))
+  return {kind:'unknown',code:'personal_data',reason:'Номер квартиры и другие персональные сведения для проверки не нужны.'};
  if([input.street,input.house,input.corpus,input.structure].some(v=>v.length>140)||
    !validStreet(st)||!validHouse(h)||!validAnnex(c)||!validAnnex(s)){
   return {kind:'unknown',code:'invalid_address',reason:'Введите точную улицу и номер дома, а при наличии — корпус и строение.'};
  }
- if(/(?:^|\W)(?:кв\.?|квартира|офис|помещение)(?:\W|$)/i.test([input.street,input.house,input.corpus,input.structure].join(' ')))
-  return {kind:'unknown',code:'personal_data',reason:'Номер квартиры и другие персональные сведения для проверки не нужны.'};
+
  const matches=rules.filter(r=>ruleKey(r)===key(st,h,c,s));
  if(!matches.length)return {kind:'unknown',code:'not_covered',reason:'Адрес пока отсутствует в подтверждённом справочнике подсудности. Это не означает, что он не относится к данному суду.'};
  if(matches.some(r=>!validRule(r,today)))return {kind:'unknown',code:'stale_or_unapproved',reason:'Есть непроверенное или устаревшее правило для этого адреса. Надёжное соответствие не подтверждено.'};
