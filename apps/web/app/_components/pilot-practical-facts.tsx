@@ -1,6 +1,6 @@
 import raw from '../lib/pilot-practical-source-facts.json';
 
-type PracticalFact={category:string;title:string;description:string};
+type PracticalFact={category:string;title:string;description:string;source_url?:string;researched_on?:string;current_status?:'research_only'};
 type PilotFacts={source_url:string;source_stated_updated:string|null;researched_on:string;editorially_verified_current:boolean;items:PracticalFact[]};
 const factsByCourt=raw as Record<string,PilotFacts>;
 
@@ -27,6 +27,10 @@ export function PilotPracticalFacts({code}:{code:string}){
     <span className="eyebrow">{fact.category}</span>
     <h3>{fact.title}</h3>
     <p>{fact.description}</p>
+    {fact.source_url&&isOfficial(fact.source_url)?<p className="court-source">
+     <a href={fact.source_url} rel="noopener noreferrer" target="_blank">Первоисточник этого сведения ↗</a>
+     {fact.researched_on?' · Исследовано: '+fact.researched_on:''}. Действие правил сегодня отдельно не подтверждено.
+    </p>:null}
    </article>)}
   </div>
   <p className="court-source">

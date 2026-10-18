@@ -6,7 +6,7 @@ import facts from '../lib/pilot-practical-source-facts.json';
 type Hours={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean};
 type Dossier={departments:{label:string;phone:string}[];offices:{label:string;address:string;hours:string;source_url:string}[];staff_observations:{name:string;position:string;source_url:string}[];payments:{source_url:string;source_updated_on:string|null;rows:{label:string;value:string}[];warning:string};reception:{description:string;source_url:string}};
 type Department={source_url:string;departments:{label:string;phone:string}[]};
-type Facts={source_url:string;items:{category:string;title:string;description:string}[]};
+type Facts={source_url:string;items:{category:string;title:string;description:string;source_url?:string}[]};
 const allHours=hours as Record<string,Hours>;
 const allDossiers=dossiers as Record<string,Dossier>;
 const allDepartments=departments as Record<string,Department>;
@@ -27,7 +27,7 @@ export function CourtOperationalDetails({code}:{code:string}) {
  const buildingCount=dossier?.offices?.length??0;
  const departmentCount=dossier?.departments?.length??department?.departments?.length??0;
  const source=dossier?.reception?.source_url??fact?.source_url;
- const accessible=fact?.items.filter(x=>/доступност|маломобильн|пребывани|посещени/i.test(x.category+' '+x.title+' '+x.description))??[];
+ const accessible=fact?.items.filter(x=>/доступност|маломобильн|безбарьерн|пандус/i.test(x.category+' '+x.title+' '+x.description))??[];
  const sourceCount=Number(Boolean(schedule))+Number(Boolean(dossier))+Number(Boolean(department))+Number(Boolean(fact));
  if(!sourceCount)return null;
  return <section id="pilot-operations" className="court-section">
@@ -59,7 +59,7 @@ export function CourtOperationalDetails({code}:{code:string}) {
       <h3>Доступность здания</h3>
       {accessible.length>0?<><p>В официальных публикациях упоминаются правила посещения или материалы
        о доступности здания: {accessible.map(x=>x.title).join('; ')}.</p>
-       <Source url={fact.source_url} label="Публикация суда"/></>:
+       <Source url={accessible[0].source_url??fact.source_url} label="Публикация суда"/></>:
        <p>Проверенная схема доступного входа, лифта, пандуса и сопровождения маломобильных посетителей
         пока не включена. До посещения уточните условия и помощь в приёмной суда.</p>}
       <p className="court-source">Наличие инструкции не является подтверждением конкретного доступного маршрута.</p>

@@ -28,5 +28,7 @@ class OperationsTests(unittest.TestCase):
   self.assertIn("dossier?.payments",c)
   self.assertIn("dossier?.staff_observations",c)
   self.assertIn("accessible.length>0",c)
+  self.assertIn("accessible[0].source_url??fact.source_url",c)
+  self.assertNotIn("пребывани|посещени",c)
   self.assertNotIn("fetch(",c)
 if __name__=="__main__":unittest.main()

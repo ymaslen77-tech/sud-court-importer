@@ -13,7 +13,7 @@ class PilotLocalFactTests(unittest.TestCase):
     def test_all_ten_have_real_official_sources_and_facts(self):
         data=json.loads((APP/'lib/pilot-practical-source-facts.json').read_text())
         self.assertEqual(set(data),PUBLIC)
-        self.assertEqual(sum(len(x['items']) for x in data.values()),26)
+        self.assertEqual(sum(len(x['items']) for x in data.values()),34)
         for code,record in data.items():
             with self.subTest(code=code):
                 u=urlsplit(record['source_url'])
@@ -26,6 +26,23 @@ class PilotLocalFactTests(unittest.TestCase):
                 for item in record['items']:
                     self.assertGreater(len(item['description']),60)
                     self.assertNotIn('неограниченно',item['description'].lower())
+                    if 'source_url' in item:
+                        source=urlsplit(item['source_url'])
+                        self.assertEqual(source.scheme,'https')
+                        self.assertTrue(source.hostname=='sudrf.ru' or source.hostname.endswith('.sudrf.ru'))
+                        self.assertTrue(item['researched_on'].startswith('2026-'))
+                        self.assertEqual(len(item['researched_on']),10)
+                        self.assertEqual(item['current_status'],'research_only')
+
+    def test_dated_reception_and_e_filing_details_only_on_two_courts(self):
+        data=json.loads((APP/'lib/pilot-practical-source-facts.json').read_text())
+        self.assertEqual(len(data['54RS0012']['items']),7)
+        self.assertEqual(len(data['54GV0001']['items']),5)
+        self.assertEqual(sum(bool(i.get('source_url')) for r in data.values() for i in r['items']),8)
+        ui=(APP/'_components/pilot-practical-facts.tsx').read_text()
+        self.assertIn('isOfficial(fact.source_url)',ui)
+        self.assertIn('Первоисточник этого сведения',ui)
+        self.assertIn('Действие правил сегодня отдельно не подтверждено',ui)
 
     def test_new_department_numbers_are_labelled_as_publication_research(self):
         departments=json.loads((APP/'lib/pilot-department-contacts.json').read_text())
