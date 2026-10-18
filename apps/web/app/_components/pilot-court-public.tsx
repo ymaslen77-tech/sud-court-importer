@@ -8,6 +8,7 @@ import departmentSources from '../lib/pilot-department-contacts.json';
 import {YandexCourtMap} from './yandex-court-map';
 import {CourtTodayHearings} from './court-today-hearings';
 import {CourtPracticalGuide} from './court-practical-guide';
+import {CourtOperationalDetails} from './court-operational-details';
 import {PilotPracticalFacts} from './pilot-practical-facts';
 import {PublishedCourtRoster} from './published-court-roster';
 
@@ -68,6 +69,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    <a href="#pilot-case-search">Поиск дела</a>
    <a href="#pilot-practical">Порядок обращения</a>
    <a href="#pilot-useful-facts">Особенности суда</a>
+   <a href="#pilot-operations">Приём, доступность и оплата</a>
    <a href="#pilot-fees">Пошлина</a>
    <a href="#pilot-competence">Подсудность</a>
    <a href="#pilot-services">Электронные сервисы</a>
@@ -137,6 +139,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
   </Suspense>
   <CourtPracticalGuide courtType={court.code.slice(2,4)}/>
   <PilotPracticalFacts code={court.code}/>
+  <CourtOperationalDetails code={court.code}/>
   <ResearchDossier code={court.code}/>
   <section className="court-section" id="pilot-judges">
    <span className="eyebrow">Кадровая информация</span>
