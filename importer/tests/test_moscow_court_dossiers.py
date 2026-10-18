@@ -38,7 +38,7 @@ class MoscowDossierTests(unittest.TestCase):
 
     def test_real_case_examples_have_court_specific_provenance_and_no_personal_details(self):
         rows=json.loads(MOSCOW.read_text(encoding='utf-8'))
-        self.assertGreaterEqual(sum(len(x['case_examples']) for x in rows),12)
+        self.assertEqual(sum(len(x['case_examples']) for x in rows),27)
         for court in rows:
             with self.subTest(slug=court['slug']):
                 self.assertGreaterEqual(len(court['case_examples']),1)
@@ -54,6 +54,9 @@ class MoscowDossierTests(unittest.TestCase):
                     self.assertGreater(len(case['subject']),10)
                     self.assertNotIn('Истец:',case['subject'])
                     self.assertNotIn('Ответчик:',case['subject'])
+                    self.assertEqual(case['source_observed_on'],'2026-10-18')
+                    self.assertFalse(case['current_status_verified'])
+                    self.assertIn(case['topic_id'],{'family','labor','housing','property','consumer','credit','damage','fraud','other-criminal','bailiffs','kas','social','other'})
 
     def test_new_pages_noindex_until_address_and_editorial_acceptance(self):
         detail=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
@@ -68,6 +71,27 @@ class MoscowDossierTests(unittest.TestCase):
         self.assertIn('href="/courts/moscow"',index)
         self.assertNotIn('moscowCourts',sitemap)
         self.assertIn('полные улицы и дома',detail.lower())
-        self.assertIn('case_examples.map',detail)
+        self.assertIn('<MoscowCasesExplorer court={c}/>',detail)
+        self.assertIn('<MoscowYandexMap court={c}/>',detail)
+        self.assertEqual(detail.count('<MoscowLeadCapture '),2)
+        case_ui=(APP/'_components/moscow-cases-explorer.tsx').read_text()
+        self.assertIn('<details',case_ui)
+        self.assertIn('topic.items.length',case_ui)
+        self.assertIn('Подтверждённых примеров',case_ui)
+        map_ui=(APP/'_components/moscow-yandex-map.tsx').read_text()
+        self.assertIn('https://yandex.ru/map-widget/v1/',map_ui)
+        self.assertNotIn('lat:',map_ui)
+        lead_ui=(APP/'_components/moscow-lead-capture.tsx').read_text()
+        lead_route=(APP/'api/court-leads/route.ts').read_text()
+        for value in ('enabled={intakeReady}', 'privacyUrl={privacyUrl}'):
+            self.assertIn(value,detail)
+        for value in ('consent', 'honeypot', 'disabled={!enabled', 'not', 'role="status"'):
+            self.assertIn(value,lead_ui.lower())
+        for value in ("ORIGIN_MISMATCH", "SERVICE_NOT_CONFIGURED", "COURT_LEADS_RU_STORAGE_ATTESTED", "honeypot.length", "DELIVERY_FAILED"):
+            self.assertIn(value,lead_route)
+        migration=(ROOT/'db/migrations/019_moscow_case_and_territory_review.sql').read_text()
+        self.assertIn('CHECK (reuse_permission_confirmed = false)',migration)
+        self.assertIn('moscow_territorial_address_review',migration)
+        self.assertIn('moscow_case_source_review',migration)
         self.assertNotIn('fetch(',detail)
 if __name__=='__main__': unittest.main()
