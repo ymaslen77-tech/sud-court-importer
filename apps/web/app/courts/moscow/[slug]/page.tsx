@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {moscowCourt,moscowCourts,officialMoscowUrl,type MoscowCourt} from '../../../lib/moscow-courts';
 import {MoscowYandexMap} from '../../../_components/moscow-yandex-map';
+import {MoscowTerritoryChecker} from '../../../_components/moscow-territory-checker';
 import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
 import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
@@ -97,18 +98,17 @@ export default async function MoscowCourtPage({params}:Props){
   <MoscowYandexMap court={c}/>
   <section id="msk-jurisdiction" className="court-section">
    <span className="eyebrow">Территориальная подсудность</span><h2>Какие адреса относятся к суду</h2>
-   <p>{c.jurisdiction_scope}</p>
-   <p>Нельзя определить подсудность только по названию района Москвы, почтовому индексу, расположению здания суда либо близости к метро. Для конкретного спора могут действовать альтернативные, исключительные и специальные правила.</p>
-   <div className="notice" role="note"><strong>Полные улицы и дома:</strong> подтверждённого локального перечня пока нет. Автоматическое определение по нашему сайту заблокировано, чтобы избежать направления документов не в тот суд.</div>
-   <p><External href={c.territory_service_url}>Официальный поиск подсудности по адресу и номеру дома</External></p>
-   <details className="moscow-case-topic"><summary>Как проверить адрес по шагам</summary><div className="moscow-case-topic-content">
-    <ol><li>Укажите улицу и номер дома, затем корпус и строение при наличии.</li>
-    <li>Проверьте, что найденный объект соответствует нужному адресу.</li>
-    <li>Учитывайте родовую и исключительную подсудность по характеру спора.</li>
-    <li>Сохраните ссылку или справку из официального сервиса для собственной проверки.</li></ol>
-    <p>Полную локальную матрицу адресов опубликуем после получения официальных проверенных границ.</p>
+   <p>Проверяйте именно адрес здания с номером дома, корпусом и строением. Название района или ближайшее метро не гарантируют принадлежность суду.</p>
+   <MoscowTerritoryChecker court={c}/>
+   <details className="moscow-case-topic"><summary>Как правильно определить подсудность</summary><div className="moscow-case-topic-content">
+    <ol>
+     <li>Введите улицу и номер дома; при наличии укажите корпус и строение.</li>
+     <li>Результат с зелёной или красной отметкой появляется только по проверенной адресной записи с первоисточником.</li>
+     <li>Если база пока не знает адрес, откройте официальный сервис и не делайте вывод о суде по географии на глаз.</li>
+     <li>Учитывайте родовую, альтернативную и исключительную подсудность по вашему спору.</li>
+    </ol>
    </div></details>
-   <p><Link className="text-link" href="/jurisdiction">Ограничения нашего собственного адресного поиска →</Link></p>
+   <p className="court-source"><External href={c.territory_service_url}>Проверить в официальном поиске подсудности по адресу</External> · <Link href="/jurisdiction" className="text-link">Другие виды подсудности →</Link></p>
   </section>
   <section className="court-section" id="msk-case-kinds">
    <span className="eyebrow">Компетенция суда</span><h2>Какие дела рассматривает суд</h2>
