@@ -72,7 +72,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
    <a href="#pilot-competence">Подсудность</a>
    <a href="#pilot-services">Электронные сервисы</a>
    <a href="#pilot-judges">Руководство</a>
-   {court.code==='54OS0000'||court.code==='54AJ0005'?<a href="#pilot-roster-publication">Опубликованный состав</a>:null}
+   {['54OS0000','54AJ0005','54RS0002','54RS0004'].includes(court.code)?<a href="#pilot-roster-publication">Опубликованный состав</a>:null}
    <a href="#pilot-sources">Источники</a>
   </nav>
   <section className="court-section" id="pilot-identity">
