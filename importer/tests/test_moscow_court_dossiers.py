@@ -67,7 +67,7 @@ class MoscowDossierTests(unittest.TestCase):
         self.assertIn('moscowCourts()',listing)
         self.assertIn('href="/courts/moscow"',index)
         self.assertNotIn('moscowCourts',sitemap)
-        self.assertIn('полный перечень домов',detail.lower())
+        self.assertIn('полные улицы и дома',detail.lower())
         self.assertIn('case_examples.map',detail)
         self.assertNotIn('fetch(',detail)
 if __name__=='__main__': unittest.main()
