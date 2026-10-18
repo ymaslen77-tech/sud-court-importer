@@ -22,7 +22,7 @@ class DecisionDocumentsTests(unittest.TestCase):
         page=(ROOT/"apps/web/app/courts/moscow/[slug]/cases/[caseId]/page.tsx").read_text(encoding="utf-8")
         lib=(ROOT/"apps/web/app/lib/moscow-adjudicated-cases.ts").read_text(encoding="utf-8")
         explorer=(ROOT/"apps/web/app/_components/moscow-cases-explorer.tsx").read_text(encoding="utf-8")
-        for token in ("isVerifiedDocument(c)","Текст судебного акта","полный текст", "noindex"):
+        for token in ("isVerifiedDocument(c)","Текст судебного акта","полный текст", "robots:{index:false"):
             self.assertIn(token.lower(),page.lower())
         self.assertIn("redactionReviewed",lib)
         self.assertIn("reusePermissionConfirmed",lib)
