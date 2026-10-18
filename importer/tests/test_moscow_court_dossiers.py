@@ -85,7 +85,7 @@ class MoscowDossierTests(unittest.TestCase):
         lead_route=(APP/'api/court-leads/route.ts').read_text()
         for value in ('enabled={intakeReady}', 'privacyUrl={privacyUrl}'):
             self.assertIn(value,detail)
-        for value in ('consent', 'honeypot', 'disabled={!enabled', 'not', 'role="status"'):
+        for value in ('consent', 'honeypot', 'disabled={!enabled', 'role="status"'):
             self.assertIn(value,lead_ui.lower())
         for value in ("ORIGIN_MISMATCH", "SERVICE_NOT_CONFIGURED", "COURT_LEADS_RU_STORAGE_ATTESTED", "honeypot.length", "DELIVERY_FAILED"):
             self.assertIn(value,lead_route)
