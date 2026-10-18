@@ -30,7 +30,9 @@ class PilotLocalFactTests(unittest.TestCase):
                         source=urlsplit(item['source_url'])
                         self.assertEqual(source.scheme,'https')
                         self.assertTrue(source.hostname=='sudrf.ru' or source.hostname.endswith('.sudrf.ru'))
-                        self.assertRegex(item['researched_on'],r'^20\d\d-\d\d-\d\d
+                        self.assertTrue(item['researched_on'].startswith('2026-'))
+                        self.assertEqual(len(item['researched_on']),10)
+                        self.assertEqual(item['current_status'],'research_only')
 
     def test_dated_reception_and_e_filing_details_only_on_two_courts(self):
         data=json.loads((APP/'lib/pilot-practical-source-facts.json').read_text())
