@@ -10,8 +10,10 @@ export type TerritoryRule={
  sourceUrl:string;reviewedOn:string;validThrough:string;
  reviewedBy:string;status:'approved'|'pending'|'rejected'
 };
+type TerritoryResolved={courtSlug:string;courtName:string;courtUrl:string;external:boolean;sourceUrl:string;reviewedOn:string};
 export type TerritoryResult=
- |{kind:'match'|'other';courtSlug:string;courtName:string;courtUrl:string;external:boolean;sourceUrl:string;reviewedOn:string}
+ |({kind:'match'} & TerritoryResolved)
+ |({kind:'other'} & TerritoryResolved)
  |{kind:'unknown';reason:string;code:'invalid_address'|'personal_data'|'not_covered'|'conflicting_records'|'stale_or_unapproved'};
 
 const streetTypes=['улица','ул','ул.','переулок','пер','пер.','проспект','пр-т','проезд','площадь','пл','пл.','бульвар','бул','набережная','наб','шоссе','ш','аллея','тупик','линия'];
