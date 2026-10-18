@@ -101,6 +101,15 @@
         "topic_id": "property",
         "source_observed_on": "2026-10-18",
         "current_status_verified": false
+      },
+      {
+        "number": "02-4189/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Спор, возникающий в ходе исполнительного производства",
+        "source_url": "https://mos-gorsud.ru/rs/basmannyj/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
       }
     ],
     "full_address_boundary_verified": false,
@@ -197,6 +206,24 @@
         "subject": "Иной социальный спор",
         "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
         "topic_id": "social",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-14543/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Иной социальный спор",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "social",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-14542/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Прочее исковое дело",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "other",
         "source_observed_on": "2026-10-18",
         "current_status_verified": false
       }
@@ -341,6 +368,15 @@
         "topic_id": "property",
         "source_observed_on": "2026-10-18",
         "current_status_verified": false
+      },
+      {
+        "number": "02-7514/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Защита прав потребителей по договору с финансово-кредитным учреждением",
+        "source_url": "https://mos-gorsud.ru/rs/gagarinskij/services/cases/civil",
+        "topic_id": "consumer",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
       }
     ],
     "full_address_boundary_verified": false,
@@ -379,6 +415,24 @@
         "subject": "Уголовное дело по опубликованному судебному реестру",
         "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/criminal",
         "topic_id": "fraud",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9257/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание суммы по кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9300/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание суммы по договору займа",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/civil",
+        "topic_id": "credit",
         "source_observed_on": "2026-10-18",
         "current_status_verified": false
       }
@@ -499,6 +553,33 @@
         "subject": "Взыскание алиментов на несовершеннолетних детей",
         "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
         "topic_id": "family",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-6106/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Прочий гражданский иск",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-6105/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Установление юридически значимого факта",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-4402/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Возмещение имущественного вреда",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "damage",
         "source_observed_on": "2026-10-18",
         "current_status_verified": false
       }
