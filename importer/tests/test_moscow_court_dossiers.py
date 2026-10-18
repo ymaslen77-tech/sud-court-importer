@@ -71,7 +71,7 @@ class MoscowDossierTests(unittest.TestCase):
         self.assertIn('href="/courts/moscow"',index)
         self.assertNotIn('moscowCourts',sitemap)
         self.assertIn('полные улицы и дома',detail.lower())
-        self.assertIn('<MoscowCasesExplorer court={c}/>',detail)
+        self.assertIn('<MoscowCasesExplorer court={c} decisions={adjudicatedCasesFor(c.slug)}/>',detail)
         self.assertIn('<MoscowYandexMap court={c}/>',detail)
         self.assertEqual(detail.count('<MoscowLeadCapture '),2)
         case_ui=(APP/'_components/moscow-cases-explorer.tsx').read_text()
