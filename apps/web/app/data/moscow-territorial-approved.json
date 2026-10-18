@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "city": "Москва",
+  "sourceScope": "Москва, районные суды: только индивидуально подтверждённые адресные правила",
+  "sourcePortal": "https://mos-gorsud.ru/territorial",
+  "approvedRules": []
+}
