@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
-import {moscowCourt,moscowCourts} from '../../../../lib/moscow-courts';
-import {adjudicatedCasesFor,adjudicatedCase,isVerifiedDocument} from '../../../../lib/moscow-adjudicated-cases';
-import {MOSCOW_CASE_TOPICS} from '../../../../lib/moscow-case-topics';
+import {moscowCourt,moscowCourts} from '../../../../../lib/moscow-courts';
+import {adjudicatedCasesFor,adjudicatedCase,isVerifiedDocument} from '../../../../../lib/moscow-adjudicated-cases';
+import {MOSCOW_CASE_TOPICS} from '../../../../../lib/moscow-case-topics';
 type Params={params:Promise<{slug:string;caseId:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){
