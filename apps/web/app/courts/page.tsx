@@ -68,6 +68,14 @@ export default async function CourtsDirectory() {
           <Link className="text-link" href="/courts/moscow">Посмотреть пилотный регион →</Link>
         </div>}
     </section>
+    <section className="section-wrap" aria-labelledby="moscow-new-pilot">
+      <div className="section-intro">
+        <span className="eyebrow">Новая московская серия · источник: портал судов Москвы</span>
+        <h2 id="moscow-new-pilot">12 подробных исследовательских досье судов Москвы</h2>
+        <p>Контакты, виды дел, реальные номера из официальной выдачи, территориальная подсудность и практические инструкции. До проверки актуальности московские досье не считаются верифицированными.</p>
+      </div>
+      <Link className="text-link" href="/courts/moscow">Посмотреть московские карточки →</Link>
+    </section>
     <section className="section-wrap" aria-labelledby="first-pilot">
       <div className="section-intro">
         <span className="eyebrow">Официальные источники с указанием уровня достоверности</span>
