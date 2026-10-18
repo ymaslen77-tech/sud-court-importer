@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
-import {moscowCourt} from '../../../../lib/moscow-courts';
+import {moscowCourt,moscowCourts} from '../../../../lib/moscow-courts';
 import {adjudicatedCasesFor,adjudicatedCase,isVerifiedDocument} from '../../../../lib/moscow-adjudicated-cases';
 import {MOSCOW_CASE_TOPICS} from '../../../../lib/moscow-case-topics';
 type Params={params:Promise<{slug:string;caseId:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){
- return ['lefortovskij','nikulinskij'].flatMap(slug=>
+ return moscowCourts().map(c=>c.slug).flatMap(slug=>
   adjudicatedCasesFor(slug).map(c=>({slug,caseId:c.slug})));
 }
 export async function generateMetadata({params}:Params):Promise<Metadata>{
