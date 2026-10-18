@@ -10,10 +10,12 @@ DATA=ROOT/'lib/published-roster-snapshots.json'
 class PublishedRosterTests(unittest.TestCase):
     def test_rosters_are_official_and_dated_and_not_claimed_current(self):
         records=json.loads(DATA.read_text(encoding='utf8'))
-        self.assertEqual(set(records),{'54AJ0005','54OS0000'})
-        self.assertEqual(sum(len(g['people']) for x in records.values() for g in x['snapshot']['groups']),99)
+        self.assertEqual(set(records),{'54AJ0005','54OS0000','54RS0002','54RS0004'})
+        self.assertEqual(sum(len(g['people']) for x in records.values() for g in x['snapshot']['groups']),123)
         self.assertEqual(sum(len(g['people']) for g in records['54AJ0005']['snapshot']['groups']),22)
         self.assertEqual(sum(len(g['people']) for g in records['54OS0000']['snapshot']['groups']),77)
+        self.assertEqual(sum(len(g['people']) for g in records['54RS0002']['snapshot']['groups']),12)
+        self.assertEqual(sum(len(g['people']) for g in records['54RS0004']['snapshot']['groups']),12)
         for code,record in records.items():
             self.assertEqual(code,record['court_code'])
             self.assertIs(record['current_authority_confirmed'],False)
