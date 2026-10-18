@@ -5,7 +5,7 @@ type Snapshot={source_url:string;source_updated_on:string;source_description:str
 type Published={court_code:string;observed_on:string;current_authority_confirmed:boolean;snapshot:Snapshot;leadership?:{
  source_url:string;source_updated_on:string;historical_observation:string;supersession_note:string
 }};
-const rosters=raw as Record<string,Published>;
+const rosters=raw as unknown as Record<string,Published>;
 
 function officialSource(value:string):boolean{
  try{
