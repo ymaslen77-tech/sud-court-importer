@@ -2,6 +2,7 @@
 """Read-only Moscow docket/document coverage audit; never collect or publish remote court files."""
 import json
 import re
+import hashlib
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -42,6 +43,15 @@ def audit():
         if c["document_status"]=="published_verified":
             if not d or not d.get("reusePermissionConfirmed") or not d.get("redactionReviewed") or not re.fullmatch(r"[a-f0-9]{64}",d.get("sha256","")) or not re.fullmatch(r"/court-decisions/[a-z0-9/_-]+\.(?:pdf|txt)",d.get("localPath","")):
                 raise ValueError("unreviewed or invalid local document "+repr(key))
+            file_path=Path(__file__).resolve().parents[1]/"apps/web/public"/d["localPath"].lstrip("/")
+            if not file_path.is_file():
+                raise ValueError("approved document not present in published static assets "+repr(key))
+            digest=hashlib.sha256(file_path.read_bytes()).hexdigest()
+            if digest!=d["sha256"]:
+                raise ValueError("approved document content hash mismatch "+repr(key))
+            head=file_path.read_bytes()[:5]
+            if d["kind"]=="pdf" and head!=b"%PDF-":
+                raise ValueError("document is not a PDF "+repr(key))
             doc_counts[(c["court_slug"],c["topic_id"])]+=1
         elif d is not None:
             raise ValueError("unpublished document cannot have attached payload "+repr(key))
