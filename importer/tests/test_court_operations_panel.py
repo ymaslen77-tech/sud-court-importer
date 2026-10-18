@@ -16,9 +16,8 @@ class OperationsTests(unittest.TestCase):
    self.assertTrue(code in facts or code in contacts or code in hours or code in dossiers)
  def test_no_published_current_payment_or_judge_claim(self):
   x=(ROOT/"_components/court-operational-details.tsx").read_text()
-  for phrase in ["не подтверждены","проверенная схема","не завершено","официальная публикация","Депозитный счёт","удостовер"]:
+  for phrase in ["не подтверждены","Проверенная схема","не завершено","официальная публикация","Депозитный счёт","удостовер"]:
    self.assertIn(phrase,x)
-  self.assertIn("!schedule",x) if False else None
   self.assertNotIn("verified:true",x)
  def test_parent_includes_panel_and_in_page_anchor(self):
   p=(ROOT/"_components/pilot-court-public.tsx").read_text()
