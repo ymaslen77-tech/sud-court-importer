@@ -1,6 +1,6 @@
 import data from './moscow-court-dossiers.json';
 
-export type MoscowCase={number:string;case_type:string;subject:string;source_url:string};
+export type MoscowCase={number:string;case_type:string;subject:string;source_url:string;topic_id:string;source_observed_on:string;current_status_verified:boolean};
 export type MoscowCourt={
  slug:string;name:string;region:string;court_level:string;address:string;
  expedition_phone:string|null;email:string;office_hours:string;

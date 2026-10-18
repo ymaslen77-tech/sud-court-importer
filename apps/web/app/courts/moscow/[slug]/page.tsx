@@ -2,6 +2,9 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {moscowCourt,moscowCourts,officialMoscowUrl,type MoscowCourt} from '../../../lib/moscow-courts';
+import {MoscowYandexMap} from '../../../_components/moscow-yandex-map';
+import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
+import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -51,6 +54,13 @@ export default async function MoscowCourtPage({params}:Props){
  const c=moscowCourt((await params).slug);
  if(!c)notFound();
  const others=moscowCourts().filter(item=>item.slug!==c.slug).slice(0,4);
+ const intakeReady=process.env.COURT_LEADS_ENABLED==='true' &&
+  process.env.COURT_LEADS_RU_STORAGE_ATTESTED==='true' &&
+  Boolean(process.env.COURT_LEADS_OPERATOR_NAME?.trim()) &&
+  Boolean(process.env.COURT_LEADS_PRIVACY_URL?.startsWith('https://')) &&
+  Boolean(process.env.COURT_LEADS_WEBHOOK_URL?.startsWith('https://')) &&
+  Boolean(process.env.COURT_LEADS_WEBHOOK_TOKEN && process.env.COURT_LEADS_WEBHOOK_TOKEN.length>=32);
+ const privacyUrl=intakeReady?process.env.COURT_LEADS_PRIVACY_URL!:null;
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span>
    <Link href="/courts/moscow">Москва</Link><span>/</span>{c.name}</div>
@@ -65,7 +75,8 @@ export default async function MoscowCourtPage({params}:Props){
     <a href="#msk-jurisdiction">Подсудность</a><a href="#msk-case-kinds">Виды дел</a>
     <a href="#msk-cases">Конкретные дела</a><a href="#msk-filing">Подача документов</a>
     <a href="#msk-fees">Госпошлина</a><a href="#msk-appeal">Обжалование</a>
-    <a href="#msk-faq">FAQ</a><a href="#msk-sources">Источники</a>
+    <a href="#msk-faq">FAQ</a><a href="#msk-lead-question">Задать вопрос</a>
+    <a href="#msk-lead-callback">Обратный звонок</a><a href="#msk-sources">Источники</a>
    </nav>
   </section>
   <section className="court-section" id="msk-contacts">
@@ -79,18 +90,20 @@ export default async function MoscowCourtPage({params}:Props){
    </dl>
    <p className="court-source"><External href={c.official_url}>Сведения и сообщения на официальном сайте</External>. Электронная почта не является каналом процессуальной подачи.</p>
   </section>
-  <section className="court-section" id="msk-map">
-   <h2>Где находится суд и как добраться</h2>
-   <p>{c.address}. Для ориентирования можно открыть поиск адреса на карте; точная точка входа и приспособления для маломобильных посетителей пока не подтверждены.</p>
-   <p><a href={'https://yandex.ru/maps/?text='+encodeURIComponent(c.address)} target="_blank" rel="noopener noreferrer">Найти адрес на Яндекс Картах ↗</a></p>
-   <p className="court-source"><strong>Важно:</strong> {c.notes}</p>
-  </section>
+  <MoscowYandexMap court={c}/>
   <section id="msk-jurisdiction" className="court-section">
    <span className="eyebrow">Территориальная подсудность</span><h2>Какие адреса относятся к суду</h2>
    <p>{c.jurisdiction_scope}</p>
    <p>Нельзя определить подсудность только по названию района Москвы, почтовому индексу, расположению здания суда либо близости к метро. Для конкретного спора могут действовать альтернативные, исключительные и специальные правила.</p>
    <div className="notice" role="note"><strong>Полные улицы и дома:</strong> подтверждённого локального перечня пока нет. Автоматическое определение по нашему сайту заблокировано, чтобы избежать направления документов не в тот суд.</div>
    <p><External href={c.territory_service_url}>Официальный поиск подсудности по адресу и номеру дома</External></p>
+   <details className="moscow-case-topic"><summary>Как проверить адрес по шагам</summary><div className="moscow-case-topic-content">
+    <ol><li>Укажите улицу и номер дома, затем корпус и строение при наличии.</li>
+    <li>Проверьте, что найденный объект соответствует нужному адресу.</li>
+    <li>Учитывайте родовую и исключительную подсудность по характеру спора.</li>
+    <li>Сохраните ссылку или справку из официального сервиса для собственной проверки.</li></ol>
+    <p>Полную локальную матрицу адресов опубликуем после получения официальных проверенных границ.</p>
+   </div></details>
    <p><Link className="text-link" href="/jurisdiction">Ограничения нашего собственного адресного поиска →</Link></p>
   </section>
   <section className="court-section" id="msk-case-kinds">
@@ -103,26 +116,14 @@ export default async function MoscowCourtPage({params}:Props){
    </article>)}
    </div>
   </section>
-  <section className="court-section" id="msk-cases">
-   <span className="eyebrow">Номера из официальной судебной выдачи</span><h2>Примеры конкретных дел этого суда</h2>
-   <p>Ниже представлены идентификаторы обнаруженных в официальном реестре дел. Мы не копируем ФИО участников и не утверждаем актуальную стадию, дату заседания или исход. Это <strong>исторические исследовательские примеры</strong>, а не полный и не обновляемый в реальном времени реестр.</p>
-   <div className="court-department-grid">
-   {c.case_examples.map(item=><article key={item.number}>
-    <h3>Дело № {item.number}</h3>
-    <p><strong>{item.case_type}</strong></p><p>{item.subject}</p>
-    <p className="court-source">Зафиксировано в исследовании 18.10.2026 · результат и актуальный статус не подтверждены.</p>
-    <External href={item.source_url}>Открыть официальный список и найти дело по номеру</External>
-   </article>)}
-   </div>
-   <p><External href={c.case_service_url}>Все официальные списки дел и материалов этого суда</External></p>
-   <p className="court-source">После разрешённого источникового импорта и правовой проверки сюда можно добавлять номера, категории, стадии, даты и тексты опубликованных судебных актов с историей изменений.</p>
-  </section>
+  <MoscowCasesExplorer court={c}/>
   <section className="court-section" id="msk-filing">
    <h2>Как подать иск, заявление или жалобу</h2>
    <ol className="court-practical-steps">{stages.map(([label,desc])=><li key={label}><strong>{label}.</strong> {desc}</li>)}</ol>
    <p><a href="https://ej.sudrf.ru/" target="_blank" rel="noopener noreferrer">Официальный сервис электронной подачи ГАС «Правосудие» ↗</a></p>
    <p>Письмо на общий e-mail суда не заменяет подачу процессуальных документов. Порядок и требования к электронной подписи различаются по видам документов и процессу.</p>
   </section>
+  <MoscowLeadCapture courtName={c.name} slug={c.slug} enabled={intakeReady} privacyUrl={privacyUrl} variant="question"/>
   <section className="court-section" id="msk-fees">
    <h2>Госпошлина и платёжные реквизиты</h2>
    <p>Размер госпошлины зависит от вида обращения, стоимости требований, статуса плательщика, льгот и действующей редакции статей 333.19–333.20 НК РФ. Здесь не публикуется неподтверждённая банковская квитанция.</p>
@@ -134,9 +135,16 @@ export default async function MoscowCourtPage({params}:Props){
    <p>Судебное решение по гражданскому делу в обычном порядке обжалуется в апелляционную инстанцию по правилам главы 39 ГПК РФ. Для административного, уголовного производства и дел по КоАП применяются собственные сроки, способы подачи и круг заявителей.</p>
    <p>Для актов районного суда города Москвы типичной апелляционной инстанцией выступает Московский городской суд; но путь проверки конкретного постановления нужно определять по виду акта и применимой процедуре.</p>
    <p><External href={c.official_url+'/services'}>Официальные разъяснения порядка обжалования</External></p>
+   <div className="court-practical-grid">
+    <article><h3>Гражданское судопроизводство</h3><p>Проверьте вид судебного акта и порядок подачи через суд первой инстанции; сроки регулирует ГПК РФ, включая возможные исключения и восстановление пропущенного срока.</p></article>
+    <article><h3>Административное судопроизводство</h3><p>Производства по КАС РФ требуют отдельной проверки срока и инстанции, особенно по специальным категориям административных дел.</p></article>
+    <article><h3>Уголовные дела</h3><p>Для приговоров и постановлений применяется порядок УПК РФ; сроки и процессуальное положение заявителя существенно различаются.</p></article>
+    <article><h3>Дела об административных правонарушениях</h3><p>Правила главы 30 КоАП РФ отличаются от апелляции по ГПК: в предусмотренных законом случаях жалоба подаётся непосредственно уполномоченному суду или органу.</p></article>
+   </div>
    <p className="court-source">Нельзя автоматически применять один общий срок апелляции ко всем судебным производствам и актам.</p>
   </section>
   <CourtFaq court={c}/>
+  <MoscowLeadCapture courtName={c.name} slug={c.slug} enabled={intakeReady} privacyUrl={privacyUrl} variant="callback"/>
   <section className="court-section" id="msk-sources">
    <h2>Источники, дата исследования и дальнейшая проверка</h2>
    <ul>
