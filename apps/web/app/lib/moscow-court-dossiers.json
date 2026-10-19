@@ -1,0 +1,590 @@
+[
+  {
+    "slug": "lefortovskij",
+    "name": "Лефортовский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "105120, г. Москва, Андроньевская пл., д. 5/9",
+    "expedition_phone": "+7 (495) 912-78-86",
+    "email": "info@14.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/lefortovskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/lefortovskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Официальная судебная выдача содержит пример строительного спора; его текущую стадию следует уточнять отдельно.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-9559/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Спор об участии в долевом строительстве",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02а-1578/2026",
+        "case_type": "Административное дело",
+        "subject": "Оспаривание действий судебного пристава",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/kas",
+        "topic_id": "bailiffs",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9557/2026",
+        "case_type": "Гражданское дело",
+        "subject": "О лишении родительских прав",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/civil",
+        "topic_id": "family",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9556/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Иной жилищный спор",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/civil",
+        "topic_id": "housing",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9549/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Защита прав потребителей: договоры торговли и услуг",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/civil",
+        "topic_id": "consumer",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9546/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Раздел совместно нажитого имущества супругов",
+        "source_url": "https://mos-gorsud.ru/rs/lefortovskij/services/cases/civil",
+        "topic_id": "family",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "basmannyj",
+    "name": "Басманный районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "107078, г. Москва, ул. Каланчёвская, д. 11, стр. 1",
+    "expedition_phone": "+7 (499) 975-54-65",
+    "email": "info@02.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/basmannyj",
+    "territory_service_url": "https://mos-gorsud.ru/rs/basmannyj/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/basmannyj/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "В официальной выдаче одного производства упоминается временное размещение зала в другом здании. Адрес судебного заседания необходимо сверять по карточке дела.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-6153/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание неосновательного обогащения",
+        "source_url": "https://mos-gorsud.ru/rs/basmannyj/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-4189/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Спор, возникающий в ходе исполнительного производства",
+        "source_url": "https://mos-gorsud.ru/rs/basmannyj/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "presnenskij",
+    "name": "Пресненский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "123242, г. Москва, ул. Зоологическая, д. 20",
+    "expedition_phone": "+7 (499) 254-73-94",
+    "email": "info@21.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/presnenskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/presnenskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/presnenskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "В официальных судебных списках встречаются заседания во временных помещениях других судов; не полагайтесь на почтовый адрес при определении зала.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-12540/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Спор в связи с долевым строительством",
+        "source_url": "https://mos-gorsud.ru/rs/presnenskij/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-12539/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Компенсация морального вреда в связи с причинением вреда здоровью",
+        "source_url": "https://mos-gorsud.ru/rs/presnenskij/services/cases/civil",
+        "topic_id": "damage",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-13123/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Иск, вытекающий из аренды имущества",
+        "source_url": "https://mos-gorsud.ru/rs/presnenskij/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "meshchanskij",
+    "name": "Мещанский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "129090, г. Москва, ул. Каланчёвская, д. 43А",
+    "expedition_phone": null,
+    "email": "info@16.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/meshchanskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/meshchanskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Прямой телефон экспедиции в поисковой копии официальной страницы содержит очевидную опечатку. До отдельной сверки телефон здесь не приводится.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-15617/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание задолженности по кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02а-1705/2026",
+        "case_type": "Административное дело",
+        "subject": "Оспаривание действий судебного пристава-исполнителя",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/kas",
+        "topic_id": "bailiffs",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-14544/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Иной социальный спор",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "social",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-14543/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Иной социальный спор",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "social",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-14542/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Прочее исковое дело",
+        "source_url": "https://mos-gorsud.ru/rs/meshchanskij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "taganskij",
+    "name": "Таганский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "109147, г. Москва, Марксистский пер., д. 1/32",
+    "expedition_phone": "+7 (495) 911-73-08",
+    "email": "info@26.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/taganskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/taganskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/taganskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Помимо приведённого гражданского дела на сайте суда публиковались отдельные сообщения по делам об административных правонарушениях, связанным с интернет-платформами.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-2757/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Возмещение ущерба от ДТП",
+        "source_url": "https://mos-gorsud.ru/rs/taganskij/services/cases/civil",
+        "topic_id": "damage",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-2836/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание невыплаченной заработной платы",
+        "source_url": "https://mos-gorsud.ru/rs/taganskij/services/cases/civil",
+        "topic_id": "labor",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-2835/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание невыплаченной заработной платы",
+        "source_url": "https://mos-gorsud.ru/rs/taganskij/services/cases/civil",
+        "topic_id": "labor",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "zamoskvoreckij",
+    "name": "Замоскворецкий районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "115184, г. Москва, ул. Татарская, д. 1",
+    "expedition_phone": "+7 (495) 951-69-50",
+    "email": "info@07.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/zamoskvoreckij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/zamoskvoreckij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/zamoskvoreckij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Официальная страница содержит сообщение от 18.08.2025 о проведении заседаний по отдельным делам по другим адресам при сохранении почтового адреса.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-3433/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Гражданский спор (категория в исследовательской выборке не подтверждена)",
+        "source_url": "https://mos-gorsud.ru/rs/zamoskvoreckij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "hamovnicheskij",
+    "name": "Хамовнический районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "119121, г. Москва, 7-й Ростовский пер., д. 21",
+    "expedition_phone": "+7 (499) 248-63-21",
+    "email": "info@30.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/hamovnicheskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/hamovnicheskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/hamovnicheskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Сведения о судебных коллегиях, специализации сотрудников и назначениях должны проходить отдельную кадровую сверку.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-3101/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание задолженности по кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/hamovnicheskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "gagarinskij",
+    "name": "Гагаринский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "119049, г. Москва, ул. Донская, д. 11, стр. 1",
+    "expedition_phone": "+7 (499) 236-49-21",
+    "email": "info@04.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/gagarinskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/gagarinskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/gagarinskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "В разных опубликованных копиях официальной страницы роль председателя указана неодинаково; действующий статус руководителя не утверждается.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-6156/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Гражданское дело с участием застройщика (предмет требования не подтверждён)",
+        "source_url": "https://mos-gorsud.ru/rs/gagarinskij/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-7514/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Защита прав потребителей по договору с финансово-кредитным учреждением",
+        "source_url": "https://mos-gorsud.ru/rs/gagarinskij/services/cases/civil",
+        "topic_id": "consumer",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "nikulinskij",
+    "name": "Никулинский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "119192, г. Москва, Мичуринский проспект, д. 17, корп. 1",
+    "expedition_phone": "+7 (499) 739-31-51",
+    "email": "info@18.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/nikulinskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/nikulinskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Помимо гражданского реестра официальный портал содержит отдельные карточки уголовных и административных производств.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-9105/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Спор по договору участия в долевом строительстве",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/civil",
+        "topic_id": "property",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "01-0562/2026",
+        "case_type": "Уголовное дело",
+        "subject": "Уголовное дело по опубликованному судебному реестру",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/criminal",
+        "topic_id": "fraud",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9257/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание суммы по кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9300/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание суммы по договору займа",
+        "source_url": "https://mos-gorsud.ru/rs/nikulinskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "kuzminskij",
+    "name": "Кузьминский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "109377, г. Москва, ул. Зеленодольская, д. 8/13",
+    "expedition_phone": "+7 (495) 657-79-85",
+    "email": "info@12.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/kuzminskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/kuzminskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/kuzminskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "В официальном реестре представлены самостоятельные списки дел разных процессуальных видов; текущая стадия конкретного дела не подтверждена.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02а-2404/2026",
+        "case_type": "Административное дело",
+        "subject": "Административный спор, связанный с решениями призывной комиссии",
+        "source_url": "https://mos-gorsud.ru/rs/kuzminskij/services/cases/kas",
+        "topic_id": "kas",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9557/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание платы за жилищно-коммунальные услуги",
+        "source_url": "https://mos-gorsud.ru/rs/kuzminskij/services/cases/civil",
+        "topic_id": "housing",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9556/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание суммы по кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/kuzminskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-9555/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Возмещение ущерба от дорожно-транспортного происшествия",
+        "source_url": "https://mos-gorsud.ru/rs/kuzminskij/services/cases/civil",
+        "topic_id": "damage",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "shcherbinskij",
+    "name": "Щербинский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "117148, г. Москва, ул. Маршала Савицкого, д. 2",
+    "expedition_phone": "+7 (495) 734-68-07",
+    "email": "info@34.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/shcherbinskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/shcherbinskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/shcherbinskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Историческое описание территории в Федеральном законе № 123-ФЗ от 20.07.2012 не является полной актуальной адресной картой; проверяйте дом, корпус и строение.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-17492/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание сумм по договору займа или кредитному договору",
+        "source_url": "https://mos-gorsud.ru/rs/shcherbinskij/services/cases/civil",
+        "topic_id": "credit",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  },
+  {
+    "slug": "babushkinskij",
+    "name": "Бабушкинский районный суд города Москвы",
+    "region": "Москва",
+    "court_level": "district_general_jurisdiction",
+    "address": "г. Москва, ул. Лётчика Бабушкина, д. 39А",
+    "expedition_phone": "+7 (495) 471-04-88",
+    "email": "info@01.msksud.ru",
+    "office_hours": "Пн–чт 09:00–18:00, пт 09:00–16:45, обед 13:00–13:45",
+    "office_hours_is_department_hours": false,
+    "official_url": "https://mos-gorsud.ru/rs/babushkinskij",
+    "territory_service_url": "https://mos-gorsud.ru/rs/babushkinskij/services/territorial",
+    "case_service_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases",
+    "jurisdiction_scope": "Конкретная улица, номер дома, корпус и строение определяются официальным адресным сервисом судов Москвы; полный перечень домов пока не перенесён в локальную базу.",
+    "notes": "Официальная публикация может обозначать руководство как исполняющее обязанности. Состав и полномочия судей требуют отдельного подтверждения.",
+    "source_observed_on": "2026-10-18",
+    "current_details_attested": false,
+    "case_examples": [
+      {
+        "number": "02-6107/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Взыскание алиментов на несовершеннолетних детей",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "family",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-6106/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Прочий гражданский иск",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-6105/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Установление юридически значимого факта",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "other",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      },
+      {
+        "number": "02-4402/2026",
+        "case_type": "Гражданское дело",
+        "subject": "Возмещение имущественного вреда",
+        "source_url": "https://mos-gorsud.ru/rs/babushkinskij/services/cases/civil",
+        "topic_id": "damage",
+        "source_observed_on": "2026-10-18",
+        "current_status_verified": false
+      }
+    ],
+    "full_address_boundary_verified": false,
+    "editorial_status": "research_only"
+  }
+]

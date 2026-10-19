@@ -28,6 +28,10 @@ jobs:
       - run: pnpm check
       - name: Test strict one-court territorial resolver
         run: pnpm --dir apps/web exec node tests/jurisdiction.test.cjs
+      - name: Test exact Moscow house-to-court comparison and cross-links
+        run: pnpm --dir apps/web exec node tests/moscow-territory.test.cjs
+      - name: Test Moscow law-topic keyword search and empty-result handling
+        run: pnpm --dir apps/web exec node tests/moscow-case-search.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:
