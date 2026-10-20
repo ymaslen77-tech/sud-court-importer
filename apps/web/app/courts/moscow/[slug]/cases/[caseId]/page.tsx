@@ -2,14 +2,16 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {moscowCourt,moscowCourts} from '../../../../../lib/moscow-courts';
+import originalCases from '../../../../../lib/moscow-adjudicated-cases.json';
 import {adjudicatedCasesFor,adjudicatedCase,isVerifiedDocument} from '../../../../../lib/moscow-adjudicated-cases';
 import {MOSCOW_CASE_TOPICS} from '../../../../../lib/moscow-case-topics';
 import {isFullTextTopicEligible} from '../../../../../lib/moscow-adjudicated-cases';
 type Params={params:Promise<{slug:string;caseId:string}>};
-export const dynamicParams=false;
+export const dynamicParams=true;
 export function generateStaticParams(){
  return moscowCourts().map(c=>c.slug).flatMap(slug=>
-  adjudicatedCasesFor(slug).map(c=>({slug,caseId:c.slug})));
+  originalCases.filter(c=>c.court_slug===slug).map(c=>({slug,caseId:c.slug})));
+  // Bulk reviewed records use dynamic routing; avoid statically generating thousands of pages.
 }
 export async function generateMetadata({params}:Params):Promise<Metadata>{
  const p=await params;const c=adjudicatedCase(p.slug,p.caseId);

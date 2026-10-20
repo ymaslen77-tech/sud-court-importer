@@ -16,6 +16,7 @@ EXCLUDED_TOPICS={"family"}
 def audit():
     courts=json.loads((APP/"moscow-court-dossiers.json").read_text(encoding="utf-8"))
     records=json.loads((APP/"moscow-adjudicated-cases.json").read_text(encoding="utf-8"))
+    records+=json.loads((APP/"moscow-reviewed-cases.json").read_text(encoding="utf-8"))
     slugs={c["slug"] for c in courts}
     if len(slugs)!=12 or len(courts)!=12:
         raise ValueError("Moscow court list must preserve twelve distinct courts")
@@ -29,7 +30,7 @@ def audit():
         if c["court_slug"] not in slugs or c["topic_id"] not in VALID_TOPICS:
             raise ValueError("unknown court/category "+repr(key))
         uri=urlsplit(c["source_url"])
-        if uri.scheme!="https" or uri.hostname!="m.mos-gorsud.ru" or uri.port:
+        if uri.scheme!="https" or uri.hostname not in ("m.mos-gorsud.ru","mos-gorsud.ru","www.mos-gorsud.ru") or uri.port:
             raise ValueError("unsupported court source "+repr(key))
         if not uri.path.startswith("/rs/"+c["court_slug"]+"/services/cases/") or "/details/" not in uri.path:
             raise ValueError("source not from this court "+repr(key))
