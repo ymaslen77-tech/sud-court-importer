@@ -32,15 +32,19 @@ class MoscowTerritoryUITests(unittest.TestCase):
 
     def test_public_interface_discloses_empty_address_source_and_official_fallback(self):
         component=(APP/'_components/moscow-territory-checker.tsx').read_text(encoding='utf-8')
-        for phrase in ('Наш локальный официальный адресный справочник пока пуст',
+        for phrase in ('Наш локальный справочник пока не содержит подтверждённых адресов',
                        'moscow-territory-unavailable',
-                       'Скопировать полный адрес','navigator.clipboard.writeText',
+                       'Открыть официальный поиск и скопировать адрес','navigator.clipboard.writeText',
                        'Открыть официальный поиск',
                        'https://mos-gorsud.ru/territorial',
                        "result.kind==='match'","result.kind==='other'",
                        'result.reason'):
             self.assertIn(phrase,component)
         self.assertIn("copyState==='success'",component)
+        self.assertIn("if(!localLookupReady)",component)
+        self.assertIn("window.open('https://mos-gorsud.ru/territorial'",component)
+        self.assertIn("Подготовленный адрес",component)
+        self.assertIn("localLookupReady?'Проверить в подтверждённом справочнике",component)
         self.assertNotIn('fetch(',component)
 
     def test_existing_pilot_courts_unchanged_and_new_noindex(self):
