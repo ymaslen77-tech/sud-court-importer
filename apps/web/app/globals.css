@@ -432,3 +432,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .moscow-case-topic mark{background:#fff0a7;color:#202020;padding:0 2px}
 .moscow-topic-no-exact{background:#fff8ea;border-left:3px solid #cd9f36;padding:12px 15px;font-size:13px}
 @media(max-width:680px){.moscow-case-search-controls{flex-wrap:wrap}.moscow-case-search-controls>button{width:100%}.moscow-case-topic summary small{display:block;width:100%}}
+
+/* Source transparency for address lookup when authoritative records are missing. */
+.moscow-territory-unavailable{margin:15px 0!important;padding:13px 17px;background:#fff6e5;border-left:4px solid #ba8b2d;color:#684b14!important;line-height:1.65}
+.moscow-territory-unavailable a{text-decoration:underline;font-weight:750}
+.moscow-territory-action{gap:12px;align-items:center;flex-wrap:wrap}
+.moscow-copy-address,.moscow-official-territory{display:inline-block;border:1px solid #8d97a3;background:#fff;color:var(--ink);padding:12px 15px;font:inherit;font-weight:700;text-decoration:none}
+.moscow-copy-address:disabled{opacity:.45;cursor:not-allowed}
+.moscow-copy-status{font-weight:700;color:#264b60}
+@media(max-width:640px){.moscow-territory-action>*{width:100%;text-align:center}}
