@@ -30,6 +30,19 @@ class MoscowTerritoryUITests(unittest.TestCase):
         self.assertNotIn("fetch(",component)
         self.assertNotIn("navigator.geolocation",component)
 
+    def test_public_interface_discloses_empty_address_source_and_official_fallback(self):
+        component=(APP/'_components/moscow-territory-checker.tsx').read_text(encoding='utf-8')
+        for phrase in ('Наш локальный официальный адресный справочник пока пуст',
+                       'moscow-territory-unavailable',
+                       'Скопировать полный адрес','navigator.clipboard.writeText',
+                       'Открыть официальный поиск',
+                       'https://mos-gorsud.ru/territorial',
+                       "result.kind==='match'","result.kind==='other'",
+                       'result.reason'):
+            self.assertIn(phrase,component)
+        self.assertIn("copyState==='success'",component)
+        self.assertNotIn('fetch(',component)
+
     def test_existing_pilot_courts_unchanged_and_new_noindex(self):
         pilots=json.loads((APP/'lib/pilot-review-matrix.json').read_text(encoding='utf-8'))
         self.assertEqual(len(pilots['records']),10)
