@@ -12,19 +12,31 @@ export function MoscowTerritoryChecker({court}:{court:MoscowCourt}){
  const [corpus,setCorpus]=useState('');
  const [structure,setStructure]=useState('');
  const [result,setResult]=useState<TerritoryResult|null>(null);
+ const [copyState,setCopyState]=useState<'idle'|'success'|'error'>('idle');
  const suggestions=useMemo(()=>approvedMoscowStreets(),[]);
  const listId='moscow-approved-streets-'+court.slug;
  function submit(e:FormEvent<HTMLFormElement>){
   e.preventDefault();
   setResult(resolveMoscowTerritory({street,house,corpus,structure,currentCourtSlug:court.slug}));
  }
- const change=(setter:(s:string)=>void)=>(value:string)=>{setter(value);setResult(null);};
+ const change=(setter:(s:string)=>void)=>(value:string)=>{setter(value);setResult(null);setCopyState('idle');};
  const canCheck=street.trim().length>=4&&house.trim().length>0;
+ const addressText=['Москва',street.trim(),house.trim()?'дом '+house.trim():'',
+   corpus.trim()?'корпус '+corpus.trim():'',structure.trim()?'строение '+structure.trim():'']
+   .filter(Boolean).join(', ');
+ async function copyAddress(){
+  try{await navigator.clipboard.writeText(addressText);setCopyState('success');}
+  catch{setCopyState('error');}
+ }
  return <section className="moscow-territory-checker" aria-labelledby="msk-territory-form-title">
   <div className="moscow-territory-heading">
    <span className="eyebrow">Проверка конкретного адреса</span>
    <h3 id="msk-territory-form-title">Относится ли ваш адрес к этому суду?</h3>
    <p>Адрес проверяется по полному номеру здания, а не по названию района или ближайшей станции метро.</p>
+   {!suggestions.length?<p className="moscow-territory-unavailable" role="status">
+    Наш локальный официальный адресный справочник пока пуст. Поэтому сейчас сервис <strong>не может подтверждать подсудность</strong> и не должен выдавать зелёное или красное решение.
+    Ниже можно подготовить полный адрес и перейти к <a href="https://mos-gorsud.ru/territorial" target="_blank" rel="noopener noreferrer">официальному поиску судов Москвы ↗</a>.
+   </p>:null}
   </div>
   <form className="moscow-territory-form" onSubmit={submit}>
    <label>Город
@@ -48,11 +60,15 @@ export function MoscowTerritoryChecker({court}:{court:MoscowCourt}){
       onChange={e=>change(setStructure)(e.target.value)}/>
    </label>
    <div className="moscow-territory-action">
-    <button type="submit" className="button button-red" disabled={!canCheck}>Проверить подсудность →</button>
+    <button type="submit" className="button button-red" disabled={!canCheck}>Проверить в нашем справочнике →</button>
+    <button type="button" className="moscow-copy-address" disabled={!canCheck} onClick={copyAddress}>Скопировать полный адрес</button>
+    <a href="https://mos-gorsud.ru/territorial" target="_blank" rel="noopener noreferrer" className="moscow-official-territory">Открыть официальный поиск ↗</a>
    </div>
   </form>
+  {copyState==='success'?<p role="status" className="moscow-copy-status">Адрес скопирован. Вставьте его в поиск на официальном портале.</p>:null}
+  {copyState==='error'?<p role="status" className="moscow-copy-status">Не удалось скопировать автоматически. Выделите адрес в полях формы и введите его на официальном портале.</p>:null}
   <p className="court-source">Используйте адрес без номера квартиры и ФИО. Проверка выполняется в вашем браузере; введённый адрес не отправляется на сервер и не сохраняется.</p>
-  {!suggestions.length?<p className="court-source">Проверенный справочник улиц сейчас наполняется. Можно ввести адрес вручную, но отсутствие записи даст нейтральный результат, а не ложное «не относится».</p>:null}
+
   {result?<div className={'moscow-territory-result moscow-territory-'+result.kind} role="status" aria-live="polite" data-result={result.kind}>
    {result.kind==='match'?<>
     <strong>✓ Да, адрес относится к этому суду</strong>
