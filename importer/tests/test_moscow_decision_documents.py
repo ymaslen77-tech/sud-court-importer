@@ -12,7 +12,7 @@ class DecisionDocumentsTests(unittest.TestCase):
         x=audit()
         self.assertEqual(x["courts"],12)
         self.assertEqual(x["topics"],13)
-        self.assertEqual(x["verified_docket_results"],33)
+        self.assertEqual(x["verified_docket_results"],45)
         self.assertEqual(x["verified_full_document_count"],0)
         self.assertEqual(x["full_document_slots"],7200)
         self.assertEqual(len(x["coverage"]),156)

@@ -1,4 +1,5 @@
 import raw from './moscow-adjudicated-cases.json';
+import reviewed from './moscow-reviewed-cases.json';
 import {moscowCourt} from './moscow-courts';
 import {MOSCOW_CASE_TOPICS} from './moscow-case-topics';
 export type CourtPublishedDocument={
@@ -10,11 +11,11 @@ export type AdjudicatedCase={
  status:'official_docket_result';document_status:'awaiting_official_publication'|'source_document_not_ingested'|'published_verified';
  published_document:CourtPublishedDocument|null;researched_on:string;official_file_listed:boolean;official_listing_checked_on:string|null;
 };
-const records=raw as unknown as AdjudicatedCase[];
+const records=[...(raw as unknown as AdjudicatedCase[]),...(reviewed as unknown as AdjudicatedCase[])];
 export function officialCourtDocketUrl(raw:string,courtSlug:string):string|null{
  try{
-  const u=new URL(raw);return u.protocol==='https:'&&u.hostname==='m.mos-gorsud.ru'&&!u.port&&!u.username&&!u.password
-   &&u.pathname.startsWith('/rs/'+courtSlug+'/services/cases/')?u.toString():null;
+  const u=new URL(raw);return u.protocol==='https:'&&['m.mos-gorsud.ru','mos-gorsud.ru','www.mos-gorsud.ru'].includes(u.hostname)&&!u.port&&!u.username&&!u.password
+   &&u.pathname.startsWith('/rs/'+courtSlug+'/services/cases/')&&u.pathname.includes('/details/')?u.toString():null;
  }catch{return null;}
 }
 function permittedDocument(d:AdjudicatedCase):boolean{

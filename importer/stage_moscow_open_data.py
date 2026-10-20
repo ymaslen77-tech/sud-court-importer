@@ -28,8 +28,8 @@ ALIASES={
  "court":("Наименование суда","Наименование судебного органа","Суд","courtName","court_name"),
  "number":("Номер дела, материала, жалобы или производства","Номер дела","Номер судебного дела","caseNumber","case_number"),
  "category":("Категория судебного дела, материала, жалобы или производства","Категория дела","Категория судебного дела","category","categoryName"),
- "result":("Результат рассмотрения","Результат рассмотрения дела","Текущее состояние судебного дела","result","resultName"),
- "date":("Дата окончания","Дата рассмотрения","Дата решения","decisionDate","finishDate"),
+ "result":("Результат рассмотрения","Результат рассмотрения дела","Текущее состояние судебного дела","Текущее состояние","result","resultName"),
+ "date":("Дата окончания","Дата рассмотрения","Дата рассмотения дела в первой инстанции","Дата рассмотрения дела в первой инстанции","Дата решения","decisionDate","finishDate"),
  "docket":("Ссылка на карточку дела","Ссылка на карточку судебного дела","caseUrl","case_url"),
  "acts":("Судебные акты","acts","documents")
 }
@@ -107,12 +107,13 @@ def iter_rows(path):
     if not isinstance(obj,list):raise ValueError("Expected official array of cases; inspect the export schema")
     yield from obj
 
-def stage(input_path,output_path,max_records=250000):
+def stage(input_path,output_path,max_records=2500000,max_per_court_topic=250):
     source=Path(input_path).resolve(strict=True)
     out=Path(output_path).resolve()
     if out==source or out.exists():raise ValueError("Output must be a new separate file")
     if out.suffix.lower()!=".json":raise ValueError("Output must be a JSON file")
     staged=[];seen=set();stats=Counter();by_topic=Counter()
+    if not (1<=max_per_court_topic<=250):raise ValueError("Require 1..250 candidate cases per court/topic")
     for idx,record in enumerate(iter_rows(source)):
         if idx>=max_records:raise ValueError("Input record limit reached; split input explicitly")
         stats["seen"]+=1
@@ -127,7 +128,6 @@ def stage(input_path,output_path,max_records=250000):
         if not category:stats["missing_category"]+=1;continue
         key=(court,number)
         if key in seen:stats["duplicate"]+=1;continue
-        seen.add(key)
         outcome=txt(field(record,"result"),180)
         # Import only official docket metadata. The displayed "outcome" stays unverified
         # until an editor checks it against the linked court record.
@@ -140,7 +140,11 @@ def stage(input_path,output_path,max_records=250000):
                     if raw.startswith("https://") and urlsplit(raw).hostname in ("mos-gorsud.ru","www.mos-gorsud.ru","m.mos-gorsud.ru"):
                         doc_urls.append(raw)
         t=topic(category)
+        if by_topic[(court,t)]>=max_per_court_topic:stats["per_topic_budget_exceeded"]+=1;continue
+        seen.add(key)
+        source_hash=hashlib.sha256(json.dumps(record,sort_keys=True,ensure_ascii=False,default=str).encode("utf-8")).hexdigest()
         staged.append({"court_slug":court,"number":number,"topic_id":t,
+          "source_record_hash":source_hash,
           "official_category":category,"docket_url":url,"official_outcome_unverified":outcome,
           "decision_date_unverified":date_only(field(record,"date")),
           "official_document_candidates":doc_urls,
@@ -149,9 +153,13 @@ def stage(input_path,output_path,max_records=250000):
           "contains_party_information":False})
         by_topic[(court,t)]+=1
         stats["staged"]+=1
-    report={"source_file_sha256":hashlib.sha256(source.read_bytes()).hexdigest() if source.stat().st_size<30_000_000 else None,
+    sha=hashlib.sha256()
+    with source.open("rb") as inp:
+        for chunk in iter(lambda:inp.read(1024*1024),b""):sha.update(chunk)
+    report={"source_file_sha256":sha.hexdigest(),
       "source_dataset":"Official Moscow courts open-data JSON (manually obtained)",
       "retrieved_on":date.today().isoformat(),
+      "max_per_court_topic":max_per_court_topic,
       "counts":dict(stats),
       "per_court_topic":[{"court_slug":c,"topic_id":t,"staged":n,"verified_full_documents":0,"target_if_permitted":50}
          for (c,t),n in sorted(by_topic.items())],
@@ -165,7 +173,8 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input",required=True)
     parser.add_argument("--output",required=True)
-    parser.add_argument("--max-records",type=int,default=250000)
+    parser.add_argument("--max-records",type=int,default=2500000)
+    parser.add_argument("--max-per-court-topic",type=int,default=250)
     args=parser.parse_args()
-    report=stage(args.input,args.output,args.max_records)
+    report=stage(args.input,args.output,args.max_records,args.max_per_court_topic)
     print(json.dumps({k:report[k] for k in ("counts","auto_published","editorial_review_required")},ensure_ascii=False))
