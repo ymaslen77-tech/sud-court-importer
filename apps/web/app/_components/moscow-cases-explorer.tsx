@@ -112,7 +112,7 @@ export function MoscowCasesExplorer({court,decisions}:{court:MoscowCourt;decisio
        {shownDecided.map(item=><li key={item.slug} className="moscow-decision-card">
         <strong>Дело № <Highlight text={item.number} query={query}/></strong>
         <p><b>Суть:</b> <Highlight text={item.subject} query={query}/></p>
-        <p><b>Решение:</b> <Highlight text={item.disposition} query={query}/>, {item.decision_date} (первая инстанция).</p>
+        <p><b>Итог первой инстанции:</b> <Highlight text={item.disposition} query={query}/>, {item.decision_date} (первая инстанция).</p>
         <p className="court-source">Полный текст: {isVerifiedDocument(item)?'проверен и доступен':
           !isFullTextTopicEligible(item.topic_id)?'публикация исключена законом':
           item.official_file_listed?'обнаружен на официальном портале, перенос не завершён':'пока не подтверждён для размещения'}</p>
