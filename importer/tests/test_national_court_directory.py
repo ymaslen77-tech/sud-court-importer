@@ -18,7 +18,7 @@ class NationalCourtDirectoryTests(unittest.TestCase):
             self.assertIn(phrase,ui)
         self.assertIn("Название из официального перечня",ui)
         self.assertIn("status==='research'",ui)
-        self.assertIn('Math.min(100,totalPages)',search)
+        self.assertIn('searchVerifiedCourtsPage',search)
         self.assertIn('verifiedBackendConfigured',search)
         self.assertIn('https://sudrf.ru/',ui)
         self.assertNotIn('window.location',ui)

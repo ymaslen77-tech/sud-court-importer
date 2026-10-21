@@ -81,5 +81,5 @@ for(const s of ['aria-live="polite"','aria-label="Страницы резуль�
   assert.ok(ui.includes(s),s);
 }
 assert.ok(ui.includes('Ожидают наполнения'));
-assert.ok(search.includes('Math.min(100,totalPages)'));
+assert.ok(search.includes('searchVerifiedCourtsPage'));
 console.log('PASS: 284 traceable entries, 89 selectable regions, Moscow, regional codes, arbitration and paging.');

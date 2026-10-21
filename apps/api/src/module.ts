@@ -455,6 +455,44 @@ class CourtsService {
     );
     return {items,total,page,pageSize};
   }
+  /** Paginated and fully filtered verified-court search; never joins research candidates. */
+  async searchPage(term:unknown,rawKind:unknown,rawRegion:unknown,rawPage:unknown){
+    const q=term===undefined?'':term;
+    const kind=rawKind===undefined?'':rawKind;
+    const region=rawRegion===undefined?'':rawRegion;
+    const pageRaw=rawPage===undefined?'1':rawPage;
+    if(typeof q!=='string'||q.length>100||(q.length>0&&q.trim().length<2))
+      throw new BadRequestException('SEARCH_QUERY_INVALID');
+    if(typeof kind!=='string'||(kind!==''&&!COURT_KINDS.has(kind)))
+      throw new BadRequestException('COURT_CATEGORY_INVALID');
+    if(typeof region!=='string'||(region!==''&&!/^[a-z0-9-]{1,100}$/.test(region)))
+      throw new BadRequestException('SEARCH_REGION_INVALID');
+    if(typeof pageRaw!=='string'||!/^[1-9][0-9]{0,3}$/.test(pageRaw))
+      throw new BadRequestException('INVALID_PAGE_NUMBER');
+    if(!q.trim()&&!kind&&!region)throw new BadRequestException('SEARCH_FILTER_REQUIRED');
+    const page=Number(pageRaw),pageSize=50,args:unknown[]=[];
+    const where=["c.status='verified'"];
+    if(q.trim()){
+      args.push(q.trim());const n=args.length;
+      where.push('(position(lower($'+n+') in lower(c.name))>0 OR ' +
+        "position(lower($"+n+") in lower(coalesce(c.address,'')))>0 OR "+
+        'position(lower($'+n+') in lower(r.name))>0 OR '+
+        'EXISTS (SELECT 1 FROM court_external_identifiers i WHERE i.court_id=c.id '+
+        'AND position(lower($'+n+') in lower(i.external_code))>0))');
+    }
+    if(kind){args.push(kind);where.push('c.court_kind=$'+args.length);}
+    if(region){args.push(region);where.push('r.slug=$'+args.length);}
+    const sqlFrom='FROM courts c JOIN regions r ON r.id=c.region_id WHERE '+where.join(' AND ');
+    const count=await this.query<{total:string}>('SELECT count(*)::text AS total '+sqlFrom,args);
+    const total=Number(count[0]?.total??'0');
+    const items=await this.query<SearchCourt>(
+      'SELECT c.id::text,c.name,c.slug,c.court_type,c.address,c.phone,c.email,c.official_url,c.verified_at, '+
+      'r.slug AS region_slug,r.name AS region_name '+sqlFrom+
+      ' ORDER BY c.name,r.name,c.id LIMIT $'+(args.length+1)+' OFFSET $'+(args.length+2),
+      [...args,pageSize,(page-1)*pageSize]
+    );
+    return {items,total,page,pageSize};
+  }
   async search(term:unknown):Promise<SearchCourt[]> {
     if(typeof term!=='string' || term.trim().length<2 || term.trim().length>100) {
       throw new BadRequestException('SEARCH_QUERY_INVALID');
@@ -518,6 +556,10 @@ class CourtsController {
   @Get('courts/sitemap') sitemap(){return this.service.sitemapCourts();}
   @Get('courts/reference-profiles') publicReferences(){return this.service.publicReferenceProfiles();}
   @Get('courts/categories/:kind') byKind(@Param('kind') kind:string,@Query('page') page:unknown){return this.service.byKind(kind,page);}
+  @Get('courts/search-page') searchPage(
+    @Query('q') q:unknown,@Query('kind') kind:unknown,
+    @Query('region') region:unknown,@Query('page') page:unknown
+  ){return this.service.searchPage(q,kind,region,page);}
   @Get('courts/search') search(@Query('q') q:unknown){return this.service.search(q);}
   @Get('regions/:region/courts') list(@Param('region') region:string){return this.service.list(region);}
   @Get('regions/:region/courts/page') regionPage(@Param('region') region:string,@Query('page') page:unknown){return this.service.byRegion(region,page);}

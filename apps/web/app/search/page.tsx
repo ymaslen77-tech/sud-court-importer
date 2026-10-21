@@ -3,15 +3,15 @@ import type {Metadata} from 'next';
 import {CourtDirectoryExplorer} from '../_components/court-directory-explorer';
 import {directoryEntries} from '../lib/court-directory';
 import {DIRECTORY_REGIONS} from '../lib/directory-regions';
-import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
-import {getCourtsByKind,getRegionCourtsPage,searchCourts,verifiedBackendConfigured,type Court} from '../lib/api';
+import {COURT_KINDS} from '../lib/court-taxonomy';
+import {searchVerifiedCourtsPage,verifiedBackendConfigured,type CourtCategoryResult} from '../lib/api';
 
 export const metadata:Metadata={
  title:'Найти суд России по региону, виду, названию и коду',
  description:'Поиск по московским, региональным и арбитражным перечням с указанием статуса проверки источника.',
  robots:{index:false,follow:true}
 };
-type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
+type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[];verifiedPage?:string|string[]}>};
 function textValue(value:string|string[]|undefined,max:number):string{
  return typeof value==='string'?value.trim().slice(0,max):'';
 }
@@ -25,47 +25,24 @@ export default async function SearchPage({searchParams}:Props){
  const q=rawQuery.length<=100?rawQuery:'';
  const notValid=Boolean(rawQuery&&(!q||q.length<2));
  const hasAny=Boolean(q||kind||region);
- let verified:Court[]=[];
- let totalVerified=0,failed=false,partial=false;
- // A verified API is independent of the research/name-only browser index.
- // For combined filters, inspect each fetched category page; never use only
- // page 1 as a completeness test for a court's kind.
+ const p=textValue(params.verifiedPage,5);
+ const verifiedPage=/^[1-9][0-9]{0,3}$/.test(p)?Number(p):1;
+ let result:CourtCategoryResult={items:[],total:0,page:verifiedPage,pageSize:50};
+ let failed=false;
  if(verifiedBackendConfigured&&hasAny&&!notValid){
   try{
-   if(q){
-    verified=await searchCourts(q);
-    if(region)verified=verified.filter(c=>c.region_slug===region);
-    if(kind){
-     const ids=new Set<string>();
-     const first=await getCourtsByKind(kind,1);
-     first.items.forEach(c=>ids.add(c.id));
-     const totalPages=Math.ceil(first.total/Math.max(1,first.pageSize));
-     for(let i=2;i<=Math.min(100,totalPages);i++){
-      const next=await getCourtsByKind(kind,i);
-      next.items.forEach(c=>ids.add(c.id));
-     }
-     partial=totalPages>100;
-     verified=verified.filter(c=>ids.has(c.id));
-    }
-    totalVerified=verified.length;
-   }else if(kind){
-    const first=await getCourtsByKind(kind,1);
-    if(region){
-     const accumulated=[...first.items];
-     const totalPages=Math.ceil(first.total/Math.max(1,first.pageSize));
-     for(let i=2;i<=Math.min(100,totalPages);i++){
-      accumulated.push(...(await getCourtsByKind(kind,i)).items);
-     }
-     partial=totalPages>100;
-     verified=accumulated.filter(c=>c.region_slug===region);
-     totalVerified=verified.length;
-    }else{verified=first.items;totalVerified=first.total;partial=first.total>first.items.length;}
-   }else if(region){
-    const page=await getRegionCourtsPage(region,1);
-    verified=page.items;totalVerified=page.total;partial=page.total>page.items.length;
-   }
+   result=await searchVerifiedCourtsPage({q,kind,region,page:verifiedPage});
   }catch{failed=true;}
  }
+ const pages=Math.max(1,Math.ceil(result.total/Math.max(1,result.pageSize)));
+ const verifiedLink=(page:number)=>{
+  const query=new URLSearchParams();
+  if(q)query.set('q',q);
+  if(kind)query.set('kind',kind);
+  if(region)query.set('region',region);
+  query.set('verifiedPage',String(page));
+  return '/search?'+query.toString();
+ };
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
    <Link href="/courts">Суды России</Link><span>/</span>Поиск</div>
@@ -85,14 +62,17 @@ export default async function SearchPage({searchParams}:Props){
     <h2>Проверенные редакцией карточки</h2>
    </div>
    {failed?<div role="alert" className="notice">Подтверждённый реестр временно недоступен; сведения в общем поиске выше остаются предварительными.</div>:
-    verified.length?<><p>Показано {verified.length} из {totalVerified} записей, соответствующих условиям.
-     {partial?' Большой реестр может требовать дополнительной фильтрации через региональную страницу.':''}</p>
-     <div className="results">{verified.map(c=><Link key={c.id} className="result-row" href={'/courts/'+encodeURIComponent(c.region_slug||region)+'/'+encodeURIComponent(c.slug)}>
+    result.items.length?<><p>Найдено {result.total} проверенных карточек. Страница {result.page} из {pages}.</p>
+     <div className="results">{result.items.map(c=><Link key={c.id} className="result-row" href={'/courts/'+encodeURIComponent(c.region_slug||region)+'/'+encodeURIComponent(c.slug)}>
       <span><strong>{c.name}</strong><small>{c.region_name||''} · {c.address||'Адрес уточняется'}</small>
       <small>Редакционная проверка: {c.verified_at}</small></span><span aria-hidden="true">↗</span>
-     </Link>)}</div></>:
-    <div className="empty-state">В подтверждённом API пока нет записей по заданным параметрам.</div>}
-    {partial&&kind?<p><Link className="text-link" href={'/courts/types/'+kind}>Открыть полный подтверждённый список этого вида →</Link></p>:null}
+     </Link>)}</div>
+     {pages>1?<nav className="category-pagination" aria-label="Страницы подтверждённого реестра">
+      {result.page>1?<Link href={verifiedLink(result.page-1)}>← Предыдущая</Link>:<span/>}
+      <span>Страница {result.page} из {pages}</span>
+      {result.page<pages?<Link href={verifiedLink(result.page+1)}>Следующая →</Link>:<span/>}
+     </nav>:null}
+    </>:<div className="empty-state">В подтверждённом API пока нет записей по заданным параметрам.</div>}
   </section>:null}
   <section className="callout"><div>
    <span className="eyebrow">Адрес и подсудность</span>
