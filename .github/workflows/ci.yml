@@ -32,6 +32,8 @@ jobs:
         run: pnpm --dir apps/web exec node tests/moscow-territory.test.cjs
       - name: Test Moscow law-topic keyword search and empty-result handling
         run: pnpm --dir apps/web exec node tests/moscow-case-search.test.cjs
+      - name: Test unified nationwide court search and region filters
+        run: pnpm --dir apps/web exec node tests/national-courts-directory.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:
