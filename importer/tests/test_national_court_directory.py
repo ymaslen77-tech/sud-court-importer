@@ -16,7 +16,7 @@ class NationalCourtDirectoryTests(unittest.TestCase):
         for phrase in ('Ожидают наполнения','Нет карточек','Сбросить фильтры'):
             if phrase=='Нет карточек':continue
             self.assertIn(phrase,ui)
-        self.assertIn("status==='names'",ui)
+        self.assertIn("Название из официального перечня",ui)
         self.assertIn("status==='research'",ui)
         self.assertIn('Math.min(100,totalPages)',search)
         self.assertIn('verifiedBackendConfigured',search)

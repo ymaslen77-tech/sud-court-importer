@@ -17,7 +17,8 @@ export function matchesDirectoryEntry(entry:DirectoryEntry,filters:DirectoryFilt
  if(!q.length)return true;
  const text=normalizedCourtSearch([entry.name,entry.kindLabel,entry.regionName||'',entry.code||'',entry.address||''].join(' '));
  // All words must be present, in any order, but code fragments remain searchable.
- return q.every(word=>text.includes(word));
+ return q.every(word=>text.includes(word) ||
+   (word.length>=6&&!/[0-9]/.test(word)&&text.includes(word.slice(0,-1))));
 }
 export function filterDirectoryEntries(entries:ReadonlyArray<DirectoryEntry>,filters:DirectoryFilters):DirectoryEntry[]{
  return entries.filter(e=>matchesDirectoryEntry(e,filters)).sort((a,b)=>{
