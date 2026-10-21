@@ -34,27 +34,11 @@ export default async function CourtsDirectory() {
         <span className="eyebrow">Навигация по судебной системе</span><h2>Виды судов России</h2>
         <p>Мировые судьи, районные и областные суды, военные суды, арбитражные, апелляционные и кассационные инстанции.</p>
       </div><Link className="text-link" href="/courts/types">Все 15 категорий →</Link></div>
-      <form className="court-advanced-search" action="/search" method="get" aria-label="Выбор вида суда и региона">
-        <div className="court-filter-grid">
-          <label htmlFor="directory-court-kind">Вид суда
-            <select id="directory-court-kind" name="kind" required defaultValue="">
-              <option value="" disabled>Выберите вид суда</option>
-              {COURT_CATEGORIES.map(category=><option key={category.slug} value={category.slug}>{category.title}</option>)}
-            </select>
-          </label>
-          <label htmlFor="directory-region">Регион
-            <select id="directory-region" name="region" defaultValue="">
-              <option value="">Все регионы с данными</option>
-              {research.map(region=><option key={region.slug} value={region.slug}>{region.name}</option>)}
-            </select>
-          </label>
-        </div>
-        <div className="court-filter-actions">
-          <button className="button button-red" type="submit">Показать суды →</button>
-          <Link className="text-link" href="/jurisdiction">Подобрать суд по адресу заявителя ↗</Link>
-        </div>
-        <p className="court-form-hint">Сейчас исследовательский каталог содержит записи трёх регионов. Полный список видов судов доступен по ссылке выше.</p>
-      </form>
+      <p>Выберите вид суда и регион в единой форме вверху страницы. Для поиска по названию или коду используйте строку поиска. В выдаче отдельно обозначены подтверждённые, опубликованные справочные и предварительные карточки.</p>
+      <div className="court-filter-actions">
+        <Link className="button button-red" href="/search">Открыть расширенный поиск →</Link>
+        <Link className="text-link" href="/jurisdiction">Проверить территориальную подсудность ↗</Link>
+      </div>
     </section>
     <section className="section-wrap">
       <div className="section-intro"><span className="eyebrow">По регионам</span><h2>Опубликованные карточки судов</h2></div>
