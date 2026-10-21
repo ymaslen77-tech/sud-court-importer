@@ -68,7 +68,7 @@ assert.equal(pure.paginateDirectoryEntries(entries,-10,20).page,1);
 const lookup=new Set(entries.map(e=>e.id));
 assert.equal(lookup.size,entries.length);
 assert.ok(entries.every(x=>x.href.startsWith('/courts/')&&x.sourceUrl.startsWith('https://')));
-assert.ok(entries.filter(x=>x.status==='names').every(x=>x.href==='/courts/arbitration'));
+assert.ok(entries.filter(x=>x.status==='names').every(x=>x.href.startsWith('/courts/arbitration?q=')));
 assert.ok(entries.filter(x=>x.status==='research').every(x=>!x.region||x.region==='moscow'||x.region.startsWith('region-')));
 const page=fs.readFileSync(path.join(base,'courts/page.tsx'),'utf8');
 const search=fs.readFileSync(path.join(base,'search/page.tsx'),'utf8');

@@ -41,7 +41,7 @@ export function directoryEntries():DirectoryEntry[]{
    c.courtKind==='arbitration-district'?'Арбитражный суд округа':'Суд по интеллектуальным правам',
   // Never infer territorial jurisdiction from a city or an arbitration court name.
   region:null,regionName:null,code:null,address:null,
-  href:'/courts/arbitration',
+  href:'/courts/arbitration?q='+encodeURIComponent(c.courtName),
   sourceUrl:c.sourceRecordUrl,
   status:'names' as const
  }));

@@ -11,8 +11,8 @@ const kinds = {
   'arbitration-ip':'Суд по интеллектуальным правам'
 } as const;
 type Kind = keyof typeof kinds;
-export function ArbitrationNames({items}:{items:Entry[]}) {
-  const [query,setQuery] = useState('');
+export function ArbitrationNames({items,initialQuery=''}:{items:Entry[];initialQuery?:string}) {
+  const [query,setQuery] = useState(initialQuery);
   const [category,setCategory] = useState<'all'|Kind>('all');
   const results=useMemo(()=>{
     const q=query.trim().toLocaleLowerCase('ru-RU');

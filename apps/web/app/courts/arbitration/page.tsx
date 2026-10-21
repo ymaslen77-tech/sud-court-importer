@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   description: 'Названия арбитражных судов и судебных присутствий из официального перечня. Контакты и реквизиты требуют независимой проверки.',
   robots: { index: false, follow: true },
 };
-export default function ArbitrationDirectory() {
+type Props={searchParams:Promise<{q?:string|string[]}>};
+export default async function ArbitrationDirectory({searchParams}:Props) {
+  const params=await searchParams;
+  const initialQuery=typeof params.q==='string'?params.q.trim().slice(0,120):'';
   const subjects = all.filter(x=>x.courtKind==='arbitration-subject').length;
   const presences = all.filter(x=>x.courtKind==='arbitration-presence').length;
   const appeals = all.filter(x=>x.courtKind==='arbitration-appeal').length;
@@ -33,7 +36,7 @@ export default function ArbitrationDirectory() {
         <p>{subjects} судов субъектов, {presences} судебных присутствия, {appeals} апелляционных, {circuits} окружных судов и {specialized} специализированный суд. Это количество записей из справочника, а не подтверждение их текущих контактов.</p>
         <p><a className="text-link" href="https://arbitr.ru/materials/as" target="_blank" rel="noopener noreferrer">Проверить первоисточник на arbitr.ru ↗</a></p>
       </div>
-      <ArbitrationNames items={all.map(x=>({name:x.courtName,kind:x.courtKind}))}/>
+      <ArbitrationNames initialQuery={initialQuery} items={all.map(x=>({name:x.courtName,kind:x.courtKind}))}/>
     </section>
     <section className="callout">
       <div><span className="eyebrow">Важное различие</span>
