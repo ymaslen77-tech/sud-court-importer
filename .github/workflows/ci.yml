@@ -449,6 +449,11 @@ jobs:
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/courts/categories/invalid-kind)" = 404
           curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
           grep -Fqx '[]' /tmp/courts.json
+          curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=general-district&page=1' > /tmp/verified-national-search.json
+          grep -Fqx '{"items":[],"total":0,"page":1,"pageSize":50}' /tmp/verified-national-search.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=invalid-kind&page=1')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=general-district&page=0')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?page=1')" = 400
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
           grep -Fq 'Правосудие.' /tmp/home.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/arbitration > /tmp/arbitration.html
