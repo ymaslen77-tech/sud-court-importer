@@ -445,3 +445,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 /* Offline local jurisdiction reference: verified official handoff instead of a broken checker. */
 .moscow-prepared-address{margin:14px 0;padding:12px 16px;border:1px solid var(--line);background:#fff;overflow-wrap:anywhere}
 .moscow-prepared-address output{font-weight:750;user-select:all}
+
+/* Region directory is a single visible section immediately after the search. */
+.court-region-directory .region-item{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.court-region-directory .region-item>span:first-child{display:flex;flex-direction:column;gap:5px}
+.court-region-directory .region-item strong{font-size:17px}
+.court-region-directory .region-item small{font-size:12px;line-height:1.5}
+@media(max-width:640px){.court-region-directory .region-item{flex-wrap:wrap}.court-region-directory .region-item>span:first-child{flex:1 1 100%}}
