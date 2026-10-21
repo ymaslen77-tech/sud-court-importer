@@ -47,14 +47,14 @@ export function CourtDirectoryExplorer({
       placeholder="Например: Лефортовский, 54RS0012 или Барабинск"
       onChange={e=>setFilters({value:e.target.value})} autoComplete="off"/>
     </label>
-    <label htmlFor="directory-find-kind">Вид суда
-     <select id="directory-find-kind" name="kind" value={kind} onChange={e=>setFilters({kind:e.target.value})}>
+    <label htmlFor="directory-court-kind">Вид суда
+     <select id="directory-court-kind" name="kind" value={kind} onChange={e=>setFilters({kind:e.target.value})}>
       <option value="">Все виды</option>
       {COURT_CATEGORIES.map(c=><option key={c.slug} value={c.slug}>{c.short}</option>)}
      </select>
     </label>
-    <label htmlFor="directory-find-region">Регион
-     <select id="directory-find-region" name="region" value={region} onChange={e=>setFilters({region:e.target.value})}>
+    <label htmlFor="directory-region">Регион
+     <select id="directory-region" name="region" value={region} onChange={e=>setFilters({region:e.target.value})}>
       <option value="">Все регионы</option>
       <optgroup label="Есть предварительные сведения">
        {DIRECTORY_REGIONS.filter(r=>availableRegions.has(r.slug)).map(r=><option value={r.slug} key={r.slug}>{r.name}</option>)}
