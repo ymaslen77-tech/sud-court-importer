@@ -33,7 +33,7 @@ export default async function CourtsDirectory() {
     </section>
     <section className="section-wrap" aria-label="Общий поиск по судебным карточкам">
       <CourtDirectoryExplorer entries={all}/>
-      <p className="court-source">Всего {stats.total{'}'} доступных записей: {stats.research{'}'} исследовательских, {stats.reference{'}'} справочных карточек с отдельными официальными ссылками и {stats.names{'}'} названий арбитражных судов. Это НЕ общий объём действующих судов РФ.</p>
+      <p className="court-source">Всего {stats.total} доступных записей: {stats.research} исследовательских, {stats.reference} справочных карточек с отдельными официальными ссылками и {stats.names} названий арбитражных судов. Это НЕ общий объём действующих судов РФ.</p>
     </section>
     <section className="section-wrap taxonomy-section">
       <div className="section-intro with-action"><div>
