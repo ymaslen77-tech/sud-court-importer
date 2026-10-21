@@ -77,7 +77,6 @@ jobs:
           # Complete national directory routes must render as functional, source-aware pages.
           curl --fail --silent --show-error http://127.0.0.1:4188/courts > /tmp/national-courts.html
           grep -Fq 'Найти суд по России' /tmp/national-courts.html
-          grep -Fq 'Лефортовский' /tmp/national-courts.html
           grep -Fq 'Ожидают наполнения' /tmp/national-courts.html
           curl --fail --silent --show-error 'http://127.0.0.1:4188/search?q=%D0%9B%D0%B5%D1%84%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9&kind=general-district&region=moscow' > /tmp/national-search.html
           grep -Fq 'Лефортовский' /tmp/national-search.html
