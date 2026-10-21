@@ -445,3 +445,23 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 /* Offline local jurisdiction reference: verified official handoff instead of a broken checker. */
 .moscow-prepared-address{margin:14px 0;padding:12px 16px;border:1px solid var(--line);background:#fff;overflow-wrap:anywhere}
 .moscow-prepared-address output{font-weight:750;user-select:all}
+
+
+/* Nationwide court directory, accessible faceted lookup. */
+.court-directory-explorer{margin:0 auto;padding:0}
+.court-directory-shortcuts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.court-directory-shortcuts span{color:var(--muted);font-size:12px;font-weight:700}
+.court-directory-shortcuts button,.court-directory-reset{border:1px solid #c9d0d6;background:#f5f6f7;color:var(--ink);padding:9px 13px;cursor:pointer;font:inherit;font-size:13px}
+.court-directory-shortcuts button:hover,.court-directory-reset:hover{background:#e9edf0}
+.court-directory-result-status{background:#f0f4f6;padding:13px 16px;margin:20px 0 10px;border-left:4px solid #557588}
+.court-directory-provenance{color:var(--muted);line-height:1.5}
+.court-directory-result{overflow-wrap:anywhere}
+.court-directory-explorer .category-pagination{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.court-directory-explorer .category-pagination button{background:#fff;color:var(--ink);border:1px solid #c7cdd3;padding:9px 12px;cursor:pointer}
+.court-directory-explorer .category-pagination button:disabled{opacity:.4;cursor:not-allowed}
+.court-directory-explorer :is(input,select,button,a):focus-visible{outline:3px solid #476e9c;outline-offset:3px}
+@media(max-width:640px){.court-directory-explorer .court-filter-grid{grid-template-columns:1fr}
+ .court-directory-explorer .filter-full{grid-column:1/-1}.court-directory-explorer .court-filter-actions{align-items:stretch}
+ .court-directory-explorer .court-filter-actions>*{width:100%;text-align:center}
+ .court-directory-explorer .category-pagination{font-size:12px}
+}
