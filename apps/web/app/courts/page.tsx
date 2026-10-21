@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { CourtSearch } from '../_components/court-search';
+import {CourtDirectoryExplorer} from '../_components/court-directory-explorer';
+import {directoryEntries,directoryCounts} from '../lib/court-directory';
 import { getRegions } from '../lib/api';
 import { researchRegions } from '../lib/research-courts';
-import {COURT_CATEGORIES} from '../lib/court-taxonomy';
 import {pilotPublicCourts} from '../lib/pilot-public';
 
 export const dynamic = 'force-dynamic';
@@ -21,40 +21,27 @@ export default async function CourtsDirectory() {
   try { regions = await getRegions(); } catch { failed = true; }
   const research = researchRegions();
   const pilot = pilotPublicCourts();
+  const all=directoryEntries();
+  const stats=directoryCounts();
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>Суды России</div>
     <section className="section-hero">
       <span className="kicker">Судебная система РФ</span>
       <h1>Каталог судов России</h1>
-      <p className="lead">Найдите суд по виду и региону, названию или официальному коду. Подтверждённые и предварительные сведения отображаются отдельно.</p>
-      <CourtSearch compact />
+      <p className="lead">Поиск по всем доступным записям: название, официальный код, вид суда и регион. Уровень проверки каждого результата указан отдельно.</p>
+      <p><a className="text-link" href="#catalog-search">Перейти к поиску и фильтрам ↓</a></p>
+    </section>
+    <section className="section-wrap" aria-label="Общий поиск по судебным карточкам">
+      <CourtDirectoryExplorer entries={all}/>
+      <p className="court-source">Всего {stats.total{'}'} доступных записей: {stats.research{'}'} исследовательских, {stats.reference{'}'} справочных карточек с отдельными официальными ссылками и {stats.names{'}'} названий арбитражных судов. Это НЕ общий объём действующих судов РФ.</p>
     </section>
     <section className="section-wrap taxonomy-section">
       <div className="section-intro with-action"><div>
         <span className="eyebrow">Навигация по судебной системе</span><h2>Виды судов России</h2>
         <p>Мировые судьи, районные и областные суды, военные суды, арбитражные, апелляционные и кассационные инстанции.</p>
       </div><Link className="text-link" href="/courts/types">Все 15 категорий →</Link></div>
-      <form className="court-advanced-search" action="/search" method="get" aria-label="Выбор вида суда и региона">
-        <div className="court-filter-grid">
-          <label htmlFor="directory-court-kind">Вид суда
-            <select id="directory-court-kind" name="kind" required defaultValue="">
-              <option value="" disabled>Выберите вид суда</option>
-              {COURT_CATEGORIES.map(category=><option key={category.slug} value={category.slug}>{category.title}</option>)}
-            </select>
-          </label>
-          <label htmlFor="directory-region">Регион
-            <select id="directory-region" name="region" defaultValue="">
-              <option value="">Все регионы с данными</option>
-              {research.map(region=><option key={region.slug} value={region.slug}>{region.name}</option>)}
-            </select>
-          </label>
-        </div>
-        <div className="court-filter-actions">
-          <button className="button button-red" type="submit">Показать суды →</button>
-          <Link className="text-link" href="/jurisdiction">Подобрать суд по адресу заявителя ↗</Link>
-        </div>
-        <p className="court-form-hint">Сейчас исследовательский каталог содержит записи трёх регионов. Полный список видов судов доступен по ссылке выше.</p>
-      </form>
+      <p><Link className="text-link" href="/courts/types">Как выбрать вид суда →</Link>
+      {' · '}<Link className="text-link" href="/jurisdiction">Проверка подсудности по адресу →</Link></p>
     </section>
     <section className="section-wrap">
       <div className="section-intro"><span className="eyebrow">По регионам</span><h2>Опубликованные карточки судов</h2></div>
