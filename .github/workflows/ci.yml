@@ -456,9 +456,12 @@ jobs:
           set -x
           # Dropdown filters, address jurisdiction navigation and detailed court dossiers
           curl --fail --silent --show-error http://127.0.0.1:4173/courts > /tmp/courts-directory-filters.html
-          grep -Fq 'directory-court-kind' /tmp/courts-directory-filters.html
-          grep -Fq 'directory-region' /tmp/courts-directory-filters.html
+          grep -Fq 'court-search-compact-kind' /tmp/courts-directory-filters.html
+          grep -Fq 'court-search-compact-region' /tmp/courts-directory-filters.html
           grep -Fq 'general-magistrate' /tmp/courts-directory-filters.html
+          grep -Fq 'value="moscow"' /tmp/courts-directory-filters.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-district&region=moscow&q=%D0%9B%D0%B5%D1%84%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9' > /tmp/courts-moscow-filter.html
+          grep -Fq 'Лефортовский районный суд' /tmp/courts-moscow-filter.html
           curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-district&region=region-54' > /tmp/courts-kind-region-filter.html
           grep -Fq 'Барабинский районный суд' /tmp/courts-kind-region-filter.html
           curl --fail --silent --show-error 'http://127.0.0.1:4173/search?kind=general-magistrate&region=region-27' > /tmp/courts-magistrates-filter.html

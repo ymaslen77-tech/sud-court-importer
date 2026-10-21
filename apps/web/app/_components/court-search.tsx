@@ -15,6 +15,7 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       <label htmlFor={id+'-region'}>Регион
         <select id={id+'-region'} name="region" defaultValue={initialRegion}>
           <option value="">Все регионы с данными</option>
+          <option value="moscow">Москва — 12 справочных карточек</option>
           {researchRegions().map(r=><option key={r.slug} value={r.slug}>{r.name}</option>)}
         </select>
       </label>
@@ -28,6 +29,6 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       <button className="button button-red" type="submit">Найти суд →</button>
       <a className="text-link" href="/jurisdiction">Найти по адресу и подсудности ↗</a>
     </div>
-    <small className="court-form-hint">Можно выбрать только регион или вид суда — вводить название необязательно. Пока доступны предварительные сведения трёх регионов.</small>
+    <small className="court-form-hint">Можно выбрать только регион или вид суда — вводить название необязательно. В каталоге есть московские справочные карточки и предварительные региональные списки; это ещё не все суды России.</small>
   </form>;
 }
