@@ -44,15 +44,15 @@ export default async function CourtsDirectory() {
       {' · '}<Link className="text-link" href="/jurisdiction">Проверка подсудности по адресу →</Link></p>
     </section>
     <section className="section-wrap">
-      <div className="section-intro"><span className="eyebrow">По регионам</span><h2>Опубликованные карточки судов</h2></div>
+      <div className="section-intro"><span className="eyebrow">По регионам</span><h2>Редакционно подтверждённый реестр</h2></div>
       {failed ? <div role="alert" className="notice">Не удалось получить список регионов. Попробуйте позже.</div>
         : regions.length ? <div className="region-grid">{regions.map(region =>
           <Link key={region.slug} className="region-item" href={'/courts/' + region.slug}>
             <span>{region.name}</span><small>{region.court_count} проверенных карточек</small><span aria-hidden="true">↗</span>
           </Link>)}</div>
         : <div className="empty-state"><h3>Реестр пока наполняется</h3>
-          <p>Публичных карточек ещё нет. Подготовлена загрузка из официальных источников по всей России; до редакционной проверки суды не отображаются в каталоге.</p>
-          <Link className="text-link" href="/courts/moscow">Посмотреть пилотный регион →</Link>
+          <p>В подтверждённом реестре API пока нет доступных записей. Предварительные справочные карточки и официальный поиск представлены выше.</p>
+          <Link className="text-link" href="/courts/moscow">Посмотреть 12 московских досье →</Link>
         </div>}
     </section>
     <section className="section-wrap" aria-labelledby="moscow-new-pilot">
@@ -122,6 +122,5 @@ export default async function CourtsDirectory() {
       <div><span className="eyebrow">Контроль качества</span><h2>От источника до публичной карточки</h2><p>Сначала сохраняем исходную запись и её код, проверяем контактные сведения и источник, затем допускаем карточку в общую выдачу. Непроверенные сведения не влияют на результаты поиска.</p></div>
       <Link className="button button-outline" href="/sources">Подробнее о проверке →</Link>
     </section>
-    <section className="callout"><div><span className="eyebrow">Как мы работаем</span><h2>Источники каждой записи проверяются</h2><p>Отдельно фиксируем изменения адресов, статуса суда и назначения судей.</p></div><Link className="button button-outline" href="/sources">О методологии →</Link></section>
   </>;
 }
