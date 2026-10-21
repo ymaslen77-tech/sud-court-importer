@@ -32,6 +32,8 @@ jobs:
         run: pnpm --dir apps/web exec node tests/moscow-territory.test.cjs
       - name: Test Moscow law-topic keyword search and empty-result handling
         run: pnpm --dir apps/web exec node tests/moscow-case-search.test.cjs
+      - name: Test unified nationwide court search and region filters
+        run: pnpm --dir apps/web exec node tests/national-courts-directory.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:
@@ -72,6 +74,16 @@ jobs:
             echo 'Non-pilot unverified research court leaked into sitemap' >&2
             exit 1
           fi
+          # Complete national directory routes must render as functional, source-aware pages.
+          curl --fail --silent --show-error http://127.0.0.1:4188/courts > /tmp/national-courts.html
+          grep -Fq 'Найти суд по России' /tmp/national-courts.html
+          grep -Fq 'Ожидают наполнения' /tmp/national-courts.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4188/search?q=%D0%9B%D0%B5%D1%84%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D1%81%D0%BA%D0%B8%D0%B9&kind=general-district&region=moscow' > /tmp/national-search.html
+          grep -Fq 'Лефортовский' /tmp/national-search.html
+          grep -Fq 'Ссылка на результаты' /tmp/national-search.html
+          curl --fail --silent --show-error 'http://127.0.0.1:4188/courts/arbitration?q=%D0%90%D1%80%D0%B1%D0%B8%D1%82%D1%80%D0%B0%D0%B6%D0%BD%D1%8B%D0%B9%20%D1%81%D1%83%D0%B4%20%D0%A0%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B8%20%D0%90%D0%B4%D1%8B%D0%B3%D0%B5%D1%8F' > /tmp/national-arbitration.html
+          grep -Fq 'Арбитражный суд Республики Адыгея' /tmp/national-arbitration.html
+
 
   windows-safety:
     runs-on: ubuntu-latest
@@ -437,6 +449,11 @@ jobs:
           test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4174/api/v1/courts/categories/invalid-kind)" = 404
           curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search?q=moscow' > /tmp/courts.json
           grep -Fqx '[]' /tmp/courts.json
+          curl --fail --silent --show-error 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=general-district&page=1' > /tmp/verified-national-search.json
+          grep -Fqx '{"items":[],"total":0,"page":1,"pageSize":50}' /tmp/verified-national-search.json
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=invalid-kind&page=1')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?kind=general-district&page=0')" = 400
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'http://127.0.0.1:4174/api/v1/courts/search-page?page=1')" = 400
           curl --fail --silent --show-error http://127.0.0.1:4173/ > /tmp/home.html
           grep -Fq 'Правосудие.' /tmp/home.html
           curl --fail --silent --show-error http://127.0.0.1:4173/courts/arbitration > /tmp/arbitration.html

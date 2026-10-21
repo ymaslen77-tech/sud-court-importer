@@ -1,5 +1,5 @@
 import {COURT_CATEGORIES} from '../lib/court-taxonomy';
-import {researchRegions} from '../lib/research-courts';
+import {DIRECTORY_REGIONS} from '../lib/directory-regions';
 
 type Props={initialValue?:string;initialKind?:string;initialRegion?:string;compact?:boolean};
 export function CourtSearch({initialValue='',initialKind='',initialRegion='',compact=false}:Props){
@@ -14,8 +14,8 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       </label>
       <label htmlFor={id+'-region'}>Регион
         <select id={id+'-region'} name="region" defaultValue={initialRegion}>
-          <option value="">Все регионы с данными</option>
-          {researchRegions().map(r=><option key={r.slug} value={r.slug}>{r.name}</option>)}
+          <option value="">Все регионы</option>
+          {DIRECTORY_REGIONS.map(r=><option key={r.slug} value={r.slug}>{r.name}</option>)}
         </select>
       </label>
       <label className="filter-full" htmlFor={id+'-query'}>Название, адрес суда или классификационный код
@@ -28,6 +28,6 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       <button className="button button-red" type="submit">Найти суд →</button>
       <a className="text-link" href="/jurisdiction">Найти по адресу и подсудности ↗</a>
     </div>
-    <small className="court-form-hint">Можно выбрать только регион или вид суда — вводить название необязательно. Пока доступны предварительные сведения трёх регионов.</small>
+    <small className="court-form-hint">Можно выбрать только регион или вид суда — вводить название необязательно. Данные пока доступны не для всех регионов; отсутствие совпадения не означает отсутствия суда.</small>
   </form>;
 }

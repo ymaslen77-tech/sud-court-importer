@@ -46,7 +46,8 @@ function emptyVerifiedData<T>(path:string):T {
   if (/^\/api\/v1\/regions\/[^/]+\/courts\/[^/]+$/.test(path))
     throw new Error('NOT_FOUND');
   if (/^\/api\/v1\/regions\/[^/]+\/courts\/page\?page=/.test(path)
-    || /^\/api\/v1\/courts\/categories\/[^/]+\?page=/.test(path)) {
+    || /^\/api\/v1\/courts\/categories\/[^/]+\?page=/.test(path)
+    || /^\/api\/v1\/courts\/search-page\?/.test(path)) {
     const requested = Number(new URLSearchParams(path.split('?')[1]).get('page') || '1');
     return {items:[],total:0,page:requested,pageSize:50} as T;
   }
@@ -87,6 +88,16 @@ export async function getCourtsByKind(kind: string, page = 1) {
 export async function searchCourts(q: string) {
   return get<SearchCourt[]>('/api/v1/courts/search?q=' + encodeURIComponent(q));
 }
+/** One parameterized server query; no client-side scanning through category pages. */
+export async function searchVerifiedCourtsPage(filters:{q:string;kind:string;region:string;page:number}):Promise<CourtCategoryResult>{
+ const params=new URLSearchParams();
+ if(filters.q)params.set('q',filters.q);
+ if(filters.kind)params.set('kind',filters.kind);
+ if(filters.region)params.set('region',filters.region);
+ params.set('page',String(filters.page));
+ return get<CourtCategoryResult>('/api/v1/courts/search-page?'+params.toString());
+}
+
 export function safeOfficialUrl(value: string | null | undefined): string | null {
   if (!value) return null;
   try {

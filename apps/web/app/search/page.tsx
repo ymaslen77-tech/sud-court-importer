@@ -1,116 +1,83 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
-import {CourtSearch} from '../_components/court-search';
-import {getCourtsByKind,getRegionCourtsPage,searchCourts,type Court} from '../lib/api';
-import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
-import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../lib/research-courts';
-import {pilotPublicCourts} from '../lib/pilot-public';
+import {CourtDirectoryExplorer} from '../_components/court-directory-explorer';
+import {directoryEntries} from '../lib/court-directory';
+import {DIRECTORY_REGIONS} from '../lib/directory-regions';
+import {COURT_KINDS} from '../lib/court-taxonomy';
+import {searchVerifiedCourtsPage,verifiedBackendConfigured,type CourtCategoryResult} from '../lib/api';
 
-export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
-type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
+export const metadata:Metadata={
+ title:'Найти суд России по региону, виду, названию и коду',
+ description:'Поиск по московским, региональным и арбитражным перечням с указанием статуса проверки источника.',
+ robots:{index:false,follow:true}
+};
+type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[];verifiedPage?:string|string[]}>};
 function textValue(value:string|string[]|undefined,max:number):string{
  return typeof value==='string'?value.trim().slice(0,max):'';
 }
 export default async function SearchPage({searchParams}:Props){
  const params=await searchParams;
- const q=textValue(params.q,101);
+ const rawQuery=textValue(params.q,101);
  const requestedKind=textValue(params.kind,80);
  const requestedRegion=textValue(params.region,40);
  const kind=COURT_KINDS.includes(requestedKind)?requestedKind:'';
- const region=researchRegions().some(x=>x.slug===requestedRegion)?requestedRegion:'';
- const valid=(!q||q.length>=2)&&q.length<=100;
+ const region=DIRECTORY_REGIONS.some(x=>x.slug===requestedRegion)?requestedRegion:'';
+ const q=rawQuery.length<=100?rawQuery:'';
+ const notValid=Boolean(rawQuery&&(!q||q.length<2));
  const hasAny=Boolean(q||kind||region);
- const base=region?researchCourtsByRegion(region):researchRegions().flatMap(r=>researchCourtsByRegion(r.slug));
- const permittedKind=kind?new Set(researchCourtsByKind(kind).map(c=>c.code)):null;
- const research=valid&&hasAny?base.filter(c=>
-   (!permittedKind||permittedKind.has(c.code))&&
-   (!q||[c.name,c.address??'',c.regionName,c.code].some(value=>
-       value.toLocaleLowerCase('ru').includes(q.toLocaleLowerCase('ru'))
-   ))):[];
- const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
- const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
- const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
- let verified:Court[]=[];
+ const p=textValue(params.verifiedPage,5);
+ const verifiedPage=/^[1-9][0-9]{0,3}$/.test(p)?Number(p):1;
+ let result:CourtCategoryResult={items:[],total:0,page:verifiedPage,pageSize:50};
  let failed=false;
- let totalVerified=0;
- if(valid&&hasAny){
-   try{
-     if(q){
-       verified=await searchCourts(q);
-       if(region)verified=verified.filter(c=>c.region_slug===region);
-       if(kind){
-         const permitted=await getCourtsByKind(kind,1);
-         const ids=new Set(permitted.items.map(x=>x.id));
-         verified=verified.filter(c=>ids.has(c.id));
-       }
-       totalVerified=verified.length;
-     }else if(kind){
-       const data=await getCourtsByKind(kind,1);
-       verified=region?data.items.filter(c=>c.region_slug===region):data.items;
-       totalVerified=region?verified.length:data.total;
-     }else if(region){
-       const data=await getRegionCourtsPage(region,1);
-       verified=data.items;
-       totalVerified=data.total;
-     }
-   }catch{failed=true;}
+ if(verifiedBackendConfigured&&hasAny&&!notValid){
+  try{
+   result=await searchVerifiedCourtsPage({q,kind,region,page:verifiedPage});
+  }catch{failed=true;}
  }
- const label=[q?'«'+q+'»':null,kind?findCategory(kind)?.short:null,region?researchRegions().find(r=>r.slug===region)?.name:null].filter(Boolean).join(' · ');
+ const pages=Math.max(1,Math.ceil(result.total/Math.max(1,result.pageSize)));
+ const verifiedLink=(page:number)=>{
+  const query=new URLSearchParams();
+  if(q)query.set('q',q);
+  if(kind)query.set('kind',kind);
+  if(region)query.set('region',region);
+  query.set('verifiedPage',String(page));
+  return '/search?'+query.toString();
+ };
  return <>
-  <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды</Link><span>/</span>Поиск</div>
+  <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
+   <Link href="/courts">Суды России</Link><span>/</span>Поиск</div>
   <section className="section-hero">
-    <span className="kicker">Расширенный поиск по каталогу</span>
-    <h1>Найти суд</h1>
-    <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
-    <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+   <span className="kicker">Общий справочник и официальные источники</span>
+   <h1>Найти суд</h1>
+   <p className="lead">Единый поиск по предварительным карточкам Москвы, других регионов и названиям арбитражных судов.</p>
   </section>
   <section className="section-wrap">
-    <div className="section-intro">
-      <span className="eyebrow">Подтверждённые сведения</span>
-      <h2>{hasAny?'Результаты: '+label:'Начните поиск'}</h2>
-    </div>
-    {!hasAny?<p className="empty-state">Выберите регион, вид суда или введите его название.</p>
-    :!valid?<p className="notice" role="alert">Текст запроса должен содержать от 2 до 100 символов.</p>
-    :failed?<div role="alert" className="notice">Связь с подтверждённым реестром временно недоступна. Предварительные сведения показаны ниже отдельно.</div>
-    :verified.length?<><p>Показано {verified.length} из {totalVerified} проверенных записей.</p>
-      <div className="results">{verified.map(c=><Link className="result-row" key={c.id}
-        href={'/courts/'+(c.region_slug??region)+'/'+c.slug}>
-         <span><strong>{c.name}</strong><small>{c.region_name??''} {c.address?' · '+c.address:''}</small></span>
-         <span aria-hidden="true">↗</span>
-      </Link>)}</div></>
-    :<div className="empty-state">Проверенных карточек по этим условиям пока нет. Исследовательские совпадения показаны ниже, если они доступны.</div>}
+   {notValid?<div className="notice" role="alert">Для поиска по названию введите 2–100 символов.</div>:null}
+   <CourtDirectoryExplorer entries={directoryEntries()} initialValue={q}
+    initialKind={kind} initialRegion={region}/>
   </section>
-  {valid&&hasAny&&sourcedPublic.length>0?<section className="section-wrap" aria-labelledby="published-sourced">
-    <div className="section-intro">
-      <span className="eyebrow">Публичные справочные карточки по официальным источникам</span>
-      <h2 id="published-sourced">Найдены подробные досье: {sourcedPublic.length}</h2>
-      <p>Сведения опубликованы со ссылками на индивидуальные сайты судов и предупреждениями
-       о необходимости перепроверки актуальности. Это не подтверждённые редакцией записи Neon.</p>
-    </div>
-    <div className="results">{sourcedPublic.map(c=><Link className="result-row" key={c.code}
-      href={'/courts/'+c.region+'/sud-'+c.code.toLowerCase()}>
-      <span><strong>{c.name}</strong><small>{c.regionName} · {c.kind} · {c.code}</small>
-      <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
-    </Link>)}</div>
+  {verifiedBackendConfigured&&hasAny&&!notValid?<section className="section-wrap" aria-label="Редакционно подтверждённый реестр">
+   <div className="section-intro">
+    <span className="eyebrow">Отдельный подтверждённый реестр API</span>
+    <h2>Проверенные редакцией карточки</h2>
+   </div>
+   {failed?<div role="alert" className="notice">Подтверждённый реестр временно недоступен; сведения в общем поиске выше остаются предварительными.</div>:
+    result.items.length?<><p>Найдено {result.total} проверенных карточек. Страница {result.page} из {pages}.</p>
+     <div className="results">{result.items.map(c=><Link key={c.id} className="result-row" href={'/courts/'+encodeURIComponent(c.region_slug||region)+'/'+encodeURIComponent(c.slug)}>
+      <span><strong>{c.name}</strong><small>{c.region_name||''} · {c.address||'Адрес уточняется'}</small>
+      <small>Редакционная проверка: {c.verified_at}</small></span><span aria-hidden="true">↗</span>
+     </Link>)}</div>
+     {pages>1?<nav className="category-pagination" aria-label="Страницы подтверждённого реестра">
+      {result.page>1?<Link href={verifiedLink(result.page-1)}>← Предыдущая</Link>:<span/>}
+      <span>Страница {result.page} из {pages}</span>
+      {result.page<pages?<Link href={verifiedLink(result.page+1)}>Следующая →</Link>:<span/>}
+     </nav>:null}
+    </>:<div className="empty-state">В подтверждённом API пока нет записей по заданным параметрам.</div>}
   </section>:null}
-  {valid&&hasAny?<section className="section-wrap" aria-labelledby="unreviewed-filters">
-    <div className="section-intro">
-      <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
-      <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>
-      <p>Это результаты фильтрации открытых справочных списков, а не подтверждённый реестр. Полнота пока ограничена тремя регионами, а сами карточки закрыты от индексации.</p>
-    </div>
-    {researchOnly.length?<div className="results">{researchOnly.slice(0,100).map(c=><Link className="result-row" key={c.code}
-      href={'/courts/'+c.region+'/sud-'+c.code.toLowerCase()}>
-      <span><strong>{c.name}</strong><small>{c.regionName} · {c.kind} · {c.code}</small>
-       <small>Требует проверки актуальности и подсудности</small></span><span aria-hidden="true">↗</span>
-    </Link>)}</div>:<div className="empty-state">В исследовательском списке тоже нет совпадений. Это не означает, что суд отсутствует.</div>}
-    {researchOnly.length>100?<p className="court-source">Показаны первые 100 записей. Уточните регион или название.</p>:null}
-  </section>:null}
-  <section className="callout">
-    <div><span className="eyebrow">Поиск по адресу</span>
-      <h2>Как определить подсудность по адресу?</h2>
-      <p>Для подбора по месту жительства заявителя, ответчика или месту недвижимости требуется учитывать категорию дела. Откройте отдельный поиск по адресу.</p>
-    </div><Link className="button button-outline" href="/jurisdiction">Перейти к поиску подсудности →</Link>
-  </section>
+  <section className="callout"><div>
+   <span className="eyebrow">Адрес и подсудность</span>
+   <h2>Нужно определить компетентный суд по адресу?</h2>
+   <p>Совпадение названия города или адреса здания не определяет процессуальную подсудность. Учитывайте вид спора, адрес ответчика и специальные правила.</p>
+  </div><Link className="button button-outline" href="/jurisdiction">Перейти к правилам подсудности →</Link></section>
  </>;
 }
