@@ -130,7 +130,7 @@ export default async function RegionPage({params,searchParams}:Props){
       <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
         href={regionalArbitrationHref(region,item.slug)}>
         <span><strong>{item.courtName}</strong>
-          <small>{item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · сведения требуют проверки</small>
+          <small>{item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':item.courtKind==='arbitration-district'?'Арбитражный суд округа · кассация':'Арбитражный суд субъекта'} · сведения требуют проверки</small>
         </span><span aria-hidden="true">↗</span>
       </Link>)}</div>
     </section>:null}
