@@ -7,6 +7,7 @@ import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../li
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
 import {findRegion} from '../lib/regions';
+import {regionalArbitrationSearch} from '../lib/regional-arbitration';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -33,6 +34,7 @@ export default async function SearchPage({searchParams}:Props){
    (!q||[c.name,c.address??'',c.regionName,c.code].some(value=>
        value.toLocaleLowerCase('ru').includes(q.toLocaleLowerCase('ru'))
    ))):[];
+ const arbitration=valid&&hasAny?regionalArbitrationSearch(q,kind,region):[];
  const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
  const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
  const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
@@ -96,6 +98,20 @@ export default async function SearchPage({searchParams}:Props){
     <span><strong>{c.name}</strong><small>Москва · Районный суд · {c.address}</small><small>Исследовательское досье по официальным источникам</small></span>
     <span aria-hidden="true">↗</span>
    </Link>)}</div>
+  </section>:null}
+  {valid&&hasAny&&arbitration.length>0?<section className="section-wrap" aria-labelledby="arbitration-results">
+    <div className="section-intro">
+      <span className="eyebrow">Арбитражные суды · исходный официальный список</span>
+      <h2 id="arbitration-results">Найдены названия арбитражных судов: {arbitration.length}</h2>
+      <p>Это справочные названия из сохранённого перечня, не подтверждённые текущими контактами или составом.
+       Для одного суда, обслуживающего несколько регионов, общая выдача не создаёт повторов.</p>
+    </div>
+    <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
+      href={'/courts/'+encodeURIComponent(region||item.regions[0])+'/'+encodeURIComponent(item.slug)}>
+      <span><strong>{item.courtName}</strong>
+        <small>{item.courtKind==='arbitration-presence'?'Судебное присутствие':'Арбитражный суд субъекта'} · предварительно</small>
+      </span><span aria-hidden="true">↗</span>
+    </Link>)}</div>
   </section>:null}
   {valid&&hasAny&&sourcedPublic.length>0?<section className="section-wrap" aria-labelledby="published-sourced">
     <div className="section-intro">
