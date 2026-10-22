@@ -7,6 +7,8 @@ import {findCategory} from '../../../lib/court-taxonomy';
 import {researchCourt} from '../../../lib/research-courts';
 import {ResearchCourtPreview} from '../../../_components/research-court-preview';
 import {pilotPublicRecord} from '../../../lib/pilot-public';
+import {regionalArbitrationCourt} from '../../../lib/regional-arbitration';
+import {RegionalArbitrationPreview} from '../../../_components/regional-arbitration-preview';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -36,6 +38,12 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  try{
   const c=await getCourt(p.region,p.court);
   if(!c){
+    const arbitration=regionalArbitrationCourt(p.region,p.court);
+    if(arbitration)return {
+      title:arbitration.courtName+' — предварительные сведения и источник',
+      description:'Справочное название из официального списка; актуальность контактов, состава и адреса не подтверждена.',
+      robots:{index:false,follow:true}
+    };
     const candidate=researchCourt(p.region,p.court);
     const pilot=candidate?pilotPublicRecord(candidate.code):null;
     if(pilot)return {
@@ -61,6 +69,8 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
    openGraph:{title:c.name,description:'Проверенные данные суда и официальный первоисточник',type:'website',url:path}
   };
  }catch{
+   const arbitration=regionalArbitrationCourt(p.region,p.court);
+   if(arbitration)return {title:arbitration.courtName+' — справочный список',robots:{index:false,follow:true}};
    const candidate=researchCourt(p.region,p.court);
    const pilot=candidate?pilotPublicRecord(candidate.code):null;
    if(pilot)return {title:pilot.official_header_court_name+' — справочная карточка',robots:{index:true,follow:true}};
@@ -75,8 +85,10 @@ export default async function CourtPage({params}:Props){
  const p=await params;
  let court:CourtDetail|null=null;
  try{ court=await getCourt(p.region,p.court); }
- catch(error){ if(!researchCourt(p.region,p.court))throw error; }
+ catch(error){ if(!researchCourt(p.region,p.court)&&!regionalArbitrationCourt(p.region,p.court))throw error; }
  if(!court){
+   const arbitration=regionalArbitrationCourt(p.region,p.court);
+   if(arbitration)return <RegionalArbitrationPreview court={arbitration} region={p.region}/>;
    const candidate=researchCourt(p.region,p.court);
    if(!candidate)notFound();
    return <ResearchCourtPreview court={candidate}/>;
