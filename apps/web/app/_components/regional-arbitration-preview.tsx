@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import type {RegionalArbitrationName} from '../lib/regional-arbitration';
 import {findRegion} from '../lib/regions';
+import {NorthCaucasusCourtProfile} from './north-caucasus-court-profile';
 
 export function RegionalArbitrationPreview({court,region}:{court:RegionalArbitrationName;region:string}){
+  if(court.slug==='arbitration-district-north-caucasus')return <NorthCaucasusCourtProfile court={court} region={region}/>;
   const regionName=findRegion(region)?.name??'Регион не установлен';
   const home='/courts/'+encodeURIComponent(region);
   const label=court.courtKind==='arbitration-district'?'Арбитражный кассационный суд округа':court.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта РФ';
