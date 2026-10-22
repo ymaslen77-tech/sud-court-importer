@@ -5,7 +5,7 @@ import {findRegion} from '../lib/regions';
 export function RegionalArbitrationPreview({court,region}:{court:RegionalArbitrationName;region:string}){
   const regionName=findRegion(region)?.name??'Регион не установлен';
   const home='/courts/'+encodeURIComponent(region);
-  const label=court.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта РФ';
+  const label=court.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':court.courtKind==='arbitration-district'?'Арбитражный суд округа · кассационная инстанция':'Арбитражный суд субъекта РФ';
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
       <Link href="/courts">Суды России</Link><span>/</span>
@@ -14,6 +14,7 @@ export function RegionalArbitrationPreview({court,region}:{court:RegionalArbitra
       <span className="kicker">Предварительная справочная запись · требует проверки</span>
       <h1>{court.courtName}</h1>
       <p className="lead">{label} · {regionName}</p>
+      {court.courtKind==='arbitration-district'?<p>Суд расположен в Краснодаре и рассматривает кассационные жалобы по делам, относящимся к Северо-Кавказскому судебному округу. Выбранный регион обозначает территориальную компетенцию, а не адрес суда.</p>:null}
       <div className="notice" role="status"><span className="notice-dot" aria-hidden="true"/>
         Имя суда перенесено из ранее сохранённого официального перечня. Актуальный статус,
         компетенция, контакты, состав судей и сведения о делах ещё не сверены.
