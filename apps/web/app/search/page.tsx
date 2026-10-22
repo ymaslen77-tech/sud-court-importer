@@ -71,6 +71,10 @@ export default async function SearchPage({searchParams}:Props){
     <h1>Найти суд</h1>
     <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+    {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
+      По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
+      {' '}<a href="#arbitration-results">Перейти к найденному суду ↓</a>
+    </p>:null}
   </section>
   <section className="section-wrap">
     <div className="section-intro">
