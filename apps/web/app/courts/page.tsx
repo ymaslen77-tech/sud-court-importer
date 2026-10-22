@@ -6,6 +6,7 @@ import { researchRegions } from '../lib/research-courts';
 import {COURT_CATEGORIES} from '../lib/court-taxonomy';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
+import {ALL_REGIONS} from '../lib/regions';
 
 export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,6 +26,8 @@ export default async function CourtsDirectory() {
   const moscowCount=moscowCourts().length;
   const knownSlugs=new Set(['moscow',...research.map(item=>item.slug)]);
   const verifiedOthers=regions.filter(region=>!knownSlugs.has(region.slug));
+  const knownFromApi=new Set(regions.map(region=>region.slug));
+  const awaiting=ALL_REGIONS.filter(region=>!knownSlugs.has(region.slug)&&!knownFromApi.has(region.slug));
   return <>
     <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>Суды России</div>
     <section className="section-hero">
@@ -52,8 +55,12 @@ export default async function CourtsDirectory() {
           <span><strong>{item.name}</strong><small>Опубликованные записи из базы проекта</small></span>
           <small>{item.court_count} карточек</small><span aria-hidden="true">↗</span>
         </Link>)}
+        {awaiting.map(item=><Link className="region-item" key={item.slug} href={'/courts/'+item.slug}>
+          <span><strong>{item.name}</strong><small>Список судов ещё не наполнен</small></span>
+          <small>0 карточек</small><span aria-hidden="true">↗</span>
+        </Link>)}
       </div>
-      <p className="court-source">Показаны только регионы, в которых уже есть данные. Это не полный реестр субъектов Российской Федерации. У предварительных карточек могут отсутствовать актуальные состав судей, карта или судебные дела.</p>
+      <p className="court-source">Показаны все 89 регионов из справочника РФ; наличие региона не означает, что его суды уже загружены. У предварительных карточек могут отсутствовать актуальные состав судей, карта или судебные дела.</p>
       {failed?<p className="court-source" role="status">Подтверждённая база сейчас недоступна; выше остаются доступными справочные региональные списки.</p>:null}
       <div className="court-filter-actions">
         <Link className="button button-red" href="/search?region=moscow&kind=general-district">Показать районные суды Москвы →</Link>
