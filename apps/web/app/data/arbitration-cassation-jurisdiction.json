@@ -1,0 +1,195 @@
+[
+  {
+    "courtName": "Арбитражный суд Волго-Вятского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-volgo-vyatka",
+    "regions": [
+      "region-33",
+      "region-37",
+      "region-43",
+      "region-11",
+      "region-44",
+      "region-12",
+      "region-13",
+      "region-52",
+      "region-21",
+      "region-76"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Восточно-Сибирского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-east-siberia",
+    "regions": [
+      "region-03",
+      "region-38",
+      "region-24",
+      "region-14",
+      "region-17",
+      "region-19",
+      "region-75"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Дальневосточного округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-far-east",
+    "regions": [
+      "region-28",
+      "region-79",
+      "region-41",
+      "region-49",
+      "region-25",
+      "region-65",
+      "region-27",
+      "region-87"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Западно-Сибирского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-west-siberia",
+    "regions": [
+      "region-04",
+      "region-22",
+      "region-42",
+      "region-54",
+      "region-55",
+      "region-70",
+      "region-72",
+      "region-86",
+      "region-89"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Московского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-moscow",
+    "regions": [
+      "moscow",
+      "region-50"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Поволжского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-volga",
+    "regions": [
+      "region-30",
+      "region-34",
+      "region-58",
+      "region-63",
+      "region-64",
+      "region-16",
+      "region-73"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Северо-Западного округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-northwest",
+    "regions": [
+      "region-29",
+      "region-35",
+      "region-39",
+      "region-10",
+      "region-51",
+      "region-53",
+      "region-60",
+      "region-78",
+      "region-47",
+      "region-69",
+      "region-83"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Северо-Кавказского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-north-caucasus",
+    "regions": [
+      "region-01",
+      "region-05",
+      "region-06",
+      "region-07",
+      "region-08",
+      "region-09",
+      "region-23",
+      "region-61",
+      "region-15",
+      "region-26",
+      "region-20"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed",
+    "officialCourtUrl": "https://fassko.arbitr.ru",
+    "address": "350063, Краснодарский край, г. Краснодар, ул. Рашпилевская, д. 4",
+    "phone": "+7 (861) 201-34-00",
+    "contactSourceUrl": "https://krasnodar-leninsky--krd.sudrf.ru/modules.php?name=sud"
+  },
+  {
+    "courtName": "Арбитражный суд Уральского округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-urals",
+    "regions": [
+      "region-02",
+      "region-45",
+      "region-56",
+      "region-59",
+      "region-66",
+      "region-18",
+      "region-74"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Центрального округа",
+    "courtKind": "arbitration-district",
+    "slug": "arbitration-district-central",
+    "regions": [
+      "region-31",
+      "region-32",
+      "region-36",
+      "region-93",
+      "region-90",
+      "region-40",
+      "region-91",
+      "region-46",
+      "region-48",
+      "region-94",
+      "region-57",
+      "region-62",
+      "region-92",
+      "region-67",
+      "region-68",
+      "region-71",
+      "region-95"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/materials/as",
+    "jurisdictionLawUrl": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+    "editorialStatus": "unreviewed"
+  }
+]
