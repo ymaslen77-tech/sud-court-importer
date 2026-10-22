@@ -37,7 +37,7 @@ class RichCourtCardTests(unittest.TestCase):
                  "rich-jurisdiction","rich-magistrates","rich-filing","rich-cases",
                  "rich-fees","rich-map","rich-sources"]:
    self.assertIn(marker,self.card)
-  self.assertIn("court.judges.map",self.data)
+  self.assertIn("judgeRows.map",self.data)
   self.assertIn("court.serviceLinks.map",self.card)
   self.assertIn("source",self.matrix)
 
