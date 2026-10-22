@@ -24,3 +24,9 @@ export function regionalArbitrationSearch(q:string,kind:string,region:string):Re
     !needle||item.courtName.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(needle)
   );
 }
+
+export function regionalArbitrationHref(region:string,slug:string):string{
+  return region==='moscow'
+    ?'/courts/moscow/arbitration/'+encodeURIComponent(slug)
+    :'/courts/'+encodeURIComponent(region)+'/'+encodeURIComponent(slug);
+}
