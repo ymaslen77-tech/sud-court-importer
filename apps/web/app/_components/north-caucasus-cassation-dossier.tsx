@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import dossier from '../data/north-caucasus-cassation-dossier.json';
 import {findRegion} from '../lib/regions';
+import {CourtDossierCompleteness} from './court-dossier-completeness';
 
 type Props={region:string};
 function Source({href,children}:{href:string;children:React.ReactNode}){
@@ -33,6 +34,7 @@ export function NorthCaucasusCassationDossier({region}:Props){
       <p><Source href={dossier.officialSite}>Официальный сайт суда</Source></p>
     </section>
 
+    <CourtDossierCompleteness withSources={['identity','contacts','jurisdiction','filing','fees','map','sources']}/>
     <nav className="court-toc" aria-label="Разделы карточки арбитражного суда">
       <strong>На этой странице</strong>
       <a href="#nc-contacts">Контакты</a>
