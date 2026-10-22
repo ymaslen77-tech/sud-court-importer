@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {researchRegions,researchCourtsByRegion} from '../../lib/research-courts';
+import {regionalArbitrationCourts} from '../../lib/regional-arbitration';
+import {ALL_REGIONS} from '../../lib/regions';
 
 export const metadata:Metadata={
   title:'Наполненность каталога судов — исследовательские данные',
@@ -10,6 +12,8 @@ export const metadata:Metadata={
 
 export default function CourtCoveragePage(){
   const regions=researchRegions();
+  const arbitration=regionalArbitrationCourts();
+  const withPreliminaryNames=ALL_REGIONS.filter(region=>regionalArbitrationCourts(region.slug).length>0).length;
   const rows=regions.map(region=>{
     const courts=researchCourtsByRegion(region.slug);
     return {
@@ -40,6 +44,16 @@ export default function CourtCoveragePage(){
       <article><strong>{sum('addresses')}</strong><span>Адресов из исходных реестров</span></article>
       <article><strong>0</strong><span>Редакционно одобренных в этом наборе</span></article>
     </div>
+    <section className="section-wrap">
+      <div className="section-intro">
+        <span className="eyebrow">Следующий этап · справочник названий</span>
+        <h2>Арбитражные суды по регионам</h2>
+        <p>{arbitration.length} исходных наименований распределены по {withPreliminaryNames} регионам.
+        Они доступны в региональных каталогах с пометкой «на проверке».
+        Это не {arbitration.length} юридически утверждённых карточек: ни адреса, ни составы судей в этой партии не подтверждены.</p>
+        <p><Link href="/courts/arbitration" className="text-link">Общий перечень арбитражных судов →</Link></p>
+      </div>
+    </section>
     <section className="section-wrap">
       <div className="section-intro">
         <span className="eyebrow">Поля источников</span>
