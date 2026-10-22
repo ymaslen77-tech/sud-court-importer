@@ -7,6 +7,7 @@ import {COURT_CATEGORIES} from '../lib/court-taxonomy';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
 import {ALL_REGIONS} from '../lib/regions';
+import {regionalArbitrationCourts} from '../lib/regional-arbitration';
 
 export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
@@ -56,11 +57,11 @@ export default async function CourtsDirectory() {
           <small>{item.court_count} карточек</small><span aria-hidden="true">↗</span>
         </Link>)}
         {awaiting.map(item=><Link className="region-item" key={item.slug} href={'/courts/'+item.slug}>
-          <span><strong>{item.name}</strong><small>Список судов ещё не наполнен</small></span>
-          <small>0 карточек</small><span aria-hidden="true">↗</span>
+          <span><strong>{item.name}</strong><small>Справочные названия арбитражных судов; полные карточки ожидают проверки</small></span>
+          <small>{regionalArbitrationCourts(item.slug).length} названий</small><span aria-hidden="true">↗</span>
         </Link>)}
       </div>
-      <p className="court-source">Показаны все 89 регионов из справочника РФ; наличие региона не означает, что его суды уже загружены. У предварительных карточек могут отсутствовать актуальные состав судей, карта или судебные дела.</p>
+      <p className="court-source">Показаны все 89 регионов из справочника РФ. Добавленные названия арбитражных судов — предварительные, не проверенные по актуальным адресам и составу. Это ещё не полный каталог действующих судов. У предварительных карточек могут отсутствовать актуальные состав судей, карта или судебные дела.</p>
       {failed?<p className="court-source" role="status">Подтверждённая база сейчас недоступна; выше остаются доступными справочные региональные списки.</p>:null}
       <div className="court-filter-actions">
         <Link className="button button-red" href="/search?region=moscow&kind=general-district">Показать районные суды Москвы →</Link>
