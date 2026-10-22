@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {CourtDossierData,OfficialFact,CourtPerson} from '../lib/court-rich-records';
 import {findRegion} from '../lib/regions';
+import {CourtDossierCompleteness} from './court-dossier-completeness';
 
 function Ref({url}:{url:string}){
  return <a className="court-source" href={url} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>;
@@ -43,6 +44,9 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
    Это не подтверждение отсутствия более поздних изменений. Для процессуальных действий сверяйте актуальность на официальном сайте.</div>
   <p><a className="button button-dark" href={court.officialUrl} target="_blank" rel="noopener noreferrer">Официальный сайт суда ↗</a></p>
  </section>
+ <CourtDossierCompleteness withSources={[
+  'identity','contacts','judges','staff','magistrates','filing','fees','sources'
+ ]}/>
  <nav className="court-toc" aria-label="Разделы карточки суда">
   <strong>Содержание досье</strong>
   <a href="#rich-identity">Паспорт</a>
