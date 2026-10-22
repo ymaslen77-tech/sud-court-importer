@@ -46,7 +46,7 @@ class RegionalArbitrationDirectoryTests(unittest.TestCase):
         self.assertIn("regionalArbitrationCourt(p.region,p.court)",detail)
         self.assertIn("robots:{index:false,follow:true}",detail)
         self.assertIn("не прошёл редакционную приёмку",preview)
-        self.assertIn("ещё не сверены",preview)
+        self.assertIn("ещё не проверены",preview)
         moscow=(APP / "courts/moscow/page.tsx").read_text(encoding="utf-8")
         moscow_arbitration=(APP / "courts/moscow/arbitration/[slug]/page.tsx").read_text(encoding="utf-8")
         self.assertIn("regionalArbitrationCourts('moscow')",moscow)
