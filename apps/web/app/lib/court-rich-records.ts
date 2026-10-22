@@ -5,6 +5,7 @@ export type CourtPerson = {name:string;role:string;appointment?:string;source:st
 export type CourtDossierData = {
  slug:string; region:string; name:string;kind:string;
  officialUrl:string; observedOn:string;
+ judgesPublished?:string; contactsPublished?:string;
  addresses:OfficialFact[]; phones:OfficialFact[]; emails:OfficialFact[];
  judges:CourtPerson[]; staff:CourtPerson[];
  serviceLinks:{label:string;url:string;note?:string}[];
@@ -42,6 +43,7 @@ export const pushkinskyCourt:CourtDossierData={
  kind:'Городской суд общей юрисдикции',
  officialUrl:site,
  observedOn:'22.10.2026',
+ judgesPublished:'02.07.2026',contactsPublished:'24.07.2026',
  addresses:[
   {value:'141240, Московская область, г. Пушкино, мкр. Мамонтовка, ул. Ленточка, д. 20а',source:site,note:'Один из двух адресов в официальном справочнике; уточняйте, в каком корпусе нужное подразделение'},
   {value:'141207, Московская область, г. Пушкино, ул. Оранжерейная, д. 21',source:site,note:'Второй адрес в официальном справочнике'}
