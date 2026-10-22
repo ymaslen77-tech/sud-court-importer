@@ -27,7 +27,9 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  const cases=court.serviceLinks.find(x=>x.label==='Судебное делопроизводство и поиск дела');
  const fee=court.serviceLinks.find(x=>x.label==='Реквизиты и калькулятор госпошлины');
  const juris=court.serviceLinks.find(x=>x.label==='Территориальная подсудность');
- const mapQuery=encodeURIComponent('Пушкино, улица Оранжерейная, 21');
+ const mapQuery=encodeURIComponent(court.addresses[1]?.value??court.addresses[0]?.value??court.name);
+ const casesNotice=court.notes.find(x=>x.section==='Судебные дела и заседания');
+ const jurisdictionNotice=court.notes.find(x=>x.section==='Подсудность по точному адресу');
  return <>
  <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>
   <Link href="/courts">Суды России</Link><span>/</span>
@@ -37,7 +39,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
   <h1>{court.name}</h1>
   <p className="lead">{court.kind} · {regionName}</p>
   <div className="notice" role="note">Дата проверки доступных официальных публикаций: {court.observedOn}.
-   Состав судей приведён по официальному списку от 02.07.2026, телефонный справочник — по публикации от 24.07.2026.
+   Состав судей приведён по официальной публикации{court.judgesPublished?' от '+court.judgesPublished:''}, телефонный справочник — по публикации{court.contactsPublished?' от '+court.contactsPublished:''}.
    Это не подтверждение отсутствия более поздних изменений. Для процессуальных действий сверяйте актуальность на официальном сайте.</div>
   <p><a className="button button-dark" href={court.officialUrl} target="_blank" rel="noopener noreferrer">Официальный сайт суда ↗</a></p>
  </section>
@@ -65,7 +67,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  <section id="rich-addresses" className="court-section">
   <span className="eyebrow">Адреса и службы</span>
   <h2>Здания, телефоны и электронная почта</h2>
-  <h3>Два адреса суда</h3>
+  <h3>Адреса суда: {court.addresses.length}</h3>
   <FactList items={court.addresses}/>
   <h3>Контактные телефоны по подразделениям</h3>
   <FactList items={court.phones}/>
@@ -75,7 +77,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  <section id="rich-judges" className="court-section">
   <span className="eyebrow">Состав суда из официальной публикации</span>
   <h2>Судьи и основания назначения · {court.judges.length}</h2>
-  <p>Ниже сохранён состав из официальной публикации, изменённой 02.07.2026.
+  <p>Ниже сохранён состав из официальной публикации{court.judgesPublished?', изменённой '+court.judgesPublished:''}.
   Наличие ФИО в историческом перечне не доказывает полномочия на текущую дату; переходы ведут на официальную страницу с указанием указов Президента РФ.</p>
   <Roster people={court.judges}/>
   {judgeSource?<p><a href={judgeSource.url} target="_blank" rel="noopener noreferrer">Сверить опубликованный состав ↗</a></p>:null}
@@ -94,8 +96,8 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  <section id="rich-jurisdiction" className="court-section">
   <span className="eyebrow">Предметная и территориальная компетенция</span>
   <h2>Какие дела рассматривает суд и какие адреса обслуживает</h2>
-  <p>Городской суд рассматривает категории гражданских, уголовных, административных дел и жалоб на акты мировых судей в пределах полномочий, установленных процессуальным законом. Район расположения объекта или заявителя сам по себе не гарантирует территориальную подсудность.</p>
-  <p>Уличный и домовой перечень на официальной странице сейчас актуализируется. Точный результат поиска по адресу до проверки первичных границ не выдаётся.</p>
+  <p>Компетенция конкретного суда определяется его видом, уровнем судебной системы и действующим процессуальным законом. Район расположения объекта или заявителя сам по себе не гарантирует территориальную подсудность.</p>
+  <p>{jurisdictionNotice?.message??'Точная уличная и домовая подсудность требует проверки по действующему официальному источнику.'}</p>
   {juris?<p><a href={juris.url} target="_blank" rel="noopener noreferrer">Официальный раздел территориальной подсудности ↗</a></p>:null}
   <p><Link href="/jurisdiction">Правила определения подсудности →</Link></p>
  </section>
@@ -103,8 +105,8 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
   <span className="eyebrow">Связанные судебные участки</span>
   <h2>Мировые судьи судебного района</h2>
   <p>Номера участков из официальной публикации. Персональный состав мировых судей, адреса участков и границы их территорий проверяются отдельно.</p>
-  <div className="results">{court.magistrateUnits.map(x=><a className="result-row" key={x.number}
-    href={x.url} target="_blank" rel="noopener noreferrer"><span><strong>Судебный участок № {x.number}</strong><small>Официальный перечень и территория обслуживания</small></span><span>↗</span></a>)}</div>
+  {court.magistrateUnits.length?<div className="results">{court.magistrateUnits.map(x=><a className="result-row" key={x.number}
+    href={x.url} target="_blank" rel="noopener noreferrer"><span><strong>Судебный участок № {x.number}</strong><small>Официальный перечень и территория обслуживания</small></span><span>↗</span></a>)}</div>:<p>Связанные судебные участки ещё не подтверждены официальными документами.</p>}
  </section>
  <section id="rich-filing" className="court-section">
   <span className="eyebrow">Инструкция заявителю</span>
@@ -121,7 +123,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  <section id="rich-cases" className="court-section">
   <span className="eyebrow">Судебное делопроизводство</span>
   <h2>Поиск дела, судебные акты и заседания</h2>
-  <p>Ищите дело на официальном портале по номеру, виду производства и другим доступным параметрам. На момент исследования официальный раздел временно недоступен; поэтому номер, дату заседания, зал или имя судьи мы не подставляем автоматически.</p>
+  <p>Ищите дело на официальном портале по номеру, виду производства и другим доступным параметрам. {casesNotice?.message??'Проверенные индивидуальные дела и расписание заседаний пока не подключены; не подставляем вымышленные номера, залы и судей.'}</p>
   {cases?<p><a href={cases.url} target="_blank" rel="noopener noreferrer">Официальная система поиска дел ↗</a></p>:null}
   <p>Публикация судебных актов зависит от правил ограничения доступа и обезличивания. Отсутствие записи на сайте не означает, что дела нет.</p>
  </section>
@@ -134,14 +136,14 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
  <section id="rich-map" className="court-section">
   <span className="eyebrow">Местоположение</span>
   <h2>Карта, проезд и доступность здания</h2>
-  <p>Суд публикует два адреса. Карта открывает поиск по одному адресу и не удостоверяет конкретный вход или корпус. Перед посещением уточняйте назначение здания по телефону.</p>
+  <p>Адресов в исходных сведениях: {court.addresses.length}. Карта открывает поиск по адресу и не удостоверяет конкретный вход или корпус. Перед посещением уточняйте назначение здания по телефону.</p>
   <p><a href={'https://yandex.ru/maps/?text='+mapQuery} target="_blank" rel="noopener noreferrer">Открыть адрес в Яндекс Картах ↗</a></p>
   <p>Доступность входа, лифта, парковки и условий посещения маломобильными гражданами требует самостоятельной проверки.</p>
  </section>
  <section id="rich-sources" className="court-section">
   <span className="eyebrow">Контроль достоверности</span>
   <h2>Источники, дата публикации и незакрытые проверки</h2>
-  <p>Основа — персональный официальный сайт суда, опубликованный состав и телефонный справочник. Даты публикаций могут отличаться от даты посещения портала.</p>
+  <p>Основа — доступные официальные публикации, включая состав суда и контакты, если они имеются. Даты публикаций могут отличаться от даты посещения портала.</p>
   <ul>{court.serviceLinks.map(x=><li key={x.url+x.label}>
    <a href={x.url} target="_blank" rel="noopener noreferrer">{x.label} ↗</a>
    {x.note?<span> — {x.note}</span>:null}
