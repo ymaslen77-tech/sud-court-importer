@@ -6,6 +6,7 @@ import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
 import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../lib/research-courts';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
+import {findRegion} from '../lib/regions';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -18,7 +19,7 @@ export default async function SearchPage({searchParams}:Props){
  const requestedKind=textValue(params.kind,80);
  const requestedRegion=textValue(params.region,40);
  const kind=COURT_KINDS.includes(requestedKind)?requestedKind:'';
- const region=(requestedRegion==='moscow'||researchRegions().some(x=>x.slug===requestedRegion))?requestedRegion:'';
+ const region=findRegion(requestedRegion)?requestedRegion:'';
  const valid=(!q||q.length>=2)&&q.length<=100;
  const hasAny=Boolean(q||kind||region);
  const base=region?(region==='moscow'?[]:researchCourtsByRegion(region)):researchRegions().flatMap(r=>researchCourtsByRegion(r.slug));
@@ -60,7 +61,7 @@ export default async function SearchPage({searchParams}:Props){
      }
    }catch{failed=true;}
  }
- const label=[q?'«'+q+'»':null,kind?findCategory(kind)?.short:null,region?(region==='moscow'?'Москва':researchRegions().find(r=>r.slug===region)?.name):null].filter(Boolean).join(' · ');
+ const label=[q?'«'+q+'»':null,kind?findCategory(kind)?.short:null,region?findRegion(region)?.name:null].filter(Boolean).join(' · ');
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды</Link><span>/</span>Поиск</div>
   <section className="section-hero">
@@ -113,7 +114,7 @@ export default async function SearchPage({searchParams}:Props){
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
       <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>
-      <p>Это результаты фильтрации открытых справочных списков, а не подтверждённый реестр. Предварительные записи доступны в трёх регионах; московская серия показана отдельно. Это не полный реестр России.</p>
+      <p>Это результаты фильтрации открытых справочных списков, а не подтверждённый реестр. Предварительные записи доступны в трёх регионах; московская серия показана отдельно. Это не полный реестр судов России.</p>
     </div>
     {researchOnly.length?<div className="results">{researchOnly.slice(0,100).map(c=><Link className="result-row" key={c.code}
       href={'/courts/'+c.region+'/sud-'+c.code.toLowerCase()}>
