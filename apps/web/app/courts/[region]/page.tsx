@@ -4,6 +4,7 @@ import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api
 import {researchCourtsByRegion} from '../../lib/research-courts';
 import {pilotPublicCourts} from '../../lib/pilot-public';
 import {findRegion} from '../../lib/regions';
+import {regionalArbitrationCourts} from '../../lib/regional-arbitration';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -41,6 +42,7 @@ export default async function RegionPage({params,searchParams}:Props){
   let result:RegionCourtPage={items:[],total:0,page,pageSize:50};
   let label=findRegion(region)?.name??region;
   const pilot=pilotPublicCourts().filter(x=>'region-'+x.region_code===region);
+  const arbitration=regionalArbitrationCourts(region);
   const codes=new Set(pilot.map(x=>x.external_code));
   const candidates=researchCourtsByRegion(region).filter(x=>!codes.has(x.code));
   if(candidates.length)label=candidates[0].regionName;
@@ -117,6 +119,20 @@ export default async function RegionPage({params,searchParams}:Props){
           </span><span aria-hidden="true">↗</span>
         </Link>)}
       </div>
+    </section>:null}
+    {arbitration.length>0?<section className="section-wrap" aria-labelledby="regional-arbitration">
+      <div className="section-intro">
+        <span className="eyebrow">Исходный список арбитражных судов · ещё не проверен</span>
+        <h2 id="regional-arbitration">Арбитражные суды и судебные присутствия: {arbitration.length}</h2>
+        <p>Названия перенесены из ранее сохранённого перечня официального арбитражного портала.
+        Актуальные адреса, судьи и дела не подтверждены. Это предварительные справочные страницы, а не проверенный реестр.</p>
+      </div>
+      <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
+        href={base+'/'+encodeURIComponent(item.slug)}>
+        <span><strong>{item.courtName}</strong>
+          <small>{item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · сведения требуют проверки</small>
+        </span><span aria-hidden="true">↗</span>
+      </Link>)}</div>
     </section>:null}
     <section className="callout">
       <div><span className="eyebrow">Дополнительная проверка</span>
