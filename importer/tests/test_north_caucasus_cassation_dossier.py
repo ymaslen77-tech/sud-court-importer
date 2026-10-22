@@ -21,6 +21,8 @@ class NorthCaucasusCassationDossierTests(unittest.TestCase):
         self.assertIn("region-07",row["regions"])
         self.assertIn("region-23",row["regions"])
         self.assertEqual(self.data["courtClassCode"],"Ф08")
+        self.assertEqual(row["contactSourceUrl"],self.data["contactDirectorySource"])
+        self.assertNotIn("krasnodar-leninsky",row["contactSourceUrl"])
 
     def test_each_source_url_is_https_and_known_court_services(self):
         urls=[self.data[k] for k in (
