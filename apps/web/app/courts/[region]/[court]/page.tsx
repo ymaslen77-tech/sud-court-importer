@@ -9,6 +9,7 @@ import {ResearchCourtPreview} from '../../../_components/research-court-preview'
 import {pilotPublicRecord} from '../../../lib/pilot-public';
 import {regionalArbitrationCourt} from '../../../lib/regional-arbitration';
 import {RegionalArbitrationPreview} from '../../../_components/regional-arbitration-preview';
+import {NorthCaucasusCassationDossier} from '../../../_components/north-caucasus-cassation-dossier';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -35,6 +36,13 @@ const changes:Record<string,string>={
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const p=await params;
+ if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))return {
+   title:'Арбитражный суд Северо-Кавказского округа — адрес, карта, состав, кассация и судебные дела',
+   description:'Адрес суда в Краснодаре, контакты, карта, председатель, госпошлина, порядок подачи кассационной жалобы, официальные дела и судебные заседания, территория округа.',
+   alternates:{canonical:'/courts/region-23/arbitration-district-north-caucasus'},
+   robots:{index:false,follow:true}
+ };
+
  try{
   const c=await getCourt(p.region,p.court);
   if(!c){
@@ -83,6 +91,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 
 export default async function CourtPage({params}:Props){
  const p=await params;
+ if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))
+   return <NorthCaucasusCassationDossier region={p.region}/>;
+
  let court:CourtDetail|null=null;
  try{ court=await getCourt(p.region,p.court); }
  catch(error){ if(!researchCourt(p.region,p.court)&&!regionalArbitrationCourt(p.region,p.court))throw error; }

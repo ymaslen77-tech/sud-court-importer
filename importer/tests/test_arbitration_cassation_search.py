@@ -37,7 +37,7 @@ class CassationDistrictTests(unittest.TestCase):
         self.assertEqual(d["slug"],"arbitration-district-north-caucasus")
         self.assertEqual(d["officialCourtUrl"],"https://fassko.arbitr.ru")
         self.assertIn("Рашпилевская",d["address"])
-        self.assertTrue(d["contactSourceUrl"].endswith("name=sud"))
+        self.assertIn("cons_doc_LAW_56549",d["contactSourceUrl"])
 
     def test_search_respects_court_type_and_displays_match_not_absence(self):
         lib=(APP/"lib/regional-arbitration.ts").read_text(encoding="utf-8")
