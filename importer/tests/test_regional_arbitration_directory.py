@@ -46,7 +46,7 @@ class RegionalArbitrationDirectoryTests(unittest.TestCase):
         self.assertIn("regionalArbitrationCourt(p.region,p.court)",detail)
         self.assertIn("robots:{index:false,follow:true}",detail)
         self.assertIn("не прошёл редакционную приёмку",preview)
-        self.assertIn("не подтверждены",preview)
+        self.assertIn("ещё не сверены",preview)
 
 if __name__=="__main__":
     unittest.main()
