@@ -4,7 +4,7 @@ import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api
 import {researchCourtsByRegion} from '../../lib/research-courts';
 import {pilotPublicCourts} from '../../lib/pilot-public';
 import {findRegion} from '../../lib/regions';
-import {regionalArbitrationCourts} from '../../lib/regional-arbitration';
+import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -128,7 +128,7 @@ export default async function RegionPage({params,searchParams}:Props){
         Актуальные адреса, судьи и дела не подтверждены. Это предварительные справочные страницы, а не проверенный реестр.</p>
       </div>
       <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
-        href={base+'/'+encodeURIComponent(item.slug)}>
+        href={regionalArbitrationHref(region,item.slug)}>
         <span><strong>{item.courtName}</strong>
           <small>{item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · сведения требуют проверки</small>
         </span><span aria-hidden="true">↗</span>
