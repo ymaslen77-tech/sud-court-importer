@@ -73,7 +73,9 @@ export default async function SearchPage({searchParams}:Props){
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
     {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
       По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
-      {' '}<a href="#arbitration-results">Перейти к найденному суду ↓</a>
+      {' '}{arbitration.length===1
+        ?<Link href={regionalArbitrationHref(region||arbitration[0].regions[0],arbitration[0].slug)}>{arbitration[0].courtName} →</Link>
+        :<a href="#arbitration-results">Посмотреть список судов ↓</a>}
     </p>:null}
   </section>
   <section className="section-wrap">
@@ -129,7 +131,7 @@ export default async function SearchPage({searchParams}:Props){
       <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
     </Link>)}</div>
   </section>:null}
-  {valid&&hasAny?<section className="section-wrap" aria-labelledby="unreviewed-filters">
+  {valid&&hasAny&&(!kind||!kind.startsWith('arbitration-'))?<section className="section-wrap" aria-labelledby="unreviewed-filters">
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
       <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>
