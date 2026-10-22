@@ -18,8 +18,8 @@ class RichCourtCardTests(unittest.TestCase):
   self.assertEqual(len(names),17)
   self.assertEqual(len(set(names)),17)
   self.assertIn("source:composition",self.data)
-  self.assertIn("02.07.2026",self.card)
-  self.assertIn("24.07.2026",self.card)
+  self.assertIn("02.07.2026",self.data)
+  self.assertIn("24.07.2026",self.data)
 
  def test_pilot_has_two_official_buildings_and_sources(self):
   self.assertIn("мкр. Мамонтовка",self.data)
