@@ -8,6 +8,7 @@ import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
 import {findRegion} from '../lib/regions';
 import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional-arbitration';
+import {pushkinskyCourt} from '../lib/court-rich-records';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -35,6 +36,11 @@ export default async function SearchPage({searchParams}:Props){
        value.toLocaleLowerCase('ru').includes(q.toLocaleLowerCase('ru'))
    ))):[];
  const arbitration=valid&&hasAny?regionalArbitrationSearch(q,kind,region):[];
+ const pushkinskyMatch=valid&&hasAny&&(!kind||kind==='general-district')
+   &&(!region||region===pushkinskyCourt.region)
+   &&(!q||[pushkinskyCourt.name,...pushkinskyCourt.addresses.map(a=>a.value)]
+      .some(value=>value.toLocaleLowerCase('ru').replace(/ё/g,'е')
+        .includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е'))));
  const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
  const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
  const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
@@ -94,6 +100,19 @@ export default async function SearchPage({searchParams}:Props){
       </Link>)}</div></>
     :<div className="empty-state">В подтверждённой базе Neon пока нет полностью принятых карточек по этим условиям. {arbitration.length>0?'Ниже найден подходящий суд в справочном каталоге и указан источник его компетенции.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
   </section>
+  {pushkinskyMatch?<section className="section-wrap" aria-labelledby="pushkinsky-result">
+    <div className="section-intro">
+      <span className="eyebrow">Расширенное досье по официальным источникам</span>
+      <h2 id="pushkinsky-result">Найден суд: {pushkinskyCourt.name}</h2>
+      <p>Опубликованные сведения о зданиях, судьях, аппарате суда, участках и порядке обращения.
+      Редакционная актуальность требует повторной проверки перед использованием.</p>
+    </div>
+    <div className="results"><Link className="result-row"
+       href={'/courts/'+pushkinskyCourt.region+'/'+pushkinskyCourt.slug}>
+       <span><strong>{pushkinskyCourt.name}</strong><small>Московская область · городской суд</small></span>
+       <span aria-hidden="true">↗</span>
+    </Link></div>
+  </section>:null}
   {valid&&hasAny&&moscow.length>0?<section className="section-wrap" aria-labelledby="moscow-matches">
    <div className="section-intro">
     <span className="eyebrow">Справочные карточки Москвы · официальный портал судов</span>
