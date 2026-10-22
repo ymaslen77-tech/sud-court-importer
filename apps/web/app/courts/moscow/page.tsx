@@ -30,8 +30,8 @@ export default function MoscowDirectory(){
     <div className="section-intro">
       <span className="eyebrow">Официальный справочный перечень · не проверен повторно</span>
       <h2 id="moscow-arbitration">Арбитражные суды Москвы</h2>
-      <p>Названия из ранее сохранённого перечня арбитражного портала;
-      реквизиты, адреса и составы судей этой группы пока не проверены.</p>
+      <p>Названия из перечня арбитражного портала. Территориальная компетенция кассационного округа подтверждается законом;
+      остальные контактные сведения и составы могут нуждаться в сверке.</p>
     </div>
     <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
       href={regionalArbitrationHref('moscow',item.slug)}>

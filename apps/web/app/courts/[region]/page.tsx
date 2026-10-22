@@ -123,14 +123,14 @@ export default async function RegionPage({params,searchParams}:Props){
     {arbitration.length>0?<section className="section-wrap" aria-labelledby="regional-arbitration">
       <div className="section-intro">
         <span className="eyebrow">Исходный список арбитражных судов · ещё не проверен</span>
-        <h2 id="regional-arbitration">Арбитражные суды и судебные присутствия: {arbitration.length}</h2>
+        <h2 id="regional-arbitration">Арбитражные суды по территории региона: {arbitration.length}</h2>
         <p>Названия перенесены из ранее сохранённого перечня официального арбитражного портала.
-        Актуальные адреса, судьи и дела не подтверждены. Это предварительные справочные страницы, а не проверенный реестр.</p>
+        Для кассационных судов учтена территориальная компетенция по статье 24 ФКЗ № 1-ФКЗ. Адреса, судьи и дела в общем случае ещё не проверены.</p>
       </div>
       <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
         href={regionalArbitrationHref(region,item.slug)}>
         <span><strong>{item.courtName}</strong>
-          <small>{item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · сведения требуют проверки</small>
+          <small>{item.courtKind==='arbitration-district'?'Арбитражная кассация · судебный округ':item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · {item.jurisdictionLawUrl?'юрисдикция установлена законом':'сведения требуют проверки'}</small>
         </span><span aria-hidden="true">↗</span>
       </Link>)}</div>
     </section>:null}

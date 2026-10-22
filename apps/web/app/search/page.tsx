@@ -71,6 +71,10 @@ export default async function SearchPage({searchParams}:Props){
     <h1>Найти суд</h1>
     <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+    {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
+      По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
+      {' '}<a href="#arbitration-results">Перейти к найденному суду ↓</a>
+    </p>:null}
   </section>
   <section className="section-wrap">
     <div className="section-intro">
@@ -86,7 +90,7 @@ export default async function SearchPage({searchParams}:Props){
          <span><strong>{c.name}</strong><small>{c.region_name??''} {c.address?' · '+c.address:''}</small></span>
          <span aria-hidden="true">↗</span>
       </Link>)}</div></>
-    :<div className="empty-state">Проверенных карточек по этим условиям пока нет. Исследовательские совпадения показаны ниже, если они доступны.</div>}
+    :<div className="empty-state">В подтверждённой базе Neon пока нет полностью принятых карточек по этим условиям. {arbitration.length>0?'Ниже найден подходящий суд в справочном каталоге и указан источник его компетенции.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
   </section>
   {valid&&hasAny&&moscow.length>0?<section className="section-wrap" aria-labelledby="moscow-matches">
    <div className="section-intro">
@@ -103,13 +107,12 @@ export default async function SearchPage({searchParams}:Props){
     <div className="section-intro">
       <span className="eyebrow">Арбитражные суды · исходный официальный список</span>
       <h2 id="arbitration-results">Найдены названия арбитражных судов: {arbitration.length}</h2>
-      <p>Это справочные названия из сохранённого перечня, не подтверждённые текущими контактами или составом.
-       Для одного суда, обслуживающего несколько регионов, общая выдача не создаёт повторов.</p>
+      <p>Названия взяты из официального перечня. Для арбитражной кассации выбор региона учитывает территорию судебного округа согласно статье 24 ФКЗ № 1-ФКЗ — независимо от адреса суда. Для остальных записей контакты и составы могут быть не проверены.</p>
     </div>
     <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
       href={regionalArbitrationHref(region||item.regions[0],item.slug)}>
       <span><strong>{item.courtName}</strong>
-        <small>{item.courtKind==='arbitration-presence'?'Судебное присутствие':'Арбитражный суд субъекта'} · предварительно</small>
+        <small>{item.courtKind==='arbitration-district'?'Арбитражная кассация · судебный округ':item.courtKind==='arbitration-presence'?'Судебное присутствие':'Арбитражный суд субъекта'} · {item.jurisdictionLawUrl?'компетенция подтверждена законом':'предварительно'}</small>
       </span><span aria-hidden="true">↗</span>
     </Link>)}</div>
   </section>:null}

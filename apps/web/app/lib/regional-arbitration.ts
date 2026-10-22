@@ -1,16 +1,25 @@
 import raw from '../data/regional-arbitration-index.json';
+import cassation from '../data/arbitration-cassation-jurisdiction.json';
 
 // The records are names from a previously captured official arbitration list.
 // They are NOT editor-approved courts, addresses, or proof of active jurisdiction.
 export type RegionalArbitrationName = {
   courtName:string;
-  courtKind:'arbitration-subject'|'arbitration-presence';
+  courtKind:'arbitration-subject'|'arbitration-presence'|'arbitration-district';
   slug:string;
   regions:string[];
   sourceRecordUrl:string;
   editorialStatus:'unreviewed';
+  jurisdictionLawUrl?:string;
+  officialCourtUrl?:string;
+  address?:string;
+  phone?:string;
+  contactSourceUrl?:string;
 };
-const names = raw as RegionalArbitrationName[];
+const names: RegionalArbitrationName[] = [
+  ...raw as RegionalArbitrationName[],
+  ...cassation as RegionalArbitrationName[]
+];
 export function regionalArbitrationCourts(region?:string):RegionalArbitrationName[]{
   return names.filter(item=>!region||item.regions.includes(region));
 }
@@ -18,10 +27,11 @@ export function regionalArbitrationCourt(region:string,slug:string):RegionalArbi
   return names.find(item=>item.slug===slug&&item.regions.includes(region))??null;
 }
 export function regionalArbitrationSearch(q:string,kind:string,region:string):RegionalArbitrationName[]{
-  if(kind&&kind!=='arbitration-subject')return [];
+  if(kind&&!['arbitration-subject','arbitration-district'].includes(kind))return [];
   const needle=q.trim().toLocaleLowerCase('ru').replace(/ё/g,'е');
   return regionalArbitrationCourts(region).filter(item=>
-    !needle||item.courtName.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(needle)
+    (!kind||(kind==='arbitration-subject'?['arbitration-subject','arbitration-presence'].includes(item.courtKind):item.courtKind===kind))
+    && (!needle||item.courtName.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(needle))
   );
 }
 
