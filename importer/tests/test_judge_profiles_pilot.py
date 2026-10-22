@@ -31,7 +31,7 @@ class JudgeProfileTests(unittest.TestCase):
   self.assertIn("pushkinskyCourt.judges.map",self.data)
   self.assertIn("judgeForName(p.name)",self.court)
   self.assertIn("judgeProfileHref",self.court)
-  self.assertIn("pushkinskyJudges.map",self.directory)
+  self.assertIn("matches.map",self.directory)
   self.assertIn("judgeProfileHref(judge)",self.directory)
   self.assertIn("generateStaticParams()",self.detail)
   self.assertIn("return pushkinskyJudges.map",self.detail)
@@ -42,7 +42,6 @@ class JudgeProfileTests(unittest.TestCase):
  def test_privacy_and_provenance_controls(self):
   self.assertIn("не являются личными контактами судьи",self.detail)
   self.assertIn("не воспроизводятся целиком из сторонних каталогов",self.detail)
-  self.assertIn("непроверенные отзывы",self.detail) if False else None
   self.assertIn("неподтверждённые отзывы",self.detail)
   self.assertIn("Вторичный источник",self.detail)
 
