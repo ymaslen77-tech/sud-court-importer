@@ -1,5 +1,5 @@
 import {COURT_CATEGORIES} from '../lib/court-taxonomy';
-import {researchRegions} from '../lib/research-courts';
+import {ALL_REGIONS,REGIONS_WITH_LOCAL_CARDS} from '../lib/regions';
 
 type Props={initialValue?:string;initialKind?:string;initialRegion?:string;compact?:boolean};
 export function CourtSearch({initialValue='',initialKind='',initialRegion='',compact=false}:Props){
@@ -14,9 +14,8 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       </label>
       <label htmlFor={id+'-region'}>Регион
         <select id={id+'-region'} name="region" defaultValue={initialRegion}>
-          <option value="">Все регионы с данными</option>
-          <option value="moscow">Москва — 12 справочных карточек</option>
-          {researchRegions().map(r=><option key={r.slug} value={r.slug}>{r.name}</option>)}
+          <option value="">Все регионы России</option>
+          {ALL_REGIONS.map(r=><option key={r.slug} value={r.slug}>{r.name}{REGIONS_WITH_LOCAL_CARDS.has(r.slug)?' — есть карточки':' — наполнение ожидается'}</option>)}
         </select>
       </label>
       <label className="filter-full" htmlFor={id+'-query'}>Название, адрес суда или классификационный код

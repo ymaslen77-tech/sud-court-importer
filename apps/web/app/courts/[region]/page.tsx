@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api';
 import {researchCourtsByRegion} from '../../lib/research-courts';
 import {pilotPublicCourts} from '../../lib/pilot-public';
+import {findRegion} from '../../lib/regions';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -14,7 +15,7 @@ function selectPage(raw:string|string[]|undefined){
   return typeof raw==='string'&&/^[1-9][0-9]{0,3}$/.test(raw)?Number(raw):1;
 }
 function regionName(slug:string,regions:Awaited<ReturnType<typeof getRegions>>){
-  return regions.find(r=>r.slug===slug)?.name??(slug==='moscow'?'Москва':slug);
+  return regions.find(r=>r.slug===slug)?.name??(findRegion(slug)?.name??slug);
 }
 export async function generateMetadata({params,searchParams}:Props):Promise<Metadata>{
   const [{region},query]=await Promise.all([params,searchParams]);
@@ -38,7 +39,7 @@ export default async function RegionPage({params,searchParams}:Props){
   const [{region},query]=await Promise.all([params,searchParams]);
   const page=selectPage(query.page);
   let result:RegionCourtPage={items:[],total:0,page,pageSize:50};
-  let label=region==='moscow'?'Москва':region;
+  let label=findRegion(region)?.name??region;
   const pilot=pilotPublicCourts().filter(x=>'region-'+x.region_code===region);
   const codes=new Set(pilot.map(x=>x.external_code));
   const candidates=researchCourtsByRegion(region).filter(x=>!codes.has(x.code));
