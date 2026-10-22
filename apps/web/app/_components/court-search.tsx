@@ -15,7 +15,7 @@ export function CourtSearch({initialValue='',initialKind='',initialRegion='',com
       <label htmlFor={id+'-region'}>Регион
         <select id={id+'-region'} name="region" defaultValue={initialRegion}>
           <option value="">Все регионы России</option>
-          {ALL_REGIONS.map(r=><option key={r.slug} value={r.slug}>{r.name}{REGIONS_WITH_LOCAL_CARDS.has(r.slug)?' — есть карточки':' — наполнение ожидается'}</option>)}
+          {ALL_REGIONS.map(r=><option key={r.slug} value={r.slug}>{r.name}{REGIONS_WITH_LOCAL_CARDS.has(r.slug)?' — есть карточки':' — предварительный список судов'}</option>)}
         </select>
       </label>
       <label className="filter-full" htmlFor={id+'-query'}>Название, адрес суда или классификационный код
