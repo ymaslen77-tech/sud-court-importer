@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type {CourtDossierData,OfficialFact,CourtPerson} from '../lib/court-rich-records';
 import {findRegion} from '../lib/regions';
 import {CourtDossierCompleteness} from './court-dossier-completeness';
+import {judgeForName,judgeProfileHref} from '../lib/judge-dossiers';
 
 function Ref({url}:{url:string}){
  return <a className="court-source" href={url} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>;
@@ -15,7 +16,7 @@ function FactList({items}:{items:OfficialFact[]}){
 }
 function Roster({people}:{people:CourtPerson[]}){
  return <div className="judge-verified-list">{people.map((p,i)=><article key={p.name+'-'+i}>
-  <h3>{p.name}</h3><p>{p.role}</p>
+  <h3>{judgeForName(p.name)?<Link href={judgeProfileHref(judgeForName(p.name)!)}>{p.name} →</Link>:p.name}</h3><p>{p.role}</p>
   {p.appointment?<p>{p.appointment}</p>:null}
   <small><Ref url={p.source}/></small>
  </article>)}</div>;
@@ -82,7 +83,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
   <span className="eyebrow">Состав суда из официальной публикации</span>
   <h2>Судьи и основания назначения · {court.judges.length}</h2>
   <p>Ниже сохранён состав из официальной публикации{court.judgesPublished?', изменённой '+court.judgesPublished:''}.
-  Наличие ФИО в историческом перечне не доказывает полномочия на текущую дату; переходы ведут на официальную страницу с указанием указов Президента РФ.</p>
+  Наличие ФИО в историческом перечне не доказывает полномочия на текущую дату. Известные судьи имеют отдельные справочные досье с источниками; состав из сохранённой выборки не является полным актуальным списком.</p>
   <Roster people={court.judges}/>
   {judgeSource?<p><a href={judgeSource.url} target="_blank" rel="noopener noreferrer">Сверить опубликованный состав ↗</a></p>:null}
  </section>
