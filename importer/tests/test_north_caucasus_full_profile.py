@@ -7,7 +7,7 @@ class NorthCaucasusCourtProfileTests(unittest.TestCase):
   view=(ROOT/"_components/north-caucasus-court-profile.tsx").read_text(encoding="utf-8")
   parent=(ROOT/"_components/regional-arbitration-preview.tsx").read_text(encoding="utf-8")
   for phrase in ["350063", "Рашпилевская", "201-34-00", "info@fassko.arbitr.ru",
-    "Кабардино-Балкар", "статье 276 АПК", "статье 275 АПК", "kad.arbitr.ru",
+    "Кабардино-Балкар", "статье 276 АПК", "статья 275 АПК РФ", "kad.arbitr.ru",
     "my.arbitr.ru", "ras.arbitr.ru", "госпошлину", "Судьи и председатель", "Источники сведений"]:
    self.assertIn(phrase,view)
   self.assertIn("court.slug==='arbitration-district-north-caucasus'",parent)
