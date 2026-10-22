@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {moscowCourts} from '../../lib/moscow-courts';
+import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
 export const metadata:Metadata={
  title:'Суды Москвы: 12 подробных справочных карточек, дела и подсудность',
  description:'Районные суды Москвы: индивидуальные адреса, официальные дела, правила подачи документов и проверка территориальной подсудности.',
@@ -8,6 +9,7 @@ export const metadata:Metadata={
 };
 export default function MoscowDirectory(){
  const courts=moscowCourts();
+ const arbitration=regionalArbitrationCourts('moscow');
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span>Москва</div>
   <section className="section-hero">
@@ -24,6 +26,19 @@ export default function MoscowDirectory(){
     <span aria-hidden="true">↗</span>
    </Link>)}</div>
   </section>
+  {arbitration.length>0?<section className="section-wrap" aria-labelledby="moscow-arbitration">
+    <div className="section-intro">
+      <span className="eyebrow">Официальный справочный перечень · не проверен повторно</span>
+      <h2 id="moscow-arbitration">Арбитражные суды Москвы</h2>
+      <p>Названия из ранее сохранённого перечня арбитражного портала;
+      реквизиты, адреса и составы судей этой группы пока не проверены.</p>
+    </div>
+    <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
+      href={regionalArbitrationHref('moscow',item.slug)}>
+      <span><strong>{item.courtName}</strong><small>Справочная запись · требуется сверка</small></span>
+      <span aria-hidden="true">↗</span>
+    </Link>)}</div>
+  </section>:null}
   <section className="callout"><div><h2>Нужно определить суд по адресу?</h2>
    <p>Официальный сервис требует ввод улицы и полного номера дома, корпуса и строения. Без подтверждённой адресной границы мы не назначаем суд автоматически.</p></div>
    <a className="text-link" href="https://mos-gorsud.ru/territorial" target="_blank" rel="noopener noreferrer">Проверить адрес на портале судов Москвы ↗</a>
