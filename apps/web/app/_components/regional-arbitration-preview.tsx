@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {RegionalArbitrationName} from '../lib/regional-arbitration';
 import {findRegion} from '../lib/regions';
+import {CourtDossierCompleteness} from './court-dossier-completeness';
 import {NorthCaucasusCourtProfile} from './north-caucasus-court-profile';
 
 export function RegionalArbitrationPreview({court,region}:{court:RegionalArbitrationName;region:string}){
@@ -21,6 +22,7 @@ export function RegionalArbitrationPreview({court,region}:{court:RegionalArbitra
         Судейский состав и судебные дела по этой записи ещё не проверены.
       </div>
     </section>
+    <CourtDossierCompleteness withSources={['identity','sources',...(court.address||court.phone?['contacts' as const]:[]),...(court.jurisdictionLawUrl?['jurisdiction' as const]:[])]}/>
     <div className="court-identity">
       <div><strong>Раздел</strong><span>{label}</span></div>
       <div><strong>{court.courtKind==='arbitration-district'?'Регион, судебные акты которого проверяет округ':'Регион навигации'}</strong><span>{regionName}</span></div>

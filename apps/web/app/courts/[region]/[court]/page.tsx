@@ -10,6 +10,9 @@ import {pilotPublicRecord} from '../../../lib/pilot-public';
 import {regionalArbitrationCourt} from '../../../lib/regional-arbitration';
 import {RegionalArbitrationPreview} from '../../../_components/regional-arbitration-preview';
 import {NorthCaucasusCassationDossier} from '../../../_components/north-caucasus-cassation-dossier';
+import {CourtRichDossier} from '../../../_components/court-rich-dossier';
+import {pushkinskyCourt} from '../../../lib/court-rich-records';
+import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -36,6 +39,12 @@ const changes:Record<string,string>={
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const p=await params;
+ if(p.region===pushkinskyCourt.region&&p.court===pushkinskyCourt.slug)return {
+   title:pushkinskyCourt.name+' — судьи, состав, адреса, дела и подача документов',
+   description:'Официальные источники, два здания, справочник отделов, опубликованные судьи и основания назначения, поиск дел и территориальная подсудность.',
+   alternates:{canonical:'/courts/region-50/pushkinsky-gorodskoy'},
+   robots:{index:false,follow:true}
+ };
  if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))return {
    title:'Арбитражный суд Северо-Кавказского округа — адрес, карта, состав, кассация и судебные дела',
    description:'Адрес суда в Краснодаре, контакты, карта, председатель, госпошлина, порядок подачи кассационной жалобы, официальные дела и судебные заседания, территория округа.',
@@ -91,6 +100,8 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 
 export default async function CourtPage({params}:Props){
  const p=await params;
+ if(p.region===pushkinskyCourt.region&&p.court===pushkinskyCourt.slug)
+   return <CourtRichDossier court={pushkinskyCourt}/>;
  if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))
    return <NorthCaucasusCassationDossier region={p.region}/>;
 
@@ -162,6 +173,14 @@ export default async function CourtPage({params}:Props){
     <a href="#provenance">Изменения и источники</a>
   </nav>
 
+  <CourtDossierCompleteness withSources={[
+    'identity',
+    ...(court.address||court.phone||court.email?['contacts' as const]:[]),
+    ...(court.judges.length?['judges' as const]:[]),
+    ...(court.coordinates&&court.coordinate_source_url?['map' as const]:[]),
+    ...(court.cases?.length?['cases' as const]:[]),
+    ...(court.source_url?['sources' as const]:[])
+  ]}/>
   <div className="court-identity">
     <div><strong>Тип суда</strong><span>{court.court_type}</span></div>
     <div><strong>Регион</strong><span>{court.region_name}</span></div>

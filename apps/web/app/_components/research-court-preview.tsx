@@ -4,6 +4,7 @@ import researchHours from '../lib/research-hours.json';
 import pilotEvidence from '../lib/research-evidence-pilot.json';
 import {ResearchDossier} from './research-dossier';
 import {isPilotPublicCourt} from '../lib/pilot-public';
+import {CourtDossierCompleteness} from './court-dossier-completeness';
 import {PilotCourtPublic} from './pilot-court-public';
 
 type PreliminaryHours = {office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
@@ -27,6 +28,7 @@ export function ResearchCourtPreview({court}:{court:ResearchCourt}){
         Актуальность на сегодня и правильность контактных линий ещё не подтверждены.
       </div>
     </section>
+    <CourtDossierCompleteness withSources={['identity','sources',...(court.address||court.phone||court.email?['contacts' as const]:[])]}/>
     <div className="court-identity">
       <div><strong>Классификационный код в исходной выдаче</strong><span>{court.code}</span></div>
       <div><strong>Субъект РФ</strong><span>{court.regionName}</span></div>

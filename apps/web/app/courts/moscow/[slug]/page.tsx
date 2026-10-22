@@ -7,6 +7,7 @@ import {MoscowTerritoryChecker} from '../../../_components/moscow-territory-chec
 import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
 import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
+import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -71,6 +72,7 @@ export default async function MoscowCourtPage({params}:Props){
    <h1>{c.name}</h1>
    <p className="lead">Адрес и контакты, виды рассматриваемых дел, примеры из официальных реестров, территориальная подсудность, порядок подачи и обжалования.</p>
    <div className="notice" role="note">Сведения изучены по официальным публикациям 18.10.2026; редакционная актуальность на сегодня не подтверждена. Вынесенные решения, стадии дел, работа телефонов и границы адресной подсудности требуют отдельной сверки.</div>
+   <CourtDossierCompleteness withSources={['identity','contacts','sources','filing','cases']}/>
    <nav className="court-toc" aria-label="Содержание досье">
     <strong>Перейти к разделу</strong>
     <a href="#msk-contacts">Адрес и телефоны</a><a href="#msk-map">Как добраться</a>

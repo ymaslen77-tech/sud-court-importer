@@ -5,6 +5,7 @@ import {researchCourtsByRegion} from '../../lib/research-courts';
 import {pilotPublicCourts} from '../../lib/pilot-public';
 import {findRegion} from '../../lib/regions';
 import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
+import {pushkinskyCourt} from '../../lib/court-rich-records';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -119,6 +120,19 @@ export default async function RegionPage({params,searchParams}:Props){
           </span><span aria-hidden="true">↗</span>
         </Link>)}
       </div>
+    </section>:null}
+    {region===pushkinskyCourt.region?<section className="section-wrap" aria-labelledby="official-dossier-pushkinsky">
+      <div className="section-intro">
+       <span className="eyebrow">Структурированное досье по официальным публикациям</span>
+       <h2 id="official-dossier-pushkinsky">Пушкинский городской суд</h2>
+       <p>Подробная карточка: два здания, подразделения, опубликованный состав судей с указами назначения,
+       связь с мировыми участками, официальные процессуальные сервисы и статус проверки каждого блока.</p>
+      </div>
+      <div className="results"><Link className="result-row"
+        href={'/courts/'+pushkinskyCourt.region+'/'+pushkinskyCourt.slug}>
+        <span><strong>{pushkinskyCourt.name}</strong><small>Расширенная карточка · источник: ГАС «Правосудие»</small></span>
+        <span aria-hidden="true">↗</span>
+      </Link></div>
     </section>:null}
     {arbitration.length>0?<section className="section-wrap" aria-labelledby="regional-arbitration">
       <div className="section-intro">
