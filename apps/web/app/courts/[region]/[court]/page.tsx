@@ -173,7 +173,14 @@ export default async function CourtPage({params}:Props){
     <a href="#provenance">Изменения и источники</a>
   </nav>
 
-  <CourtDossierCompleteness withSources={['identity','contacts','judges','map','sources']}/>
+  <CourtDossierCompleteness withSources={[
+    'identity',
+    ...(court.address||court.phone||court.email?['contacts' as const]:[]),
+    ...(court.judges.length?['judges' as const]:[]),
+    ...(court.coordinates&&court.coordinate_source_url?['map' as const]:[]),
+    ...(court.cases?.length?['cases' as const]:[]),
+    ...(court.source_url?['sources' as const]:[])
+  ]}/>
   <div className="court-identity">
     <div><strong>Тип суда</strong><span>{court.court_type}</span></div>
     <div><strong>Регион</strong><span>{court.region_name}</span></div>
