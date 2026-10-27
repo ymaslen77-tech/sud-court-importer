@@ -16,7 +16,7 @@ class ConstitutionalDossierTests(unittest.TestCase):
         self.assertIn("https://www.ksrf.ru/Petition/CommonComplaintQ.php",data)
         self.assertIn("https://www.ksrf.ru/about/apparat/sekretariat.php",data)
         self.assertIn("https://www.ksrf.ru/doc/KSRFDecision903983.pdf",data)
-        self.assertEqual(data.count("portrait:"),1)
+        self.assertEqual(data.count("portrait:"),6)
         self.assertIn("CC BY 4.0",data)
 
     def test_rich_page_keeps_provenance_and_displays_sections(self):
