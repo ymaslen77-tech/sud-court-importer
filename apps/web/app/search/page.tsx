@@ -7,6 +7,8 @@ import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../li
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
 import {findRegion} from '../lib/regions';
+import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional-arbitration';
+import {pushkinskyCourt} from '../lib/court-rich-records';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -33,6 +35,12 @@ export default async function SearchPage({searchParams}:Props){
    (!q||[c.name,c.address??'',c.regionName,c.code].some(value=>
        value.toLocaleLowerCase('ru').includes(q.toLocaleLowerCase('ru'))
    ))):[];
+ const arbitration=valid&&hasAny?regionalArbitrationSearch(q,kind,region):[];
+ const pushkinskyMatch=valid&&hasAny&&(!kind||kind==='general-district')
+   &&(!region||region===pushkinskyCourt.region)
+   &&(!q||[pushkinskyCourt.name,...pushkinskyCourt.addresses.map(a=>a.value)]
+      .some(value=>value.toLocaleLowerCase('ru').replace(/ё/g,'е')
+        .includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е'))));
  const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
  const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
  const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
@@ -69,6 +77,12 @@ export default async function SearchPage({searchParams}:Props){
     <h1>Найти суд</h1>
     <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+    {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
+      По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
+      {' '}{arbitration.length===1
+        ?<Link href={regionalArbitrationHref(region||arbitration[0].regions[0],arbitration[0].slug)}>{arbitration[0].courtName} →</Link>
+        :<a href="#arbitration-results">Посмотреть список судов ↓</a>}
+    </p>:null}
   </section>
   <section className="section-wrap">
     <div className="section-intro">
@@ -84,8 +98,21 @@ export default async function SearchPage({searchParams}:Props){
          <span><strong>{c.name}</strong><small>{c.region_name??''} {c.address?' · '+c.address:''}</small></span>
          <span aria-hidden="true">↗</span>
       </Link>)}</div></>
-    :<div className="empty-state">Проверенных карточек по этим условиям пока нет. Исследовательские совпадения показаны ниже, если они доступны.</div>}
+    :<div className="empty-state">В подтверждённой базе Neon пока нет полностью принятых карточек по этим условиям. {arbitration.length>0?'Ниже найден подходящий суд в справочном каталоге и указан источник его компетенции.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
   </section>
+  {pushkinskyMatch?<section className="section-wrap" aria-labelledby="pushkinsky-result">
+    <div className="section-intro">
+      <span className="eyebrow">Расширенное досье по официальным источникам</span>
+      <h2 id="pushkinsky-result">Найден суд: {pushkinskyCourt.name}</h2>
+      <p>Опубликованные сведения о зданиях, судьях, аппарате суда, участках и порядке обращения.
+      Редакционная актуальность требует повторной проверки перед использованием.</p>
+    </div>
+    <div className="results"><Link className="result-row"
+       href={'/courts/'+pushkinskyCourt.region+'/'+pushkinskyCourt.slug}>
+       <span><strong>{pushkinskyCourt.name}</strong><small>Московская область · городской суд</small></span>
+       <span aria-hidden="true">↗</span>
+    </Link></div>
+  </section>:null}
   {valid&&hasAny&&moscow.length>0?<section className="section-wrap" aria-labelledby="moscow-matches">
    <div className="section-intro">
     <span className="eyebrow">Справочные карточки Москвы · официальный портал судов</span>
@@ -96,6 +123,19 @@ export default async function SearchPage({searchParams}:Props){
     <span><strong>{c.name}</strong><small>Москва · Районный суд · {c.address}</small><small>Исследовательское досье по официальным источникам</small></span>
     <span aria-hidden="true">↗</span>
    </Link>)}</div>
+  </section>:null}
+  {valid&&hasAny&&arbitration.length>0?<section className="section-wrap" aria-labelledby="arbitration-results">
+    <div className="section-intro">
+      <span className="eyebrow">Арбитражные суды · исходный официальный список</span>
+      <h2 id="arbitration-results">Найдены названия арбитражных судов: {arbitration.length}</h2>
+      <p>Названия взяты из официального перечня. Для арбитражной кассации выбор региона учитывает территорию судебного округа согласно статье 24 ФКЗ № 1-ФКЗ — независимо от адреса суда. Для остальных записей контакты и составы могут быть не проверены.</p>
+    </div>
+    <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
+      href={regionalArbitrationHref(region||item.regions[0],item.slug)}>
+      <span><strong>{item.courtName}</strong>
+        <small>{item.courtKind==='arbitration-district'?'Арбитражная кассация · судебный округ':item.courtKind==='arbitration-presence'?'Судебное присутствие':'Арбитражный суд субъекта'} · {item.jurisdictionLawUrl?'компетенция подтверждена законом':'предварительно'}</small>
+      </span><span aria-hidden="true">↗</span>
+    </Link>)}</div>
   </section>:null}
   {valid&&hasAny&&sourcedPublic.length>0?<section className="section-wrap" aria-labelledby="published-sourced">
     <div className="section-intro">
@@ -110,7 +150,7 @@ export default async function SearchPage({searchParams}:Props){
       <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
     </Link>)}</div>
   </section>:null}
-  {valid&&hasAny?<section className="section-wrap" aria-labelledby="unreviewed-filters">
+  {valid&&hasAny&&(!kind||!kind.startsWith('arbitration-'))?<section className="section-wrap" aria-labelledby="unreviewed-filters">
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
       <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>

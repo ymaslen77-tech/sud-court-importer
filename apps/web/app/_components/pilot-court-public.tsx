@@ -11,6 +11,7 @@ import {CourtPracticalGuide} from './court-practical-guide';
 import {CourtOperationalDetails} from './court-operational-details';
 import {PilotPracticalFacts} from './pilot-practical-facts';
 import {PublishedCourtRoster} from './published-court-roster';
+import {CourtDossierCompleteness} from './court-dossier-completeness';
 
 type Schedule={office_hours:string;source_url:string;research_checked_on:string;current_verified:boolean;note:string};
 const hoursByCode=researchHours as Record<string,Schedule>;
@@ -60,6 +61,7 @@ export function PilotCourtPublic({court}:{court:ResearchCourt}){
     Неподтверждённые полномочия судей, границы подсудности и платёжные реквизиты не публикуются как актуальные.
    </div>
   </section>
+  <CourtDossierCompleteness withSources={['identity','contacts','sources','filing']}/>
   <nav className="court-toc" aria-label="Содержание карточки">
    <strong>Разделы</strong>
    <a href="#pilot-identity">Идентификация</a>

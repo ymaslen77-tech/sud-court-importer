@@ -1,0 +1,76 @@
+{
+  "slug": "arbitration-district-north-caucasus",
+  "courtName": "Арбитражный суд Северо-Кавказского округа",
+  "regionOfSeat": "Краснодарский край",
+  "postalAddress": "350063, г. Краснодар, ул. Рашпилевская, д. 4",
+  "addressForMap": "Краснодар, улица Рашпилевская, 4",
+  "mainPhone": "+7 (861) 201-34-00",
+  "referencePhone": "+7 (861) 201-34-05",
+  "email": "info@fassko.arbitr.ru",
+  "officialSite": "https://fassko.arbitr.ru/",
+  "contactDirectorySource": "https://www.consultant.ru/document/cons_doc_LAW_56549/ab634f81e700c63c4c44080ce70b63549470a9c0/",
+  "leader": "Захаров Владимир Викторович",
+  "leaderRole": "Председатель суда",
+  "leaderSource": "https://cdep.ru/index.php?id=229",
+  "sourceReviewDate": "2026-10-22",
+  "courtClassCode": "Ф08",
+  "jurisdictions": [
+    "region-01",
+    "region-05",
+    "region-06",
+    "region-07",
+    "region-08",
+    "region-09",
+    "region-23",
+    "region-61",
+    "region-15",
+    "region-26",
+    "region-20"
+  ],
+  "territorialLaw": "https://www.consultant.ru/document/cons_doc_LAW_6510/fdc0651d2c042e18b995448bf15dcb655d2aa1c9/",
+  "supremePlenum": "https://www.consultant.ru/document/cons_doc_LAW_356424/bedc16efbbbb8584536c44f9e22c58fb2017c6fc/",
+  "procedureLaw": "https://www.consultant.ru/document/cons_doc_LAW_37800/95fcc234ff571b99e2267e57cfe9c9feff84d333/",
+  "filingLaw": "https://www.consultant.ru/document/cons_doc_LAW_37800/eb40b75e4d00b3678ee4c0d686bdbff503821056/",
+  "deadlineLaw": "https://www.consultant.ru/document/cons_doc_LAW_37800/c58935eb276927ac549a4defdcb336a31f92127b/",
+  "taxLaw": "https://www.consultant.ru/document/cons_doc_LAW_28165/fd44625defd599290366d418d3be13d277f1515d/",
+  "fullCourtList": "https://arbitr.ru/materials/as",
+  "publicSystems": [
+    {
+      "title": "Картотека арбитражных дел",
+      "description": "Поиск дела по номеру, суду, судье и участникам",
+      "url": "https://kad.arbitr.ru/"
+    },
+    {
+      "title": "Расписание заседаний",
+      "description": "Уточнение времени заседания, состава и дела",
+      "url": "https://rad.arbitr.ru/"
+    },
+    {
+      "title": "Банк судебных актов",
+      "description": "Поиск опубликованных судебных актов по тексту и номеру",
+      "url": "https://ras.arbitr.ru/"
+    },
+    {
+      "title": "Мой арбитр",
+      "description": "Электронная подача процессуальных документов",
+      "url": "https://my.arbitr.ru/"
+    },
+    {
+      "title": "Перерывы в заседаниях",
+      "description": "Сообщения о перерывах судебных заседаний",
+      "url": "https://recess.arbitr.ru/"
+    },
+    {
+      "title": "Электронный страж",
+      "description": "Отслеживание выбранных дел после авторизации",
+      "url": "https://guard.arbitr.ru/"
+    }
+  ],
+  "pendingVerification": [
+    "Полный актуальный состав судей и судебных коллегий",
+    "Режим работы приёмной и канцелярии",
+    "Действующие платёжные реквизиты для госпошлины",
+    "Конкретные координаты входа, доступность помещения и маршруты",
+    "Выгрузка полного перечня дел и календаря с датой обновления"
+  ]
+}

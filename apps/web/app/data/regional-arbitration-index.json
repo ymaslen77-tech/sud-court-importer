@@ -1,0 +1,893 @@
+[
+  {
+    "courtName": "Арбитражный суд Республики Адыгея",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-01",
+    "regions": [
+      "region-01"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Алтай",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-04",
+    "regions": [
+      "region-04"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Башкортостан",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-02",
+    "regions": [
+      "region-02"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Бурятия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-03",
+    "regions": [
+      "region-03"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Дагестан",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-05",
+    "regions": [
+      "region-05"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Ингушетия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-06",
+    "regions": [
+      "region-06"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Кабардино-Балкарской Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-07",
+    "regions": [
+      "region-07"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Калмыкия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-08",
+    "regions": [
+      "region-08"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Карачаево-Черкесской Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-09",
+    "regions": [
+      "region-09"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Карелия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-10",
+    "regions": [
+      "region-10"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Коми",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-11",
+    "regions": [
+      "region-11"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Марий Эл",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-12",
+    "regions": [
+      "region-12"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Мордовия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-13",
+    "regions": [
+      "region-13"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Саха (Якутия)",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-14",
+    "regions": [
+      "region-14"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Северная Осетия - Алания",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-15",
+    "regions": [
+      "region-15"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Татарстан",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-16",
+    "regions": [
+      "region-16"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Тыва",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-17",
+    "regions": [
+      "region-17"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Удмуртской Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-18",
+    "regions": [
+      "region-18"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Хакасия",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-19",
+    "regions": [
+      "region-19"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Чеченской Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-20",
+    "regions": [
+      "region-20"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Чувашской Республики - Чувашии",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-21",
+    "regions": [
+      "region-21"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Республики Крым",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-91",
+    "regions": [
+      "region-91"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Алтайского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-22",
+    "regions": [
+      "region-22"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Камчатского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-41",
+    "regions": [
+      "region-41"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Краснодарского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-23",
+    "regions": [
+      "region-23"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Красноярского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-24",
+    "regions": [
+      "region-24"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Пермского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-59",
+    "regions": [
+      "region-59"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Приморского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-25",
+    "regions": [
+      "region-25"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ставропольского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-26",
+    "regions": [
+      "region-26"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Хабаровского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-27",
+    "regions": [
+      "region-27"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Забайкальского края",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-75",
+    "regions": [
+      "region-75"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Амурской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-28",
+    "regions": [
+      "region-28"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Архангельской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-29",
+    "regions": [
+      "region-29"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Астраханской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-30",
+    "regions": [
+      "region-30"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Белгородской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-31",
+    "regions": [
+      "region-31"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Брянской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-32",
+    "regions": [
+      "region-32"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Владимирской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-33",
+    "regions": [
+      "region-33"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Волгоградской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-34",
+    "regions": [
+      "region-34"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Вологодской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-35",
+    "regions": [
+      "region-35"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Воронежской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-36",
+    "regions": [
+      "region-36"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Еврейской автономной области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-79",
+    "regions": [
+      "region-79"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ивановской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-37",
+    "regions": [
+      "region-37"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Иркутской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-38",
+    "regions": [
+      "region-38"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Калининградской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-39",
+    "regions": [
+      "region-39"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Калужской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-40",
+    "regions": [
+      "region-40"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Кемеровской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-42",
+    "regions": [
+      "region-42"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Кировской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-43",
+    "regions": [
+      "region-43"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Костромской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-44",
+    "regions": [
+      "region-44"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Курганской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-45",
+    "regions": [
+      "region-45"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Курской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-46",
+    "regions": [
+      "region-46"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Липецкой области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-48",
+    "regions": [
+      "region-48"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Магаданской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-49",
+    "regions": [
+      "region-49"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Московской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-50",
+    "regions": [
+      "region-50"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Мурманской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-51",
+    "regions": [
+      "region-51"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Нижегородской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-52",
+    "regions": [
+      "region-52"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Новгородской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-53",
+    "regions": [
+      "region-53"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Новосибирской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-54",
+    "regions": [
+      "region-54"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Омской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-55",
+    "regions": [
+      "region-55"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Оренбургской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-56",
+    "regions": [
+      "region-56"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Орловской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-57",
+    "regions": [
+      "region-57"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Пензенской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-58",
+    "regions": [
+      "region-58"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Псковской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-60",
+    "regions": [
+      "region-60"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ростовской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-61",
+    "regions": [
+      "region-61"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Рязанской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-62",
+    "regions": [
+      "region-62"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Самарской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-63",
+    "regions": [
+      "region-63"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Саратовской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-64",
+    "regions": [
+      "region-64"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Сахалинской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-65",
+    "regions": [
+      "region-65"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Свердловской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-66",
+    "regions": [
+      "region-66"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Смоленской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-67",
+    "regions": [
+      "region-67"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Тамбовской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-68",
+    "regions": [
+      "region-68"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Тверской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-69",
+    "regions": [
+      "region-69"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Томской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-70",
+    "regions": [
+      "region-70"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Тульской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-71",
+    "regions": [
+      "region-71"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Тюменской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-72",
+    "regions": [
+      "region-72"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ульяновской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-73",
+    "regions": [
+      "region-73"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Челябинской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-74",
+    "regions": [
+      "region-74"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ярославской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-76",
+    "regions": [
+      "region-76"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд города Москвы",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-77",
+    "regions": [
+      "moscow"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд города Санкт-Петербурга и Ленинградской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-78",
+    "regions": [
+      "region-47",
+      "region-78"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд города Севастополя",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-92",
+    "regions": [
+      "region-92"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ханты-Мансийского автономного округа-Югры",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-86",
+    "regions": [
+      "region-86"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Чукотского автономного округа",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-87",
+    "regions": [
+      "region-87"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Ямало-Ненецкого автономного округа",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-89",
+    "regions": [
+      "region-89"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Луганской Народной Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-94",
+    "regions": [
+      "region-94"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Запорожской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-90",
+    "regions": [
+      "region-90"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Херсонской области",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-95",
+    "regions": [
+      "region-95"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Арбитражный суд Донецкой Народной Республики",
+    "courtKind": "arbitration-subject",
+    "slug": "arbitration-subject-93",
+    "regions": [
+      "region-93"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Постоянное судебное присутствие Арбитражного суда Архангельской области в Ненецком автономном округе (г. Нарьян-Мар)",
+    "courtKind": "arbitration-presence",
+    "slug": "arbitration-presence-83",
+    "regions": [
+      "region-83"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  },
+  {
+    "courtName": "Постоянное судебное присутствие Арбитражного суда Пермского края в г. Кудымкар",
+    "courtKind": "arbitration-presence",
+    "slug": "arbitration-presence-59",
+    "regions": [
+      "region-59"
+    ],
+    "sourceRecordUrl": "https://arbitr.ru/?id_doc=20563&id_sec=353",
+    "editorialStatus": "unreviewed"
+  }
+]

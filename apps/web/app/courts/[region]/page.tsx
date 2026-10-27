@@ -4,6 +4,8 @@ import {getRegionCourtsPage,getRegions,type RegionCourtPage} from '../../lib/api
 import {researchCourtsByRegion} from '../../lib/research-courts';
 import {pilotPublicCourts} from '../../lib/pilot-public';
 import {findRegion} from '../../lib/regions';
+import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
+import {pushkinskyCourt} from '../../lib/court-rich-records';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -41,6 +43,7 @@ export default async function RegionPage({params,searchParams}:Props){
   let result:RegionCourtPage={items:[],total:0,page,pageSize:50};
   let label=findRegion(region)?.name??region;
   const pilot=pilotPublicCourts().filter(x=>'region-'+x.region_code===region);
+  const arbitration=regionalArbitrationCourts(region);
   const codes=new Set(pilot.map(x=>x.external_code));
   const candidates=researchCourtsByRegion(region).filter(x=>!codes.has(x.code));
   if(candidates.length)label=candidates[0].regionName;
@@ -117,6 +120,33 @@ export default async function RegionPage({params,searchParams}:Props){
           </span><span aria-hidden="true">↗</span>
         </Link>)}
       </div>
+    </section>:null}
+    {region===pushkinskyCourt.region?<section className="section-wrap" aria-labelledby="official-dossier-pushkinsky">
+      <div className="section-intro">
+       <span className="eyebrow">Структурированное досье по официальным публикациям</span>
+       <h2 id="official-dossier-pushkinsky">Пушкинский городской суд</h2>
+       <p>Подробная карточка: два здания, подразделения, опубликованный состав судей с указами назначения,
+       связь с мировыми участками, официальные процессуальные сервисы и статус проверки каждого блока.</p>
+      </div>
+      <div className="results"><Link className="result-row"
+        href={'/courts/'+pushkinskyCourt.region+'/'+pushkinskyCourt.slug}>
+        <span><strong>{pushkinskyCourt.name}</strong><small>Расширенная карточка · источник: ГАС «Правосудие»</small></span>
+        <span aria-hidden="true">↗</span>
+      </Link></div>
+    </section>:null}
+    {arbitration.length>0?<section className="section-wrap" aria-labelledby="regional-arbitration">
+      <div className="section-intro">
+        <span className="eyebrow">Исходный список арбитражных судов · ещё не проверен</span>
+        <h2 id="regional-arbitration">Арбитражные суды по территории региона: {arbitration.length}</h2>
+        <p>Названия перенесены из ранее сохранённого перечня официального арбитражного портала.
+        Для кассационных судов учтена территориальная компетенция по статье 24 ФКЗ № 1-ФКЗ. Адреса, судьи и дела в общем случае ещё не проверены.</p>
+      </div>
+      <div className="results">{arbitration.map(item=><Link key={item.slug} className="result-row"
+        href={regionalArbitrationHref(region,item.slug)}>
+        <span><strong>{item.courtName}</strong>
+          <small>{item.courtKind==='arbitration-district'?'Арбитражная кассация · судебный округ':item.courtKind==='arbitration-presence'?'Постоянное судебное присутствие':'Арбитражный суд субъекта'} · {item.jurisdictionLawUrl?'юрисдикция установлена законом':'сведения требуют проверки'}</small>
+        </span><span aria-hidden="true">↗</span>
+      </Link>)}</div>
     </section>:null}
     <section className="callout">
       <div><span className="eyebrow">Дополнительная проверка</span>

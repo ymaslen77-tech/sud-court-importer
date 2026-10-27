@@ -7,6 +7,12 @@ import {findCategory} from '../../../lib/court-taxonomy';
 import {researchCourt} from '../../../lib/research-courts';
 import {ResearchCourtPreview} from '../../../_components/research-court-preview';
 import {pilotPublicRecord} from '../../../lib/pilot-public';
+import {regionalArbitrationCourt} from '../../../lib/regional-arbitration';
+import {RegionalArbitrationPreview} from '../../../_components/regional-arbitration-preview';
+import {NorthCaucasusCassationDossier} from '../../../_components/north-caucasus-cassation-dossier';
+import {CourtRichDossier} from '../../../_components/court-rich-dossier';
+import {pushkinskyCourt} from '../../../lib/court-rich-records';
+import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 
 type Props={params:Promise<{region:string;court:string}>};
 export const dynamic='force-dynamic';
@@ -33,9 +39,28 @@ const changes:Record<string,string>={
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const p=await params;
+ if(p.region===pushkinskyCourt.region&&p.court===pushkinskyCourt.slug)return {
+   title:pushkinskyCourt.name+' — судьи, состав, адреса, дела и подача документов',
+   description:'Официальные источники, два здания, справочник отделов, опубликованные судьи и основания назначения, поиск дел и территориальная подсудность.',
+   alternates:{canonical:'/courts/region-50/pushkinsky-gorodskoy'},
+   robots:{index:false,follow:true}
+ };
+ if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))return {
+   title:'Арбитражный суд Северо-Кавказского округа — адрес, карта, состав, кассация и судебные дела',
+   description:'Адрес суда в Краснодаре, контакты, карта, председатель, госпошлина, порядок подачи кассационной жалобы, официальные дела и судебные заседания, территория округа.',
+   alternates:{canonical:'/courts/region-23/arbitration-district-north-caucasus'},
+   robots:{index:false,follow:true}
+ };
+
  try{
   const c=await getCourt(p.region,p.court);
   if(!c){
+    const arbitration=regionalArbitrationCourt(p.region,p.court);
+    if(arbitration)return {
+      title:arbitration.courtName+' — предварительные сведения и источник',
+      description:'Справочное название из официального списка; актуальность контактов, состава и адреса не подтверждена.',
+      robots:{index:false,follow:true}
+    };
     const candidate=researchCourt(p.region,p.court);
     const pilot=candidate?pilotPublicRecord(candidate.code):null;
     if(pilot)return {
@@ -61,6 +86,8 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
    openGraph:{title:c.name,description:'Проверенные данные суда и официальный первоисточник',type:'website',url:path}
   };
  }catch{
+   const arbitration=regionalArbitrationCourt(p.region,p.court);
+   if(arbitration)return {title:arbitration.courtName+' — справочный список',robots:{index:false,follow:true}};
    const candidate=researchCourt(p.region,p.court);
    const pilot=candidate?pilotPublicRecord(candidate.code):null;
    if(pilot)return {title:pilot.official_header_court_name+' — справочная карточка',robots:{index:true,follow:true}};
@@ -73,10 +100,17 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 
 export default async function CourtPage({params}:Props){
  const p=await params;
+ if(p.region===pushkinskyCourt.region&&p.court===pushkinskyCourt.slug)
+   return <CourtRichDossier court={pushkinskyCourt}/>;
+ if(p.court==='arbitration-district-north-caucasus'&&regionalArbitrationCourt(p.region,p.court))
+   return <NorthCaucasusCassationDossier region={p.region}/>;
+
  let court:CourtDetail|null=null;
  try{ court=await getCourt(p.region,p.court); }
- catch(error){ if(!researchCourt(p.region,p.court))throw error; }
+ catch(error){ if(!researchCourt(p.region,p.court)&&!regionalArbitrationCourt(p.region,p.court))throw error; }
  if(!court){
+   const arbitration=regionalArbitrationCourt(p.region,p.court);
+   if(arbitration)return <RegionalArbitrationPreview court={arbitration} region={p.region}/>;
    const candidate=researchCourt(p.region,p.court);
    if(!candidate)notFound();
    return <ResearchCourtPreview court={candidate}/>;
@@ -139,6 +173,14 @@ export default async function CourtPage({params}:Props){
     <a href="#provenance">Изменения и источники</a>
   </nav>
 
+  <CourtDossierCompleteness withSources={[
+    'identity',
+    ...(court.address||court.phone||court.email?['contacts' as const]:[]),
+    ...(court.judges.length?['judges' as const]:[]),
+    ...(court.coordinates&&court.coordinate_source_url?['map' as const]:[]),
+    ...(court.cases?.length?['cases' as const]:[]),
+    ...(court.source_url?['sources' as const]:[])
+  ]}/>
   <div className="court-identity">
     <div><strong>Тип суда</strong><span>{court.court_type}</span></div>
     <div><strong>Регион</strong><span>{court.region_name}</span></div>
