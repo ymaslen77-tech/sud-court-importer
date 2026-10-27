@@ -46,3 +46,12 @@ jobs:
             echo "JUDGE_ROSTER_PRESENT=false"
           fi
           echo "PUBLIC_URL=$url"
+          if grep -Fq 'href="/courts/reference/constitutional-court-rf/info/judges"' /tmp/court.html; then
+            echo "LOCAL_EVIDENCE_LINKS_PRESENT=true"
+          else
+            echo "LOCAL_EVIDENCE_LINKS_PRESENT=false"
+          fi
+          for topic in judges powers composition reception complaint payment history apparatus secretariat; do
+            topicstatus="$(curl --silent --show-error --connect-timeout 7 --max-time 18 --location --max-redirs 2 -o "/tmp/topic-$topic.html" -w '%{http_code}' "$base/courts/reference/constitutional-court-rf/info/$topic" || true)"
+            echo "TOPIC_$topic=$topicstatus"
+          done
