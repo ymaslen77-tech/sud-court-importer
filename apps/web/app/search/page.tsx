@@ -9,6 +9,7 @@ import {moscowCourts} from '../lib/moscow-courts';
 import {findRegion} from '../lib/regions';
 import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional-arbitration';
 import {pushkinskyCourt} from '../lib/court-rich-records';
+import {officialReferenceMatches,officialReferenceCourt} from '../lib/official-reference-courts';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -44,6 +45,10 @@ export default async function SearchPage({searchParams}:Props){
  const publishedCodes=new Set(pilotPublicCourts().map(x=>x.external_code));
  const sourcedPublic=research.filter(c=>publishedCodes.has(c.code));
  const researchOnly=research.filter(c=>!publishedCodes.has(c.code));
+ const official=valid&&hasAny?officialReferenceMatches(q,kind,region):[];
+ const constitutionalRegionConflict=valid&&kind==='constitutional'&&Boolean(region);
+ const constitutionalCourt=officialReferenceCourt('constitutional-court-rf');
+ const researchKindAllowed=(!kind||!kind.startsWith('arbitration-'))&&kind!=='constitutional'&&kind!=='supreme';
  let verified:Court[]=[];
  let failed=false;
  let totalVerified=0;
@@ -92,14 +97,47 @@ export default async function SearchPage({searchParams}:Props){
     {!hasAny?<p className="empty-state">Выберите регион, вид суда или введите его название.</p>
     :!valid?<p className="notice" role="alert">Текст запроса должен содержать от 2 до 100 символов.</p>
     :failed?<div role="alert" className="notice">Связь с подтверждённым реестром временно недоступна. Предварительные сведения показаны ниже отдельно.</div>
+    :constitutionalRegionConflict?<div className="empty-state" role="status">
+       <h3>В выбранном регионе нет суда этой категории</h3>
+       <p>Конституционный Суд РФ — федеральный орган конституционного контроля, а не суд субъекта РФ. Конституционные (уставные) суды субъектов были упразднены к 1 января 2023 года. Ниже — карточка действующего Конституционного Суда РФ и переход к судам выбранного региона.</p>
+     </div>
     :verified.length?<><p>Показано {verified.length} из {totalVerified} проверенных записей.</p>
       <div className="results">{verified.map(c=><Link className="result-row" key={c.id}
         href={'/courts/'+(c.region_slug??region)+'/'+c.slug}>
          <span><strong>{c.name}</strong><small>{c.region_name??''} {c.address?' · '+c.address:''}</small></span>
          <span aria-hidden="true">↗</span>
       </Link>)}</div></>
-    :<div className="empty-state">В подтверждённой базе Neon пока нет полностью принятых карточек по этим условиям. {arbitration.length>0?'Ниже найден подходящий суд в справочном каталоге и указан источник его компетенции.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
+    :<div className="empty-state">В редакционно проверенной базе проекта пока нет полностью принятых карточек по этим условиям. {official.length>0?'Ниже представлены суды с адресами из официальных источников — их реквизиты необходимо перепроверять перед обращением.':arbitration.length>0?'Ниже найден подходящий суд в официальном справочном каталоге.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
   </section>
+  {constitutionalRegionConflict&&constitutionalCourt?<section className="section-wrap" aria-labelledby="constitutional-scope">
+    <div className="section-intro">
+      <span className="eyebrow">Федеральный суд · не относится к субъекту РФ</span>
+      <h2 id="constitutional-scope">{constitutionalCourt.name}</h2>
+      <p>Адрес: {constitutionalCourt.address}. Конституционное судопроизводство не распределяется по региональным конституционным судам.</p>
+    </div>
+    <div className="results">
+      <Link className="result-row" href={'/courts/reference/'+constitutionalCourt.slug}>
+        <span><strong>{constitutionalCourt.name}</strong><small>{constitutionalCourt.address}</small><small>Телефон: {constitutionalCourt.phone} · официальная справочная карточка</small></span><span aria-hidden="true">↗</span>
+      </Link>
+    </div>
+    <div className="court-filter-actions">
+      <Link className="text-link" href={'/courts/'+region}>Открыть суды региона {findRegion(region)?.name} →</Link>
+      <Link className="text-link" href={'/search?region='+encodeURIComponent(region)+'&kind=general-regional'}>Краевые, областные и приравненные суды →</Link>
+      <Link className="text-link" href={'/search?region='+encodeURIComponent(region)+'&kind=general-district'}>Районные и городские суды →</Link>
+      <a className="text-link" href="https://www.consultant.ru/document/cons_doc_LAW_56550/66b0b03f24f6fa0319387bf92a3536b37f1c90bb/" target="_blank" rel="noopener noreferrer">Правовое основание упразднения региональных конституционных судов ↗</a>
+    </div>
+  </section>:null}
+  {official.length>0?<section className="section-wrap" aria-labelledby="official-source-matches">
+    <div className="section-intro">
+      <span className="eyebrow">Справочные карточки по официальным судебным публикациям</span>
+      <h2 id="official-source-matches">Найдены суды с адресами: {official.length}</h2>
+      <p>Показана первая партия карточек с адресами, телефонами, картами и прямыми ссылками на официальный поиск судебных дел. Редакционная приёмка записей и индивидуальная сверка состава судей ещё не завершены.</p>
+    </div>
+    <div className="results">{official.map(c=><Link className="result-row" key={c.slug} href={'/courts/reference/'+c.slug}>
+      <span><strong>{c.name}</strong><small>{c.regionName} · {c.address}</small><small>{c.phone} · {findCategory(c.kind)?.short} · официальный источник</small></span>
+      <span aria-hidden="true">↗</span>
+    </Link>)}</div>
+  </section>:null}
   {pushkinskyMatch?<section className="section-wrap" aria-labelledby="pushkinsky-result">
     <div className="section-intro">
       <span className="eyebrow">Расширенное досье по официальным источникам</span>
@@ -150,7 +188,7 @@ export default async function SearchPage({searchParams}:Props){
       <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
     </Link>)}</div>
   </section>:null}
-  {valid&&hasAny&&(!kind||!kind.startsWith('arbitration-'))?<section className="section-wrap" aria-labelledby="unreviewed-filters">
+  {valid&&hasAny&&researchKindAllowed&&(researchOnly.length>0||official.length===0)?<section className="section-wrap" aria-labelledby="unreviewed-filters">
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
       <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>

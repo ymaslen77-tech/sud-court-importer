@@ -4,6 +4,7 @@ import {notFound} from 'next/navigation';
 import {findCategory,COURT_CATEGORIES} from '../../../lib/court-taxonomy';
 import {getCourtsByKind, type CourtCategoryResult} from '../../../lib/api';
 import {researchCourtsByKind} from '../../../lib/research-courts';
+import {OFFICIAL_REFERENCE_COURTS} from '../../../lib/official-reference-courts';
 
 type Props={params:Promise<{kind:string}>;searchParams:Promise<{page?:string|string[]}>};
 export const dynamic='force-dynamic';
@@ -28,6 +29,7 @@ export default async function KindPage({params,searchParams}:Props){
  try{result=await getCourtsByKind(kind,requested);}catch{failed=true;}
  const pages=Math.ceil(result.total/result.pageSize);
  const preliminary=researchCourtsByKind(kind);
+ const officialReferences=OFFICIAL_REFERENCE_COURTS.filter(c=>c.kind===kind);
  const base='/courts/types/'+c.slug;
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span><Link href="/courts/types">Виды судов</Link><span>/</span>{c.short}</div>
@@ -43,13 +45,26 @@ export default async function KindPage({params,searchParams}:Props){
        <span><strong>{x.name}</strong><small>{x.region_name}{x.address?' · '+x.address:''}</small></span><span aria-hidden="true">↗</span>
      </Link>)}</div>
     :<div className="empty-state"><h3>{result.total>0?'На этой странице записей нет':'Проверенные карточки пока не загружены'}</h3>
-      <p>Категория существует в классификаторе. Отсутствие записей в нашей базе не означает отсутствие таких судов.</p></div>}
+      <p>{kind==='constitutional'?'Конституционный Суд РФ является федеральным судом и не относится к отдельному региону. Его справочная карточка по официальному источнику приведена ниже.':'Категория существует в классификаторе. Отсутствие записей в редакционной базе не означает отсутствие таких судов.'}</p></div>}
    {!failed&&pages>1?<nav className="category-pagination" aria-label="Страницы списка судов">
      {result.page>1?<Link href={result.page===2?base:base+'?page='+(result.page-1)}>← Предыдущая</Link>:<span/>}
      <span>Страница {result.page} / {pages}</span>
      {result.page<pages?<Link href={base+'?page='+(result.page+1)}>Следующая →</Link>:<span/>}
    </nav>:null}
   </section>
+  {officialReferences.length>0?<section className="section-wrap" aria-labelledby="official-category-courts">
+    <div className="section-intro">
+      <span className="eyebrow">Справочные карточки по официальным публикациям</span>
+      <h2 id="official-category-courts">Суды с адресами и картами: {officialReferences.length}</h2>
+      <p>Сведения взяты из опубликованных первоисточников. Они не выдаются за полную редакционно проверенную базу; актуальные контакты и состав судей сверяйте перед обращением.</p>
+    </div>
+    <div className="results">{officialReferences.map(c=><Link className="result-row" key={c.slug}
+      href={'/courts/reference/'+c.slug}>
+      <span><strong>{c.name}</strong><small>{c.regionName} · {c.address}</small>
+      <small>Телефон: {c.phone} · официальная справочная карточка</small></span>
+      <span aria-hidden="true">↗</span>
+    </Link>)}</div>
+  </section>:null}
   {preliminary.length>0?<section className="section-wrap" aria-labelledby="research-kind">
     <div className="section-intro">
       <span className="eyebrow">Исследовательские карточки — не проверенный реестр</span>
