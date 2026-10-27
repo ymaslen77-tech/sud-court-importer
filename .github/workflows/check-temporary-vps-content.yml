@@ -1,0 +1,40 @@
+name: Inspect public temporary Courts VPS content
+on:
+  push:
+    branches:
+      - ops/check-constitutional-vps-preview-20261027
+    paths:
+      - .github/workflows/check-temporary-vps-content.yml
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Fetch current public preview and identify deployed template
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="http://sudy-preview.79.133.181.192.sslip.io"
+          url="$base/courts/reference/constitutional-court-rf"
+          status="$(curl --silent --show-error --connect-timeout 10 --max-time 30 --location --max-redirs 2 -o /tmp/court.html -w '%{http_code}' "$url" || true)"
+          echo "HTTP status: $status"
+          echo "Response bytes: $(wc -c < /tmp/court.html 2>/dev/null || echo 0)"
+          if [ "$status" != "200" ]; then
+            echo "External page is not available, or redirected incorrectly."
+            exit 2
+          fi
+          if grep -Fq "Эталонная подробная карточка" /tmp/court.html && grep -Fq "Секретариат и аппарат Конституционного Суда" /tmp/court.html; then
+            echo "VERDICT=NEW_TEMPLATE_DEPLOYED"
+          elif grep -Fq "Официальные справочные сведения" /tmp/court.html && grep -Fq "Действующий состав" /tmp/court.html; then
+            echo "VERDICT=OLD_TEMPLATE_STILL_DEPLOYED"
+          else
+            echo "VERDICT=UNRECOGNIZED_TEMPLATE"
+          fi
+          if grep -Fq "Зорькин Валерий Дмитриевич" /tmp/court.html; then
+            echo "JUDGE_ROSTER_PRESENT=true"
+          else
+            echo "JUDGE_ROSTER_PRESENT=false"
+          fi
+          echo "PUBLIC_URL=$url"
