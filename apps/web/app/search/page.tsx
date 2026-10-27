@@ -48,6 +48,7 @@ export default async function SearchPage({searchParams}:Props){
  const official=valid&&hasAny?officialReferenceMatches(q,kind,region):[];
  const constitutionalRegionConflict=valid&&kind==='constitutional'&&Boolean(region);
  const constitutionalCourt=officialReferenceCourt('constitutional-court-rf');
+ const researchKindAllowed=(!kind||!kind.startsWith('arbitration-'))&&kind!=='constitutional'&&kind!=='supreme';
  let verified:Court[]=[];
  let failed=false;
  let totalVerified=0;
@@ -106,7 +107,7 @@ export default async function SearchPage({searchParams}:Props){
          <span><strong>{c.name}</strong><small>{c.region_name??''} {c.address?' · '+c.address:''}</small></span>
          <span aria-hidden="true">↗</span>
       </Link>)}</div></>
-    :<div className="empty-state">В редакционно проверенной базе проекта пока нет полностью принятых карточек по этим условиям. {official.length>0?'Ниже представлены суды с адресами из официальных источников — их реквизиты необходимо перепроверять перед обращением.':arbitration.length>0?'Ниже найден суд в официальном справочном каталоге.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
+    :<div className="empty-state">В редакционно проверенной базе проекта пока нет полностью принятых карточек по этим условиям. {official.length>0?'Ниже представлены суды с адресами из официальных источников — их реквизиты необходимо перепроверять перед обращением.':arbitration.length>0?'Ниже найден подходящий суд в официальном справочном каталоге.':'Предварительные совпадения показаны ниже, если они доступны.'}</div>}
   </section>
   {constitutionalRegionConflict&&constitutionalCourt?<section className="section-wrap" aria-labelledby="constitutional-scope">
     <div className="section-intro">
@@ -187,7 +188,7 @@ export default async function SearchPage({searchParams}:Props){
       <small>Публичная справочная карточка с источниками ↗</small></span><span aria-hidden="true">↗</span>
     </Link>)}</div>
   </section>:null}
-  {valid&&hasAny&&(!kind||(!kind.startsWith('arbitration-')&&kind!=='constitutional'&&kind!=='supreme'))&&(researchOnly.length>0||official.length===0)?<section className="section-wrap" aria-labelledby="unreviewed-filters">
+  {valid&&hasAny&&researchKindAllowed&&(researchOnly.length>0||official.length===0)?<section className="section-wrap" aria-labelledby="unreviewed-filters">
     <div className="section-intro">
       <span className="eyebrow">Исследовательский каталог — без редакционной приёмки</span>
       <h2 id="unreviewed-filters">Предварительные записи: {researchOnly.length}</h2>
