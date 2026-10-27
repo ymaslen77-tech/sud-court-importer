@@ -32,7 +32,7 @@ class ConstitutionalDossierTests(unittest.TestCase):
             with self.subTest(item=item):self.assertIn(item,page)
         self.assertIn("Конституционный Суд не",page)
         self.assertIn("вакансия не заполнена вымышленной записью",page)
-        self.assertIn("права на её воспроизведение ещё не подтверждено",page)
+        self.assertIn("право на её воспроизведение ещё не подтверждено",page)
 
     def test_special_route_does_not_break_other_reference_pages(self):
         page=(APP/"courts/reference/[slug]/page.tsx").read_text(encoding="utf-8")
