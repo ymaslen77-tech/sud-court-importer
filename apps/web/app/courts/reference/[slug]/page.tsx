@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import {officialReferenceCourt} from '../../../lib/official-reference-courts';
 import {findCategory} from '../../../lib/court-taxonomy';
 import {YandexCourtMap} from '../../../_components/yandex-court-map';
+import {ConstitutionalCourtDossier} from '../../../_components/constitutional-court-dossier';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamic='force-dynamic';
@@ -11,6 +12,11 @@ export const dynamic='force-dynamic';
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const court=officialReferenceCourt((await params).slug);
  if(!court)return {title:'Суд не найден',robots:{index:false,follow:false}};
+ if(court.slug==='constitutional-court-rf')return {
+  title:'Конституционный Суд РФ — судьи, адрес, полномочия, жалоба и судебная практика',
+  description:'Полная справочная карточка Конституционного Суда РФ: 10 действующих судей из официального списка, руководство, приёмная, порядок обращения, госпошлина, практика, история и структура.',
+  robots:{index:false,follow:true}
+ };
  return {
   title:court.name+' — адрес, карта и официальные материалы',
   description:court.name+'. Адрес и контакты из официальных судебных публикаций, карта и переход к делам.',
@@ -20,6 +26,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 export default async function OfficialCourtReferencePage({params}:Props){
  const court=officialReferenceCourt((await params).slug);
  if(!court)notFound();
+ if(court.slug==='constitutional-court-rf')return <ConstitutionalCourtDossier/>;
  return <>
   <div className="breadcrumb">
    <Link href="/">Главная</Link><span>/</span>
