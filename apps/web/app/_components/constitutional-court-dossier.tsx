@@ -206,7 +206,7 @@ export function ConstitutionalCourtDossier(){
     Данные сохраняются внутри этой карточки; ссылки нужны для подтверждения, уточнения актуальности и юридически значимых действий.
    </SecHeading>
    <div className="constitutional-source-grid">{CONSTITUTIONAL_SOURCES.map(x=><a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer">{x.label} ↗</a>)}</div>
-   <p className="constitutional-small">Фото здания — Monoklon (CC BY-SA 4.0), портрет председателя — Пресс-служба Президента РФ (CC BY 4.0). Условия повторного использования изображений других судей не подтверждены, поэтому вместо фото показаны нейтральные монограммы.</p>
+   <p className="constitutional-small">Фото здания — Monoklon (CC BY-SA 4.0). Для каждого размещённого портрета судьи указаны источник и лицензия CC BY 4.0; при отсутствии подтверждённого разрешения вместо изображения показана монограмма. Фотографии загружаются из Wikimedia Commons; для полностью локального хранения потребуется отдельное получение и сохранение файлов с лицензиями.</p>
   </section>
   <div className="constitutional-back"><Link href="/courts">← Вернуться в каталог судов России</Link></div>
  </article>;
