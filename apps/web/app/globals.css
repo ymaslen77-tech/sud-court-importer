@@ -452,3 +452,100 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .court-region-directory .region-item strong{font-size:17px}
 .court-region-directory .region-item small{font-size:12px;line-height:1.5}
 @media(max-width:640px){.court-region-directory .region-item{flex-wrap:wrap}.court-region-directory .region-item>span:first-child{flex:1 1 100%}}
+
+
+/* Constitutional Court exemplary reference dossier */
+.constitutional-dossier{padding-bottom:60px}
+.constitutional-inpage{display:flex;gap:7px;flex-wrap:wrap;margin:30px 0 8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.constitutional-inpage a{font-size:12px;font-weight:700;padding:9px 13px;background:#f6f5f3;color:#343c43}
+.constitutional-inpage a:hover,.constitutional-inpage a:focus-visible{background:#f0e8e7;color:var(--red)}
+.constitutional-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;padding:65px 0 40px;align-items:center}
+.constitutional-title h1{font-size:clamp(33px,4.1vw,57px);line-height:1.11;margin:20px 0 24px;max-width:790px}
+.constitutional-title .lead{font-size:16px;line-height:1.85}
+.constitutional-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}
+.constitutional-photo{align-self:start;margin:0;background:#f8f6f3}
+.constitutional-photo img{width:100%;aspect-ratio:1.55;object-fit:cover;display:block;background:#e9e6e2}
+.constitutional-photo p{margin:0;padding:8px 14px;font-size:10px;color:#59616b}
+.constitutional-photo a,.constitutional-dossier .constitutional-small a,.constitutional-dossier .constitutional-source a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
+.constitutional-disclaimer{font-size:12px;color:#666e76;line-height:1.8}
+.constitutional-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#212b35;color:#fff;margin:0 0 38px}
+.constitutional-stats>div{display:flex;flex-direction:column;padding:28px 24px;border-right:1px solid rgba(255,255,255,.16)}
+.constitutional-stats>div:last-child{border-right:0}
+.constitutional-stats b{font-size:36px;line-height:1.15}
+.constitutional-stats small{color:#b7c6ce;font-size:11px;margin-top:8px;line-height:1.5}
+.constitutional-block{padding:72px 0;border-bottom:1px solid var(--line)}
+.constitutional-heading{scroll-margin-top:30px;margin-bottom:28px}
+.constitutional-heading h2{font-size:clamp(27px,3.25vw,42px);margin:12px 0 14px}
+.constitutional-heading p{max-width:870px;font-size:14px;line-height:1.85;color:#63707a}
+.constitutional-judges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.constitutional-judge{padding:27px;border:1px solid var(--line);scroll-margin-top:25px;background:#fff}
+.constitutional-judge-head{display:grid;grid-template-columns:105px minmax(0,1fr);gap:19px;align-items:start;margin-bottom:17px}
+.constitutional-judge-head figure{margin:0}
+.constitutional-judge-head img{width:105px;height:126px;object-fit:cover;object-position:center top;background:#e8e9e8}
+.constitutional-judge-head figcaption{font-size:8px;line-height:1.5;color:#67717c}
+.constitutional-judge-monogram{width:105px;height:126px;display:grid;place-items:center;background:#eeebe8;color:#8e5960;font:700 34px Georgia,serif}
+.constitutional-judge h3{font-size:18px;line-height:1.4;margin:7px 0 10px}
+.constitutional-judge p{font-size:12px;line-height:1.8;color:#56606b;margin:0 0 9px}
+.constitutional-judge p strong{color:#292f36}
+.constitutional-judge .constitutional-date{font-size:11px;color:#7c858e}
+.constitutional-role{font-size:10px;font-weight:800;color:var(--red)}
+.constitutional-judge .constitutional-source{font-size:11px;color:#7e8790;margin-top:12px}
+.constitutional-small{font-size:12px;line-height:1.9;color:#707982;margin:20px 0 0}
+.constitutional-contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.constitutional-fact{padding:26px;border:1px solid var(--line)}
+.constitutional-fact h3{font-size:21px}
+.constitutional-fact dl{margin:0}
+.constitutional-fact dl>div{padding:13px 0;border-top:1px solid #eeedeb;display:grid;grid-template-columns:135px minmax(0,1fr);gap:13px}
+.constitutional-fact dt{font-size:11px;color:#747c87}
+.constitutional-fact dd{font-size:12px;font-weight:700;margin:0;overflow-wrap:anywhere}
+.constitutional-fact dd a{color:#ab242c}
+.constitutional-dossier .court-section{padding:42px 0 12px}
+.constitutional-topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.constitutional-topic{padding:23px;border:1px solid var(--line)}
+.constitutional-topic>span{font-size:10px;font-weight:800;color:var(--red);letter-spacing:.14em}
+.constitutional-topic h3{font-size:18px;line-height:1.3;margin:18px 0 9px}
+.constitutional-topic p{font-size:12px;line-height:1.8;color:#6b737d;margin:0}
+.constitutional-legal-note{font-size:12px;color:#58636f;background:#f7f5f2;padding:16px 20px;margin:20px 0 0}
+.constitutional-process{border-top:1px solid var(--line)}
+.constitutional-process>div{display:grid;grid-template-columns:65px minmax(0,1fr);gap:17px;padding:19px 0;border-bottom:1px solid var(--line)}
+.constitutional-process span{font-size:25px;font-weight:800;color:var(--red)}
+.constitutional-process h3{font-size:17px;margin:0 0 7px}
+.constitutional-process p{font-size:12px;line-height:1.8;color:#66707a;max-width:840px;margin:0}
+.constitutional-subheading{margin:34px 0 15px}
+.constitutional-methods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.constitutional-methods>div{padding:20px;background:#f7f6f4}
+.constitutional-methods b{font-size:13px}
+.constitutional-methods p{font-size:11px;color:#657078;line-height:1.8;margin:11px 0 0}
+.constitutional-fees{padding:22px 26px;background:#f9f4f1;margin:22px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.constitutional-fees>div{display:flex;flex-direction:column;gap:8px}
+.constitutional-fees span{font-size:12px;color:#666e73}
+.constitutional-fees strong{font-size:32px;line-height:1.2}
+.constitutional-fees p{grid-column:1/-1;font-size:11px;color:#70767f;margin:0}
+.constitutional-cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.constitutional-cases article{display:flex;flex-direction:column;padding:26px;border:1px solid var(--line)}
+.constitutional-case-meta{display:flex;justify-content:space-between;gap:10px;color:var(--red);font-size:12px}
+.constitutional-case-meta time{color:#89929c}
+.constitutional-cases h3{font-size:19px;margin:18px 0 12px}
+.constitutional-cases p{font-size:12px;line-height:1.8;color:#66707a}
+.constitutional-cases article>a{margin-top:auto;padding-top:16px;color:var(--red);font-size:12px;font-weight:800}
+.constitutional-office{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.constitutional-office>div{border:1px solid var(--line);padding:19px 22px}
+.constitutional-office h3{font-size:15px;margin:0 0 7px}
+.constitutional-office strong{font-size:12px;color:var(--red)}
+.constitutional-office p{font-size:11px;line-height:1.8;color:#6d747b;margin:8px 0 0}
+.constitutional-timeline{border-left:2px solid #d1bcc0;margin-left:13px}
+.constitutional-timeline>div{display:grid;grid-template-columns:95px minmax(0,1fr);gap:20px;padding:0 0 24px 24px;position:relative}
+.constitutional-timeline>div:before{content:'';position:absolute;left:-7px;top:5px;border:2px solid #c03942;background:#fff;width:12px;height:12px;border-radius:50%}
+.constitutional-timeline strong{color:var(--red);font-size:19px}
+.constitutional-timeline p{margin:0;color:#67727c;font-size:12px;line-height:1.8}
+.constitutional-faq{border-top:1px solid var(--line)}
+.constitutional-faq details{border-bottom:1px solid var(--line);padding:0 8px}
+.constitutional-faq summary{cursor:pointer;font-weight:750;font-size:14px;padding:20px 3px;list-style:revert}
+.constitutional-faq details p{padding:0 0 19px 23px;max-width:920px;font-size:12px;color:#58626d;line-height:1.85}
+.constitutional-provenance{background:#faf9f7;padding:55px 35px;margin-top:25px;border:0}
+.constitutional-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.constitutional-source-grid a{font-size:12px;font-weight:650;color:#a5202a;padding:13px;border:1px solid #e4dfda;background:#fff}
+.constitutional-back{padding:24px 0;font-size:13px;font-weight:800;color:var(--red)}
+@media(max-width:960px){.constitutional-hero{grid-template-columns:1fr}.constitutional-photo{max-width:740px}.constitutional-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.constitutional-methods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.constitutional-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.constitutional-judges,.constitutional-contact-grid,.constitutional-cases,.constitutional-office,.constitutional-source-grid{grid-template-columns:1fr}.constitutional-hero{padding-top:35px}.constitutional-block{padding:47px 0}}
+@media(max-width:500px){.constitutional-judge{padding:17px}.constitutional-judge-head{grid-template-columns:80px minmax(0,1fr);gap:13px}.constitutional-judge-head img,.constitutional-judge-monogram{width:80px;height:106px}.constitutional-topic-grid,.constitutional-methods,.constitutional-fees{grid-template-columns:1fr}.constitutional-fact dl>div{grid-template-columns:1fr;gap:5px}.constitutional-fact{padding:19px}.constitutional-inpage{flex-wrap:nowrap;overflow-x:auto}.constitutional-inpage a{white-space:nowrap}.constitutional-fees p{grid-column:1}.constitutional-provenance{padding:30px 18px}.constitutional-timeline>div{grid-template-columns:1fr;gap:4px}.constitutional-stats b{font-size:29px}}
