@@ -6,6 +6,7 @@ import {pilotPublicCourts} from '../../lib/pilot-public';
 import {findRegion} from '../../lib/regions';
 import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
 import {pushkinskyCourt} from '../../lib/court-rich-records';
+import {OFFICIAL_REFERENCE_COURTS} from '../../lib/official-reference-courts';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -44,6 +45,7 @@ export default async function RegionPage({params,searchParams}:Props){
   let label=findRegion(region)?.name??region;
   const pilot=pilotPublicCourts().filter(x=>'region-'+x.region_code===region);
   const arbitration=regionalArbitrationCourts(region);
+  const officialReferences=OFFICIAL_REFERENCE_COURTS.filter(c=>c.region===region);
   const codes=new Set(pilot.map(x=>x.external_code));
   const candidates=researchCourtsByRegion(region).filter(x=>!codes.has(x.code));
   if(candidates.length)label=candidates[0].regionName;
@@ -91,6 +93,19 @@ export default async function RegionPage({params,searchParams}:Props){
         {result.page<totalPages?<Link href={base+'?page='+(result.page+1)}>Следующая →</Link>:<span/>}
       </nav>:null}
     </section>
+    {officialReferences.length>0?<section className="section-wrap" aria-labelledby="official-regional-references">
+      <div className="section-intro">
+        <span className="eyebrow">Контакты по официальным судебным источникам</span>
+        <h2 id="official-regional-references">Суды с адресами и отдельными карточками: {officialReferences.length}</h2>
+        <p>Для этих судов опубликованы адрес, телефон, электронная почта, карта и прямые ссылки на официальные сервисы дел. Актуальность и состав судей требуют отдельной редакционной проверки.</p>
+      </div>
+      <div className="results">{officialReferences.map(c=>
+        <Link className="result-row" key={c.slug} href={'/courts/reference/'+c.slug}>
+          <span><strong>{c.name}</strong><small>{c.address} · {c.phone}</small><small>Официальный первоисточник · справочная карточка</small></span>
+          <span aria-hidden="true">↗</span>
+        </Link>
+      )}</div>
+    </section>:null}
     {pilot.length>0?<section className="section-wrap" aria-labelledby="partial-pilot">
       <div className="section-intro">
         <span className="eyebrow">Официальные опубликованные сведения · уточнение актуальности</span>
