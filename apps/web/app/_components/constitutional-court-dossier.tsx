@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../lib/constitutional-reference-library';
 import {YandexCourtMap} from './yandex-court-map';
 import {
  CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_PRACTICE,
- CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_SOURCES
+ CONSTITUTIONAL_SECRETARIAT
 } from '../lib/constitutional-court-data';
 
 const stamp='Сведения по первоисточникам, собранные 27 октября 2026 года';
@@ -203,9 +204,9 @@ export function ConstitutionalCourtDossier(){
 
   <section className="constitutional-block constitutional-provenance">
    <SecHeading id="sources" eyebrow="Прозрачность" title="Проверенные первоисточники">
-    Данные сохраняются внутри этой карточки; ссылки нужны для подтверждения, уточнения актуальности и юридически значимых действий.
+    Все девять тем раскрываются в отдельных подробных разделах нашего проекта. Официальный первоисточник находится внутри каждого раздела — для проверки актуальности, кадровых изменений и юридически значимых действий.
    </SecHeading>
-   <div className="constitutional-source-grid">{CONSTITUTIONAL_SOURCES.map(x=><a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer">{x.label} ↗</a>)}</div>
+   <div className="constitutional-source-grid">{CONSTITUTIONAL_REFERENCE_TOPICS.map(x=><Link key={x.slug} href={CONSTITUTIONAL_REFERENCE_BASE+"/"+x.slug}>{x.shortTitle} →</Link>)}</div>
    <p className="constitutional-small">Фото здания — Monoklon (CC BY-SA 4.0). Для каждого размещённого портрета судьи указаны источник и лицензия CC BY 4.0; при отсутствии подтверждённого разрешения вместо изображения показана монограмма. Фотографии загружаются из Wikimedia Commons; для полностью локального хранения потребуется отдельное получение и сохранение файлов с лицензиями.</p>
   </section>
   <div className="constitutional-back"><Link href="/courts">← Вернуться в каталог судов России</Link></div>
