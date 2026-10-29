@@ -193,6 +193,7 @@ export function ConstitutionalDocumentGenerator({kind}:{kind:Kind}){
   <div className="ksrf-generator-actions">
    <button type="button" disabled={!canExport} onClick={copyDraft}>Копировать проект</button>
    <button type="button" disabled={!canExport} onClick={downloadDraft}>Скачать TXT</button>
+   <button type="button" disabled={!canExport} onClick={()=>window.print()}>Печать / сохранить PDF</button>
    <button type="button" onClick={()=>{setData(INITIAL);setFeedback('Поля очищены.');}}>Очистить форму</button>
   </div>
   {feedback?<p className="ksrf-generator-feedback" role="status">{feedback}</p>:null}
