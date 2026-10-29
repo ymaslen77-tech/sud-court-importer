@@ -3,6 +3,7 @@ import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../
 import {YandexCourtMap} from './yandex-court-map';
 import {ConstitutionalComplaintSelfCheck} from './constitutional-complaint-selfcheck';
 import {CONSTITUTIONAL_CASES} from '../lib/constitutional-practice';
+import {constitutionalJudgeProfileHref} from '../lib/constitutional-judge-profiles';
 import {
  CONSTITUTIONAL_JUDGES,
  CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS
@@ -84,10 +85,10 @@ export function ConstitutionalCourtDossier(){
          <img src={j.portrait} alt={'Портрет: '+j.name} loading="lazy" referrerPolicy="no-referrer"/>
          <figcaption>{j.portraitCredit} <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Лицензия</a>.</figcaption>
         </figure>:<div className="constitutional-judge-monogram" role="img" aria-label="Фотография не размещена: права на использование не подтверждены">{j.name.split(' ').slice(0,2).map(s=>s[0]).join('')}</div>}
-       <div><span className="constitutional-role">{j.position}</span><h3>{j.name}</h3><p className="constitutional-date">{j.appointed}</p></div>
+       <div><span className="constitutional-role">{j.position}</span><h3><Link href={constitutionalJudgeProfileHref(j.id)}>{j.name}</Link></h3><p className="constitutional-date">{j.appointed}</p></div>
       </div>
-      <p>{j.background}</p><p><strong>Специализация:</strong> {j.focus}</p>
-      <p className="constitutional-source">Биография: <a href={j.source} target="_blank" rel="noopener noreferrer">официальная персональная страница</a></p>
+      <p>{j.background}</p><p><strong>Профессиональные направления (не распределение дел):</strong> {j.focus}</p>
+      <p><Link className="judge-profile-link" href={constitutionalJudgeProfileHref(j.id)}>Подробная биография, карьера и источники →</Link></p><p className="constitutional-source">Биография: <a href={j.source} target="_blank" rel="noopener noreferrer">официальная персональная страница</a></p>
      </article>)}
    </div>
    <p className="constitutional-small">Отсутствие фотографии означает лишь то, что право на её воспроизведение ещё не подтверждено. Все имена и должности сверяются по <a href="https://www.ksrf.ru/about/judges/" target="_blank" rel="noopener noreferrer">официальному персональному составу</a>.</p>

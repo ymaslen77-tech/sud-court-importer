@@ -3,11 +3,14 @@ import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {getPushkinskyJudge,judgeProfileHref,pushkinskyJudges,type JudgeAppointmentEvidence} from '../../../lib/judge-dossiers';
 import {findRegion} from '../../../lib/regions';
+import {CONSTITUTIONAL_JUDGE_REGION,constitutionalJudgeProfiles,findConstitutionalJudgeProfile,constitutionalJudgeProfileHref} from '../../../lib/constitutional-judge-profiles';
+import {ConstitutionalJudgePersonalPage} from '../../../_components/constitutional-judge-profile';
 
 type Props={params:Promise<{region:string;slug:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){
- return pushkinskyJudges.map(judge=>({region:judge.region,slug:judge.slug}));
+ return pushkinskyJudges.map(judge=>({region:judge.region,slug:judge.slug}))
+  .concat(constitutionalJudgeProfiles.map(judge=>({region:CONSTITUTIONAL_JUDGE_REGION,slug:judge.slug})));
 }
 function dateRu(iso:string){
  const [y,m,d]=iso.split('-');
@@ -20,6 +23,16 @@ const labels:Record<JudgeAppointmentEvidence['verification'],string>={
 };
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {region,slug}=await params;
+ if(region===CONSTITUTIONAL_JUDGE_REGION){
+  const constitutional=findConstitutionalJudgeProfile(slug);
+  if(!constitutional)return {title:'Судья не найден',robots:{index:false,follow:false}};
+  return {
+   title:constitutional.name+' — Конституционный Суд РФ: биография, должность и карьера',
+   description:'Персональная справочная карточка судьи Конституционного Суда РФ: подтверждённые назначения, образование, профессиональная биография и официальные источники.',
+   alternates:{canonical:constitutionalJudgeProfileHref(constitutional.id)},
+   robots:{index:false,follow:true}
+  };
+ }
  const j=getPushkinskyJudge(slug);
  if(!j||j.region!==region)return {title:'Судья не найден',robots:{index:false,follow:false}};
  return {
@@ -31,6 +44,11 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 }
 export default async function JudgeProfilePage({params}:Props){
  const {region,slug}=await params;
+ if(region===CONSTITUTIONAL_JUDGE_REGION){
+  const constitutional=findConstitutionalJudgeProfile(slug);
+  if(!constitutional)notFound();
+  return <ConstitutionalJudgePersonalPage judge={constitutional}/>;
+ }
  const judge=getPushkinskyJudge(slug);
  if(!judge||region!==judge.region)notFound();
  const regionName=findRegion(judge.region)?.name??judge.region;
