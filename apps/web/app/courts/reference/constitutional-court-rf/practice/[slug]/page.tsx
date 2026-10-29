@@ -44,6 +44,7 @@ export default async function ConstitutionalPracticeDetail({params}:Props){
    <div className="constitutional-source-grid">
     <Link href={base+'/practice'}>Другие решения Конституционного Суда →</Link>
     <Link href={base+'/positions'}>Подборки правовых позиций →</Link>
+    <Link href={base+'/effects'}>Что делать после постановления →</Link>
     <Link href={base+'/info/complaint'}>Требования к конституционной жалобе →</Link>
     <Link href={base+'/documents/complaint'}>Генератор проекта конституционной жалобы →</Link>
     <Link href="/search">Общий поиск по судебному каталогу →</Link>
