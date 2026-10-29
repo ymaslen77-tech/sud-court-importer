@@ -52,6 +52,18 @@ class ConstitutionalPracticeTests(unittest.TestCase):
   self.assertNotIn('CONSTITUTIONAL_PRACTICE.map',self.dossier)
   self.assertIn('CONSTITUTIONAL_CASES.slice(0,6).map',self.dossier)
 
+ def test_verified_outcomes_are_not_left_as_unknown(self):
+  for expected in (
+   "Статья 322 ГК РФ признана не противоречащей Конституции",
+   "Производство в отношении статьи 1080 ГК РФ прекращено",
+   "Пункт 3 статьи 234 ГК РФ признан неконституционным",
+   "До изменения закона единовременные выплаты индексируются",
+   "Статья 15 и пункт 1 статьи 1064 ГК РФ признаны не противоречащими Конституции",
+   "предварительно выплачивается или вносится на депозит нотариуса"
+  ):
+   with self.subTest(expected=expected):
+    self.assertIn(expected,self.data)
+
  def test_official_statistics_sources_are_linked_not_fake_live_stats(self):
   for link in ('/Decision/generalization/','/Decision/Statisticses.php','/Decision/lp/',
                '/Decision/extsearch.php'):
