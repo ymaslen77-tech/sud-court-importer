@@ -15,7 +15,8 @@ class ConstitutionalDossierTests(unittest.TestCase):
         self.assertEqual(len(re.findall(r"source:'https://www.ksrf.ru/about/judges/[0-9]+/'",data)),10)
         self.assertIn("https://www.ksrf.ru/Petition/CommonComplaintQ.php",data)
         self.assertIn("https://www.ksrf.ru/about/apparat/sekretariat.php",data)
-        self.assertIn("https://www.ksrf.ru/doc/KSRFDecision903983.pdf",data)
+        practice=(APP/"lib/constitutional-practice.ts").read_text(encoding="utf-8")
+        self.assertIn("https://www.ksrf.ru/news/38017/",practice)
         self.assertEqual(data.count("portrait:"),6)
         self.assertIn("CC BY 4.0",data)
 
