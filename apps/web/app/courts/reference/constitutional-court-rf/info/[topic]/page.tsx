@@ -145,6 +145,14 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
    <div className="court-filter-actions"><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/reception'}>Адрес и приёмная →</Link><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/payment'}>Пошлина →</Link></div>
   </section>:null}
 
+  {(topic.slug==='complaint'||topic.slug==='payment')?<section className="constitutional-block">
+   <div className="section-intro"><span className="eyebrow">Подготовка документов</span><h2>Генераторы проектов документов</h2><p>Формы работают локально в браузере, требуют проверки фактов и не подают документы в суд автоматически.</p></div>
+   <div className="constitutional-source-grid">
+    <Link href="/courts/reference/constitutional-court-rf/documents/complaint">Составить проект конституционной жалобы →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/documents/fee-relief">Подготовить ходатайство по госпошлине →</Link>
+   </div>
+  </section>:null}
+
   <aside className="constitutional-primary-source" id="primary-source">
    <span className="eyebrow">Контроль достоверности</span>
    <h2>Официальный первоисточник</h2>
