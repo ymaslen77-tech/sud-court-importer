@@ -156,6 +156,8 @@ export function ConstitutionalCourtDossier(){
     <p>Размеры по официальной информации суда. Допускаются законные основания освобождения, уменьшения или отсрочки. Проверяйте платёжные реквизиты непосредственно перед переводом.</p>
    </div>
    <div className="constitutional-hero-actions">
+    <Link className="button button-red" href="/courts/reference/constitutional-court-rf/documents/complaint">Составить проект жалобы →</Link>
+    <Link className="button button-outline" href="/courts/reference/constitutional-court-rf/documents/fee-relief">Ходатайство по госпошлине →</Link>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/algo/" target="_blank" rel="noopener noreferrer">Проверить право на обращение ↗</a>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Примерная структура жалобы ↗</a>
     <a className="button button-red" href="https://petition.ksrf.ru/" target="_blank" rel="noopener noreferrer">Подать через официальный кабинет ↗</a>
