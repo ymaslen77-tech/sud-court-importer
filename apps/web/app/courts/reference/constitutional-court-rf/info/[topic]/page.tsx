@@ -166,6 +166,7 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
     <Link href="/courts/reference/constitutional-court-rf/practice">Поиск решений Конституционного Суда →</Link>
     <Link href="/courts/reference/constitutional-court-rf/positions">Правовые позиции по темам →</Link>
     <Link href="/courts/reference/constitutional-court-rf/resources">Заседания, обзоры и статистика →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/effects">Правовые последствия решений и пересмотр →</Link>
     <Link href="/courts/reference/constitutional-court-rf/documents/complaint">Подготовить проект жалобы →</Link>
    </div>
   </section>
