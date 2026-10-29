@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {CONSTITUTIONAL_JUDGE_REGION,constitutionalJudgeProfileHref,constitutionalJudgeProfiles,type ConstitutionalJudgeProfile} from '../lib/constitutional-judge-profiles';
+import {constitutionalJudgeProfileHref,constitutionalJudgeProfiles,type ConstitutionalJudgeProfile} from '../lib/constitutional-judge-profiles';
 
 const court='/courts/reference/constitutional-court-rf';
 const plain='https://www.ksrf.ru/about/judges/';
