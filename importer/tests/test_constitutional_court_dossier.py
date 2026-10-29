@@ -21,7 +21,7 @@ class ConstitutionalDossierTests(unittest.TestCase):
 
     def test_rich_page_keeps_provenance_and_displays_sections(self):
         page=(APP/"_components/constitutional-court-dossier.tsx").read_text(encoding="utf-8")
-        for item in ("CONSTITUTIONAL_JUDGES.map", "CONSTITUTIONAL_PRACTICE.map",
+        for item in ("CONSTITUTIONAL_JUDGES.map", "CONSTITUTIONAL_CASES.slice(0,6).map",
                      "CONSTITUTIONAL_SECRETARIAT.map", "CONSTITUTIONAL_REFERENCE_TOPICS.map",
                      "Подать через официальный кабинет", "CONSTITUTIONAL_CONTACTS.receptionAddress",
                      "450 ₽", "6 750 ₽", "<YandexCourtMap",
