@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../lib/constitutional-reference-library';
 import {YandexCourtMap} from './yandex-court-map';
+import {ConstitutionalComplaintSelfCheck} from './constitutional-complaint-selfcheck';
 import {
  CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_PRACTICE,
  CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS
@@ -141,6 +142,7 @@ export function ConstitutionalCourtDossier(){
    <div className="constitutional-process">
     {steps.map(s=><div key={s.number}><span>{s.number}</span><div><h3>{s.name}</h3><p>{s.desc}</p></div></div>)}
    </div>
+   <ConstitutionalComplaintSelfCheck/>
    <h3 className="constitutional-subheading">Варианты подачи</h3>
    <div className="constitutional-methods">
     <div><b>По почте</b><p>{CONSTITUTIONAL_CONTACTS.postalAddress}. Сохраняйте доказательство направления и дату отправки.</p></div>
