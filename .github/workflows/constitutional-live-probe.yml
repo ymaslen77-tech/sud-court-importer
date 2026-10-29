@@ -4,8 +4,11 @@ on:
   push:
     branches:
       - feat/044-constitutional-decisions-editorial-completion
+      - infra/coolify-russian-vps
     paths:
       - .github/workflows/constitutional-live-probe.yml
+      - apps/web/app/courts/reference/constitutional-court-rf/**
+      - apps/web/app/lib/constitutional-practice.ts
 
 permissions:
   contents: read
@@ -32,6 +35,7 @@ jobs:
             /courts/reference/constitutional-court-rf/practice \
             /courts/reference/constitutional-court-rf/positions \
             /courts/reference/constitutional-court-rf/resources \
+            /courts/reference/constitutional-court-rf/effects \
             /courts/reference/constitutional-court-rf/practice/27-p-2025; do
             total=$((total+1))
             result="$(curl -L --silent --show-error --max-time 15 -o /tmp/constitutional-public.html -w '%{http_code} %{url_effective}' "$base$path" 2>&1 || true)"
