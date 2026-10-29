@@ -136,6 +136,12 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
     ].map(([num,title,desc])=><div key={num}><span>{num}</span><div><h3>{title}</h3><p>{desc}</p></div></div>)}
    </div>
    <ConstitutionalComplaintSelfCheck/>
+   <div className="ksrf-selfcheck-links">
+    <a href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Структура жалобы и приложения ↗</a>
+    <a href="https://www.ksrf.ru/Petition/Resolve.php" target="_blank" rel="noopener noreferrer">Предварительное рассмотрение ↗</a>
+    <a href="https://www.ksrf.ru/Petition/CurrentStatus.php" target="_blank" rel="noopener noreferrer">Узнать статус обращения ↗</a>
+    <a href="https://www.ksrf.ru/about/legalbases/FCLM/Article53.php" target="_blank" rel="noopener noreferrer">Требования к представителю ↗</a>
+   </div>
    <div className="court-filter-actions"><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/reception'}>Адрес и приёмная →</Link><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/payment'}>Пошлина →</Link></div>
   </section>:null}
 
