@@ -23,13 +23,17 @@ class ConstitutionalDossierTests(unittest.TestCase):
         page=(APP/"_components/constitutional-court-dossier.tsx").read_text(encoding="utf-8")
         for item in ("CONSTITUTIONAL_JUDGES.map", "CONSTITUTIONAL_PRACTICE.map",
                      "CONSTITUTIONAL_SECRETARIAT.map", "CONSTITUTIONAL_REFERENCE_TOPICS.map",
-                     "Подать через официальный кабинет", "Галерная, дом 1",
+                     "Подать через официальный кабинет", "CONSTITUTIONAL_CONTACTS.receptionAddress",
                      "450 ₽", "6 750 ₽", "<YandexCourtMap",
                      "<details", "CC BY-SA 4.0", "не официальный сайт суда",
                      "11","неподтвержденным"):
             if item=="неподтвержденным":
                 continue
             with self.subTest(item=item):self.assertIn(item,page)
+        facts=(APP/"lib/constitutional-court-data.ts").read_text(encoding="utf-8")
+        self.assertIn("receptionAddress:'Санкт-Петербург, улица Галерная, дом 3'",facts)
+        self.assertIn("hearingAddress:'Санкт-Петербург, улица Галерная, дом 1'",facts)
+        self.assertIn("CONSTITUTIONAL_CONTACTS.receptionMapAddress",page)
         self.assertIn("Конституционный Суд не",page)
         self.assertIn("вакансия не заполнена вымышленной записью",page)
         self.assertIn("право на её воспроизведение ещё не подтверждено",page)
