@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type {Metadata} from 'next';
 import {COURT_CATEGORIES,COURT_FAMILIES} from '../lib/court-taxonomy';
 import {judgeProfileHref,pushkinskyJudges} from '../lib/judge-dossiers';
+import {constitutionalJudgeProfiles,constitutionalJudgeProfileHref} from '../lib/constitutional-judge-profiles';
 
 export const metadata:Metadata={
  title:'Судьи России — мировые, районные, областные, военные и арбитражные',
@@ -14,13 +15,34 @@ export default async function JudgesPage({searchParams}:Props){
  const q=typeof query.q==='string'?query.q.trim().slice(0,80):'';
  const normalized=q.toLocaleLowerCase('ru').replace(/ё/g,'е');
  const matches=pushkinskyJudges.filter(judge=>!normalized||judge.name.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(normalized));
+ const constitutionalMatches=constitutionalJudgeProfiles.filter(judge=>!normalized||judge.name.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(normalized));
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span>Судьи</div>
   <section className="section-hero">
    <span className="kicker">Состав судебных органов</span>
    <h1>Судьи Российской Федерации</h1>
    <p className="lead">Мировые судьи, судьи районных и городских судов, областных и краевых, военных, арбитражных, апелляционных и кассационных судов.</p>
-   <div className="notice"><span className="notice-dot" aria-hidden="true"/>Начато наполнение проверяемыми персональными карточками. Первые записи получены из опубликованного состава Пушкинского городского суда; это не полный реестр всех действующих судей России.</div>
+   <div className="notice"><span className="notice-dot" aria-hidden="true"/>В каталоге доступны 10 досье судей Конституционного Суда РФ и предварительные персональные карточки Пушкинского городского суда. Это не полный реестр всех действующих судей России.</div>
+  </section>
+  <form action="/judges" method="get" role="search" className="court-advanced-search">
+   <label htmlFor="judge-q">Найти судью по фамилии, имени или отчеству</label>
+   <input id="judge-q" type="search" name="q" defaultValue={q} placeholder="Например: Жаркова или Базылева" maxLength={80}/>
+   <div className="court-filter-actions"><button className="button button-red" type="submit">Найти судью →</button>{q?<Link className="button button-outline" href="/judges">Сбросить поиск</Link>:null}</div>
+  </form>
+  {q&&!matches.length&&!constitutionalMatches.length?<div className="empty-state">В проверяемых подборках пока нет совпадений. Это не означает, что такого судьи не существует.</div>:null}
+  <section className="section-wrap" id="constitutional-judges">
+   <div className="section-intro">
+    <span className="eyebrow">Федеральный конституционный контроль · официальные биографии</span>
+    <h2>Судьи Конституционного Суда Российской Федерации</h2>
+    <p>Десять персональных досье по опубликованному составу: должности, назначения, образование, этапы карьеры и ссылки на официальные биографии. По закону предусмотрено одиннадцать судей, но в опубликованном персональном списке указаны десять. Последняя сверка источников — 29.10.2026.</p>
+    <p><Link href="/courts/reference/constitutional-court-rf#judges">Карточка Конституционного Суда и полный список →</Link></p>
+   </div>
+   {constitutionalMatches.length?<div className="judge-directory-cards">
+    {constitutionalMatches.map(judge=><Link key={judge.id} className="judge-directory-card" href={constitutionalJudgeProfileHref(judge.id)}>
+      {judge.portrait?<img src={judge.portrait} alt="" loading="lazy" referrerPolicy="no-referrer"/>:<span className="judge-directory-monogram" aria-hidden="true">{judge.name.split(' ').slice(0,2).map(n=>n[0]).join('')}</span>}
+      <span><small>{judge.position}</small><strong>{judge.name}</strong><span className="judge-directory-appointment">{judge.appointed}</span><em>Персональное досье →</em></span>
+    </Link>)}
+   </div>:q?null:<p>Подтверждённые персональные карточки пока отсутствуют.</p>}
   </section>
   <section className="section-wrap" aria-labelledby="judge-first-list">
    <div className="section-intro">
@@ -30,11 +52,7 @@ export default async function JudgesPage({searchParams}:Props){
      персональные назначения, биографии и конкретные дела проверяются индивидуально. В официальном историческом
      очерке суда перечислен более широкий состав — пока нельзя считать этот список исчерпывающим.</p>
    </div>
-   <form action="/judges" method="get" role="search" className="court-advanced-search">
-    <label htmlFor="judge-q">Найти судью по ФИО</label>
-    <input id="judge-q" type="search" name="q" defaultValue={q} placeholder="Например: Базылева Татьяна Анатольевна" maxLength={80}/>
-    <div className="court-filter-actions"><button className="button button-red" type="submit">Найти судью →</button></div>
-   </form>
+
    {matches.length?
      <div className="results">{matches.map(judge=><Link className="result-row"
        key={judge.slug} href={judgeProfileHref(judge)}>
@@ -43,7 +61,7 @@ export default async function JudgesPage({searchParams}:Props){
         <small>{judge.historicalAppointments.length?'История назначений и проверенные примеры дел':'Предварительная кадровая справка с первоисточником'}</small>
        </span><span aria-hidden="true">↗</span>
      </Link>)}</div>
-     :<div className="empty-state">В опубликованном предварительном наборе судей совпадений нет. Это не означает, что такого судьи не существует.</div>}
+     :null}
   </section>
   <section className="section-wrap">
     <div className="section-intro"><span className="eyebrow">Каталог по категориям судов</span><h2>Выберите, в каком суде работает судья</h2><p>Поиск конкретных ФИО и дат назначений будет подключён только после проверки официальных кадровых сведений.</p></div>

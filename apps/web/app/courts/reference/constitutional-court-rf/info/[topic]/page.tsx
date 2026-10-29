@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS} from '../../../../../lib/constitutional-court-data';
+import {constitutionalJudgeProfileHref} from '../../../../../lib/constitutional-judge-profiles';
 import {
  CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS,getConstitutionalTopic
 } from '../../../../../lib/constitutional-reference-library';
@@ -76,11 +77,11 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
       </figure>:<div className="constitutional-judge-monogram" role="img" aria-label="Лицензионный портрет пока недоступен">
        {j.name.split(' ').slice(0,2).map(p=>p.charAt(0)).join('')}
       </div>}
-      <div><span className="constitutional-role">{j.position}</span><h3>{j.name}</h3>
+      <div><span className="constitutional-role">{j.position}</span><h3><Link href={constitutionalJudgeProfileHref(j.id)}>{j.name}</Link></h3>
        <p className="constitutional-date">{j.appointed}</p></div>
      </div>
-     <p>{j.background}</p><p><strong>Направления профессиональной работы:</strong> {j.focus}</p>
-     <p className="constitutional-small"><a href={j.source} target="_blank" rel="noopener noreferrer">Персональный официальный первоисточник</a></p>
+     <p>{j.background}</p><p><strong>Направления профессиональной работы (не распределение дел):</strong> {j.focus}</p>
+     <p><Link className="judge-profile-link" href={constitutionalJudgeProfileHref(j.id)}>Подробное персональное досье →</Link></p><p className="constitutional-small"><a href={j.source} target="_blank" rel="noopener noreferrer">Персональный официальный первоисточник</a></p>
     </section>)}
    </div>
    <p className="constitutional-small">Изображения показаны только при наличии указания об открытой лицензии и её правообладателе. Для остальных карточек оставлены монограммы.</p>
