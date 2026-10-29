@@ -3,7 +3,7 @@ import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../
 import {YandexCourtMap} from './yandex-court-map';
 import {
  CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_PRACTICE,
- CONSTITUTIONAL_SECRETARIAT
+ CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS
 } from '../lib/constitutional-court-data';
 
 const stamp='Сведения по первоисточникам, собранные 27 октября 2026 года';
@@ -99,7 +99,7 @@ export function ConstitutionalCourtDossier(){
     <div className="constitutional-fact">
      <h3>Конституционный Суд РФ</h3>
      <dl>
-      <div><dt>Почтовый адрес</dt><dd>190000, Санкт-Петербург, Сенатская площадь, дом 1</dd></div>
+      <div><dt>Почтовый адрес</dt><dd>{CONSTITUTIONAL_CONTACTS.postalAddress}</dd></div>
       <div><dt>Общая справочная</dt><dd><a href="tel:+78124043311">+7 (812) 404-33-11</a> — автоматическая линия круглосуточно</dd></div>
       <div><dt>Контактный e-mail</dt><dd><a href="mailto:ksrf@ksrf.ru">ksrf@ksrf.ru</a></dd></div>
       <div><dt>Территория компетенции</dt><dd>Вся Российская Федерация</dd></div>
@@ -108,7 +108,7 @@ export function ConstitutionalCourtDossier(){
     <div className="constitutional-fact">
      <h3>Приёмная граждан</h3>
      <dl>
-      <div><dt>Адрес для личного приёма</dt><dd>Санкт-Петербург, улица Галерная, дом 1</dd></div>
+      <div><dt>Адрес для личного приёма</dt><dd>{CONSTITUTIONAL_CONTACTS.receptionAddress}</dd></div>
       <div><dt>Понедельник — четверг</dt><dd>10:00–17:00</dd></div>
       <div><dt>Пятница и предпраздничные дни</dt><dd>10:00–16:00</dd></div>
       <div><dt>Перерыв</dt><dd>12:00–13:00</dd></div>
@@ -116,8 +116,12 @@ export function ConstitutionalCourtDossier(){
      </dl>
     </div>
    </div>
-   <YandexCourtMap code="ksrf-senate-1" name="Конституционный Суд Российской Федерации" address="Санкт-Петербург, Сенатская площадь, 1"/>
-   <p className="constitutional-small">Карта строится по адресу, а не по непроверенным координатам входа. Режим работы и порядок прохода могут изменяться.</p>
+   <YandexCourtMap code="ksrf-senate-1" name="Конституционный Суд Российской Федерации" address={CONSTITUTIONAL_CONTACTS.postalMapAddress}/>
+   <p className="constitutional-small">Карта показывает почтовый адрес суда. Приёмная граждан находится отдельно на Галерной улице, 3; вход для посетителей открытых заседаний — Галерная, 1. Перед посещением уточните порядок прохода и расписание.</p>
+   <div className="constitutional-contact-grid">
+    <div className="constitutional-fact"><h3>Приёмная граждан</h3><p>{CONSTITUTIONAL_CONTACTS.receptionAddress}</p><p><a href={CONSTITUTIONAL_CONTACTS.receptionSource} target="_blank" rel="noopener noreferrer">Проверить контактные сведения</a></p><YandexCourtMap code="ksrf-reception" name="Приёмная Конституционного Суда РФ" address={CONSTITUTIONAL_CONTACTS.receptionMapAddress}/></div>
+    <div className="constitutional-fact"><h3>Вход на открытые заседания</h3><p>{CONSTITUTIONAL_CONTACTS.hearingAddress}</p><p>Это не адрес приёмной граждан. Уточняйте порядок допуска.</p><p><a href={CONSTITUTIONAL_CONTACTS.hearingSource} target="_blank" rel="noopener noreferrer">Посещение заседаний</a></p><YandexCourtMap code="ksrf-hearings" name="Вход для посетителей заседаний" address={CONSTITUTIONAL_CONTACTS.hearingMapAddress}/></div>
+   </div>
   </section>
 
   <section className="constitutional-block">
@@ -139,8 +143,8 @@ export function ConstitutionalCourtDossier(){
    </div>
    <h3 className="constitutional-subheading">Варианты подачи</h3>
    <div className="constitutional-methods">
-    <div><b>По почте</b><p>190000, Санкт-Петербург, Сенатская площадь, 1. Сохраняйте доказательство направления и дату отправки.</p></div>
-    <div><b>Лично</b><p>Через приёмную на Галерной улице, 1, в часы её работы.</p></div>
+    <div><b>По почте</b><p>{CONSTITUTIONAL_CONTACTS.postalAddress}. Сохраняйте доказательство направления и дату отправки.</p></div>
+    <div><b>Лично</b><p>Через приёмную по адресу {CONSTITUTIONAL_CONTACTS.receptionAddress} в часы её работы.</p></div>
     <div><b>Через кабинет</b><p>Официальная электронная система с регистрацией заявителя.</p></div>
     <div><b>Электронной почтой</b><p>Процессуальная жалоба на ksrf@ksrf.ru — с усиленной квалифицированной электронной подписью.</p></div>
    </div>
@@ -150,6 +154,8 @@ export function ConstitutionalCourtDossier(){
     <p>Размеры по официальной информации суда. Допускаются законные основания освобождения, уменьшения или отсрочки. Проверяйте платёжные реквизиты непосредственно перед переводом.</p>
    </div>
    <div className="constitutional-hero-actions">
+    <a className="button button-outline" href="https://www.ksrf.ru/Petition/algo/" target="_blank" rel="noopener noreferrer">Проверить право на обращение ↗</a>
+    <a className="button button-outline" href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Примерная структура жалобы ↗</a>
     <a className="button button-red" href="https://petition.ksrf.ru/" target="_blank" rel="noopener noreferrer">Подать через официальный кабинет ↗</a>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/Requisites.php" target="_blank" rel="noopener noreferrer">Проверить реквизиты оплаты ↗</a>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/CurrentStatus.php" target="_blank" rel="noopener noreferrer">Проверить статус обращения ↗</a>

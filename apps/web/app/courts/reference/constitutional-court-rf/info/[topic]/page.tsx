@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
-import {CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_SECRETARIAT} from '../../../../../lib/constitutional-court-data';
+import {CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS} from '../../../../../lib/constitutional-court-data';
 import {
  CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS,getConstitutionalTopic
 } from '../../../../../lib/constitutional-reference-library';
@@ -94,12 +94,13 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
      <p>Электронная почта: <a href="mailto:ksrf@ksrf.ru">ksrf@ksrf.ru</a></p>
     </div>
     <div className="constitutional-fact"><h3>Личный приём</h3>
-     <p>Санкт-Петербург, Галерная улица, дом 1</p>
+     <p>{CONSTITUTIONAL_CONTACTS.receptionAddress}</p>
      <p>Приёмная: <a href="tel:+78124043199">+7 (812) 404-31-99</a></p>
      <p>Часы и перерыв указаны выше; рекомендуем уточнить режим непосредственно перед посещением.</p>
     </div>
    </div>
-   <YandexCourtMap code="constitutional-reception" name="Приёмная Конституционного Суда России" address="Санкт-Петербург, Галерная улица, 1"/>
+   <YandexCourtMap code="constitutional-reception" name="Приёмная Конституционного Суда России" address={CONSTITUTIONAL_CONTACTS.receptionMapAddress}/>
+   <section className="constitutional-fact"><h3>Вход на открытые заседания</h3><p>{CONSTITUTIONAL_CONTACTS.hearingAddress}</p><a href={CONSTITUTIONAL_CONTACTS.hearingSource} target="_blank" rel="noopener noreferrer">Официальные правила посещения</a></section>
   </section>:null}
 
   {topic.slug==='secretariat'?<section className="constitutional-block">

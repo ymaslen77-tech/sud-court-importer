@@ -9,6 +9,7 @@ export type ReferenceTopic={
  slug:string;title:string;shortTitle:string;eyebrow:string;summary:string;
  sourceUrl:string;sourceName:string;sections:readonly ReferenceSection[];
 };
+import {CONSTITUTIONAL_CONTACTS} from './constitutional-court-data';
 const court='Конституционного Суда Российской Федерации';
 export const CONSTITUTIONAL_REFERENCE_BASE='/courts/reference/constitutional-court-rf/info';
 export const CONSTITUTIONAL_REFERENCE_TOPICS:ReadonlyArray<ReferenceTopic>=[
@@ -80,7 +81,7 @@ export const CONSTITUTIONAL_REFERENCE_TOPICS:ReadonlyArray<ReferenceTopic>=[
   sourceUrl:'https://www.ksrf.ru/Petition/CommonComplaintQ.php',sourceName:'Официальный раздел о приёме граждан',
   sections:[
    {heading:'Куда обращаться лично',paragraphs:[
-    'Для личного обращения действует приёмная по адресу: Санкт-Петербург, улица Галерная, дом 1. Это не тот же адрес, что у почтовой корреспонденции суда (Сенатская площадь, дом 1).',
+    `Для личного обращения действует приёмная по адресу: ${CONSTITUTIONAL_CONTACTS.receptionAddress}. Вход для посетителей открытых заседаний находится отдельно: ${CONSTITUTIONAL_CONTACTS.hearingAddress}. Почтовый адрес суда — Сенатская площадь, дом 1.`,
     'По опубликованному режиму приёма: понедельник — четверг с 10:00 до 17:00, пятница и предпраздничные дни с 10:00 до 16:00, перерыв с 12:00 до 13:00. Перед поездкой необходимо уточнить режим.'
    ]},
    {heading:'Как получить сведения об обращении',paragraphs:[
