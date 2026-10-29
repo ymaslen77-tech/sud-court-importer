@@ -3,6 +3,22 @@
  * Public official list currently shows 10 people; statutory capacity is 11.
  * No unsupported positions, photographs or alleged case assignments.
  */
+/** Official contact facts checked against the current Russian-language contacts page
+ * on 2026-10-29. The older FAQ still says Galernaya 1 for reception; that address
+ * is separately confirmed as the entrance for visitors of public hearings.
+ */
+export const CONSTITUTIONAL_CONTACTS={
+ postalAddress:'190000, Санкт-Петербург, Сенатская площадь, дом 1',
+ postalMapAddress:'Санкт-Петербург, Сенатская площадь, 1',
+ receptionAddress:'Санкт-Петербург, улица Галерная, дом 3',
+ receptionMapAddress:'Санкт-Петербург, Галерная улица, 3',
+ hearingAddress:'Санкт-Петербург, улица Галерная, дом 1',
+ hearingMapAddress:'Санкт-Петербург, Галерная улица, 1',
+ receptionSource:'https://www.ksrf.ru/contacts.php',
+ hearingSource:'https://www.ksrf.ru/Sessions/visit.php',
+ sourceCheckedAt:'2026-10-29'
+} as const;
+
 export type ConstitutionalJudge={
  id:string;name:string;position:string;appointed:string;
  background:string;focus:string;source:string;portrait?:string;portraitCredit?:string;
