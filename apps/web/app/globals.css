@@ -594,3 +594,32 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .ksrf-selfcheck-links a{font-size:13px;font-weight:600;color:#842c2c;text-decoration:underline;text-underline-offset:3px}
 .ksrf-selfcheck-reset{margin-top:3px}
 @media(max-width:640px){.ksrf-selfcheck{padding:18px}.ksrf-selfcheck-head{flex-direction:column;gap:10px}.ksrf-selfcheck-answers button{flex:1}}
+
+/* Constitution Court document generators: draft-only local browser workspace. */
+.ksrf-document-generator{max-width:1100px;margin:0 auto}
+.ksrf-generator-notice{border-left:3px solid var(--red);padding:16px 19px;background:#f7f5f1;color:#484f56;line-height:1.8;font-size:14px}
+.ksrf-document-generator form{display:grid;gap:27px;margin:26px 0}
+.ksrf-document-generator fieldset{border:1px solid var(--line);border-radius:10px;padding:22px 24px;min-width:0;margin:0}
+.ksrf-document-generator legend{font-weight:700;font-size:18px;padding:0 8px;color:#29323a}
+.ksrf-generator-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 20px}
+.ksrf-document-generator label{font-size:13px;color:#3c4650;line-height:1.65;display:block;font-weight:600}
+.ksrf-document-generator input[type=text],.ksrf-document-generator input[type=email],.ksrf-document-generator textarea{display:block;width:100%;margin-top:6px;border:1px solid #c4cbd0;border-radius:7px;padding:12px 13px;background:#fff;color:#25313b;font:inherit;font-size:14px;line-height:1.5;box-sizing:border-box}
+.ksrf-document-generator textarea{resize:vertical;min-height:110px}
+.ksrf-document-generator input:focus-visible,.ksrf-document-generator textarea:focus-visible{outline:2px solid #8f3030;outline-offset:1px}
+.ksrf-document-generator fieldset>label{font-weight:500;padding:7px 0;cursor:pointer}
+.ksrf-document-generator input[type=radio]{accent-color:#8e3030;margin-right:8px}
+.ksrf-generator-status{background:#f7f6f4;padding:11px 16px;margin:16px 0;border:1px solid var(--line);font-size:13px;color:#56616a;line-height:1.75}
+.ksrf-generator-status p{margin:5px 0}
+.ksrf-generator-preview{border:1px solid var(--line);background:white;border-radius:10px;overflow:hidden}
+.ksrf-generator-preview h2{font-size:18px;margin:0;background:#f2f2ef;padding:15px 20px}
+.ksrf-generator-preview pre{margin:0;padding:26px 24px;white-space:pre-wrap;overflow-wrap:anywhere;color:#2c343d;font:14px/1.85 Georgia,"Times New Roman",serif;max-height:680px;overflow-y:auto}
+.ksrf-generator-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.ksrf-generator-actions button{border:1px solid #9c3030;background:#8e3030;color:#fff;border-radius:6px;padding:12px 18px;font-weight:600;font-size:13px;cursor:pointer}
+.ksrf-generator-actions button:last-child{background:transparent;color:#7a2d2d}
+.ksrf-generator-actions button:disabled{opacity:.42;cursor:not-allowed}
+.ksrf-generator-actions button:focus-visible{outline:3px solid #597ba1;outline-offset:2px}
+.ksrf-generator-feedback{font-size:13px;color:#34543c}
+.ksrf-generator-sources{display:flex;flex-wrap:wrap;gap:9px 16px;margin-top:30px;font-size:13px;line-height:1.7}
+.ksrf-generator-sources strong{flex-basis:100%}
+.ksrf-generator-sources a{color:#842c2c;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:680px){.ksrf-generator-fields{grid-template-columns:1fr}.ksrf-document-generator fieldset{padding:16px 14px}.ksrf-generator-preview pre{padding:17px 13px}}
