@@ -623,3 +623,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .ksrf-generator-sources strong{flex-basis:100%}
 .ksrf-generator-sources a{color:#842c2c;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:680px){.ksrf-generator-fields{grid-template-columns:1fr}.ksrf-document-generator fieldset{padding:16px 14px}.ksrf-generator-preview pre{padding:17px 13px}}
+
+@media print{
+ body *{visibility:hidden!important}
+ .ksrf-generator-preview,.ksrf-generator-preview *{visibility:visible!important}
+ .ksrf-generator-preview{position:absolute!important;left:0;top:0;width:100%;border:none!important;border-radius:0!important;overflow:visible!important}
+ .ksrf-generator-preview h2{display:none!important}
+ .ksrf-generator-preview pre{max-height:none!important;overflow:visible!important;font-size:12pt!important;padding:0!important;white-space:pre-wrap!important;overflow-wrap:break-word!important}
+ @page{size:A4;margin:20mm 18mm}
+}
