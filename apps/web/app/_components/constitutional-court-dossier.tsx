@@ -2,8 +2,9 @@ import Link from 'next/link';
 import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../lib/constitutional-reference-library';
 import {YandexCourtMap} from './yandex-court-map';
 import {ConstitutionalComplaintSelfCheck} from './constitutional-complaint-selfcheck';
+import {CONSTITUTIONAL_CASES} from '../lib/constitutional-practice';
 import {
- CONSTITUTIONAL_JUDGES,CONSTITUTIONAL_PRACTICE,
+ CONSTITUTIONAL_JUDGES,
  CONSTITUTIONAL_SECRETARIAT,CONSTITUTIONAL_CONTACTS
 } from '../lib/constitutional-court-data';
 
@@ -168,16 +169,21 @@ export function ConstitutionalCourtDossier(){
 
   <section className="constitutional-block">
    <SecHeading id="practice" eyebrow="Решения суда" title="Подборка реальной судебной практики">
-    Краткое содержание и тема дела доступны на нашей странице. Для полного официального акта (PDF) или поиска по многолетнему архиву сохранена ссылка на первоисточник. Это примеры, а не полный каталог и не оценка исхода дела в пользу конкретной стороны.
+    Далее — шесть примеров из тематического каталога постановлений. Каждая карточка содержит проверяемый источник, предмет конституционного контроля и редакционное объяснение правовой позиции. Это подборка, не полный архив суда.
    </SecHeading>
    <div className="constitutional-cases">
-    {CONSTITUTIONAL_PRACTICE.map(item=><article key={item.number}>
-     <div className="constitutional-case-meta"><strong>№ {item.number}</strong><time>{item.date}</time></div>
-     <h3>{item.topic}</h3><p>{item.summary}</p>
-     <a href={item.source} target="_blank" rel="noopener noreferrer">Открыть официальный материал и полный текст ↗</a>
+    {CONSTITUTIONAL_CASES.slice(0,6).map(item=><article key={item.slug}>
+     <div className="constitutional-case-meta"><strong>№ {item.number}/{item.year}</strong><time>{item.date}</time></div>
+     <span className="ksrf-practice-theme">{item.theme}</span>
+     <h3>{item.title}</h3><p>{item.issue}</p>
+     <Link href={'/courts/reference/constitutional-court-rf/practice/'+item.slug}>Правовая позиция, результат и источники →</Link>
     </article>)}
    </div>
-   <p className="constitutional-small">Для поиска всех постановлений и определений — <a href="https://www.ksrf.ru/Decision/" target="_blank" rel="noopener noreferrer">официальный архив Конституционного Суда РФ</a>. Список выше зафиксирован на дату редакционной подборки.</p>
+   <div className="constitutional-hero-actions">
+    <Link className="button button-red" href="/courts/reference/constitutional-court-rf/practice">Все проверенные решения →</Link>
+    <Link className="button button-outline" href="/courts/reference/constitutional-court-rf/positions">Правовые позиции по темам →</Link>
+   </div>
+   <p className="constitutional-small">Для поиска всех постановлений и определений — <a href="https://www.ksrf.ru/Decision/" target="_blank" rel="noopener noreferrer">официальный архив Конституционного Суда РФ</a>. Редакционная подборка сверена с официальными наименованиями актов 29 октября 2026 года.</p>
   </section>
 
   <section className="constitutional-block">
@@ -216,7 +222,7 @@ export function ConstitutionalCourtDossier(){
    <SecHeading id="sources" eyebrow="Прозрачность" title="Проверенные первоисточники">
     Все девять тем раскрываются в отдельных подробных разделах нашего проекта. Официальный первоисточник находится внутри каждого раздела — для проверки актуальности, кадровых изменений и юридически значимых действий.
    </SecHeading>
-   <div className="constitutional-source-grid">{CONSTITUTIONAL_REFERENCE_TOPICS.map(x=><Link key={x.slug} href={CONSTITUTIONAL_REFERENCE_BASE+"/"+x.slug}>{x.shortTitle} →</Link>)}</div>
+   <div className="constitutional-source-grid">{CONSTITUTIONAL_REFERENCE_TOPICS.map(x=><Link key={x.slug} href={CONSTITUTIONAL_REFERENCE_BASE+"/"+x.slug}>{x.shortTitle} →</Link>)}<Link href="/courts/reference/constitutional-court-rf/practice">Судебная практика и поиск решений →</Link><Link href="/courts/reference/constitutional-court-rf/positions">Правовые позиции по темам →</Link><Link href="/courts/reference/constitutional-court-rf/resources">Заседания, статистика и обзоры →</Link><Link href="/courts/reference/constitutional-court-rf/effects">Последствия решений и пересмотр дел →</Link></div>
    <p className="constitutional-small">Фото здания — Monoklon (CC BY-SA 4.0). Для каждого размещённого портрета судьи указаны источник и лицензия CC BY 4.0; при отсутствии подтверждённого разрешения вместо изображения показана монограмма. Фотографии загружаются из Wikimedia Commons; для полностью локального хранения потребуется отдельное получение и сохранение файлов с лицензиями.</p>
   </section>
   <div className="constitutional-back"><Link href="/courts">← Вернуться в каталог судов России</Link></div>

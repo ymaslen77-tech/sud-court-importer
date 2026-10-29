@@ -15,13 +15,14 @@ class ConstitutionalDossierTests(unittest.TestCase):
         self.assertEqual(len(re.findall(r"source:'https://www.ksrf.ru/about/judges/[0-9]+/'",data)),10)
         self.assertIn("https://www.ksrf.ru/Petition/CommonComplaintQ.php",data)
         self.assertIn("https://www.ksrf.ru/about/apparat/sekretariat.php",data)
-        self.assertIn("https://www.ksrf.ru/doc/KSRFDecision903983.pdf",data)
+        practice=(APP/"lib/constitutional-practice.ts").read_text(encoding="utf-8")
+        self.assertIn("https://www.ksrf.ru/news/38017/",practice)
         self.assertEqual(data.count("portrait:"),6)
         self.assertIn("CC BY 4.0",data)
 
     def test_rich_page_keeps_provenance_and_displays_sections(self):
         page=(APP/"_components/constitutional-court-dossier.tsx").read_text(encoding="utf-8")
-        for item in ("CONSTITUTIONAL_JUDGES.map", "CONSTITUTIONAL_PRACTICE.map",
+        for item in ("CONSTITUTIONAL_JUDGES.map", "CONSTITUTIONAL_CASES.slice(0,6).map",
                      "CONSTITUTIONAL_SECRETARIAT.map", "CONSTITUTIONAL_REFERENCE_TOPICS.map",
                      "Подать через официальный кабинет", "CONSTITUTIONAL_CONTACTS.receptionAddress",
                      "450 ₽", "6 750 ₽", "<YandexCourtMap",

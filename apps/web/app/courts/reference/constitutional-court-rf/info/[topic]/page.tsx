@@ -161,6 +161,16 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
    <p className="constitutional-small">Последняя редакционная сверка: 27.10.2026. Сведения могут измениться после этой даты.</p>
   </aside>
   <section className="constitutional-block">
+   <div className="section-intro"><span className="eyebrow">Связанные материалы</span><h2>Решения, правовые позиции и документы</h2><p>Внутренние разделы с официальными первоисточниками и практическими инструментами.</p></div>
+   <div className="constitutional-source-grid">
+    <Link href="/courts/reference/constitutional-court-rf/practice">Поиск решений Конституционного Суда →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/positions">Правовые позиции по темам →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/resources">Заседания, обзоры и статистика →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/effects">Правовые последствия решений и пересмотр →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/documents/complaint">Подготовить проект жалобы →</Link>
+   </div>
+  </section>
+  <section className="constitutional-block">
    <div className="section-intro"><span className="eyebrow">Другие разделы этого суда</span><h2>Продолжить изучение</h2></div>
    <div className="constitutional-source-grid">
     {CONSTITUTIONAL_REFERENCE_TOPICS.filter(x=>x.slug!==topic.slug).map(x=>

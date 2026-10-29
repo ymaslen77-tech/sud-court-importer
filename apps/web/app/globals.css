@@ -632,3 +632,33 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
  .ksrf-generator-preview pre{max-height:none!important;overflow:visible!important;font-size:12pt!important;padding:0!important;white-space:pre-wrap!important;overflow-wrap:break-word!important}
  @page{size:A4;margin:20mm 18mm}
 }
+
+/* Constitutional Court practice: selected verified editorial cards, not the full archive. */
+.ksrf-practice-catalog{margin:28px 0 60px}
+.ksrf-practice-controls{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr) minmax(100px,.55fr);gap:16px;padding:22px;background:#f6f5f2;border:1px solid var(--line);border-radius:10px}
+.ksrf-practice-controls label{display:block;font-weight:600;font-size:13px;line-height:1.6;color:#36404a}
+.ksrf-practice-controls input,.ksrf-practice-controls select{display:block;width:100%;box-sizing:border-box;margin-top:7px;border:1px solid #c9cbce;border-radius:6px;padding:10px 12px;background:#fff;color:#30353b;font-size:14px;min-height:42px}
+.ksrf-practice-controls input:focus-visible,.ksrf-practice-controls select:focus-visible{outline:2px solid #903030;outline-offset:1px}
+.ksrf-practice-count{font-size:13px;color:#67717b;padding:10px 0}
+.ksrf-practice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.ksrf-practice-tile{border:1px solid var(--line);border-radius:10px;padding:24px 26px;background:#fff;display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.ksrf-practice-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:#7c858b;margin:0 0 4px}
+.ksrf-practice-meta strong{color:#852c2c}
+.ksrf-practice-theme{display:inline-block;margin:2px 0;color:#6a3c37;font-size:12px;letter-spacing:.03em;font-weight:700}
+.ksrf-practice-tile h2{font-size:20px;line-height:1.35;margin:0}
+.ksrf-practice-tile h2 a{color:#29343b;text-decoration:none}
+.ksrf-practice-tile h2 a:hover{text-decoration:underline}
+.ksrf-practice-tile>p{font-size:14px;color:#4e5b67;line-height:1.75;margin:0}
+.ksrf-practice-tile small{font-size:12px;color:#6c777f;line-height:1.65}
+.ksrf-practice-actions{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:auto;padding-top:14px;font-size:13px}
+.ksrf-practice-actions a,.ksrf-practice-links a{font-weight:600;color:#852c2c;text-decoration:underline;text-underline-offset:3px}
+.ksrf-practice-links{display:flex;gap:15px 30px;flex-wrap:wrap;margin:26px 0;font-size:13px}
+.ksrf-related-decisions{padding:0;margin:20px 0;list-style:none}
+.ksrf-related-decisions li{padding:15px 0;border-bottom:1px solid var(--line);line-height:1.65}
+.ksrf-related-decisions li a{color:#852c2c;font-size:15px;text-decoration:underline;text-underline-offset:3px}
+.ksrf-related-decisions li p{font-size:14px;color:#56626c;line-height:1.7;margin:6px 0 0}
+.ksrf-case-facts .court-facts{max-width:1000px}
+.ksrf-case-facts p{line-height:1.8}
+.ksrf-position-groups .constitutional-block{padding:28px 0}
+@media(max-width:830px){.ksrf-practice-controls{grid-template-columns:1fr 1fr}.ksrf-practice-controls label:first-child{grid-column:span 2}}
+@media(max-width:620px){.ksrf-practice-grid,.ksrf-practice-controls{grid-template-columns:1fr}.ksrf-practice-controls label:first-child{grid-column:auto}.ksrf-practice-tile{padding:17px 16px}}

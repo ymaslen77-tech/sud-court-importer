@@ -1,0 +1,51 @@
+name: Constitutional Court VPS public smoke (read-only)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feat/044-constitutional-decisions-editorial-completion
+      - infra/coolify-russian-vps
+    paths:
+      - .github/workflows/constitutional-live-probe.yml
+      - apps/web/app/courts/reference/constitutional-court-rf/**
+      - apps/web/app/lib/constitutional-practice.ts
+
+permissions:
+  contents: read
+
+jobs:
+  check-courts-vps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe currently published VPS pages without credentials or deployment
+        shell: bash
+        run: |
+          set -u
+          base='http://sudy-preview.79.133.181.192.sslip.io'
+          echo "VPS_PUBLIC_HOST=$base"
+          total=0
+          available=0
+          for path in \
+            /courts/reference/constitutional-court-rf \
+            /courts/reference/constitutional-court-rf/info/judges \
+            /courts/reference/constitutional-court-rf/info/complaint \
+            /courts/reference/constitutional-court-rf/documents/complaint \
+            /courts/reference/constitutional-court-rf/documents/fee-relief \
+            /courts/reference/constitutional-court-rf/practice \
+            /courts/reference/constitutional-court-rf/positions \
+            /courts/reference/constitutional-court-rf/resources \
+            /courts/reference/constitutional-court-rf/effects \
+            /courts/reference/constitutional-court-rf/practice/27-p-2025; do
+            total=$((total+1))
+            result="$(curl -L --silent --show-error --max-time 15 -o /tmp/constitutional-public.html -w '%{http_code} %{url_effective}' "$base$path" 2>&1 || true)"
+            code="$(printf '%s' "$result" | cut -c1-3)"
+            if [ "$code" = '200' ]; then available=$((available+1)); fi
+            echo "PUBLIC_PROBE [$code] $path -> $result"
+            if [ "$path" = '/courts/reference/constitutional-court-rf/documents/complaint' ] && [ "$code" = '200' ]; then
+              grep -Fq 'Генератор конституционной жалобы' /tmp/constitutional-public.html && echo 'DOCUMENT_GENERATOR_RENDERED=true' || echo 'DOCUMENT_GENERATOR_RENDERED=false'
+            fi
+          done
+          echo "PUBLIC_PAGES_AVAILABLE=$available/$total"
+          echo "PUBLIC_PAGES_CHECKED_AT=$(date -u +%FT%TZ)"
+          echo "This workflow is diagnostic only; it never deploys or touches the VPS."
