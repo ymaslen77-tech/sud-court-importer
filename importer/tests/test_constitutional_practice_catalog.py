@@ -31,7 +31,7 @@ class ConstitutionalPracticeTests(unittest.TestCase):
  def test_catalog_search_filters_and_accessibility(self):
   for element in ('type="search"','type="search"','role="status"',
                   'CONSTITUTIONAL_THEMES.map','CONSTITUTIONAL_CASES.filter',
-                  'Link href={base+\\'/\\'+c.slug}'):
+                  "Link href={base+'/'+c.slug}"):
    self.assertIn(element,self.catalog)
   self.assertIn('aria-live="polite"',self.catalog)
 
