@@ -46,7 +46,7 @@ class ConstitutionalJudgeDossierTests(unittest.TestCase):
  def test_dossiers_are_source_backed_not_personal_ratings(self):
   for item in ("judge.appointed","judge.education","judge.scholarship",
                "judge.career.map","judge.source","judge.portraitCredit",
-               "официальный состав","не означают распределения конкретных дел",
+               "официальный сайт КС РФ","не означают распределения конкретных дел",
                "не аттестованы","неподтверждённые отзывы"):
    self.assertIn(item,self.detail)
   for item in ("личные телефоны","домашние адреса","independent review"):
