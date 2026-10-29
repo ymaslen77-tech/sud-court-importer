@@ -13,7 +13,8 @@ const documents=[
 export const dynamic='force-dynamic';
 export function generateStaticParams(){return documents.map(d=>({kind:d.kind}));}
 export async function generateMetadata({params}:Props):Promise<Metadata>{
- const item=documents.find(x=>x.kind===(await params).kind);
+ const {kind}=await params;
+ const item=documents.find(x=>x.kind===kind);
  if(!item)return {title:'Документ не найден',robots:{index:false,follow:false}};
  return {title:item.title+' — Суды России',
   description:item.lead+' Справочный инструмент: требуется юридическая проверка перед подписанием.',
