@@ -1,0 +1,32 @@
+name: KSRF live browser acceptance (no production writes)
+on:
+  push:
+    branches: [audit/048-ksrf-browser-smoke]
+    paths:
+      - .github/workflows/constitutional-browser-smoke.yml
+      - scripts/constitutional-public-browser-smoke.cjs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout browser audit script
+        uses: actions/checkout@v4
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install isolated browser test runner
+        run: |
+          npm install --prefix /tmp/ksrf-smoke --no-save --no-audit --no-fund --no-package-lock playwright@1.56.1
+          /tmp/ksrf-smoke/node_modules/.bin/playwright install --with-deps chromium
+      - name: Exercise public KSRF generators with synthetic test values
+        env:
+          NODE_PATH: /tmp/ksrf-smoke/node_modules
+          PUBLIC_BASE: http://sudy-preview.79.133.181.192.sslip.io
+        run: node scripts/constitutional-public-browser-smoke.cjs
