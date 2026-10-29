@@ -6,6 +6,7 @@ import {
  CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS,getConstitutionalTopic
 } from '../../../../../lib/constitutional-reference-library';
 import {YandexCourtMap} from '../../../../../_components/yandex-court-map';
+import {ConstitutionalComplaintSelfCheck} from '../../../../../_components/constitutional-complaint-selfcheck';
 
 type Props={params:Promise<{topic:string}>};
 const back='/courts/reference/constitutional-court-rf';
@@ -134,6 +135,7 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
       ['05','Выберите допустимый способ подачи','Лично, почтой или через официальный электронный кабинет с соблюдением требований к подписи.']
     ].map(([num,title,desc])=><div key={num}><span>{num}</span><div><h3>{title}</h3><p>{desc}</p></div></div>)}
    </div>
+   <ConstitutionalComplaintSelfCheck/>
    <div className="court-filter-actions"><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/reception'}>Адрес и приёмная →</Link><Link className="button button-outline" href={CONSTITUTIONAL_REFERENCE_BASE+'/payment'}>Пошлина →</Link></div>
   </section>:null}
 
