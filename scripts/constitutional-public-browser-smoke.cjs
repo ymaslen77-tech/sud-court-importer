@@ -45,6 +45,10 @@ const go=async(page,path)=>{
   await fillProfile(page);
   await fillContent(page);
   await page.waitForTimeout(350);
+  log('FIELDSET_COUNT',String(await page.locator('.ksrf-document-generator fieldset').count()));
+  log('FORM_FIELD_COUNTS',JSON.stringify({profile:await page.locator('.ksrf-document-generator fieldset').nth(0).locator('input').count(),document:await page.locator('.ksrf-document-generator fieldset').nth(2).locator('input,textarea').count()}));
+  log('FORM_STATUS',JSON.stringify(await page.locator('.ksrf-generator-status').innerText()));
+  log('FORM_VALUES',JSON.stringify(await page.locator('.ksrf-document-generator input, .ksrf-document-generator textarea').evaluateAll(els=>els.map(el=>({name:el.name||el.type,brief:el.value.slice(0,22)})))));
   assert.equal(await downloadButton.isEnabled(),true,'valid complaint must enable TXT download');
   const preview=await page.locator('.ksrf-generator-preview pre').innerText();
   assert.ok(preview.includes('Тестовый Заявитель')&&preview.includes('Синтетические сведения'));
