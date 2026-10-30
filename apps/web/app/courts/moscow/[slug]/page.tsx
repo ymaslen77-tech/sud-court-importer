@@ -112,7 +112,10 @@ export default async function MoscowCourtPage({params}:Props){
    </dl>
    <p className="court-source"><External href={c.official_url}>Сведения и сообщения на официальном сайте</External>. Электронная почта не является каналом процессуальной подачи.</p>
   </section>
-  <MoscowYandexMap court={c}/>
+  <MoscowYandexMap court={moved&&officialMinimum?.visitor_locations?.[0]
+    ?{...c,address:officialMinimum.visitor_locations[0].address,
+      notes:'Карта показывает лишь первый из временных адресов. Конкретное место заседания и отдел необходимо сверить в официальном сообщении и извещении.'}
+    :c}/>
   <section id="msk-jurisdiction" className="court-section">
    <span className="eyebrow">Территориальная подсудность</span><h2>Какие адреса относятся к суду</h2>
    <p>Проверяйте именно адрес здания с номером дома, корпусом и строением. Название района или ближайшее метро не гарантируют принадлежность суду.</p>
