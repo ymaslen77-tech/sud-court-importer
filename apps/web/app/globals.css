@@ -760,3 +760,50 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
  .ksrf-selfcheck-result>.ksrf-selfcheck-links{padding:0 15px}
  .ksrf-selfcheck-result>.ksrf-selfcheck-reset{margin:0 15px 20px}
 }
+
+
+/* Compact three-page Constitutional Court selfcheck guide. */
+.ksrf-check-entry{margin:30px 0;padding:24px 27px;border:1px solid #d9dfe4;border-radius:14px;background:linear-gradient(115deg,#fff 0%,#f5f8fb 100%);box-shadow:0 6px 18px rgba(25,39,53,.035)}
+.ksrf-check-entry-header h2{font-size:clamp(21px,2.5vw,30px);line-height:1.25;margin:7px 0 9px;color:#202b34}
+.ksrf-check-entry-header p{font-size:14px;line-height:1.7;color:#596775;max-width:760px}
+.ksrf-check-entry ol{list-style:none;margin:18px 0 23px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ksrf-check-entry li a{display:flex;flex-direction:column;gap:9px;padding:15px;min-height:108px;background:#fff;border:1px solid #dce1e5;border-radius:8px;color:#25313b;text-decoration:none}
+.ksrf-check-entry li a:hover,.ksrf-guide-option:hover{border-color:#b96667}
+.ksrf-check-entry li a strong{font-size:14px;line-height:1.5}
+.ksrf-check-entry li a span{font-size:12px;color:#69747e;line-height:1.6}
+.ksrf-guide-stepper{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 24px;font-size:13px}
+.ksrf-guide-stepper>*{display:inline-block;border:1px solid #dce0e5;border-radius:999px;padding:9px 15px;background:#fff;color:#66717a;text-decoration:none}
+.ksrf-guide-stepper strong{background:#862b32;border-color:#862b32;color:#fff}
+.ksrf-guide-options{display:grid;gap:10px;margin:21px 0}
+.ksrf-guide-option{border:1px solid #dfe2e6;border-radius:9px;background:#fff;overflow:hidden}
+.ksrf-guide-option summary{display:flex;align-items:center;gap:12px;padding:17px 20px;cursor:pointer;font-size:15px;line-height:1.6;font-weight:700;color:#30373e;list-style:none}
+.ksrf-guide-option summary::-webkit-details-marker{display:none}
+.ksrf-guide-number{font-size:11px;color:#9c3337;letter-spacing:.06em}
+.ksrf-guide-chevron{margin-left:auto;color:#8f3339;font-size:22px}
+.ksrf-guide-option[open] .ksrf-guide-chevron{transform:rotate(45deg)}
+.ksrf-guide-option-body{padding:0 20px 20px 44px;font-size:14px;color:#4e5b65;line-height:1.75}
+.ksrf-guide-option-body strong{color:#87343b;font-size:13px}
+.ksrf-guide-option-body p{margin:8px 0 13px}
+.ksrf-guide-option-body a{font-size:13px;color:#94333b;font-weight:700;text-underline-offset:3px}
+.ksrf-guide-action{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:23px 0}
+.ksrf-guide-source{margin:22px 0;border:1px solid #e3e5e8;border-radius:8px;background:#f8f9fa;padding:15px 20px;font-size:13px;color:#56636e;line-height:1.75}
+.ksrf-guide-source summary{color:#384653;font-weight:700;cursor:pointer}
+.ksrf-guide-source ul{padding-left:23px}
+.ksrf-guide-source li{margin:6px 0}
+.ksrf-guide-source a{color:#8d3036;font-weight:600;text-underline-offset:3px}
+.ksrf-guide-list{list-style:none;margin:20px 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ksrf-guide-list>li{display:flex;gap:12px;padding:17px;border:1px solid #e2e6e9;background:#fff;border-radius:9px}
+.ksrf-guide-list>li>span{font-size:13px;font-weight:800;color:#98343a}
+.ksrf-guide-list h3{font-size:16px;line-height:1.45;color:#27323b;margin:0 0 7px}
+.ksrf-guide-list p{font-size:13px;line-height:1.75;color:#56636d;margin:0}
+.ksrf-guide-checklist{list-style:none;display:grid;gap:10px;padding:0}
+.ksrf-guide-checklist li{border-left:3px solid #418060;background:#f5faf7;padding:13px 17px;font-size:14px;line-height:1.7}
+.ksrf-guide-actions-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ksrf-guide-actions-grid>a{border:1px solid #e0e4e7;border-radius:9px;padding:17px;color:#2e3843;text-decoration:none;display:flex;flex-direction:column;gap:10px}
+.ksrf-guide-actions-grid>a:hover{border-color:#9e4148}
+.ksrf-guide-actions-grid strong{font-size:15px}
+.ksrf-guide-actions-grid span{font-size:13px;color:#8c333b}
+.ksrf-guide-note{background:#eef3f8;color:#435360;padding:17px 20px;border-radius:9px;font-size:14px;line-height:1.85;margin-top:20px}
+.ksrf-guide-note a{color:#8b3038}
+.ksrf-guide-check .ksrf-selfcheck{margin:0}
+@media(max-width:760px){.ksrf-check-entry ol,.ksrf-guide-list,.ksrf-guide-actions-grid{grid-template-columns:1fr}.ksrf-check-entry{padding:18px}.ksrf-check-entry li a{min-height:0}.ksrf-guide-stepper>*{font-size:11px;padding:8px 10px}.ksrf-guide-option summary{padding:14px}.ksrf-guide-option-body{padding:0 15px 15px 30px}}
