@@ -25,10 +25,25 @@ class ConstitutionalComplaintSelfcheckTests(unittest.TestCase):
             with self.subTest(tag=tag):
                 self.assertIn("id:'"+tag+"'",self.check)
 
-    def test_embedded_on_main_and_topic_page(self):
+    def test_compact_entry_on_main_and_dedicated_three_page_route(self):
+        entry=(APP/"_components/constitutional-check-entry.tsx").read_text(encoding="utf-8")
+        root=APP/"courts/reference/constitutional-court-rf/check"
+        start=(root/"page.tsx").read_text(encoding="utf-8")
+        eligibility=(root/"eligibility/page.tsx").read_text(encoding="utf-8")
+        docs=(root/"documents/page.tsx").read_text(encoding="utf-8")
         for page in (self.dossier,self.page):
-            self.assertIn("import {ConstitutionalComplaintSelfCheck}",page)
-            self.assertIn("<ConstitutionalComplaintSelfCheck/>",page)
+            self.assertIn("import {ConstitutionalCheckEntry}",page)
+            self.assertIn("<ConstitutionalCheckEntry/>",page)
+            self.assertNotIn("<ConstitutionalComplaintSelfCheck/>",page)
+        self.assertIn("<ConstitutionalComplaintSelfCheck/>",eligibility)
+        self.assertIn("Предмет",start)
+        self.assertIn("Допустимость",eligibility)
+        self.assertIn("приложения",docs)
+        for path in ("'/eligibility'","'/documents'"):
+            self.assertIn(path,entry)
+        self.assertIn("const base='/courts/reference/constitutional-court-rf/check'",entry)
+        self.assertIn('https://www.ksrf.ru/Petition/algo/',entry)
+        self.assertIn('https://www.ksrf.ru/Petition/PrimerOfStructure.php',docs)
 
     def test_guidance_includes_exceptions_and_official_verification(self):
         for needle in ("годичный срок","кассацион","специальн",

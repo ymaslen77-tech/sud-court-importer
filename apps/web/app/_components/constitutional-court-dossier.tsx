@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS} from '../lib/constitutional-reference-library';
 import {YandexCourtMap} from './yandex-court-map';
-import {ConstitutionalComplaintSelfCheck} from './constitutional-complaint-selfcheck';
+import {ConstitutionalCheckEntry} from './constitutional-check-entry';
 import {CONSTITUTIONAL_CASES} from '../lib/constitutional-practice';
 import {constitutionalJudgeProfileHref} from '../lib/constitutional-judge-profiles';
 import {
@@ -144,7 +144,7 @@ export function ConstitutionalCourtDossier(){
    <div className="constitutional-process">
     {steps.map(s=><div key={s.number}><span>{s.number}</span><div><h3>{s.name}</h3><p>{s.desc}</p></div></div>)}
    </div>
-   <ConstitutionalComplaintSelfCheck/>
+   <ConstitutionalCheckEntry/>
    <h3 className="constitutional-subheading">Варианты подачи</h3>
    <div className="constitutional-methods">
     <div><b>По почте</b><p>{CONSTITUTIONAL_CONTACTS.postalAddress}. Сохраняйте доказательство направления и дату отправки.</p></div>
@@ -160,8 +160,8 @@ export function ConstitutionalCourtDossier(){
    <div className="constitutional-hero-actions">
     <Link className="button button-red" href="/courts/reference/constitutional-court-rf/documents/complaint">Составить проект жалобы →</Link>
     <Link className="button button-outline" href="/courts/reference/constitutional-court-rf/documents/fee-relief">Ходатайство по госпошлине →</Link>
-    <a className="button button-outline" href="https://www.ksrf.ru/Petition/algo/" target="_blank" rel="noopener noreferrer">Проверить право на обращение ↗</a>
-    <a className="button button-outline" href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Примерная структура жалобы ↗</a>
+    <Link className="button button-outline" href="/courts/reference/constitutional-court-rf/check/eligibility">Проверить условия жалобы →</Link>
+    <Link className="button button-outline" href="/courts/reference/constitutional-court-rf/check/documents">Структура жалобы и приложения →</Link>
     <a className="button button-red" href="https://petition.ksrf.ru/" target="_blank" rel="noopener noreferrer">Подать через официальный кабинет ↗</a>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/Requisites.php" target="_blank" rel="noopener noreferrer">Проверить реквизиты оплаты ↗</a>
     <a className="button button-outline" href="https://www.ksrf.ru/Petition/CurrentStatus.php" target="_blank" rel="noopener noreferrer">Проверить статус обращения ↗</a>

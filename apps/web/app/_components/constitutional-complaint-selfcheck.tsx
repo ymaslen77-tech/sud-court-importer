@@ -1,6 +1,7 @@
 'use client';
 
 import {useState} from 'react';
+import Link from 'next/link';
 
 type Answer='yes'|'no'|'unknown';
 type CriterionId='norm'|'applied'|'rights'|'exhaustion'|'deadline'|'attachments';
@@ -223,11 +224,18 @@ export function ConstitutionalComplaintSelfCheck(){
     <strong>Важно:</strong> это информационная самопроверка по вашим ответам, а не юридическое заключение. Допустимость жалобы и предусмотренные законом исключения оценивает исключительно Конституционный Суд РФ.
    </p>
    <div className="ksrf-selfcheck-links">
-    <a href="https://www.ksrf.ru/Petition/algo/" target="_blank" rel="noopener noreferrer">Официальная самопроверка КС РФ ↗</a>
-    <a href="https://www.ksrf.ru/about/legalbases/FCLM/Article97.php" target="_blank" rel="noopener noreferrer">Статья 97 ФКЗ № 1-ФКЗ ↗</a>
-    <a href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Структура жалобы и приложения ↗</a>
-    <a href="/courts/reference/constitutional-court-rf/documents/complaint">Подготовить проект жалобы →</a>
+    <Link href="/courts/reference/constitutional-court-rf/check/documents">Шаг 3: структура жалобы и документы →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/info/complaint">Порядок обращения и частые вопросы →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/documents/complaint">Подготовить проект жалобы →</Link>
    </div>
+   <details className="ksrf-guide-source">
+    <summary>Проверить юридическую основу по официальным источникам</summary>
+    <ul>
+     <li><a href="https://www.ksrf.ru/Petition/algo/" target="_blank" rel="noopener noreferrer">Официальная самопроверка КС РФ ↗</a></li>
+     <li><a href="https://www.ksrf.ru/about/legalbases/FCLM/Article97.php" target="_blank" rel="noopener noreferrer">Статья 97 ФКЗ № 1-ФКЗ ↗</a></li>
+     <li><a href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Структура жалобы и приложения ↗</a></li>
+    </ul>
+   </details>
    {count>0?<button type="button" className="ksrf-selfcheck-reset" onClick={()=>setAnswers({})}>Начать проверку заново</button>:null}
   </section>
  </section>;
