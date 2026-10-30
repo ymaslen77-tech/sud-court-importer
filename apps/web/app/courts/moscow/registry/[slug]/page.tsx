@@ -54,10 +54,18 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
   <section className="court-section" id="contacts">
    <span className="eyebrow">Справочная запись</span>
    <h2>Адрес, график работы, контакты</h2>
+   {court.visitor_locations?.length?<div className="notice" role="note">
+    <strong>Внимание: временные помещения суда</strong>
+    <p>{court.location_notice}</p>
+    <ul>{court.visitor_locations.map(location=><li key={location.label}>
+      <strong>{location.label}:</strong> {location.address}
+    </li>)}</ul>
+    {court.location_notice_url?<p><a href={court.location_notice_url} target="_blank" rel="noopener noreferrer">Официальное сообщение о переносе ↗</a></p>:null}
+   </div>:null}
    <dl className="court-facts">
     <div><dt>Суд</dt><dd>{court.name}</dd></div>
     <div><dt>Вид</dt><dd>{officialMoscowCourtKindLabel(court)}</dd></div>
-    <div><dt>Основной адрес</dt><dd>{court.address}</dd></div>
+    <div><dt>{court.visitor_locations?.length?'Адрес для почтовой корреспонденции':'Адрес из официального каталога'}</dt><dd>{court.address}</dd></div>
     {court.other_locations.length>0?<div><dt>Другие точки из официальной карты</dt><dd>
      {court.other_locations.map(location=><p key={location.address}>{location.address}. {location.note}.</p>)}
     </dd></div>:null}
