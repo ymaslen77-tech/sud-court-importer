@@ -55,7 +55,9 @@ export default function MoscowDirectory(){
     <p>Нажмите на суд, чтобы узнать его адрес и рабочее время. Для {rich.length} судов уже разработаны более подробные карточки с процессуальными материалами.</p>
    </div>
    <div className="results">{district.map(c=><Link className="result-row moscow-registry-result" href={MoscowOfficialCourtHref(c)} key={c.slug}>
-    <span><strong>{c.name}</strong><small>{c.address}</small>
+    <span><strong>{c.name}</strong>
+     {c.visitor_locations?.length?<small className="moscow-temporary-location"><strong>Временный адрес посещения:</strong> {c.visitor_locations[0].address} — подробности в карточке</small>:null}
+     <small>{c.visitor_locations?.length?'Почтовый адрес: ':'Адрес: '}{c.address}</small>
      <small>Общий режим: {c.office_hours} · {c.email}</small>
      <small>{rich.some(x=>x.name.toLocaleLowerCase('ru').replace(/ё/g,'е').startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')))?'Есть подробная справочная карточка':'Базовая справочная карточка'}</small>
     </span><span aria-hidden="true">→</span>
