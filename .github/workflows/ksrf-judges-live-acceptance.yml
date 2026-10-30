@@ -1,0 +1,57 @@
+name: KSRF published judge dossiers acceptance (read-only)
+on:
+  push:
+    branches: [audit/050-ksrf-judge-live-check]
+    paths: [.github/workflows/ksrf-judges-live-acceptance.yml]
+permissions:
+  contents: read
+jobs:
+  verify-live-judges:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check all ten personal pages on published Russian VPS
+        shell: bash
+        run: |
+          set -u
+          base='http://sudy-preview.79.133.181.192.sslip.io'
+          count=0
+          failures=0
+          for slug in \
+            zorkin-valeriy-dmitrievich \
+            zharkova-lyudmila-mikhaylovna \
+            bushev-andrey-yuryevich \
+            kalinovskiy-konstantin-borisovich \
+            knyazev-sergey-dmitrievich \
+            kokotov-aleksandr-nikolaevich \
+            konovalov-aleksandr-vladimirovich \
+            lobov-mikhail-borisovich \
+            sivitskiy-vladimir-aleksandrovich \
+            taribo-evgeniy-vasilievich; do
+            count=$((count+1))
+            path="/judges/constitutional-court-rf/$slug"
+            status="$(curl -sS -L --max-time 20 --retry 1 -o /tmp/judge.html -w '%{http_code}' "$base$path" || true)"
+            if [ "$status" = 200 ] && grep -Fq 'Персональное досье' /tmp/judge.html && grep -Fq 'Конституционн' /tmp/judge.html && grep -Fq 'noindex' /tmp/judge.html; then
+              echo "JUDGE_OK $path"
+            else
+              echo "JUDGE_FAIL $path STATUS=$status"
+              failures=$((failures+1))
+            fi
+          done
+          for path in /judges /courts/reference/constitutional-court-rf /courts/reference/constitutional-court-rf/info/judges; do
+            status="$(curl -sS -L --max-time 20 -o /tmp/directory.html -w '%{http_code}' "$base$path" || true)"
+            if [ "$status" = 200 ]; then
+              echo "DIRECTORY_OK $path"
+            else
+              echo "DIRECTORY_FAIL $path STATUS=$status"
+              failures=$((failures+1))
+            fi
+          done
+          for token in zorkin-valeriy-dmitrievich zharkova-lyudmila-mikhaylovna; do
+            status="$(curl -sS -L --max-time 20 -o /tmp/list.html -w '%{http_code}' "$base/judges" || true)"
+            if [ "$status" = 200 ] && grep -Fq "$token" /tmp/list.html; then echo "DIRECTORY_LINK_OK $token"; else echo "DIRECTORY_LINK_FAIL $token"; failures=$((failures+1)); fi
+          done
+          echo "JUDGE_PAGES_CHECKED=$count"
+          echo "LIVE_FAILURES=$failures"
+          echo "VERIFIED_AT=$(date -u +%FT%TZ)"
+          exit "$((failures>0))"
