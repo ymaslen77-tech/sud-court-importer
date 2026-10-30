@@ -7,7 +7,7 @@
     "roster_updated_on": "2026-05-29",
     "coverage_description": "Официальный региональный перечень; не охватывает мировых судей, арбитражные, военные и федеральные экстерриториальные суды.",
     "current_contact_details_verified": false,
-    "notes": "Адреса, общий режим, почтовые адреса из опубликованной карты судов; режим подразделений, временные переезды и актуальность требуют сверки перед посещением."
+    "notes": "Адреса, общий режим, почтовые адреса из опубликованной карты судов; режим подразделений, временные переезды и актуальность требуют сверки перед посещением. Четыре суда с опубликованными временными помещениями имеют отдельные адреса посещения и почтовый адрес."
   },
   "records": [
     {
@@ -133,7 +133,23 @@
       "metro": null,
       "source_url": "https://www.mos-gorsud.ru/courts",
       "status": "official_directory_reference_unverified_live",
-      "general_hotline": "+7 (499) 530-08-08"
+      "general_hotline": "+7 (499) 530-08-08",
+      "visitor_locations": [
+        {
+          "label": "Гражданские и административные дела по КАС РФ, приём граждан",
+          "address": "119180, г. Москва, 1-й Хвостов пер., д. 11, стр. 2"
+        },
+        {
+          "label": "Дела об административных правонарушениях по КоАП РФ",
+          "address": "119017, г. Москва, Голиковский пер., д. 10, стр. 1"
+        },
+        {
+          "label": "Уголовные дела и приём председателя",
+          "address": "111398, г. Москва, ул. Кусковская, д. 8 (6-й этаж Перовского районного суда)"
+        }
+      ],
+      "location_notice": "С августа 2025 года заседания разделены по нескольким адресам в связи с капитальным ремонтом. Для почтовой корреспонденции сохраняется ул. Татарская, д. 1.",
+      "location_notice_url": "https://mos-gorsud.ru/rs/zamoskvoreckij/news/sudebnye-zasedaniya-po-delam-rassmatrivaemym-zamoskvoretskim-rajonnym-sudom-g-moskvy-budut-prohodit-po-novym-adresam-pochtovyj-adres-suda-ostaetsya-prezhnim-115184-g-moskva-ul-tatarskaya-d-1"
     },
     {
       "slug": "zelenogradskiy",
@@ -163,7 +179,19 @@
       "metro": null,
       "source_url": "https://www.mos-gorsud.ru/courts",
       "status": "official_directory_reference_unverified_live",
-      "general_hotline": "+7 (499) 530-08-08"
+      "general_hotline": "+7 (499) 530-08-08",
+      "visitor_locations": [
+        {
+          "label": "Гражданские, уголовные и административные дела по КАС РФ, приём граждан",
+          "address": "г. Москва, Мичуринский проспект, д. 17, корп. 1 (Никулинский районный суд)"
+        },
+        {
+          "label": "Дела по КоАП РФ",
+          "address": "г. Москва, ул. Маршала Савицкого, д. 2 (Щербинский районный суд)"
+        }
+      ],
+      "location_notice": "С ноября 2025 года помещения изменены в связи с ремонтом. Для почтовой корреспонденции сохраняется адрес: ул. Кржижановского, д. 20/30, корп. 4.",
+      "location_notice_url": "https://mos-gorsud.ru/rs/zyuzinskij/news/v-svyazi-s-provedeniem-kapitalnogo-remonta-v-zdanii-zyuzinskogo-suda-rassmotrenie-grazhdanskih-i-ugolovnyh-del-del-v-poryadke-administrativnogo-sudoproizvodstva-lichnyj-priem-grazhdan-i-korrespondentsii-osushhestvlyaetsya-v-zdanii-nikulinskogo-suda"
     },
     {
       "slug": "izmaylovskiy",
@@ -358,7 +386,15 @@
       "metro": null,
       "source_url": "https://www.mos-gorsud.ru/courts",
       "status": "official_directory_reference_unverified_live",
-      "general_hotline": "+7 (499) 530-08-08"
+      "general_hotline": "+7 (499) 530-08-08",
+      "visitor_locations": [
+        {
+          "label": "Судебные заседания и личный приём",
+          "address": "г. Москва, ул. Первомайская, д. 12 (здание Измайловского районного суда)"
+        }
+      ],
+      "location_notice": "С августа 2025 года приём и заседания перенесены на время ремонта. Почтовая корреспонденция направляется по прежнему адресу: ул. Зоологическая, д. 20.",
+      "location_notice_url": "https://www.mos-gorsud.ru/rs/presnenskij/news/novyj-adres-presnenskogo-rajonnogo-suda-g-moskvy"
     },
     {
       "slug": "savelovskiy",
@@ -523,7 +559,19 @@
       "metro": null,
       "source_url": "https://www.mos-gorsud.ru/courts",
       "status": "official_directory_reference_unverified_live",
-      "general_hotline": "+7 (499) 530-08-08"
+      "general_hotline": "+7 (499) 530-08-08",
+      "visitor_locations": [
+        {
+          "label": "Основной временный приём и значительная часть заседаний",
+          "address": "г. Москва, Севастопольский проспект, д. 12А"
+        },
+        {
+          "label": "Отдельные гражданские дела",
+          "address": "Судебные участки Черёмушкинского района, адрес определяется по судье и извещению"
+        }
+      ],
+      "location_notice": "Капитальный ремонт с мая 2026 года. Почтовая корреспонденция направляется на ул. Кржижановского, д. 20/30, корп. 3. Отдельные гражданские дела рассматриваются на мировых участках.",
+      "location_notice_url": "https://mos-gorsud.ru/rs/cheremushkinskij/news/v-svyazi-s-provedeniem-kapitalnogo-remonta-v-zdanii-cheremushkinskogo-rajonnogo-suda-g-moskvy-sud-nahoditsya-po-novomu-adresu"
     },
     {
       "slug": "chertanovskiy",
