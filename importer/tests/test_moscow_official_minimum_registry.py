@@ -64,6 +64,25 @@ class MoscowOfficialMinimumTests(unittest.TestCase):
   self.assertIn("generateStaticParams()",self.details)
   self.assertIn("return MOSCOW_OFFICIAL_MINIMUM_COURTS.map",self.details)
 
+ def test_temporary_visits_have_official_evidence_and_postal_addresses(self):
+  relocations={r["slug"]:r for r in self.rows if r.get("visitor_locations")}
+  self.assertEqual(set(relocations),{
+   "presnenskiy","zamoskvoretskiy","zyuzinskiy","cheryomushkinskiy"
+  })
+  for name,row in relocations.items():
+   with self.subTest(court=name):
+    self.assertTrue(row["location_notice_url"].startswith("https://mos-gorsud.ru/")
+                    or row["location_notice_url"].startswith("https://www.mos-gorsud.ru/"))
+    self.assertIn("почт",row["location_notice"].lower())
+    self.assertTrue(row["visitor_locations"])
+    self.assertNotEqual(row["address"],row["visitor_locations"][0]["address"])
+  self.assertEqual(len(relocations["zamoskvoretskiy"]["visitor_locations"]),3)
+  self.assertEqual(len(relocations["zyuzinskiy"]["visitor_locations"]),2)
+  self.assertIn("Севастопольский",relocations["cheryomushkinskiy"]["visitor_locations"][0]["address"])
+  rich_page=(APP/"courts/moscow/[slug]/page.tsx").read_text(encoding="utf-8")
+  self.assertIn("officialMinimum?.visitor_locations",rich_page)
+  self.assertIn("Почтовый адрес суда",rich_page)
+
  def test_no_duplicate_judges_or_case_data_in_basic_rows(self):
   for row in self.rows:
    self.assertNotIn("judges",row)
