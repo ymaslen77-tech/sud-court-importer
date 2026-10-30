@@ -9,6 +9,9 @@ export type MoscowOfficialMinimumCourt={
  source_url:string;
  status:'official_directory_reference_unverified_live';
  general_hotline:string;
+ visitor_locations?:readonly {label:string;address:string}[];
+ location_notice?:string;
+ location_notice_url?:string;
 };
 export const MOSCOW_OFFICIAL_MINIMUM_COURTS:ReadonlyArray<MoscowOfficialMinimumCourt>=
  database.records as MoscowOfficialMinimumCourt[];
