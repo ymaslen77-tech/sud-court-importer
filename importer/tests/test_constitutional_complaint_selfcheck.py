@@ -46,7 +46,7 @@ class ConstitutionalComplaintSelfcheckTests(unittest.TestCase):
         self.assertEqual(self.check.count("yes:{heading:"),6)
         self.assertEqual(self.check.count("no:{heading:"),6)
         self.assertEqual(self.check.count("unknown:{heading:"),6)
-        headings=re.findall(r"(?:yes|no|unknown):\\{heading:'([^']+)'",self.check)
+        headings=re.findall(r"(?:yes|no|unknown):\{heading:'([^']+)'",self.check)
         self.assertEqual(len(headings),18)
         self.assertEqual(len(set(headings)),18)
         self.assertEqual(self.check.count("sourceUrl:'https://www.ksrf.ru/"),6)
