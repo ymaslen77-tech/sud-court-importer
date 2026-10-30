@@ -8,6 +8,7 @@ import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
 import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -56,6 +57,10 @@ function CourtFaq({court}:{court:MoscowCourt}){
 export default async function MoscowCourtPage({params}:Props){
  const c=moscowCourt((await params).slug);
  if(!c)notFound();
+ const officialMinimum=MOSCOW_OFFICIAL_MINIMUM_COURTS.find(item=>
+  c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
+   .startsWith(item.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
+ const moved=Boolean(officialMinimum?.visitor_locations?.length);
  const others=moscowCourts().filter(item=>item.slug!==c.slug).slice(0,4);
  const intakeReady=process.env.COURT_LEADS_ENABLED==='true' &&
   process.env.COURT_LEADS_RU_STORAGE_ATTESTED==='true' &&
@@ -88,8 +93,18 @@ export default async function MoscowCourtPage({params}:Props){
   </section>
   <section className="court-section" id="msk-contacts">
    <span className="eyebrow">Как связаться с судом</span><h2>Адрес, приёмная и режим работы</h2>
+   {moved?<div className="notice moscow-relocation-note" role="note">
+    <strong>Внимание: временные помещения суда</strong>
+    <p>{officialMinimum?.location_notice}</p>
+    <ul>{officialMinimum?.visitor_locations?.map(location=><li key={location.label}>
+     <strong>{location.label}:</strong> {location.address}
+    </li>)}</ul>
+    {officialMinimum?.location_notice_url?<a href={officialMinimum.location_notice_url} target="_blank" rel="noopener noreferrer">
+      Проверить адрес по официальному сообщению ↗
+    </a>:null}
+   </div>:null}
    <dl className="court-facts">
-    <div><dt>Адрес из официальной публикации</dt><dd>{c.address}</dd></div>
+    <div><dt>{moved?'Почтовый адрес суда':'Адрес из официальной публикации'}</dt><dd>{c.address}</dd></div>
     <div><dt>Экспедиция / приём документов</dt><dd>{c.expedition_phone??'Номер требует проверки; не публикуем повреждённую запись'}</dd></div>
     <div><dt>Справочная электронная почта</dt><dd>{c.email}</dd></div>
     <div><dt>Общий режим из публикации</dt><dd>{c.office_hours}</dd></div>
@@ -97,7 +112,10 @@ export default async function MoscowCourtPage({params}:Props){
    </dl>
    <p className="court-source"><External href={c.official_url}>Сведения и сообщения на официальном сайте</External>. Электронная почта не является каналом процессуальной подачи.</p>
   </section>
-  <MoscowYandexMap court={c}/>
+  <MoscowYandexMap court={moved&&officialMinimum?.visitor_locations?.[0]
+    ?{...c,address:officialMinimum.visitor_locations[0].address,
+      notes:'Карта показывает лишь первый из временных адресов. Конкретное место заседания и отдел необходимо сверить в официальном сообщении и извещении.'}
+    :c}/>
   <section id="msk-jurisdiction" className="court-section">
    <span className="eyebrow">Территориальная подсудность</span><h2>Какие адреса относятся к суду</h2>
    <p>Проверяйте именно адрес здания с номером дома, корпусом и строением. Название района или ближайшее метро не гарантируют принадлежность суду.</p>
