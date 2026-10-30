@@ -14,7 +14,7 @@ type Criterion={
  category:'subject'|'admissibility'|'documents';
  guidance:Record<Answer,Guidance>;
 };
-const QUESTIONS:readonly Criterion[]=[
+export const QUESTIONS:readonly Criterion[]=[
  {
   id:'norm',category:'subject',
   title:'Вы можете точно назвать нормативное положение, конституционность которого оспариваете?',
@@ -91,7 +91,7 @@ const QUESTIONS:readonly Criterion[]=[
 
 type Tone='idle'|'attention'|'caution'|'ready';
 type Assessment={tone:Tone;title:string;summary:string;next:string};
-function assess(answers:Partial<Record<CriterionId,Answer>>,count:number):Assessment{
+export function assess(answers:Partial<Record<CriterionId,Answer>>,count:number):Assessment{
  const status=(id:CriterionId)=>answers[id];
  if(!count)return {
   tone:'idle',title:'Начните самопроверку',summary:'Выберите ответ на каждый вопрос. Вместо одинакового заключения по каждому ответу появятся конкретные последствия и дальнейшие действия.',next:'Начните с определения оспариваемого нормативного положения.'
