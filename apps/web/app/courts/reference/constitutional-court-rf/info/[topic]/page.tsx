@@ -7,7 +7,7 @@ import {
  CONSTITUTIONAL_REFERENCE_BASE,CONSTITUTIONAL_REFERENCE_TOPICS,getConstitutionalTopic
 } from '../../../../../lib/constitutional-reference-library';
 import {YandexCourtMap} from '../../../../../_components/yandex-court-map';
-import {ConstitutionalComplaintSelfCheck} from '../../../../../_components/constitutional-complaint-selfcheck';
+import {ConstitutionalCheckEntry} from '../../../../../_components/constitutional-check-entry';
 
 type Props={params:Promise<{topic:string}>};
 const back='/courts/reference/constitutional-court-rf';
@@ -136,10 +136,10 @@ export default async function ConstitutionalReferenceTopic({params}:Props){
       ['05','Выберите допустимый способ подачи','Лично, почтой или через официальный электронный кабинет с соблюдением требований к подписи.']
     ].map(([num,title,desc])=><div key={num}><span>{num}</span><div><h3>{title}</h3><p>{desc}</p></div></div>)}
    </div>
-   <ConstitutionalComplaintSelfCheck/>
+   <ConstitutionalCheckEntry/>
    <div className="ksrf-selfcheck-links">
-    <a href="https://www.ksrf.ru/Petition/PrimerOfStructure.php" target="_blank" rel="noopener noreferrer">Структура жалобы и приложения ↗</a>
-    <a href="https://www.ksrf.ru/Petition/Resolve.php" target="_blank" rel="noopener noreferrer">Предварительное рассмотрение ↗</a>
+    <Link href="/courts/reference/constitutional-court-rf/check/documents">Структура жалобы и приложения →</Link>
+    <Link href="/courts/reference/constitutional-court-rf/check/documents">Предварительное рассмотрение и подача →</Link>
     <a href="https://www.ksrf.ru/Petition/CurrentStatus.php" target="_blank" rel="noopener noreferrer">Узнать статус обращения ↗</a>
     <a href="https://www.ksrf.ru/about/legalbases/FCLM/Article53.php" target="_blank" rel="noopener noreferrer">Требования к представителю ↗</a>
    </div>
