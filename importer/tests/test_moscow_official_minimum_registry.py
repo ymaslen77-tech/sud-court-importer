@@ -58,7 +58,7 @@ class MoscowOfficialMinimumTests(unittest.TestCase):
    self.assertIn("robots:{index:false,follow:true}",text)
   self.assertIn("Мировые судьи",self.listing)
   self.assertIn("Арбитражные суды",self.listing)
-  self.assertIn("Не",self.details)
+  self.assertIn("не подтверждена повторно",self.details)
   self.assertNotIn("current_details_attested:true",self.details)
   self.assertNotIn("verified:true",self.helpers)
   self.assertIn("generateStaticParams()",self.details)
