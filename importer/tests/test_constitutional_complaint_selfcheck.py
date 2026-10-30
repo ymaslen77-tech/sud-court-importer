@@ -39,8 +39,9 @@ class ConstitutionalComplaintSelfcheckTests(unittest.TestCase):
         self.assertIn("Предмет",start)
         self.assertIn("Допустимость",eligibility)
         self.assertIn("приложения",docs)
-        for url in ("/check/eligibility","/check/documents"):
-            self.assertIn(url,entry)
+        for path in ("'/eligibility'","'/documents'"):
+            self.assertIn(path,entry)
+        self.assertIn("const base='/courts/reference/constitutional-court-rf/check'",entry)
         self.assertIn('https://www.ksrf.ru/Petition/algo/',entry)
         self.assertIn('https://www.ksrf.ru/Petition/PrimerOfStructure.php',docs)
 
