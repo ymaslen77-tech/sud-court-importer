@@ -38,7 +38,7 @@ class ConstitutionalComplaintSelfcheckTests(unittest.TestCase):
         self.assertIn("<ConstitutionalComplaintSelfCheck/>",eligibility)
         self.assertIn("Предмет",start)
         self.assertIn("Допустимость",eligibility)
-        self.assertIn("Приложения",docs)
+        self.assertIn("приложения",docs)
         for url in ("/check/eligibility","/check/documents"):
             self.assertIn(url,entry)
         self.assertIn('https://www.ksrf.ru/Petition/algo/',entry)
