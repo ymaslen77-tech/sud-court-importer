@@ -807,3 +807,15 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .ksrf-guide-note a{color:#8b3038}
 .ksrf-guide-check .ksrf-selfcheck{margin:0}
 @media(max-width:760px){.ksrf-check-entry ol,.ksrf-guide-list,.ksrf-guide-actions-grid{grid-template-columns:1fr}.ksrf-check-entry{padding:18px}.ksrf-check-entry li a{min-height:0}.ksrf-guide-stepper>*{font-size:11px;padding:8px 10px}.ksrf-guide-option summary{padding:14px}.ksrf-guide-option-body{padding:0 15px 15px 30px}}
+
+
+/* Moscow general-jurisdiction registry imported from the official courts directory. */
+.moscow-registry-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0}
+.moscow-registry-summary>div{padding:18px 20px;background:#f7f8fa;border:1px solid #e5e8ec;border-radius:9px;display:flex;flex-direction:column;gap:9px}
+.moscow-registry-summary strong{font-size:clamp(23px,2.7vw,35px);line-height:1;color:#853138;font-variant-numeric:tabular-nums}
+.moscow-registry-summary span{font-size:12px;line-height:1.5;color:#57636e}
+.moscow-registry-result{min-width:0}
+.moscow-registry-result small{line-height:1.6}
+.moscow-minimum-court-page .court-facts dd{line-height:1.65;overflow-wrap:anywhere}
+.moscow-minimum-court-page .court-facts dd p{margin:0 0 9px}
+@media(max-width:650px){.moscow-registry-summary{grid-template-columns:1fr 1fr}.moscow-registry-summary>div{padding:13px 15px}.moscow-registry-summary>div:last-child{grid-column:span 2}}
