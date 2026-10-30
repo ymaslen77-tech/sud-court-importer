@@ -66,8 +66,8 @@ export default function MoscowDirectory(){
     <h2>Арбитражные суды Москвы</h2>
     <p>Из существующего справочника арбитражных судов. Их нет в количестве 36 судов городского портала; сведения о конкретных контактах требуют отдельной официальной сверки.</p>
    </div>
-   <div className="results">{arbitration.map(c=><Link className="result-row" key={c.slug} href={regionalArbitrationHref('moscow',c.slug)}>
-    <span><strong>{c.courtName}</strong><small>Справочная запись · отдельная проверка</small></span><span aria-hidden="true">→</span>
+   <div className="results">{arbitration.map(item=><Link className="result-row" key={item.slug} href={regionalArbitrationHref('moscow',item.slug)}>
+    <span><strong>{item.courtName}</strong><small>Справочная запись · отдельная проверка</small></span><span aria-hidden="true">→</span>
    </Link>)}</div>
   </section>:null}
   <section className="section-wrap" id="moscow-sources">
