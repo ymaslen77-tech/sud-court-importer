@@ -108,11 +108,13 @@
       "officialUrl": "https://mos-gorsud.ru/rs/lyublinskij",
       "contactsSourceUrl": "https://mos-gorsud.ru/rs/lyublinskij",
       "expeditionPhone": "+7 (499) 784-76-40",
-      "chairPublished": "И. о. Приданникова Наталья Владимировна",
-      "chairStatus": "acting_as_published",
+      "chairPublished": "Вырышева Ирина Владимировна",
+      "chairStatus": "as_published",
       "emailAsPublished": null,
       "sourceObservedOn": "2026-10-31",
-      "remarks": []
+      "remarks": [
+        "Ранее в справочной карточке было указано: И. о. Приданникова Наталья Владимировна. Указом Президента РФ № 723 от 12.10.2026 председателем назначен(а) Вырышева Ирина Владимировна. https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3"
+      ]
     },
     {
       "slug": "nagatinskiy",
@@ -132,11 +134,13 @@
       "officialUrl": "https://mos-gorsud.ru/rs/ostankinskij",
       "contactsSourceUrl": "https://mos-gorsud.ru/rs/ostankinskij",
       "expeditionPhone": "+7 (495) 602-43-27",
-      "chairPublished": "И. о. Арзамасцева Анна Николаевна",
-      "chairStatus": "acting_as_published",
+      "chairPublished": "Максимова Елена Викторовна",
+      "chairStatus": "as_published",
       "emailAsPublished": null,
       "sourceObservedOn": "2026-10-31",
-      "remarks": []
+      "remarks": [
+        "Ранее в справочной карточке было указано: И. о. Арзамасцева Анна Николаевна. Указом Президента РФ № 723 от 12.10.2026 председателем назначен(а) Максимова Елена Викторовна. https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3"
+      ]
     },
     {
       "slug": "perovskiy",
@@ -180,12 +184,13 @@
       "officialUrl": "https://mos-gorsud.ru/rs/simonovskij",
       "contactsSourceUrl": "https://mos-gorsud.ru/rs/simonovskij/help/hours",
       "expeditionPhone": "+7 (495) 675-37-99",
-      "chairPublished": "И. о. Орловцева Елена Юрьевна",
-      "chairStatus": "acting_as_published",
+      "chairPublished": "Дёмина Евгения Александровна",
+      "chairStatus": "as_published",
       "emailAsPublished": null,
       "sourceObservedOn": "2026-10-31",
       "remarks": [
-        "На нескольких официальных страницах опубликовано: и. о. председателя Орловцева Елена Юрьевна. Кадровый статус может измениться; перед использованием в юридически значимом документе проверьте действующее назначение."
+        "На нескольких официальных страницах опубликовано: и. о. председателя Орловцева Елена Юрьевна. Кадровый статус может измениться; перед использованием в юридически значимом документе проверьте действующее назначение.",
+        "Ранее в справочной карточке было указано: И. о. Орловцева Елена Юрьевна. Указом Президента РФ № 723 от 12.10.2026 председателем назначен(а) Дёмина Евгения Александровна. https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3"
       ]
     },
     {
@@ -199,7 +204,8 @@
       "emailAsPublished": "solncevsky.msk@sudrf.ru",
       "sourceObservedOn": "2026-10-31",
       "remarks": [
-        "На индивидуальной странице суда опубликован адрес электронной почты solncevsky.msk@sudrf.ru, который отличается от сводного реестра; перед отправкой уточнить официальный адрес."
+        "На индивидуальной странице суда опубликован адрес электронной почты solncevsky.msk@sudrf.ru, который отличается от сводного реестра; перед отправкой уточнить официальный адрес.",
+        "Ранее в справочной карточке было указано: Ушников Максим Петрович. Указом Президента РФ № 723 от 12.10.2026 председателем назначен(а) Ушников Максим Петрович. https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3"
       ]
     },
     {
