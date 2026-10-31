@@ -7,6 +7,7 @@ import {
 } from '../../../../../lib/moscow-judge-directory';
 import {moscowJudgeReviewedDecisions} from '../../../../../lib/moscow-judge-reviewed-decisions';
 import {moscowJudgeAppointmentEvents} from '../../../../../lib/moscow-judge-appointment-events';
+import {moscowJudicialSourceConflict} from '../../../../../lib/moscow-judicial-discrepancies';
 
 type Params={params:Promise<{courtSlug:string;judgeSlug:string}>};
 export const dynamicParams=false;
@@ -35,6 +36,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
  const cases=moscowJudgeCases(courtSlug,judge.name);
  const reviewed=moscowJudgeReviewedDecisions(courtSlug,judge.name);
  const appointmentEvents=moscowJudgeAppointmentEvents(courtSlug,judge.name);
+ const sourceConflict=moscowJudicialSourceConflict(courtSlug,judge.name);
  const categories=moscowJudgeCaseCategories(cases);
  const outcomes=cases.filter(c=>c.status==='outcome_recorded');
  const otherJudges=MOSCOW_JUDGE_PROFILES.filter(p=>p.courtSlug===courtSlug&&p.judgeSlug!==judgeSlug).slice(0,8);
@@ -53,6 +55,11 @@ export default async function MoscowJudgeProfilePage({params}:Params){
    {judge.sourceKind==='official_assistant_reference'?
     <p className="notice">ФИО встречается в перечне помощников судей. Это не самостоятельное подтверждение действующих судейских полномочий.</p>:null}
    {judge.courtVisitNotice?<p className="notice"><strong>Уточните адрес посещения:</strong> {judge.courtVisitNotice}</p>:null}
+   {sourceConflict?<div className="notice">
+    <strong>Разночтение в официальных кадровых источниках</strong>
+    <p>Районный суд указывает «{sourceConflict.publishedName}», Московский городской суд — «{sourceConflict.alternateSpelling}». {sourceConflict.resolution}</p>
+    <p><a href={sourceConflict.courtSource} target="_blank" rel="noopener noreferrer">Сообщение районного суда ↗</a> · <a href={sourceConflict.cityCourtSource} target="_blank" rel="noopener noreferrer">Сообщение городского суда ↗</a></p>
+   </div>:null}
    {appointmentEvents.length>0?<div className="notice" aria-label="Назначения, опубликованные после составления справочника">
     <strong>Датированные кадровые изменения</strong>
     <ul>{appointmentEvents.map(e=><li key={e.appointmentDate+'-'+e.eventType}>
