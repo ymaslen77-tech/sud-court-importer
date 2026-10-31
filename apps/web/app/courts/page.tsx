@@ -6,6 +6,7 @@ import { researchRegions } from '../lib/research-courts';
 import {COURT_CATEGORIES} from '../lib/court-taxonomy';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../lib/moscow-official-minimum';
 import {ALL_REGIONS} from '../lib/regions';
 import {regionalArbitrationCourts} from '../lib/regional-arbitration';
 
@@ -24,7 +25,8 @@ export default async function CourtsDirectory() {
   try { regions = await getRegions(); } catch { failed = true; }
   const research = researchRegions();
   const pilot = pilotPublicCourts();
-  const moscowCount=moscowCourts().length;
+  const moscowCount=MOSCOW_OFFICIAL_MINIMUM_COURTS.length;
+  const moscowRichCount=moscowCourts().length;
   const knownSlugs=new Set(['moscow',...research.map(item=>item.slug)]);
   const verifiedOthers=regions.filter(region=>!knownSlugs.has(region.slug));
   const knownFromApi=new Set(regions.map(region=>region.slug));
@@ -46,7 +48,7 @@ export default async function CourtsDirectory() {
       <p className="court-source">Подробная справочная карточка: <Link href="/courts/moscow/registry/moscow-city-court">Московский городской суд — адрес, подсудность, поиск дел и апелляции →</Link></p>
       <div className="region-grid court-region-directory">
         <Link className="region-item" href="/courts/moscow">
-          <span><strong>Москва</strong><small>Районные суды · справочные досье</small></span>
+          <span><strong>Москва</strong><small>Московский городской и 35 районных судов · {moscowRichCount} расширенных досье</small></span>
           <small>{moscowCount} карточек</small><span aria-hidden="true">↗</span>
         </Link>
         {research.map(item=><Link className="region-item" key={item.slug} href={'/courts/'+item.slug}>
@@ -65,7 +67,7 @@ export default async function CourtsDirectory() {
       <p className="court-source">Показаны все 89 регионов из справочника РФ. В справочнике также отображаются кассационные арбитражные округа по юридической территориальной компетенции. Адреса и составы судей требуют отдельной сверки. Это ещё не полный каталог действующих судов. У предварительных карточек могут отсутствовать актуальные состав судей, карта или судебные дела.</p>
       {failed?<p className="court-source" role="status">Подтверждённая база сейчас недоступна; выше остаются доступными справочные региональные списки.</p>:null}
       <div className="court-filter-actions">
-        <Link className="button button-red" href="/search?region=moscow&kind=general-district">Показать районные суды Москвы →</Link>
+        <Link className="button button-red" href="/search?region=moscow">Показать все 36 судов Москвы →</Link>
         <Link className="text-link" href="/search">Искать суд по виду, региону и названию ↗</Link>
       </div>
     </section>
