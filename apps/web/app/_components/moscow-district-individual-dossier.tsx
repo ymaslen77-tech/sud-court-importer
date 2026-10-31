@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
-import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits} from '../lib/moscow-district-source-evidence';
+import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits,moscowVerifiedOutcome} from '../lib/moscow-district-source-evidence';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -12,6 +12,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
  const publishedRoster=moscowJudgeRoster(profile.slug);
  const docket=moscowCourtCaseExamples(profile.slug);
  const judgeVisits=moscowCourtJudgeVisits(profile.slug);
+ const outcome=moscowVerifiedOutcome(profile.slug);
  const judgesLink=official.overview+'/structure/judges';
  const emailConflict=Boolean(profile.emailAsPublished&&
   profile.emailAsPublished.toLowerCase()!==court.email.toLowerCase());
@@ -119,6 +120,14 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    <p className="court-source">Не публикуем ФИО участников и не создаём искусственные «правовые позиции» из промежуточных записей.
      Судебная практика с мотивировкой будет добавляться только после проверки текста судебного акта.</p>
   </section>
+  {outcome?<section className="court-section" id="district-verified-outcome">
+   <span className="eyebrow">Результат по официальной карточке дела</span>
+   <h2>Дело № {outcome.number}</h2>
+   <p>Уникальный идентификатор: {outcome.uin}. Категория: {outcome.category}.</p>
+   <p>Дата рассмотрения: {outcome.adjudicatedOn}; результат по реестру: {outcome.publishedOutcome}; вступило в силу: {outcome.effectiveOn}.</p>
+   <p className="court-source">{outcome.note}</p>
+   <a className="text-link" href={outcome.sourceUrl} target="_blank" rel="noopener noreferrer">Официальная карточка и доступные документы ↗</a>
+  </section>:null}
   <section className="court-section" id="district-next-steps">
    <span className="eyebrow">Связанные правовые вопросы</span>
    <h2>Что делать после определения суда</h2>
