@@ -22,7 +22,7 @@ class MoscowCityCourtGuideTests(unittest.TestCase):
  def test_mgs_keeps_single_canonical_registry_entry(self):
   self.assertIn("if(slug==='moscow-city-court')return <MoscowCityCourtDossier court={court}/>;",DETAIL)
   self.assertIn("robots:{index:false,follow:true}",DETAIL)
-  self.assertIn("robots:{index:false,follow:true}",TOPIC)
+  self.assertIn("robots:mgsSeoRobots()",TOPIC)
   self.assertIn('MGS_BASE',TOPIC)
   self.assertIn('Московский городской суд',DOSSIER)
 
