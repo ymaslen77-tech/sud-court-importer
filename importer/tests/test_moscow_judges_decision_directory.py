@@ -49,15 +49,17 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   people={(slug,norm(name)) for slug,name in
       [(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]+
       [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]}
-  self.assertEqual(len(CASES),21)
-  self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),18)
+  self.assertEqual(len(CASES),24)
+  self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),21)
   self.assertEqual(sum(x['status']=='pending' for x in CASES),3)
-  self.assertEqual(len({(x['courtSlug'],x['number']) for x in CASES}),21)
+  self.assertEqual(len({(x['courtSlug'],x['number']) for x in CASES}),24)
   for row in CASES:
    with self.subTest(case=row['number']):
     self.assertIn((row['courtSlug'],norm(row['judgeName'])),people)
     self.assertEqual(row['evidenceLevel'],'official_case_list')
-    self.assertEqual(row['judgeAttribution'],'judge_and_number_in_same_official_row')
+    self.assertIn(row['judgeAttribution'],{'judge_and_number_in_same_official_row','initials_resolved_to_unique_official_roster_name'})
+    if row['judgeAttribution']=='initials_resolved_to_unique_official_roster_name':
+     self.assertTrue(row.get('sourceJudgeLabel'))
     self.assertFalse(row['judicialActTextVerified'])
     self.assertNotIn('parties',row)
     self.assertTrue(re.fullmatch(r'(?:0[12]-\d+|13-\d+|3/[26]-\d+)/2026',row['number']))
