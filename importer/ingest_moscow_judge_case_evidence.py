@@ -44,7 +44,7 @@ def read_records(path):
 
 def judge_sources():
  names={}
- for filename in ("moscow-district-judges-samples.json","moscow-legacy-judge-rosters.json"):
+ for filename in ("moscow-district-judges-samples.json","moscow-legacy-judge-rosters.json","moscow-additional-judge-rosters.json"):
   for row in read_records(DATA/filename):
    for name in row["judges"]:
     key=(row["slug"],norm(name))
