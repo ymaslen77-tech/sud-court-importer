@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits,moscowVerifiedOutcome} from '../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../lib/moscow-judicial-source-briefs';
+import {moscowJudgeCareerEvidence} from '../lib/moscow-judge-career-evidence';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -12,6 +13,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
  const official=moscowDistrictOfficialPages(profile);
  const publishedRoster=moscowJudgeRoster(profile.slug);
  const sourceBrief=moscowJudicialSourceBrief(profile.slug);
+ const career=moscowJudgeCareerEvidence(profile.slug);
  const docket=moscowCourtCaseExamples(profile.slug);
  const judgeVisits=moscowCourtJudgeVisits(profile.slug);
  const outcome=moscowVerifiedOutcome(profile.slug);
@@ -106,6 +108,16 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
     <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Открыть официальную структуру суда ↗</a></p>
    </>}
   </section>
+  {career?<section className="court-section" id="district-career-history">
+   <span className="eyebrow">Документированная профессиональная история</span>
+   <h2>{career.name}: подтверждённые этапы назначения</h2>
+   <ol className="ksrf-guide-list">{career.facts.map(item=><li key={item.date}>
+    <span>{item.date.slice(0,4)}</span>
+    <div><p>{item.description}</p></div>
+   </li>)}</ol>
+   <p className="court-source">{career.note} Последняя указанная дата обновления страницы: {career.sourceLastUpdated}.</p>
+   <a href={career.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-link">Первоисточник: история суда ↗</a>
+  </section>:null}
   {sourceBrief?<section className="court-section" id="district-judicial-publications">
    <span className="eyebrow">Проверенные упоминания · не полный состав</span>
    <h2>{sourceBrief.sourceType==='official_appointment_notices'?'Официальные сообщения о назначении судей':'Судьи, упомянутые в официальном перечне помощников'}</h2>
