@@ -14,8 +14,6 @@ class JudgeReasoningPromotionTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.cases={(r["courtSlug"],r["number"]):r for r in module.read(module.CASE_RECORDS)["records"]}
-  cls.courts={r["slug"]:r["source_url"].split("/rs/")[-1].split("/")[0]
-              for r in module.read(module.COURTS)["records"] if r["kind"]=="general-district"}
   cls.blocked={(r["courtSlug"],r["number"]) for r in module.read(module.REVIEW_QUEUE)["records"]
                if r["publicationStatus"] in ("publication_forbidden","preparing_publication")}
  def setUp(self):
@@ -34,7 +32,7 @@ class JudgeReasoningPromotionTests(unittest.TestCase):
    "appealStatus":"not_checked","localEvidenceFile":str(path),"editorialVerified":True
   }
  def verify(self,row):
-  return module.validate(row,self.cases,self.courts,self.blocked,set())
+  return module.validate(row,self.cases,self.blocked,set())
  def test_guard_checks_file_sha_and_valid_source(self):
   cleaned=self.verify(self.row)
   self.assertEqual(cleaned["courtSlug"],"butyrskiy")
