@@ -15,13 +15,14 @@ GUIDE=(APP/"_components/moscow-district-registry-guide.tsx").read_text(encoding=
 
 class MoscowPublishedEvidenceTests(unittest.TestCase):
  def test_judge_rosters_exactly_sourced_and_not_live_certified(self):
-  self.assertEqual({c["slug"] for c in ROSTERS},{"butyrskiy","golovinskiy","dorogomilovskiy","cheryomushkinskiy","nagatinskiy"})
-  counts={"butyrskiy":18,"golovinskiy":13,"dorogomilovskiy":14,"cheryomushkinskiy":17,"nagatinskiy":16}
-  self.assertEqual(sum(len(x["judges"]) for x in ROSTERS),78)
+  expected={x["slug"] for x in COURTS}-{"tverskoy","tushinskiy","chertanovskiy"}
+  self.assertEqual({c["slug"] for c in ROSTERS},expected)
+  self.assertEqual(len(ROSTERS),20)
+  self.assertEqual(sum(len(x["judges"]) for x in ROSTERS),283)
   for court in ROSTERS:
-   self.assertEqual(len(court["judges"]),counts[court["slug"]])
+   self.assertGreaterEqual(len(court["judges"]),8)
    self.assertEqual(len(set(court["judges"])),len(court["judges"]))
-   self.assertEqual(court["sourceUrl"],"https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/structure/judges")
+   self.assertIn(court["sourceUrl"],("https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/structure/judges","https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/info/structure/judges"))
    self.assertEqual(court["status"],"published_roster_not_live_certification")
    self.assertRegex(court["sourceLastUpdated"],r"^20\d\d-\d\d-\d\d$")
    for appointment in court["appointmentNotes"]:
@@ -67,4 +68,6 @@ class MoscowPublishedEvidenceTests(unittest.TestCase):
   self.assertFalse(x["reasoningVerified"])
   self.assertIn("/civil/details/",x["sourceUrl"])
   self.assertIn("moscowVerifiedOutcome",UI)
+  self.assertIn("подборку обязательно полной",UI)
+  self.assertIn("/info/structure/judges",UI)
 if __name__=="__main__":unittest.main()
