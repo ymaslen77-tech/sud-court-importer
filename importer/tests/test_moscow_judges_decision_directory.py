@@ -20,10 +20,9 @@ MOSCOW=(APP/'courts/moscow/page.tsx').read_text(encoding='utf-8')
 RESEARCH=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
 def norm(name):return re.sub(r'\s+',' ',name.replace('ё','е').lower()).strip()
 class JudgeEvidenceAcceptance(unittest.TestCase):
- def test_386_unique_published_names_with_court_identity(self):
+ def test_391_unique_published_names_with_court_identity(self):
   people=[(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]
-  people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]+
-      [(r['slug'],r['name']) for r in CHAIRS]
+  people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
   people += [(r['slug'],r['name']) for r in CHAIRS]
   self.assertEqual(len(people),391)
   self.assertEqual(len({(slug,norm(n)) for slug,n in people}),391)
