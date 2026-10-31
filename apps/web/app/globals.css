@@ -856,3 +856,21 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
  .moscow-filing-controls .button{flex:1}
 }
 @media(prefers-reduced-motion:reduce){.moscow-filing-progress>div,.moscow-filing-option{transition:none}}
+
+
+/* Verifiable Moscow judge-to-case explorer and personal judicial dossiers. */
+.moscow-judge-controls,.moscow-judge-case-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+.moscow-judge-case-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+.moscow-judge-controls label,.moscow-judge-case-filters label{display:flex;flex-direction:column;gap:9px;font-size:13px;font-weight:800}
+.moscow-judge-controls select,.moscow-judge-controls input,.moscow-judge-case-filters select{width:100%;min-width:0;border:1px solid #cbd1d5;padding:12px 13px;background:#fff;font:inherit;color:var(--ink)}
+.moscow-judge-controls select:focus-visible,.moscow-judge-controls input:focus-visible,.moscow-judge-case-filters select:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.moscow-judge-controls :disabled{opacity:.6;background:#f6f6f6}
+.moscow-judge-result{border-top:2px solid var(--red);padding-top:24px;margin-top:25px}
+.moscow-judge-result h2{margin-bottom:12px}
+.moscow-judge-case-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:21px 0}
+.moscow-judge-case-cards article{border:1px solid var(--line);background:#fcfbfa;padding:20px 22px}
+.moscow-judge-case-cards h3,.moscow-judge-case-cards h4{font-size:18px;margin:0 0 12px}
+.moscow-judge-case-cards p{font-size:14px;line-height:1.7;margin:8px 0}
+.moscow-judge-case-cards a,.moscow-judge-result a{color:var(--red)}
+.moscow-judge-profile .court-source,.moscow-judge-directory .court-source{line-height:1.7}
+@media(max-width:850px){.moscow-judge-controls{grid-template-columns:1fr}.moscow-judge-case-filters,.moscow-judge-case-cards{grid-template-columns:1fr}}
