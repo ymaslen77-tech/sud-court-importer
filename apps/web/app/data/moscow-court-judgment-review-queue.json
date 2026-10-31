@@ -1,0 +1,69 @@
+{
+  "description": "Редакционная очередь по официальным карточкам судебных актов. Наличие ссылки «Скачать файл» не означает проверку содержания или судьи. Для запрета публикации действует абсолютное исключение из импорта текста.",
+  "records": [
+    {
+      "courtSlug": "nikulinskiy",
+      "number": "02-1925/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/8fe3def1-a42b-11f0-af0c-cdc746449f1e",
+      "documentDate": "2026-04-15",
+      "publicationStatus": "file_listed_unreviewed",
+      "judgeAttribution": null,
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "В официальной карточке напротив решения присутствует «Скачать файл». Файл ещё не извлечён и не прочитан; судья и мотивы не удостоверены.",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "nikulinskiy",
+      "number": "02-0514/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/eeb88361-02f8-11f0-a7f4-b3bf1828314a",
+      "documentDate": "2026-05-28",
+      "publicationStatus": "file_listed_unreviewed",
+      "judgeAttribution": null,
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "В официальной карточке имеется метка «Скачать файл». Требуется индивидуальная проверка подлинного акта и публикационных ограничений.",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "nikulinskiy",
+      "number": "02-8403/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/f8759101-9b1c-11f1-b4e1-571ff4724a96",
+      "documentDate": "2026-10-20",
+      "publicationStatus": "publication_forbidden",
+      "judgeAttribution": null,
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "Официальная карточка отмечает «Публикация запрещена». Текст не импортировать и не воспроизводить.",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "gagarinskiy",
+      "number": "02-4840/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/gagarinskij/services/cases/civil/details/ddddec31-3fc2-11f1-be96-a51307846711",
+      "documentDate": "2026-08-05",
+      "publicationStatus": "preparing_publication",
+      "judgeAttribution": null,
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "Официальная карточка отмечает «Готовится к публикации». Не интерпретировать содержание до фактической публикации.",
+      "observedOn": "2026-11-01"
+    }
+  ]
+}
