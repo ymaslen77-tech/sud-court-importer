@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import {
  MGS_BASE,MGS_GUIDE_TOPICS,mgsGuideTopic,mgsGuideHref
 } from '../../../../../../lib/moscow-city-court-guide';
+import {mgsSeoRobots,mgsSeoStructuredData} from '../../../../../../lib/moscow-city-seo';
 
 type Props={params:Promise<{topic:string}>};
 export const dynamicParams=false;
@@ -14,9 +15,11 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {topic:slug}=await params;
  const topic=mgsGuideTopic(slug);
  if(!topic)return {title:'Раздел не найден',robots:{index:false,follow:false}};
- return {title:topic.title+' — Московский городской суд',
-  description:topic.lead,
-  alternates:{canonical:mgsGuideHref(slug)},robots:{index:false,follow:true}};
+ const title=topic.title+' — Московский городской суд';
+ const description=topic.lead;
+ const url=mgsGuideHref(slug);
+ return {title,description,alternates:{canonical:url},robots:mgsSeoRobots(),
+  openGraph:{type:'article',title,description,url,locale:'ru_RU',siteName:'Суды России'}};
 }
 export default async function MgsTopicPage({params}:Props){
  const {topic:slug}=await params;
@@ -24,7 +27,9 @@ export default async function MgsTopicPage({params}:Props){
  if(!topic)notFound();
  const nextStep=slug==='jurisdiction'?'competence':slug==='competence'?'filing':null;
  const nextTopic=nextStep?mgsGuideTopic(nextStep):null;
+ const structured=mgsSeoStructuredData(topic.title+' — Московский городской суд',topic.lead,mgsGuideHref(slug),topic.shortTitle);
  return <article className="moscow-minimum-court-page">
+  {structured?<script type="application/ld+json" dangerouslySetInnerHTML={{__html:structured}}/>:null}
   <nav className="breadcrumb" aria-label="Навигация">
    <Link href="/">Главная</Link><span>/</span>
    <Link href="/courts">Суды России</Link><span>/</span>
