@@ -56,7 +56,7 @@ for(const r of [...rosterFile.records,...legacyRosters.records]){
     name,judgeSlug:moscowJudgeSlug(name),sourceUrl:r.sourceUrl,
     sourceObservedOn:r.observedOn,sourceUpdatedOn:r.sourceLastUpdated,
     sourceKind:'official_roster',appointmentBasis:note?.decree??null,
-    courtVisitNotice:'notice' in r?r.notice??null:null});
+    courtVisitNotice:'notice' in r&&typeof r.notice==='string'?r.notice:null});
  }
 }
 for(const r of briefsFile.records){
