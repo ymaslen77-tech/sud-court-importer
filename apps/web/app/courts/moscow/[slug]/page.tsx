@@ -7,6 +7,7 @@ import {MoscowTerritoryChecker} from '../../../_components/moscow-territory-chec
 import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
 import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
+import {MoscowFilingWizard} from '../../../_components/moscow-filing-wizard';
 import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
 import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
@@ -37,14 +38,6 @@ const faqs=[
  ['Куда подавать апелляцию?','Маршрут зависит от вида производства и судебного акта. Во многих случаях жалоба подаётся через суд, вынесший акт, но есть процессуальные исключения.'],
  ['Как узнать зал и время заседания?','Сверьте сведения в официальной карточке дела и судебном извещении. Временные помещения, отмены и переносы нельзя определять только по почтовому адресу.'],
  ['Можно ли считать указанный состав судей действующим?','Нет: без проверки назначения, переводов, прекращения полномочий и обновлений нельзя считать историческую публикацию подтверждением действующего состава.']
-];
-const stages=[
- ['1. Установите компетенцию','Определите вид процесса и проверьте, вправе ли этот суд рассматривать требование по первой инстанции.'],
- ['2. Проверьте территориальную подсудность','При необходимости учтите адрес ответчика, место нахождения недвижимости, договорную или исключительную подсудность.'],
- ['3. Подготовьте обращение','Составьте иск, заявление, жалобу либо ходатайство с обоснованием, доказательствами и приложениями.'],
- ['4. Проверьте пошлину','Используйте действующие нормы НК РФ, льготы и реквизиты по назначению платежа на официальной странице суда.'],
- ['5. Подайте документы','Выберите допустимый способ: приёмная, почта или официальный электронный сервис. Сохраните подтверждение подачи.'],
- ['6. Следите за движением дела','Проверяйте номер и текущую стадию в официальной системе; учитывайте возможность переноса заседания.']
 ];
 function External({href,children}:{href:string;children:React.ReactNode}){
  const safe=officialMoscowUrl(href);
@@ -156,9 +149,7 @@ export default async function MoscowCourtPage({params}:Props){
   </section>
   <section className="court-section" id="msk-filing">
    <h2>Как подать иск, заявление или жалобу</h2>
-   <ol className="court-practical-steps">{stages.map(([label,desc])=><li key={label}><strong>{label}.</strong> {desc}</li>)}</ol>
-   <p><a href="https://ej.sudrf.ru/" target="_blank" rel="noopener noreferrer">Официальный сервис электронной подачи ГАС «Правосудие» ↗</a></p>
-   <p>Письмо на общий e-mail суда не заменяет подачу процессуальных документов. Порядок и требования к электронной подписи различаются по видам документов и процессу.</p>
+   <MoscowFilingWizard courtName={c.name} officialUrl={c.official_url} caseSearchUrl={c.case_service_url}/>
   </section>
   <section className="court-section" id="msk-archives">
    <h2>Как получить копию судебного акта и ознакомиться с делом</h2>
