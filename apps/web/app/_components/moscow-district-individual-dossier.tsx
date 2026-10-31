@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits,moscowVerifiedOutcome} from '../lib/moscow-district-source-evidence';
+import {moscowJudicialSourceBrief} from '../lib/moscow-judicial-source-briefs';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -10,6 +11,7 @@ type Props={court:MoscowOfficialMinimumCourt;profile:MoscowDistrictIndividual;le
 export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=false}:Props){
  const official=moscowDistrictOfficialPages(profile);
  const publishedRoster=moscowJudgeRoster(profile.slug);
+ const sourceBrief=moscowJudicialSourceBrief(profile.slug);
  const docket=moscowCourtCaseExamples(profile.slug);
  const judgeVisits=moscowCourtJudgeVisits(profile.slug);
  const outcome=moscowVerifiedOutcome(profile.slug);
@@ -104,6 +106,16 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
     <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Проверить состав судей в официальном разделе ↗</a></p>
    </>}
   </section>
+  {sourceBrief?<section className="court-section" id="district-judicial-publications">
+   <span className="eyebrow">Проверенные упоминания · не полный состав</span>
+   <h2>{sourceBrief.sourceType==='official_appointment_notices'?'Официальные сообщения о назначении судей':'Судьи, упомянутые в официальном перечне помощников'}</h2>
+   <p>{sourceBrief.note}</p>
+   <ul>{sourceBrief.people.map((item)=><li key={item.name}>
+    <strong>{item.name}</strong> — {item.basis}.
+    <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer"> Проверить источник ↗</a>
+   </li>)}</ul>
+   <p className="court-source">Проверено по официальным публикациям {sourceBrief.recordDate}. Сведения требуют сопоставления с действующими назначениями.</p>
+  </section>:null}
   <section className="court-section" id="district-case-evidence">
    <span className="eyebrow">Судебная практика · проверяемые записи</span>
    <h2>Реальные дела суда: источник, категория и ограничения</h2>
