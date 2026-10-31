@@ -124,7 +124,7 @@
     {
       "slug": "nagatinskiy",
       "officialSlug": "nagatinskij",
-      "sourceLastUpdated": "2026-07-17",
+      "sourceLastUpdated": "2026-04-03",
       "judges": [
         "Расторгуева Наталья Сергеевна",
         "Авдеева Наталья Кузьминична",
@@ -141,7 +141,9 @@
         "Тренихина Елена Михайловна",
         "Тимирьянов Максим Степанович",
         "Филатов Антон Юрьевич",
-        "Шамова Анна Ивановна"
+        "Шамова Анна Ивановна",
+        "Осипова Яна Геннадьевна",
+        "Полунина Лариса Анатольевна"
       ],
       "appointmentNotes": [
         {
@@ -448,6 +450,76 @@
       ],
       "appointmentNotes": [],
       "sourceUrl": "https://mos-gorsud.ru/rs/horoshevskij/info/structure/judges",
+      "observedOn": "2026-10-31",
+      "status": "published_roster_not_live_certification"
+    },
+    {
+      "slug": "zyuzinskiy",
+      "officialSlug": "zyuzinskij",
+      "sourceLastUpdated": "2026-03-26",
+      "judges": [
+        "Городницкая Елена Александровна",
+        "Кабанова Наталья Алексеевна",
+        "Слюзова Екатерина Николаевна",
+        "Матвеева Мария Сергеевна",
+        "Исакова Елена Владимировна",
+        "Капусто Василий Викторович",
+        "Соленая Татьяна Вячеславовна",
+        "Сафьян Елена Ивановна",
+        "Барабанова Элеонора Романовна",
+        "Тихонова Екатерина Викторовна",
+        "Лепина Мария Ивановна"
+      ],
+      "appointmentNotes": [],
+      "sourceUrl": "https://mos-gorsud.ru/rs/zyuzinskij/info/structure/judges",
+      "observedOn": "2026-10-31",
+      "status": "published_roster_not_live_certification"
+    },
+    {
+      "slug": "preobrazhenskiy",
+      "officialSlug": "preobrazhenskij",
+      "sourceLastUpdated": "2026-06-30",
+      "judges": [
+        "Яни Дмитрий Павлович",
+        "Чайковская Анна Григорьевна",
+        "Казанцев Олег Андреевич",
+        "Трофимович Константин Юрьевич",
+        "Лукина Елена Алексеевна",
+        "Канавина Виктория Александровна",
+        "Лебедева Валентина Геннадьевна",
+        "Яцукова Анна Анатольевна",
+        "Павлова Яна Сергеевна",
+        "Кузнецов Андрей Александрович",
+        "Череповская Оксана Петровна",
+        "Грязнова Анна Николаевна",
+        "Лаухина Анна Андреевна",
+        "Кузнецова Юлия Николаевна",
+        "Полунадеждина Татьяна Николаевна",
+        "Дашковская Надежда Владимировна",
+        "Белова Анна Эдуардовна"
+      ],
+      "appointmentNotes": [],
+      "sourceUrl": "https://mos-gorsud.ru/rs/preobrazhenskij/info/structure/judges",
+      "observedOn": "2026-10-31",
+      "status": "published_roster_not_live_certification"
+    },
+    {
+      "slug": "troitskiy",
+      "officialSlug": "troickij",
+      "sourceLastUpdated": "2025-07-22",
+      "judges": [
+        "Ежова Елена Александровна",
+        "Зайцев Роман Евгеньевич",
+        "Стародубцева Анна Викторовна",
+        "Решетова Евгения Анатольевна",
+        "Кармашев Владислав Вячеславович",
+        "Захарченко Ирина Александровна",
+        "Широкова Дарья Алексеевна",
+        "Кобитева Анастасия Сергеевна",
+        "Свирчевская Вера Борисовна"
+      ],
+      "appointmentNotes": [],
+      "sourceUrl": "https://mos-gorsud.ru/rs/troickij/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
     }
