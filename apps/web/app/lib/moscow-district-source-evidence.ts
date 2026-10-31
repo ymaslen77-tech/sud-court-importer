@@ -1,5 +1,6 @@
 import judges from '../data/moscow-district-judges-samples.json';
 import cases from '../data/moscow-district-sourced-case-samples.json';
+import visits from '../data/moscow-court-judge-specific-visits.json';
 
 export type MoscowJudgeRoster={
  slug:string;
@@ -31,3 +32,8 @@ export function moscowJudgeRoster(slug:string){return judgeMap.get(slug)??null;}
 export function moscowCourtCaseExamples(slug:string){return caseMap.get(slug)??null;}
 export const MOSCOW_ROSTER_EVIDENCE_COUNT=judges.records.length;
 export const MOSCOW_DOCKET_EVIDENCE_COUNT=cases.records.length;
+
+export type JudgeVisitLocation={judge:string;address:string;scope:string};
+export type CourtJudgeVisits={slug:string;sourceUrl:string;announcementDate:string;observedOn:string;postalAddress:string;mainVisitAddress:string;judgeVisits:JudgeVisitLocation[];otherMatters:string};
+const visitMap=new Map((visits.records as CourtJudgeVisits[]).map(v=>[v.slug,v]));
+export function moscowCourtJudgeVisits(slug:string){return visitMap.get(slug)??null;}
