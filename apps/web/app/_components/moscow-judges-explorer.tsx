@@ -68,7 +68,7 @@ export function MoscowJudgesExplorer({courts,profiles,cases}:Props){
     {shown.map(c=><article key={c.number}>
       <h4>Дело № {c.number}</h4>
       <p><strong>Категория:</strong> {c.category}</p>
-      <p><strong>Судопроизводство:</strong> {c.proceeding==='civil'?'Гражданские дела (ГПК РФ)':'Уголовно-процессуальные материалы (УПК РФ)'}</p>
+      <p><strong>Судопроизводство:</strong> {c.proceeding==='civil'?'Гражданские дела (ГПК РФ)':c.proceeding==='criminal'?'Уголовные дела (УПК РФ)':'Уголовно-процессуальные материалы (УПК РФ)'}</p>
       <p><strong>Результат:</strong> {c.status==='outcome_recorded'?c.outcome:noOutcome}
        {c.decisionDate?' · '+c.decisionDate:''}</p>
       <p className="court-source">{c.note}</p>
