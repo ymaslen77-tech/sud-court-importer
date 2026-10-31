@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
+import {moscowJudgeRoster,moscowCourtCaseExamples} from '../lib/moscow-district-source-evidence';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -8,6 +9,9 @@ type Props={court:MoscowOfficialMinimumCourt;profile:MoscowDistrictIndividual;le
 
 export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=false}:Props){
  const official=moscowDistrictOfficialPages(profile);
+ const publishedRoster=moscowJudgeRoster(profile.slug);
+ const docket=moscowCourtCaseExamples(profile.slug);
+ const judgesLink=official.overview+'/structure/judges';
  const emailConflict=Boolean(profile.emailAsPublished&&
   profile.emailAsPublished.toLowerCase()!==court.email.toLowerCase());
  const needsArrivalCheck=Boolean(court.visitor_locations?.length);
@@ -58,7 +62,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
     </article>
     <article><h3>Судьи, состав и аппарат</h3>
      <p>Индивидуальный состав судей и работники аппарата относятся к изменяемым сведениям. Не полагайтесь на старые списки.</p>
-     <a href={official.courtStructure} target="_blank" rel="noopener noreferrer" className="text-link">Структура на официальном сайте ↗</a>
+     <a href={judgesLink} target="_blank" rel="noopener noreferrer" className="text-link">Список судей на официальном сайте ↗</a>
     </article>
     <article><h3>Госпошлина и документы</h3>
      <p>Уточните платёжные реквизиты по виду обращения, формы заявлений, способ подачи и действующий процессуальный порядок.</p>
@@ -67,6 +71,41 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    </div>
    <p className="court-source">Ссылки направляют на страницы выбранного суда, а не на случайные источники.
     Мы не подменяем официальный реестр решений и не создаём фиктивные примеры судебных актов.</p>
+  </section>
+  <section className="court-section" id="district-judicial-roster">
+   <span className="eyebrow">Судейский корпус · источник и дата</span>
+   <h2>Судьи {court.name}: официально опубликованный список</h2>
+   {publishedRoster?<>
+    <p>На странице суда опубликованы {publishedRoster.judges.length} фамилий. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated}.
+     Этот перечень не является удостоверением актуального кадрового состава на сегодняшний день.
+     Для назначения и полномочий конкретного судьи сверяйте указ Президента РФ и свежие сообщения суда.</p>
+    <ul>{publishedRoster.judges.map(name=><li key={name}>
+     <strong>{name}</strong>
+     {publishedRoster.appointmentNotes.find(p=>p.name===name)?.decree?
+       <span> — {publishedRoster.appointmentNotes.find(p=>p.name===name)?.decree}</span>:null}
+    </li>)}</ul>
+    <p><a href={publishedRoster.sourceUrl} className="text-link" target="_blank" rel="noopener noreferrer">Проверить список судей и назначения на сайте суда ↗</a></p>
+   </>:<>
+    <p>В этой карточке пока нет локальной копии судейского списка, прошедшей индивидуальную проверку.
+     Откройте официальный раздел суда. Мы не показываем устаревшие или неполные ФИО как актуальный полный состав.</p>
+    <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Проверить состав судей в официальном разделе ↗</a></p>
+   </>}
+  </section>
+  <section className="court-section" id="district-case-evidence">
+   <span className="eyebrow">Судебная практика · проверяемые записи</span>
+   <h2>Реальные дела суда: источник, категория и ограничения</h2>
+   {docket?<div>
+    <p>Номера и категории взяты из официального реестра первой инстанции по состоянию на {docket.sourceObservedOn}.
+      Это записи о движении дел, а не подтверждённые опубликованные решения; исход споров неизвестен.</p>
+    <ul>{docket.cases.map(item=><li key={item.number}>
+     <strong>Дело № {item.number}</strong> — {item.category}. {item.sourceStatus}.
+    </li>)}</ul>
+    <p><a href={docket.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-link">Сверить номер и движение дела на официальном портале ↗</a></p>
+   </div>:<p>Индивидуальные номера дел без проверяемого первоисточника не добавлялись.
+    Для поиска по этому суду используйте официальный реестр судебных дел.</p>}
+   <p><a href={official.cases} target="_blank" rel="noopener noreferrer" className="text-link">Открыть поиск судебных дел →</a></p>
+   <p className="court-source">Не публикуем ФИО участников и не создаём искусственные «правовые позиции» из промежуточных записей.
+     Судебная практика с мотивировкой будет добавляться только после проверки текста судебного акта.</p>
   </section>
   <section className="court-section" id="district-next-steps">
    <span className="eyebrow">Связанные правовые вопросы</span>
