@@ -165,7 +165,7 @@ export default async function SearchPage({searchParams}:Props){
     <p>Полный официальный перечень: 35 районных судов и Московский городской суд. Двенадцать районных судов имеют расширенные досье; остальные — справочные карточки с контактами и ссылками на первоисточники.</p>
    </div>
    <div className="results">{moscow.map(c=>{
-    const hasRich=moscowCourts().some(d=>d.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
+    const hasRich=c.kind==='general-regional'||moscowCourts().some(d=>d.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
       .startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
     return <Link key={c.slug} className="result-row" href={MoscowOfficialCourtHref(c)}>
      <span><strong>{c.name}</strong>
