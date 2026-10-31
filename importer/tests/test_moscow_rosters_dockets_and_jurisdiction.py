@@ -6,6 +6,8 @@ from urllib.parse import urlsplit
 APP=Path(__file__).resolve().parents[2]/"apps/web/app"
 ROSTERS=json.loads((APP/"data/moscow-district-judges-samples.json").read_text(encoding="utf-8"))["records"]
 CASES=json.loads((APP/"data/moscow-district-sourced-case-samples.json").read_text(encoding="utf-8"))["records"]
+VISITS=json.loads((APP/"data/moscow-court-judge-specific-visits.json").read_text(encoding="utf-8"))["records"]
+OUTCOMES=json.loads((APP/"data/moscow-verified-court-outcomes.json").read_text(encoding="utf-8"))["records"]
 COURTS=json.loads((APP/"data/moscow-district-individual-dossiers.json").read_text(encoding="utf-8"))["records"]
 UI=(APP/"_components/moscow-district-individual-dossier.tsx").read_text(encoding="utf-8")
 CHECKER=(APP/"_components/moscow-district-address-lookup.tsx").read_text(encoding="utf-8")
@@ -48,4 +50,21 @@ class MoscowPublishedEvidenceTests(unittest.TestCase):
   self.assertIn("Номер квартиры и ФИО",CHECKER)
   self.assertIn("MoscowDistrictAddressLookup courtName={court.name}",GUIDE)
   self.assertNotIn("approvedRules.map",CHECKER)
+ def test_relocation_by_nine_judges_is_primary_sourced(self):
+  self.assertEqual(len(VISITS),1)
+  self.assertEqual(VISITS[0]["slug"],"cheryomushkinskiy")
+  self.assertEqual(len(VISITS[0]["judgeVisits"]),9)
+  self.assertEqual(len({x["judge"] for x in VISITS[0]["judgeVisits"]}),9)
+  self.assertIn("Кржижановского",VISITS[0]["postalAddress"])
+  self.assertIn("/news/",VISITS[0]["sourceUrl"])
+  self.assertIn("judgeVisits.judgeVisits.map",UI)
+ def test_confirmed_court_result_without_invented_reasoning(self):
+  self.assertEqual(len(OUTCOMES),1)
+  x=OUTCOMES[0]
+  self.assertEqual(x["number"],"02-3978/2026")
+  self.assertEqual(x["publishedOutcome"],"Удовлетворено частично")
+  self.assertFalse(x["fullDecisionTextVerified"])
+  self.assertFalse(x["reasoningVerified"])
+  self.assertIn("/civil/details/",x["sourceUrl"])
+  self.assertIn("moscowVerifiedOutcome",UI)
 if __name__=="__main__":unittest.main()
