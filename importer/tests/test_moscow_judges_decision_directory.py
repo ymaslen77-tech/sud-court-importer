@@ -5,6 +5,7 @@ from urllib.parse import urlsplit
 APP=Path(__file__).resolve().parents[2]/'apps/web/app'
 def data(name):return json.loads((APP/'data'/name).read_text(encoding='utf-8'))['records']
 ROSTERS=data('moscow-district-judges-samples.json')
+LEGACY=data('moscow-legacy-judge-rosters.json')
 BRIEFS=data('moscow-judicial-source-briefs.json')
 CASES=data('moscow-judge-case-evidence.json')
 MINIMUM=data('moscow-official-minimum-registry.json')
@@ -18,11 +19,14 @@ RESEARCH=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
 def norm(name):return re.sub(r'\s+',' ',name.replace('ё','е').lower()).strip()
 class JudgeEvidenceAcceptance(unittest.TestCase):
  def test_301_unique_published_names_with_court_identity(self):
-  people=[(r['slug'],n) for r in ROSTERS for n in r['judges']]
+  people=[(r['slug'],n) for r in ROSTERS+LEGACY for n in r['judges']]
   people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
-  self.assertEqual(len(people),301)
-  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),301)
+  self.assertEqual(len(people),335)
+  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),335)
   self.assertEqual(len({r['slug'] for r in ROSTERS}),20)
+  self.assertEqual(len({r['slug'] for r in LEGACY}),3)
+  self.assertEqual(sum(len(r['judges']) for r in LEGACY),34)
+  self.assertTrue({'basmanny','lefortovskiy','presnenskiy'}=={r['slug'] for r in LEGACY})
   self.assertEqual(len({r['slug'] for r in BRIEFS}),3)
   courts={r['slug'] for r in MINIMUM}
   self.assertEqual(len(courts),36)
@@ -30,9 +34,11 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertIn('moscowJudgeSlug',LIB)
   self.assertIn('MoscowOfficialCourtHref(court)',LIB)
   self.assertIn('official_assistant_reference',LIB)
+  self.assertIn('legacyRosters.records',LIB)
+  self.assertIn('judge.courtVisitNotice',PERSON)
  def test_officially_attributed_cases_are_not_fabricated_full_judgments(self):
   people={(slug,norm(name)) for slug,name in
-      [(r['slug'],n) for r in ROSTERS for n in r['judges']]+
+      [(r['slug'],n) for r in ROSTERS+LEGACY for n in r['judges']]+
       [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]}
   self.assertEqual(len(CASES),13)
   self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),10)
