@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {moscowCourts} from '../../lib/moscow-courts';
+import {MOSCOW_DISTRICT_INDIVIDUALS} from '../../lib/moscow-district-individual';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref,MOSCOW_DIRECTORY_META} from '../../lib/moscow-official-minimum';
 import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
 
@@ -13,6 +14,7 @@ export default function MoscowDirectory(){
  const district=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district');
  const city=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-regional');
  const rich=moscowCourts();
+ const individualSet=new Set(MOSCOW_DISTRICT_INDIVIDUALS.map(c=>c.slug));
  const arbitration=regionalArbitrationCourts('moscow');
  return <>
   <nav className="breadcrumb" aria-label="Навигация">
@@ -25,7 +27,7 @@ export default function MoscowDirectory(){
    <div className="moscow-registry-summary">
     <div><strong>{MOSCOW_OFFICIAL_MINIMUM_COURTS.length}</strong><span>Судебных органов в перечне</span></div>
     <div><strong>{district.length}</strong><span>Районных судов</span></div>
-    <div><strong>{rich.length}</strong><span>Подробных исследовательских досье</span></div>
+    <div><strong>{rich.length+individualSet.size}</strong><span>Районных карточек с индивидуальным наполнением</span></div>
    </div>
    <div className="notice" role="note">
     Справочник основан на официальной публикации, но не заменяет проверку актуальных адресов и часов конкретных канцелярий.
@@ -52,14 +54,14 @@ export default function MoscowDirectory(){
   <section className="section-wrap" id="moscow-district">
    <div className="section-intro"><span className="eyebrow">Официальный перечень · {district.length} судов</span>
     <h2>Районные суды Москвы</h2>
-    <p>Нажмите на суд, чтобы узнать его адрес и рабочее время. Для {rich.length} судов уже разработаны более подробные карточки с процессуальными материалами.</p>
+    <p>Нажмите на суд, чтобы узнать его адрес и рабочее время. Для {rich.length} судов сохранены ранее разработанные расширенные досье; остальные {individualSet.size} получили индивидуальные сведения об официальных контактах, руководстве и сервисах. Непроверенные биографии и судебные дела не добавляются.</p>
    </div>
    <div className="results">{district.map(c=><Link className="result-row moscow-registry-result" href={MoscowOfficialCourtHref(c)} key={c.slug}>
     <span><strong>{c.name}</strong>
      {c.visitor_locations?.length?<small className="moscow-temporary-location"><strong>Временный адрес посещения:</strong> {c.visitor_locations[0].address} — подробности в карточке</small>:null}
      <small>{c.visitor_locations?.length?'Почтовый адрес: ':'Адрес: '}{c.address}</small>
      <small>Общий режим: {c.office_hours} · {c.email}</small>
-     <small>{rich.some(x=>x.name.toLocaleLowerCase('ru').replace(/ё/g,'е').startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')))?'Есть подробная справочная карточка':'Базовая справочная карточка'}</small>
+     <small>{rich.some(x=>x.name.toLocaleLowerCase('ru').replace(/ё/g,'е').startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')))?'Есть подробная справочная карточка':individualSet.has(c.slug)?'Индивидуальная карточка по официальному источнику':'Базовая справочная карточка'}</small>
     </span><span aria-hidden="true">→</span>
    </Link>)}</div>
   </section>
