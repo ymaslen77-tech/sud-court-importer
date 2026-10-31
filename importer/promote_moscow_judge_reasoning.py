@@ -16,7 +16,6 @@ from urllib.parse import urlsplit
 APP=Path(__file__).resolve().parents[1]/"apps"/"web"/"app"
 DATA=APP/"data"
 OUTPUT=DATA/"moscow-judge-reviewed-decisions.json"
-COURTS=DATA/"moscow-official-minimum-registry.json"
 CASE_RECORDS=DATA/"moscow-judge-case-evidence.json"
 REVIEW_QUEUE=DATA/"moscow-court-judgment-review-queue.json"
 FIELDS={"courtSlug","judgeName","caseNumber","courtCaseUrl","decisionDate",
@@ -34,7 +33,7 @@ def read(path):
 def norm(value):
  return re.sub(r"\s+"," ",value.lower().replace("ё","е")).strip()
 
-def validate(row,cases,courts,blocked,already):
+def validate(row,cases,blocked,already):
  if not isinstance(row,dict) or set(row)!=(FIELDS|{"localEvidenceFile","editorialVerified"}):
   raise ValueError("A staged record must have exactly the reviewed-decision fields plus evidence file and editorial flag")
  if row["editorialVerified"] is not True:
@@ -68,7 +67,7 @@ def validate(row,cases,courts,blocked,already):
  if row["appealStatus"]!="not_checked":
   raise ValueError("Appeal outcome requires separate source review workflow")
  u=urlsplit(row["courtCaseUrl"])
- official=courts[row["courtSlug"]]
+ official=urlsplit(case["sourceUrl"]).path.split("/rs/")[1].split("/")[0]
  if (u.scheme!="https" or u.hostname not in DOMAIN or u.username or u.password or u.port
       or not u.path.startswith("/rs/"+official+"/services/cases/") or "/details/" not in u.path):
   raise ValueError("Case-specific official court details URL required")
@@ -91,8 +90,6 @@ def main(argv=None):
  args=p.parse_args(argv)
  docs=read(args.staged)["records"]
  current=read(OUTPUT)
- courts={r["slug"]:r["source_url"].split("/rs/")[-1].split("/")[0]
-         for r in read(COURTS)["records"] if r["kind"]=="general-district"}
  case_rows=read(CASE_RECORDS)["records"]
  cases={(r["courtSlug"],r["number"]):r for r in case_rows}
  blocked={(r["courtSlug"],r["number"]) for r in read(REVIEW_QUEUE)["records"]
@@ -100,7 +97,7 @@ def main(argv=None):
  seen={(r["courtSlug"],r["caseNumber"]) for r in current["records"]}
  output=[]
  for row in docs:
-  clean=validate(row,cases,courts,blocked,seen)
+  clean=validate(row,cases,blocked,seen)
   seen.add((clean["courtSlug"],clean["caseNumber"]))
   output.append(clean)
  if args.append:
