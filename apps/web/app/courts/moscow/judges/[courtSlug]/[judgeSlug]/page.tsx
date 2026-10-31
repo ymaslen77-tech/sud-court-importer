@@ -48,6 +48,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
    <p>{moscowJudgeSourceLabel(judge.sourceKind)}. Дата обновления источника: {judge.sourceUpdatedOn??'не указана'}. Источник просмотрен {judge.sourceObservedOn}.</p>
    {judge.sourceKind==='official_assistant_reference'?
     <p className="notice">ФИО встречается в перечне помощников судей. Это не самостоятельное подтверждение действующих судейских полномочий.</p>:null}
+   {judge.courtVisitNotice?<p className="notice"><strong>Уточните адрес посещения:</strong> {judge.courtVisitNotice}</p>:null}
    <p className="court-source">Публикация сведений о судье не удостоверяет, что он или она продолжает работать в этом суде. При необходимости подтвердите полномочия по действующим кадровым документам.</p>
    <p><a href={judge.sourceUrl} rel="noopener noreferrer" target="_blank">Официальная страница с упоминанием судьи ↗</a></p>
    {judge.appointmentBasis?<p><strong>Опубликованные сведения о назначении:</strong> {judge.appointmentBasis}</p>:null}
