@@ -50,6 +50,10 @@ def judge_sources():
     key=(row["slug"],norm(name))
     if key in names:raise ValueError(f"Duplicate judge identity: {key}")
     names[key]=row["officialSlug"]
+ for row in read_records(DATA/"moscow-judicial-chair-listings.json"):
+  key=(row["slug"],norm(row["name"]))
+  if key in names:raise ValueError(f"Duplicate judge identity: {key}")
+  names[key]=row["officialSlug"]
  for row in read_records(DATA/"moscow-judicial-source-briefs.json"):
   for person in row["people"]:
    key=(row["slug"],norm(person["name"]))
