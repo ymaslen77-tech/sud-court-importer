@@ -15,7 +15,7 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
   cls.records=module.read_records(module.EVIDENCE)
  def test_current_verified_records_pass(self):
   keys=module.validate_all(self.records,self.judges)
-  self.assertEqual(len(keys),21)
+  self.assertEqual(len(keys),24)
   self.assertGreaterEqual(len(self.judges),391)
  def test_unknown_judge_or_wrong_court_rejected(self):
   row=self.records[0].copy()
@@ -42,6 +42,16 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
    module.validate_record(row,self.judges,require_review=True)
   row["editorialVerified"]=True
   module.validate_record(row,self.judges,require_review=True)
+ def test_abbreviated_judge_names_match_unique_official_person(self):
+  row=next(x for x in self.records if x["judgeAttribution"]=="initials_resolved_to_unique_official_roster_name").copy()
+  module.validate_record(row,self.judges)
+  row["sourceJudgeLabel"]="Другой П.П."
+  with self.assertRaises(ValueError):
+   module.validate_record(row,self.judges)
+  row["sourceJudgeLabel"]="Кузнецова Е.А."
+  row["judgeName"]="Максимов Михаил Константинович"
+  with self.assertRaises(ValueError):
+   module.validate_record(row,self.judges)
  def test_nonofficial_and_mismatched_url_rejected(self):
   row=self.records[0].copy()
   row["sourceUrl"]="https://sudact.ru/regular/case-0000/"
