@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {moscowDistrictTopicHref} from '../lib/moscow-district-topics';
 import {MoscowDistrictAddressLookup} from './moscow-district-address-lookup';
+import {MoscowFilingWizard} from './moscow-filing-wizard';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 
 type Props={court:MoscowOfficialMinimumCourt};
@@ -66,14 +67,7 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
   <section className="court-section" id="district-filing">
    <span className="eyebrow">03 · Подача документов</span>
    <h2>Как подать иск, жалобу или ходатайство</h2>
-   <ol>
-    <li>Определите вид процесса и проверьте суд по адресу и предмету обращения.</li>
-    <li>Подготовьте документы и приложения по соответствующему процессуальному кодексу.</li>
-    <li>Для электронной подачи используйте предусмотренный официальный личный кабинет; обычное письмо на e-mail не является процессуальной подачей.</li>
-    <li>Сохраните подтверждение отправки или приёма и проверьте регистрацию обращения.</li>
-   </ol>
-   <p><a href={OFFICIAL.account} target="_blank" rel="noopener noreferrer" className="text-link">Официальный личный кабинет московских судов ↗</a></p>
-   <p className="court-source">Электронная приёмная по обращениям граждан и процессуальная подача документов — разные процедуры.</p>
+   <MoscowFilingWizard courtName={court.name} officialUrl={court.source_url}/>
   </section>
   <section className="court-section" id="district-cases">
    <span className="eyebrow">04 · Делопроизводство</span>
