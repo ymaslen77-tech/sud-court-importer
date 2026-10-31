@@ -6,6 +6,7 @@ import {
  moscowJudgeCaseCategories,moscowJudgeSourceLabel,moscowJudgeHref
 } from '../../../../../lib/moscow-judge-directory';
 import {moscowJudgeReviewedDecisions} from '../../../../../lib/moscow-judge-reviewed-decisions';
+import {moscowJudgeAppointmentEvents} from '../../../../../lib/moscow-judge-appointment-events';
 
 type Params={params:Promise<{courtSlug:string;judgeSlug:string}>};
 export const dynamicParams=false;
@@ -33,6 +34,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
  if(!judge)notFound();
  const cases=moscowJudgeCases(courtSlug,judge.name);
  const reviewed=moscowJudgeReviewedDecisions(courtSlug,judge.name);
+ const appointmentEvents=moscowJudgeAppointmentEvents(courtSlug,judge.name);
  const categories=moscowJudgeCaseCategories(cases);
  const outcomes=cases.filter(c=>c.status==='outcome_recorded');
  const otherJudges=MOSCOW_JUDGE_PROFILES.filter(p=>p.courtSlug===courtSlug&&p.judgeSlug!==judgeSlug).slice(0,8);
@@ -51,6 +53,17 @@ export default async function MoscowJudgeProfilePage({params}:Params){
    {judge.sourceKind==='official_assistant_reference'?
     <p className="notice">ФИО встречается в перечне помощников судей. Это не самостоятельное подтверждение действующих судейских полномочий.</p>:null}
    {judge.courtVisitNotice?<p className="notice"><strong>Уточните адрес посещения:</strong> {judge.courtVisitNotice}</p>:null}
+   {appointmentEvents.length>0?<div className="notice" aria-label="Назначения, опубликованные после составления справочника">
+    <strong>Датированные кадровые изменения</strong>
+    <ul>{appointmentEvents.map(e=><li key={e.appointmentDate+'-'+e.eventType}>
+     {e.eventType==='appointed_to_moscow_city_court'
+      ?'Назначен(а) судьёй Московского городского суда'
+      :'Назначен(а) председателем этого районного суда'} — {e.appointmentDate}, Указ Президента РФ № {e.decreeNumber}.
+     <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer"> Официальная публикация ↗</a>
+    </li>)}</ul>
+    {appointmentEvents.some(e=>e.eventType==='appointed_to_moscow_city_court')?
+      <p>Важное уточнение: запись в старом составе районного суда может быть устаревшей. Новое назначение подтверждено указом; место службы и действующий кадровый статус сверяйте на официальных страницах.</p>:null}
+   </div>:null}
    <p className="court-source">Публикация сведений о судье не удостоверяет, что он или она продолжает работать в этом суде. При необходимости подтвердите полномочия по действующим кадровым документам.</p>
    <p><a href={judge.sourceUrl} rel="noopener noreferrer" target="_blank">Официальная страница с упоминанием судьи ↗</a></p>
    {judge.appointmentBasis?<p><strong>Опубликованные сведения о назначении:</strong> {judge.appointmentBasis}</p>:null}
