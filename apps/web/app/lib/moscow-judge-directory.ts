@@ -16,6 +16,7 @@ export type MoscowJudgeProfile={
  sourceUpdatedOn:string|null;
  sourceKind:JudgeSourceKind;
  appointmentBasis:string|null;
+ courtVisitNotice:string|null;
 };
 export type JudgeCaseEvidence={
  courtSlug:string;
@@ -54,7 +55,8 @@ for(const r of [...rosterFile.records,...legacyRosters.records]){
   records.push({courtSlug:r.slug,courtName:court.name,courtHref:MoscowOfficialCourtHref(court),
     name,judgeSlug:moscowJudgeSlug(name),sourceUrl:r.sourceUrl,
     sourceObservedOn:r.observedOn,sourceUpdatedOn:r.sourceLastUpdated,
-    sourceKind:'official_roster',appointmentBasis:note?.decree??null});
+    sourceKind:'official_roster',appointmentBasis:note?.decree??null,
+    courtVisitNotice:'notice' in r?r.notice??null:null});
  }
 }
 for(const r of briefsFile.records){
@@ -65,7 +67,7 @@ for(const r of briefsFile.records){
     name:item.name,judgeSlug:moscowJudgeSlug(item.name),sourceUrl:item.sourceUrl,
     sourceObservedOn:r.recordDate,sourceUpdatedOn:'sourceUpdatedOn' in r?r.sourceUpdatedOn??null:null,
     sourceKind:r.sourceType==='official_appointment_notices'?'official_appointment_news':'official_assistant_reference',
-    appointmentBasis:item.basis});
+    appointmentBasis:item.basis,courtVisitNotice:null});
  }
 }
 export const MOSCOW_JUDGE_PROFILES:ReadonlyArray<MoscowJudgeProfile>=records.sort((a,b)=>
