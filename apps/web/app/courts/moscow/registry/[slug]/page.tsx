@@ -4,7 +4,7 @@ import {MoscowDistrictRegistryGuide} from '../../../../_components/moscow-distri
 import {MoscowDistrictIndividualDossier} from '../../../../_components/moscow-district-individual-dossier';
 import {moscowDistrictIndividual} from '../../../../lib/moscow-district-individual';
 import {moscowDistrictReviewedContact} from '../../../../lib/moscow-district-reviewed-contacts';
-import {mgsSeoRobots} from '../../../../lib/moscow-city-seo';
+import {mgsSeoRobots,moscowDistrictSeoRobots} from '../../../../lib/moscow-city-seo';
 import {notFound,permanentRedirect} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
@@ -32,7 +32,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   title:court.name+' — адрес, подсудность, судьи, контакты и дела',
   description:court.name+': опубликованные контакты, руководство, график и адрес; подсудность по дому, поиск дел, госпошлина, подача и обжалование.',
   alternates:{canonical:MoscowOfficialCourtHref(court)},
-  robots:{index:false,follow:true}
+  robots:moscowDistrictSeoRobots()
  };
 }
 export default async function MoscowOfficialRegistryDetail({params}:Props){
