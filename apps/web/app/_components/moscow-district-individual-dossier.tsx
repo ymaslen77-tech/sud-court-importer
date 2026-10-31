@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
-import {moscowJudgeRoster,moscowCourtCaseExamples} from '../lib/moscow-district-source-evidence';
+import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits} from '../lib/moscow-district-source-evidence';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -11,6 +11,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
  const official=moscowDistrictOfficialPages(profile);
  const publishedRoster=moscowJudgeRoster(profile.slug);
  const docket=moscowCourtCaseExamples(profile.slug);
+ const judgeVisits=moscowCourtJudgeVisits(profile.slug);
  const judgesLink=official.overview+'/structure/judges';
  const emailConflict=Boolean(profile.emailAsPublished&&
   profile.emailAsPublished.toLowerCase()!==court.email.toLowerCase());
@@ -72,6 +73,17 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    <p className="court-source">Ссылки направляют на страницы выбранного суда, а не на случайные источники.
     Мы не подменяем официальный реестр решений и не создаём фиктивные примеры судебных актов.</p>
   </section>
+  {judgeVisits?<section className="court-section" id="district-judge-visit-addresses">
+   <span className="eyebrow">Существенно · временные адреса заседаний</span>
+   <h2>Где проходит заседание конкретного судьи</h2>
+   <p>По официальному сообщению суда от {judgeVisits.announcementDate} разные гражданские дела принимаются в разных зданиях. Это адреса рассмотрения дел, а не территориальные границы подсудности. Перед поездкой сверяйте место с извещением по вашему делу.</p>
+   <ul>{judgeVisits.judgeVisits.map(item=><li key={item.judge}>
+    <strong>{item.judge}:</strong> {item.address} — {item.scope}.
+   </li>)}</ul>
+   <p>{judgeVisits.otherMatters}</p>
+   <p><strong>Адрес для почтовой корреспонденции:</strong> {judgeVisits.postalAddress}.</p>
+   <a className="text-link" href={judgeVisits.sourceUrl} target="_blank" rel="noopener noreferrer">Официальное сообщение суда о временных адресах ↗</a>
+  </section>:null}
   <section className="court-section" id="district-judicial-roster">
    <span className="eyebrow">Судейский корпус · источник и дата</span>
    <h2>Судьи {court.name}: официально опубликованный список</h2>
