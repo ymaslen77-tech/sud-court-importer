@@ -62,7 +62,7 @@ class MoscowCompleteDirectoryTests(unittest.TestCase):
   self.assertIn("Сведения о судьях, делах и адресных границах",GUIDE)
   self.assertIn("moscowDistrictTopicHref(court.slug,id)",GUIDE)
   self.assertIn("неподтверждённые номера дел",GUIDE)
-  self.assertIn("robots:{index:false,follow:true}",DETAIL)
+  self.assertIn("robots:moscowDistrictSeoRobots()",DETAIL)
   self.assertIn("Московский городской суд",MOSCOW)
 
  def test_first_five_individual_court_contacts_have_primary_sources(self):
