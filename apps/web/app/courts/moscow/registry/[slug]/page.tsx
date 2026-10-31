@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {MoscowCityCourtDossier} from '../../../../_components/moscow-city-court-dossier';
+import {mgsSeoRobots} from '../../../../lib/moscow-city-seo';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
@@ -16,6 +17,13 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {slug}=await params;
  const court=getMoscowOfficialMinimumCourt(slug);
  if(!court)return {title:'Суд не найден',robots:{index:false,follow:false}};
+ if(slug==='moscow-city-court'){
+  const title='Московский городской суд — подсудность, дела, адрес и контакты';
+  const description='Московский городской суд: адрес и часы работы, проверка подсудности по адресу, поиск дел, апелляции, госпошлина и правила подачи документов.';
+  const url='/courts/moscow/registry/moscow-city-court';
+  return {title,description,alternates:{canonical:url},robots:mgsSeoRobots(),
+   openGraph:{type:'article',title,description,url,locale:'ru_RU',siteName:'Суды России'}};
+ }
  return {
   title:court.name+' — адрес, часы работы и контакты, Москва',
   description:court.name+': '+court.address+'. Расписание и контакты из официального каталога московских судов.',
