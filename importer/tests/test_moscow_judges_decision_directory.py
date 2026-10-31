@@ -8,6 +8,8 @@ ROSTERS=data('moscow-district-judges-samples.json')
 LEGACY=data('moscow-legacy-judge-rosters.json')
 ADDITIONAL=data('moscow-additional-judge-rosters.json')
 CHAIRS=data('moscow-judicial-chair-listings.json')
+APPOINTMENTS=data('moscow-confirmed-appointment-additions.json')
+EVENTS=data('moscow-judicial-appointment-events.json')
 BRIEFS=data('moscow-judicial-source-briefs.json')
 CASES=data('moscow-judge-case-evidence.json')
 MINIMUM=data('moscow-official-minimum-registry.json')
@@ -20,12 +22,18 @@ MOSCOW=(APP/'courts/moscow/page.tsx').read_text(encoding='utf-8')
 RESEARCH=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
 def norm(name):return re.sub(r'\s+',' ',name.replace('ё','е').lower()).strip()
 class JudgeEvidenceAcceptance(unittest.TestCase):
- def test_391_unique_published_names_with_court_identity(self):
+ def test_418_unique_published_names_with_court_identity(self):
   people=[(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]
   people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
   people += [(r['slug'],r['name']) for r in CHAIRS]
-  self.assertEqual(len(people),391)
-  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),391)
+  new_names=[(r['courtSlug'],r['name']) for r in APPOINTMENTS]
+  new_names += [(r['courtSlug'],r['name']) for r in EVENTS if r['eventType']=='appointed_chair']
+  previous={(slug,norm(n)) for slug,n in people}
+  people += [(slug,n) for slug,n in new_names if (slug,norm(n)) not in previous]
+  self.assertEqual(len(people),418)
+  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),418)
+  self.assertEqual(len(APPOINTMENTS),23)
+  self.assertEqual(len(EVENTS),8)
   self.assertEqual(len({r['slug'] for r in ROSTERS}),20)
   self.assertEqual(len({r['slug'] for r in LEGACY}),3)
   self.assertEqual(len({r['slug'] for r in ADDITIONAL}),4)
@@ -42,6 +50,8 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertIn('legacyRosters.records',LIB)
   self.assertIn('additionalRosters.records',LIB)
   self.assertIn('chairListings.records',LIB)
+  self.assertIn('appointmentAdds.records',LIB)
+  self.assertIn('MOSCOW_RECENT_CHAIR_APPOINTMENTS',LIB)
   self.assertEqual(len({r['slug'] for r in CHAIRS}),5)
   self.assertEqual(len({r['slug'] for r in ROSTERS+LEGACY+ADDITIONAL+CHAIRS}|{r['slug'] for r in BRIEFS}),35)
   self.assertIn('judge.courtVisitNotice',PERSON)
