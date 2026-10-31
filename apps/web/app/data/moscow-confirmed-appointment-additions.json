@@ -144,6 +144,69 @@
       "sourceUrl": "https://mos-gorsud.ru/mgs/news/7ec87b23-ca39-4c78-b5ae-6babb1c73a19",
       "observedOn": "2026-11-01",
       "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "golovinskiy",
+      "name": "Сидорова Виктория Ивановна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "izmaylovskiy",
+      "name": "Данилов Евгений Александрович",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "izmaylovskiy",
+      "name": "Кокая Лела Зурабиевна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "savelovskiy",
+      "name": "Черкасова Татьяна Сергеевна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "simonovskiy",
+      "name": "Власова Светлана Сергеевна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "tverskoy",
+      "name": "Мозгова Наталья Дмитриевна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "timiryazevskiy",
+      "name": "Кудрявцев Алексей Владимирович",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
     }
   ]
 }
