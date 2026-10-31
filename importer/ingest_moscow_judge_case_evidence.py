@@ -32,6 +32,8 @@ FIELDS={
  "judgeAttribution","observedOn","note"
 }
 SOURCE_TAG="judge_and_number_in_same_official_row"
+INITIALS_TAG="initials_resolved_to_unique_official_roster_name"
+OPTIONAL_FIELDS={"sourceJudgeLabel"}
 
 def norm(value):
  return re.sub(r"\s+"," ",value.lower().replace("ё","е")).strip()
@@ -66,7 +68,7 @@ def judge_sources():
 def validate_record(row, judges, require_review=False):
  if not isinstance(row,dict):
   raise ValueError("A case entry must be a JSON object")
- extra=set(row)-(FIELDS|{"editorialVerified"})
+ extra=set(row)-(FIELDS|OPTIONAL_FIELDS|{"editorialVerified"})
  missing=FIELDS-set(row)
  if extra or missing:
   raise ValueError(f"Missing fields {sorted(missing)} or unexpected fields {sorted(extra)}")
@@ -83,8 +85,24 @@ def validate_record(row, judges, require_review=False):
   raise ValueError("Unknown case proceeding kind")
  if row["status"] not in ALLOWED_STATUSES:
   raise ValueError("Unknown decision status")
- if row["evidenceLevel"]!="official_case_list" or row["judgeAttribution"]!=SOURCE_TAG:
+ if row["evidenceLevel"]!="official_case_list" or row["judgeAttribution"] not in (SOURCE_TAG,INITIALS_TAG):
   raise ValueError("Only documented official judge+case-list attributions are accepted")
+ if row["judgeAttribution"]==INITIALS_TAG:
+  source_label=row.get("sourceJudgeLabel")
+  tokens=row["judgeName"].split()
+  if len(tokens)!=3 or not isinstance(source_label,str):
+   raise ValueError("Official initials must be supplied and the full judge name must have three parts")
+  expected=tokens[0]+tokens[1][0]+tokens[2][0]
+  strip=lambda x:re.sub(r"[^a-zа-яё]","",norm(x))
+  if strip(source_label)!=strip(expected):
+   raise ValueError("Official judge initials do not match the attributed full name")
+  matches=[name for (court,name) in judges if court==row["courtSlug"]
+           and strip(source_label)==strip(name.split()[0]+name.split()[1][0]+name.split()[2][0])
+           if len(name.split())==3]
+  if len(matches)!=1:
+   raise ValueError("Judge initials are not unique within the court; manual verification required")
+ elif row.get("sourceJudgeLabel"):
+  raise ValueError("A judge row with full name must not be labelled as initials-only attribution")
  if row["judicialActTextVerified"] is not False:
   raise ValueError("Full text verification requires a separate document review flow")
  if not isinstance(row["observedOn"],str) or not DATE.fullmatch(row["observedOn"]):
@@ -136,7 +154,7 @@ def main(argv=None):
    # Do not overwrite a published decision based on a later source without review.
    raise ValueError(f"Existing court+case must be reconciled manually: {key}")
   keys.add(key)
-  added.append({k:row[k] for k in FIELDS})
+  added.append({k:row[k] for k in FIELDS|OPTIONAL_FIELDS if k in row})
  if args.append:
   if not args.staged:parser.error("--append requires --staged")
   payload=json.loads(EVIDENCE.read_text(encoding="utf-8"))
