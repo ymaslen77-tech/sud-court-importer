@@ -63,6 +63,18 @@ def judge_sources():
    source=urlsplit(person["sourceUrl"]).path
    official=source.split("/rs/")[1].split("/")[0]
    names[key]=official
+ court_slugs={}
+ for (court,name),official in names.items():
+  court_slugs[court]=official
+ for row in read_records(DATA/"moscow-confirmed-appointment-additions.json"):
+  key=(row["courtSlug"],norm(row["name"]))
+  if key not in names:
+   names[key]=court_slugs[row["courtSlug"]]
+ for row in read_records(DATA/"moscow-judicial-appointment-events.json"):
+  if row["eventType"]!="appointed_chair":continue
+  key=(row["courtSlug"],norm(row["name"]))
+  if key not in names:
+   names[key]=court_slugs[row["courtSlug"]]
  return names
 
 def validate_record(row, judges, require_review=False):
