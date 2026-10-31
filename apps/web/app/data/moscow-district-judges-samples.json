@@ -120,6 +120,38 @@
       "sourceUrl": "https://mos-gorsud.ru/rs/cheremushkinskij/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
+    },
+    {
+      "slug": "nagatinskiy",
+      "officialSlug": "nagatinskij",
+      "sourceLastUpdated": "2026-07-17",
+      "judges": [
+        "Расторгуева Наталья Сергеевна",
+        "Авдеева Наталья Кузьминична",
+        "Акопян Гаяне Жораевна",
+        "Борисенкова Наталья Владимировна",
+        "Калашникова Мария Валерьевна",
+        "Карачарова Татьяна Анатольевна",
+        "Колмакова Марина Александровна",
+        "Никулина Юлия Александровна",
+        "Пинина Ольга Владимировна",
+        "Рощин Олег Леонидович",
+        "Соколова Евгения Михайловна",
+        "Сухинина Юлия Николаевна",
+        "Тренихина Елена Михайловна",
+        "Тимирьянов Максим Степанович",
+        "Филатов Антон Юрьевич",
+        "Шамова Анна Ивановна"
+      ],
+      "appointmentNotes": [
+        {
+          "name": "Рощин Олег Леонидович",
+          "decree": "Указ Президента РФ № 711 от 31.05.2004"
+        }
+      ],
+      "sourceUrl": "https://mos-gorsud.ru/rs/nagatinskij/structure/judges",
+      "observedOn": "2026-10-31",
+      "status": "published_roster_not_live_certification"
     }
   ]
 }
