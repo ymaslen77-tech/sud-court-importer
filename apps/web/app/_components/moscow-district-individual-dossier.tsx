@@ -13,7 +13,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
  const docket=moscowCourtCaseExamples(profile.slug);
  const judgeVisits=moscowCourtJudgeVisits(profile.slug);
  const outcome=moscowVerifiedOutcome(profile.slug);
- const judgesLink=official.overview+'/structure/judges';
+ const judgesLink=official.overview+'/info/structure/judges';
  const emailConflict=Boolean(profile.emailAsPublished&&
   profile.emailAsPublished.toLowerCase()!==court.email.toLowerCase());
  const needsArrivalCheck=Boolean(court.visitor_locations?.length);
@@ -89,8 +89,8 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    <span className="eyebrow">Судейский корпус · источник и дата</span>
    <h2>Судьи {court.name}: официально опубликованный список</h2>
    {publishedRoster?<>
-    <p>На странице суда опубликованы {publishedRoster.judges.length} фамилий. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated}.
-     Этот перечень не является удостоверением актуального кадрового состава на сегодняшний день.
+    <p>В нашу локальную подборку внесены {publishedRoster.judges.length} ФИО из опубликованной страницы суда. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated}.
+     Не следует считать подборку обязательно полной или удостоверением действующего кадрового состава на сегодняшний день.
      Для назначения и полномочий конкретного судьи сверяйте указ Президента РФ и свежие сообщения суда.</p>
     <ul>{publishedRoster.judges.map(name=><li key={name}>
      <strong>{name}</strong>
@@ -99,7 +99,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
     </li>)}</ul>
     <p><a href={publishedRoster.sourceUrl} className="text-link" target="_blank" rel="noopener noreferrer">Проверить список судей и назначения на сайте суда ↗</a></p>
    </>:<>
-    <p>В этой карточке пока нет локальной копии судейского списка, прошедшей индивидуальную проверку.
+    <p>Для этого суда пока нет локальной подборки судей, прошедшей индивидуальную сверку с официальным списком.
      Откройте официальный раздел суда. Мы не показываем устаревшие или неполные ФИО как актуальный полный состав.</p>
     <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Проверить состав судей в официальном разделе ↗</a></p>
    </>}
