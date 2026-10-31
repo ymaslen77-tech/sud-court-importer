@@ -13,9 +13,9 @@ GUIDE=(APP/"_components/moscow-district-registry-guide.tsx").read_text(encoding=
 
 class MoscowPublishedEvidenceTests(unittest.TestCase):
  def test_judge_rosters_exactly_sourced_and_not_live_certified(self):
-  self.assertEqual({c["slug"] for c in ROSTERS},{"butyrskiy","golovinskiy","dorogomilovskiy","cheryomushkinskiy"})
-  counts={"butyrskiy":18,"golovinskiy":13,"dorogomilovskiy":14,"cheryomushkinskiy":17}
-  self.assertEqual(sum(len(x["judges"]) for x in ROSTERS),62)
+  self.assertEqual({c["slug"] for c in ROSTERS},{"butyrskiy","golovinskiy","dorogomilovskiy","cheryomushkinskiy","nagatinskiy"})
+  counts={"butyrskiy":18,"golovinskiy":13,"dorogomilovskiy":14,"cheryomushkinskiy":17,"nagatinskiy":16}
+  self.assertEqual(sum(len(x["judges"]) for x in ROSTERS),78)
   for court in ROSTERS:
    self.assertEqual(len(court["judges"]),counts[court["slug"]])
    self.assertEqual(len(set(court["judges"])),len(court["judges"]))
