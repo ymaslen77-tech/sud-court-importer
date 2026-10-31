@@ -170,6 +170,57 @@
       "judgeAttribution": "judge_and_number_in_same_official_row",
       "observedOn": "2026-10-31",
       "note": "Назначена беседа; это не вынесенное решение."
+    },
+    {
+      "courtSlug": "dorogomilovskiy",
+      "judgeName": "Миславская Ольга Вячеславовна",
+      "number": "01-0599/2026",
+      "proceeding": "criminal",
+      "topicId": "criminal-prosecution",
+      "category": "Уголовное дело (ст. 158 ч. 2 УК РФ)",
+      "status": "outcome_recorded",
+      "outcome": "Дело прекращено",
+      "decisionDate": "2026-10-28",
+      "sourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij/services/cases/criminal",
+      "note": "Основание прекращения и текст судебного акта не проверялись; нельзя делать вывод о виновности.",
+      "evidenceLevel": "official_case_list",
+      "judicialActTextVerified": false,
+      "judgeAttribution": "judge_and_number_in_same_official_row",
+      "observedOn": "2026-10-31"
+    },
+    {
+      "courtSlug": "dorogomilovskiy",
+      "judgeName": "Миславская Ольга Вячеславовна",
+      "number": "3/6-0404/2026",
+      "proceeding": "criminal-materials",
+      "topicId": "property-seizure",
+      "category": "Наложение ареста на имущество (п. 9 ч. 2 ст. 29 УПК РФ)",
+      "status": "outcome_recorded",
+      "outcome": "Удовлетворено",
+      "decisionDate": "2026-09-29",
+      "sourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij/services/cases/criminal-materials",
+      "note": "Процессуальное решение о мере обеспечения, не приговор.",
+      "evidenceLevel": "official_case_list",
+      "judicialActTextVerified": false,
+      "judgeAttribution": "judge_and_number_in_same_official_row",
+      "observedOn": "2026-10-31"
+    },
+    {
+      "courtSlug": "dorogomilovskiy",
+      "judgeName": "Таланина Галина Николаевна",
+      "number": "3/2-0384/2026",
+      "proceeding": "criminal-materials",
+      "topicId": "detention",
+      "category": "Продление срока содержания под стражей (ст. 109 УПК РФ)",
+      "status": "outcome_recorded",
+      "outcome": "Удовлетворено",
+      "decisionDate": "2026-10-27",
+      "sourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij/services/cases/criminal-materials",
+      "note": "Решение по мере пресечения не устанавливает виновность обвиняемого.",
+      "evidenceLevel": "official_case_list",
+      "judicialActTextVerified": false,
+      "judgeAttribution": "judge_and_number_in_same_official_row",
+      "observedOn": "2026-10-31"
     }
   ]
 }
