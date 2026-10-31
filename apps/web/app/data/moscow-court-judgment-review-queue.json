@@ -7,15 +7,18 @@
       "courtCaseUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/8fe3def1-a42b-11f0-af0c-cdc746449f1e",
       "documentDate": "2026-04-15",
       "publicationStatus": "file_listed_unreviewed",
-      "judgeAttribution": null,
+      "judgeAttribution": "Кузнецова Елена Алексеевна (официальная карточка: Кузнецова Е.А.)",
       "publicTextUrl": null,
       "decisionTextHash": null,
       "extractedLegalNorms": [],
       "reasoningReviewed": false,
       "publicationRestrictionsChecked": false,
       "reviewedOn": null,
-      "note": "В официальной карточке напротив решения присутствует «Скачать файл». Файл ещё не извлечён и не прочитан; судья и мотивы не удостоверены.",
-      "observedOn": "2026-11-01"
+      "note": "В официальной карточке напротив решения присутствует «Скачать файл». Файл ещё не извлечён и не прочитан; судья и мотивы не удостоверены. Судья и результат установлены по карточке, правовая мотивировка и исход апелляции не проверены.",
+      "observedOn": "2026-11-01",
+      "uin": "77RS0018-02-2025-009433-55",
+      "appealComplaintRecordedOn": "2026-06-04",
+      "result": "Отказано в удовлетворении"
     },
     {
       "courtSlug": "nikulinskiy",
@@ -23,15 +26,18 @@
       "courtCaseUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/eeb88361-02f8-11f0-a7f4-b3bf1828314a",
       "documentDate": "2026-05-28",
       "publicationStatus": "file_listed_unreviewed",
-      "judgeAttribution": null,
+      "judgeAttribution": "Кузнецова Елена Алексеевна (официальная карточка: Кузнецова Е.А.)",
       "publicTextUrl": null,
       "decisionTextHash": null,
       "extractedLegalNorms": [],
       "reasoningReviewed": false,
       "publicationRestrictionsChecked": false,
       "reviewedOn": null,
-      "note": "В официальной карточке имеется метка «Скачать файл». Требуется индивидуальная проверка подлинного акта и публикационных ограничений.",
-      "observedOn": "2026-11-01"
+      "note": "В официальной карточке имеется метка «Скачать файл». Требуется индивидуальная проверка подлинного акта и публикационных ограничений. Судья и результат установлены по карточке, правовая мотивировка и исход апелляции не проверены.",
+      "observedOn": "2026-11-01",
+      "uin": "77RS0018-02-2025-003155-71",
+      "appealComplaintRecordedOn": "2026-07-21",
+      "result": "Отказано в удовлетворении"
     },
     {
       "courtSlug": "nikulinskiy",
