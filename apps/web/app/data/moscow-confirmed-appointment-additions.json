@@ -1,0 +1,149 @@
+{
+  "description": "Отдельные официальные назначения судей пяти районных судов, где опубликованный полный перечень не получен. Сведения не считаются полным или автоматически актуальным кадровым составом.",
+  "records": [
+    {
+      "courtSlug": "zamoskvoretskiy",
+      "name": "Бабаянц Элина Артуровна",
+      "appointedOn": "2025-12-29",
+      "decreeNumber": "992",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/18dd9178-d48c-41a3-8bba-80c95bc425fe",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "zamoskvoretskiy",
+      "name": "Пугачева Елена Анатольевна",
+      "appointedOn": "2026-02-16",
+      "decreeNumber": "93",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/49e00c5c-24c7-4816-bbe4-6ff010174b14",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "kuzminskiy",
+      "name": "Русецкая Яна Викторовна",
+      "appointedOn": "2026-06-09",
+      "decreeNumber": "405",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/268a48e1-da49-468c-ae35-988e13febb6b",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "kuzminskiy",
+      "name": "Белова Екатерина Валерьевна",
+      "appointedOn": "2026-07-27",
+      "decreeNumber": "514",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/719f1798-1b6b-4cc9-adef-449fc78f9470",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "name": "Шепелева Наталья Евгеньевна",
+      "appointedOn": "2023-11-08",
+      "decreeNumber": "829",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/meshchanskij/news/v-meshhanskij-rajonnyj-sud-goroda-moskvy-naznacheny-predsedatel-i-novye-sudi",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "name": "Васильев Виктор Александрович",
+      "appointedOn": "2023-12-08",
+      "decreeNumber": "937",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/meshchanskij/news/v-meshhanskij-rajonnyj-sud-goroda-moskvy-naznacheny-predsedatel-i-novye-sudi",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "name": "Боярникова Елена Владимировна",
+      "appointedOn": "2025-03-18",
+      "decreeNumber": "153",
+      "sourceUrl": "https://mos-gorsud.ru/rs/meshchanskij/news/c94de848-3a04-4a58-9902-fab67e672933",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "name": "Терехова Александра Николаевна",
+      "appointedOn": "2025-11-14",
+      "decreeNumber": "840",
+      "sourceUrl": "https://mos-gorsud.ru/rs/meshchanskij/news/a7798e84-1eb9-4216-9638-46d602dee11c",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "name": "Бастрон Ирина Александровна",
+      "appointedOn": "2025-12-08",
+      "decreeNumber": "904",
+      "sourceUrl": "https://mos-gorsud.ru/rs/meshchanskij/news/78e2f038-1a0d-4756-9d75-a743e4ea88e2",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "khamovnicheskiy",
+      "name": "Желязкова Ольга Юрьевна",
+      "appointedOn": "2023-12-08",
+      "decreeNumber": "937",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/4785ca6f-52ce-46d8-9905-43ced0892ab5",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "khamovnicheskiy",
+      "name": "Лапина Ольга Сергеевна",
+      "appointedOn": "2022-07-14",
+      "decreeNumber": "450",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/7ec87b23-ca39-4c78-b5ae-6babb1c73a19",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "khamovnicheskiy",
+      "name": "Ермольева Татьяна Александровна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Еремина Мария Сергеевна",
+      "appointedOn": "2025-03-18",
+      "decreeNumber": "153",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij/news/v-shherbinskom-rajonnom-sude-goroda-moskvy-naznachen-sudya",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Абрамкина Алла Олеговна",
+      "appointedOn": "2026-04-09",
+      "decreeNumber": "237",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/c085edea-4436-4cf2-87e6-8ca5c8f56149",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Будигина Наталья Геннадьевна",
+      "appointedOn": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Тришин Даниил Владимирович",
+      "appointedOn": "2022-07-14",
+      "decreeNumber": "450",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/7ec87b23-ca39-4c78-b5ae-6babb1c73a19",
+      "observedOn": "2026-11-01",
+      "kind": "official_appointment_not_current_roster"
+    }
+  ]
+}
