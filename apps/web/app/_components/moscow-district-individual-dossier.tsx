@@ -3,6 +3,7 @@ import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowCourtJudgeVisits,moscowVerifiedOutcome} from '../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../lib/moscow-judicial-source-briefs';
 import {moscowJudgeCareerEvidence} from '../lib/moscow-judge-career-evidence';
+import {moscowJudgeSlug} from '../lib/moscow-judge-directory';
 import {
  type MoscowDistrictIndividual,moscowDistrictOfficialPages
 } from '../lib/moscow-district-individual';
@@ -97,10 +98,11 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
      Не следует считать подборку обязательно полной или удостоверением действующего кадрового состава на сегодняшний день.
      Для назначения и полномочий конкретного судьи сверяйте указ Президента РФ и свежие сообщения суда.</p>
     <ul>{publishedRoster.judges.map(name=><li key={name}>
-     <strong>{name}</strong>
+     <Link href={'/courts/moscow/judges/'+court.slug+'/'+moscowJudgeSlug(name)}>{name} →</Link>
      {publishedRoster.appointmentNotes.find(p=>p.name===name)?.decree?
        <span> — {publishedRoster.appointmentNotes.find(p=>p.name===name)?.decree}</span>:null}
     </li>)}</ul>
+    <p><Link href="/courts/moscow/judges" className="text-link">Выбрать судью и посмотреть конкретные дела →</Link></p>
     <p><a href={publishedRoster.sourceUrl} className="text-link" target="_blank" rel="noopener noreferrer">Проверить список судей и назначения на сайте суда ↗</a></p>
    </>:<>
     <p>Для этого суда пока нет локальной подборки судей, прошедшей индивидуальную сверку с официальным списком.
@@ -123,7 +125,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    <h2>{sourceBrief.sourceType==='official_appointment_notices'?'Официальные сообщения о назначении судей':'Судьи, упомянутые в официальном перечне помощников'}</h2>
    <p>{sourceBrief.note}</p>
    <ul>{sourceBrief.people.map((item)=><li key={item.name}>
-    <strong>{item.name}</strong> — {item.basis}.
+    <Link href={'/courts/moscow/judges/'+court.slug+'/'+moscowJudgeSlug(item.name)}>{item.name} →</Link> — {item.basis}.
     <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer"> Проверить источник ↗</a>
    </li>)}</ul>
    <p className="court-source">Проверено по официальным публикациям {sourceBrief.recordDate}. Сведения требуют сопоставления с действующими назначениями.</p>
