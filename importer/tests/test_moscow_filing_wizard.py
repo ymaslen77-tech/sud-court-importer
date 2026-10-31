@@ -31,7 +31,7 @@ class MoscowFilingWizardTests(unittest.TestCase):
   for phrase in ("статьям 131–132 ГПК РФ","статьёй 132 ГПК РФ","КАС РФ",
     "КоАП РФ","УПК РФ","АПК РФ","арбитражному","Вы указали другой суд",
     "Сроки обжалования существенно различаются",
-    "специальных полномочий на подписание","электронную подпись","результат носит справочный"):
+    "специальных полномочий на подписание","электронной подписи","результат носит справочный"):
    self.assertIn(phrase.lower(),WIZARD.lower())
   self.assertIn("https://mos-gorsud.ru/territorial",WIZARD)
   self.assertIn("https://mos-gorsud.ru/lk",WIZARD)
