@@ -34,7 +34,7 @@ class JudicialEvidenceCoverage(unittest.TestCase):
     self.assertIn(appt['name'],row['judges'])
     self.assertIn('Указ Президента РФ',appt['decree'])
   self.assertIn('Не следует считать подборку обязательно полной',UI)
-  self.assertIn('robots:{index:false,follow:true}',DETAIL)
+  self.assertIn('robots:moscowDistrictSeoRobots()',DETAIL)
  def test_non_roster_evidence_has_source_and_label(self):
   for row in BRIEFS:
    self.assertIn(row['sourceType'],('official_appointment_notices','official_judicial_assistant_directory'))
