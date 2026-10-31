@@ -819,3 +819,40 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .moscow-minimum-court-page .court-facts dd{line-height:1.65;overflow-wrap:anywhere}
 .moscow-minimum-court-page .court-facts dd p{margin:0 0 9px}
 @media(max-width:650px){.moscow-registry-summary{grid-template-columns:1fr 1fr}.moscow-registry-summary>div{padding:13px 15px}.moscow-registry-summary>div:last-child{grid-column:span 2}}
+
+
+/* A structured, accessible filing questionnaire rather than static legal steps. */
+.moscow-filing-wizard{border:1px solid var(--line);background:#fff;margin:22px 0 12px;padding:28px 32px}
+.moscow-filing-wizard-head p{margin:10px 0 19px;color:var(--muted);line-height:1.65}
+.moscow-filing-progress{height:5px;background:#ebe9e7;overflow:hidden;margin-bottom:27px}
+.moscow-filing-progress>div{height:100%;background:var(--red);transition:width .2s ease}
+.moscow-filing-step{color:var(--red);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+.moscow-filing-question h3,.moscow-filing-result h3{font-size:clamp(22px,2.2vw,30px);line-height:1.24;margin:0 0 18px}
+.moscow-filing-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:19px}
+.moscow-filing-option{display:flex;align-items:center;gap:14px;width:100%;min-width:0;min-height:88px;border:1px solid #d9dcde;background:#fff;padding:16px 17px;color:var(--ink);text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.moscow-filing-option:hover{border-color:var(--red);background:#fcf7f7}
+.moscow-filing-option:focus-visible,.moscow-filing-controls button:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.moscow-filing-option strong{display:block;font-size:15px;line-height:1.5}
+.moscow-filing-option small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:4px;line-height:1.5}
+.moscow-filing-choice-mark{border:1px solid #d9dcde;display:flex;flex:none;align-items:center;justify-content:center;width:28px;height:28px;font-size:24px;color:var(--red)}
+.moscow-filing-controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.moscow-filing-result-key{border-left:3px solid var(--red);padding:9px 19px;background:#faf8f7;margin:17px 0 24px}
+.moscow-filing-result-key p{margin:7px 0;line-height:1.65}
+.moscow-filing-result h4{margin:25px 0 13px;font-size:20px}
+.moscow-filing-alert{border:1px solid #e5c9c9;background:#fff8f8;padding:17px 20px;margin:20px 0}
+.moscow-filing-alert strong{font-size:15px}
+.moscow-filing-alert ul{padding-left:22px;margin:9px 0 0}
+.moscow-filing-alert li{margin-bottom:7px;line-height:1.6}
+.moscow-filing-result-steps{padding-left:24px;margin:0}
+.moscow-filing-result-steps li{margin:0 0 12px;line-height:1.7;padding-left:7px}
+.moscow-filing-result-steps li::marker{font-weight:800;color:var(--red)}
+.moscow-filing-links{margin:0 0 20px;padding-left:22px}
+.moscow-filing-links li{margin-bottom:8px;line-height:1.6}
+.moscow-filing-links a{color:var(--red);font-weight:750}
+@media(max-width:710px){
+ .moscow-filing-wizard{padding:19px 16px}
+ .moscow-filing-options{grid-template-columns:1fr;gap:10px}
+ .moscow-filing-option{min-height:70px;padding:13px}
+ .moscow-filing-controls .button{flex:1}
+}
+@media(prefers-reduced-motion:reduce){.moscow-filing-progress>div,.moscow-filing-option{transition:none}}
