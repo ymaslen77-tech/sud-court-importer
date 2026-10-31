@@ -175,7 +175,20 @@
         "Ломовицкая Екатерина Александровна",
         "Яшина Наталья Юрьевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Трефилов Сергей Анатольевич",
+          "decree": "Указ Президента РФ № 81 от 03.03.2022"
+        },
+        {
+          "name": "Никульшина Олеся Александровна",
+          "decree": "Указ Президента РФ № 93 от 21.02.2025"
+        },
+        {
+          "name": "Яшина Наталья Юрьевна",
+          "decree": "Указ Президента РФ № 904 от 08.12.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/zelenogradskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -196,7 +209,20 @@
         "Позднякова Елена Викторовна",
         "Никитенко Елена Владимировна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Седышев Андрей Геннадьевич",
+          "decree": "Указ Президента РФ № 135 от 16.03.2015"
+        },
+        {
+          "name": "Степина Екатерина Васильевна",
+          "decree": "Указ Президента РФ № 345 от 18.07.2019"
+        },
+        {
+          "name": "Никитенко Елена Владимировна",
+          "decree": "Указ Президента РФ № 397 от 12.06.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/izmajlovskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -215,7 +241,20 @@
         "Кулик Евгения Андреевна",
         "Иванчикова Анастасия Андреевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Куленёва Елена Юрьевна",
+          "decree": "Указ Президента РФ № 332 от 10.05.2023"
+        },
+        {
+          "name": "Кулик Евгения Андреевна",
+          "decree": "Указ Президента РФ № 904 от 08.12.2025"
+        },
+        {
+          "name": "Иванчикова Анастасия Андреевна",
+          "decree": "Указ Президента РФ № 93 от 16.02.2026"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/koptevskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -240,7 +279,20 @@
         "Ляхова Юлия Александровна",
         "Гуринович Елена Николаевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Журавлева Мария Александровна",
+          "decree": "Указ Президента РФ № 117 от 15.02.2024"
+        },
+        {
+          "name": "Гуринович Елена Николаевна",
+          "decree": "Указ Президента РФ № 315 от 15.05.2025"
+        },
+        {
+          "name": "Ляхова Юлия Александровна",
+          "decree": "Указ Президента РФ № 315 от 15.05.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/kuncevskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -270,7 +322,20 @@
         "Жилова Эльмира Владимировна",
         "Оханова Анна Викторовна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Жилова Эльмира Владимировна",
+          "decree": "Указ Президента РФ № 706 от 06.10.2025"
+        },
+        {
+          "name": "Оханова Анна Викторовна",
+          "decree": "Указ Президента РФ № 904 от 08.12.2025"
+        },
+        {
+          "name": "Акимов Владимир Сергеевич",
+          "decree": "Указ Президента РФ № 614 от 22.07.2024"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/lyublinskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -297,7 +362,20 @@
         "Минкина Екатерина Александровна",
         "Ларина Анастасия Дмитриевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Ларина Анастасия Дмитриевна",
+          "decree": "Указ Президента РФ № 840 от 14.11.2025"
+        },
+        {
+          "name": "Минкина Екатерина Александровна",
+          "decree": "Указ Президента РФ № 565 от 16.08.2025"
+        },
+        {
+          "name": "Конакова Екатерина Михайловна",
+          "decree": "Указ Президента РФ № 1067 от 13.12.2024"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/ostankinskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -319,7 +397,20 @@
         "Вальчук Анна Сергеевна",
         "Мартыщенко Артём Владимирович"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Клипа Евгения Александровна",
+          "decree": "Указ Президента РФ № 98 от 17.02.2023"
+        },
+        {
+          "name": "Мартыщенко Артём Владимирович",
+          "decree": "Указ Президента РФ № 23 от 16.01.2025"
+        },
+        {
+          "name": "Федорова Анна Александровна",
+          "decree": "Указ Президента РФ № 117 от 15.02.2024"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/perovskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -345,7 +436,20 @@
         "Карамышева Ольга Павловна",
         "Мещерякова Надежда Васильевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Дроздова Светлана Александровна",
+          "decree": "Указ Президента РФ № 829 от 08.11.2023"
+        },
+        {
+          "name": "Карамышева Ольга Павловна",
+          "decree": "Указ Президента РФ № 937 от 08.12.2023"
+        },
+        {
+          "name": "Мещерякова Надежда Васильевна",
+          "decree": "Указ Президента РФ № 937 от 08.12.2023"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/savelovskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -375,7 +479,20 @@
         "Захарова Оксана Николаевна",
         "Лычагина Мария Юрьевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Орловцева Елена Юрьевна",
+          "decree": "Указ Президента РФ № 106 от 18.03.2019"
+        },
+        {
+          "name": "Лычагина Мария Юрьевна",
+          "decree": "Указ Президента РФ № 244 от 17.04.2025"
+        },
+        {
+          "name": "Довмалян Лиана Юрьевна",
+          "decree": "Указ Президента РФ № 153 от 18.03.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/simonovskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -394,7 +511,20 @@
         "Соломатина Ольга Александровна",
         "Жалыбина Елена Георгиевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Жалыбина Елена Георгиевна",
+          "decree": "Указ Президента РФ № 565 от 16.08.2025"
+        },
+        {
+          "name": "Соломатина Ольга Александровна",
+          "decree": "Указ Президента РФ № 892 от 07.12.2022"
+        },
+        {
+          "name": "Гуторова Ольга Борисовна",
+          "decree": "Указ Президента РФ № 1067 от 13.12.2024"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/solncevskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -419,7 +549,20 @@
         "Неверова Алина Владимировна",
         "Карпова Евгения Андреевна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Карпова Евгения Андреевна",
+          "decree": "Указ Президента РФ № 93 от 16.02.2026"
+        },
+        {
+          "name": "Неверова Алина Владимировна",
+          "decree": "Указ Президента РФ № 706 от 06.10.2025"
+        },
+        {
+          "name": "Федченко Елена Васильевна",
+          "decree": "Указ Президента РФ № 153 от 18.03.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/timiryazevskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -448,7 +591,20 @@
         "Волкова Мария Александровна",
         "Марчук Евгений Николаевич"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Туркина Анастасия Геннадьевна",
+          "decree": "Указ Президента РФ № 614 от 23.07.2024"
+        },
+        {
+          "name": "Марчук Евгений Николаевич",
+          "decree": "Указ Президента РФ № 153 от 18.03.2025"
+        },
+        {
+          "name": "Соколовский Максим Брониславович",
+          "decree": "Указ Президента РФ № 332 от 10.05.2023"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/horoshevskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -470,7 +626,20 @@
         "Тихонова Екатерина Викторовна",
         "Лепина Мария Ивановна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Городницкая Елена Александровна",
+          "decree": "Указ Президента РФ № 570 от 05.08.2014"
+        },
+        {
+          "name": "Барабанова Элеонора Романовна",
+          "decree": "Указ Президента РФ № 157 от 13.03.2026"
+        },
+        {
+          "name": "Лепина Мария Ивановна",
+          "decree": "Указ Президента РФ № 904 от 08.12.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/zyuzinskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -498,7 +667,20 @@
         "Дашковская Надежда Владимировна",
         "Белова Анна Эдуардовна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Белова Анна Эдуардовна",
+          "decree": "Указ Президента РФ № 237 от 09.04.2026"
+        },
+        {
+          "name": "Дашковская Надежда Владимировна",
+          "decree": "Указ Президента РФ № 904 от 08.12.2025"
+        },
+        {
+          "name": "Полунадеждина Татьяна Николаевна",
+          "decree": "Указ Президента РФ № 565 от 16.08.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/preobrazhenskij/info/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
@@ -518,7 +700,20 @@
         "Кобитева Анастасия Сергеевна",
         "Свирчевская Вера Борисовна"
       ],
-      "appointmentNotes": [],
+      "appointmentNotes": [
+        {
+          "name": "Ежова Елена Александровна",
+          "decree": "Указ Президента РФ № 688 от 29.08.2013"
+        },
+        {
+          "name": "Свирчевская Вера Борисовна",
+          "decree": "Указ Президента РФ № 93 от 21.02.2025"
+        },
+        {
+          "name": "Кобитева Анастасия Сергеевна",
+          "decree": "Указ Президента РФ № 93 от 21.02.2025"
+        }
+      ],
       "sourceUrl": "https://mos-gorsud.ru/rs/troickij/structure/judges",
       "observedOn": "2026-10-31",
       "status": "published_roster_not_live_certification"
