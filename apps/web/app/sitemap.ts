@@ -1,5 +1,7 @@
 import type {MetadataRoute} from 'next';
 import {pilotPublicCourts} from './lib/pilot-public';
+import {mgsSeoIndexable,MGS_SEO_PATHS,mgsSeoAbsoluteUrl,moscowDistrictSeoIndexable} from './lib/moscow-city-seo';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './lib/moscow-official-minimum';
 export const dynamic='force-dynamic';
 
 export default async function sitemap():Promise<MetadataRoute.Sitemap>{
@@ -14,6 +16,27 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
   // Pilot research cards are publicly sourced with explicit freshness notices,
   // not verified court DB entities. Only the curated first ten are indexable.
   const listed=new Set<string>(result.map(entry=>entry.url));
+  // Publish only the editorially released MGS dossier on a canonical HTTPS production host.
+  if(mgsSeoIndexable()){
+    for(const path of MGS_SEO_PATHS){
+      const url=mgsSeoAbsoluteUrl(path);
+      if(url&&!listed.has(url)){
+        result.push({url,changeFrequency:'monthly',priority:path===MGS_SEO_PATHS[0] ? 0.8 : 0.6});
+        listed.add(url);
+      }
+    }
+  }
+  if(moscowDistrictSeoIndexable()){
+    const paths=['/courts/moscow',...MOSCOW_OFFICIAL_MINIMUM_COURTS
+      .filter(c=>c.kind==='general-district').map(c=>MoscowOfficialCourtHref(c))];
+    for(const path of paths){
+      const url=mgsSeoAbsoluteUrl(path);
+      if(url&&!listed.has(url)){
+        result.push({url,changeFrequency:'monthly',priority:path==='/courts/moscow'?0.8:0.7});
+        listed.add(url);
+      }
+    }
+  }
   for(const pilot of pilotPublicCourts()){
     const path='/courts/region-'+pilot.region_code+'/sud-'+pilot.external_code.toLowerCase();
     const url=new URL(path,site).toString();
