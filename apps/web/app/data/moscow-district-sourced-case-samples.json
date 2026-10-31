@@ -1,0 +1,65 @@
+{
+  "description": "Краткие фактические примеры по официальным реестрам дел. Персональные данные сторон не копируются; итог спора и движение дела на момент просмотра не подтверждены.",
+  "records": [
+    {
+      "slug": "butyrskiy",
+      "officialSlug": "butyrskij",
+      "cases": [
+        {
+          "number": "02-8041/2026",
+          "category": "О взыскании платы за жилое помещение и коммунальные услуги",
+          "sourceStatus": "Назначено судебное заседание (запись в официальном реестре)"
+        }
+      ],
+      "sourceUrl": "https://mos-gorsud.ru/rs/butyrskij/services/cases/civil",
+      "sourceObservedOn": "2026-10-31",
+      "sourceCategory": "civil_first_instance",
+      "finalDecisionConfirmed": false
+    },
+    {
+      "slug": "golovinskiy",
+      "officialSlug": "golovinskij",
+      "cases": [
+        {
+          "number": "02-7224/2026",
+          "category": "Трудовой спор о взыскании заработной платы и иных выплат",
+          "sourceStatus": "Назначена беседа (запись в официальном реестре)"
+        }
+      ],
+      "sourceUrl": "https://mos-gorsud.ru/rs/golovinskij/services/cases/civil",
+      "sourceObservedOn": "2026-10-31",
+      "sourceCategory": "civil_first_instance",
+      "finalDecisionConfirmed": false
+    },
+    {
+      "slug": "dorogomilovskiy",
+      "officialSlug": "dorogomilovskij",
+      "cases": [
+        {
+          "number": "02-6168/2026",
+          "category": "Защита прав потребителей по договорам торговли, услуг и работ",
+          "sourceStatus": "Назначена беседа (запись в официальном реестре)"
+        }
+      ],
+      "sourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij/services/cases/civil",
+      "sourceObservedOn": "2026-10-31",
+      "sourceCategory": "civil_first_instance",
+      "finalDecisionConfirmed": false
+    },
+    {
+      "slug": "cheryomushkinskiy",
+      "officialSlug": "cheremushkinskij",
+      "cases": [
+        {
+          "number": "02-8923/2026",
+          "category": "Защита прав потребителей по договорам торговли, услуг и работ",
+          "sourceStatus": "Назначена беседа (запись в официальном реестре)"
+        }
+      ],
+      "sourceUrl": "https://mos-gorsud.ru/rs/cheremushkinskij/services/cases/civil",
+      "sourceObservedOn": "2026-10-31",
+      "sourceCategory": "civil_first_instance",
+      "finalDecisionConfirmed": false
+    }
+  ]
+}
