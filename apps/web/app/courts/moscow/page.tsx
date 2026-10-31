@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {moscowCourts} from '../../lib/moscow-courts';
+import {moscowDistrictSeoRobots} from '../../lib/moscow-city-seo';
 import {MOSCOW_DISTRICT_INDIVIDUALS} from '../../lib/moscow-district-individual';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref,MOSCOW_DIRECTORY_META} from '../../lib/moscow-official-minimum';
 import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
@@ -8,7 +9,7 @@ import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regio
 export const metadata:Metadata={
  title:'Суды Москвы — городской и 35 районных судов: адреса, часы работы, контакты',
  description:'Справочник районных судов Москвы по официальному порталу: 35 районных судов и Московский городской суд, адреса, общий режим работы, электронная почта и источники.',
- robots:{index:false,follow:true},alternates:{canonical:'/courts/moscow'}
+ robots:moscowDistrictSeoRobots(),alternates:{canonical:'/courts/moscow'}
 };
 export default function MoscowDirectory(){
  const district=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district');
