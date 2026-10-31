@@ -81,6 +81,27 @@ export function MoscowCityCourtDossier({court}:{court:MoscowOfficialMinimumCourt
     <Link className="text-link" href={mgsGuideHref(topic.slug)}>Открыть справочный раздел →</Link>
    </article>)}</div>
   </section>
+  <section className="court-section" id="mgs-faq">
+   <span className="eyebrow">Ответы на частые вопросы</span>
+   <h2>Что нужно знать перед обращением в Московский городской суд</h2>
+   <div className="moscow-faq">
+    <details><summary>Как узнать суд по адресу в Москве?</summary>
+     <p>Введите улицу, дом, корпус и строение в официальном адресном поиске. Он помогает найти районный суд. Для обращения непосредственно в Мосгорсуд дополнительно проверьте инстанцию и категорию дела. <Link href={mgsGuideHref('jurisdiction')}>Подробная инструкция →</Link></p>
+    </details>
+    <details><summary>Какие дела рассматривает Московский городской суд?</summary>
+     <p>Мосгорсуд рассматривает предусмотренные законом дела первой инстанции и апелляционные жалобы по отдельным категориям. Обычный иск не становится подсудным Мосгорсуду только потому, что ответчик находится в Москве. <Link href={mgsGuideHref('competence')}>Проверить компетенцию →</Link></p>
+    </details>
+    <details><summary>Где посмотреть движение дела и дату заседания?</summary>
+     <p>Используйте официальный поиск с указанием номера дела, года, вида производства и инстанции; сведения о заседании сверяйте с судебным извещением. <Link href={mgsGuideHref('cases')}>Как найти дело →</Link></p>
+    </details>
+    <details><summary>Куда подавать апелляционную жалобу?</summary>
+     <p>Путь подачи зависит от вида процесса. Например, в гражданском деле жалоба на решение районного суда, как правило, подаётся через суд, вынесший решение. <Link href={mgsGuideHref('appeals')}>Порядок обжалования →</Link></p>
+    </details>
+    <details><summary>Можно ли направить иск обычным электронным письмом?</summary>
+     <p>Нет, общий адрес e-mail не является установленным каналом процессуальной подачи исков и жалоб. <Link href={mgsGuideHref('filing')}>Допустимые способы подачи →</Link></p>
+    </details>
+   </div>
+  </section>
   <section className="court-section" id="mgs-sources">
    <span className="eyebrow">Прямой доступ к первоисточникам</span>
    <h2>Официальные сведения</h2>
