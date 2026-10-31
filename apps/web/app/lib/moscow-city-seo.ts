@@ -20,6 +20,15 @@ function canonicalPublicSite():URL|null{
 export function mgsSeoIndexable(){
  return process.env.SEO_MOSCOW_CITY_COURT_INDEXABLE==='true' && canonicalPublicSite()!==null;
 }
+/** Separate, explicit production SEO release for researched Moscow district hubs.
+ * The 184 supporting topic pages remain noindex to avoid repetitive doorway pages.
+ */
+export function moscowDistrictSeoIndexable(){
+ return process.env.SEO_MOSCOW_DISTRICTS_INDEXABLE==='true'&&canonicalPublicSite()!==null;
+}
+export function moscowDistrictSeoRobots(){
+ return moscowDistrictSeoIndexable()?{index:true,follow:true}:{index:false,follow:true};
+}
 export function mgsSeoRobots(){
  return mgsSeoIndexable()?{index:true,follow:true}:{index:false,follow:true};
 }
