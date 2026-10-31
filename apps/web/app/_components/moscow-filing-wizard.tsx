@@ -189,7 +189,7 @@ export function MoscowFilingWizard({courtName,officialUrl,caseSearchUrl}:Props){
    <div style={{width:progress+'%'}}/>
   </div>
   {!completed&&question?<section className="moscow-filing-question" key={question.id} aria-live="polite">
-   <p className="moscow-filing-step">Вопрос {step+1} из {questions.length}</p>
+   <p className="moscow-filing-step">Вопрос {step+1}{answers.goal?' из '+questions.length:''}</p>
    <h3>{question.title}</h3>
    {question.subtitle?<p className="court-source">{question.subtitle}</p>:null}
    <div className="moscow-filing-options">
