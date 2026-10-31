@@ -80,7 +80,7 @@ export default async function MoscowCourtPage({params}:Props){
     <a href="#msk-fees">Госпошлина</a><a href="#msk-appeal">Обжалование</a>
     <a href="#msk-hearings">Заседания и движение дел</a>
     <a href="#msk-archives">Копии решений и архив</a>
-    <a href="#msk-judges">Судьи и аппарат</a><a href="#msk-access">Правила посещения</a>
+    <a href="#msk-judges">Судьи и аппарат</a><Link href="/courts/moscow/judges">Выбрать судью и посмотреть решения →</Link><a href="#msk-access">Правила посещения</a>
     <a href="#msk-faq">FAQ</a><a href="#msk-lead-question">Задать вопрос</a>
     <a href="#msk-lead-callback">Обратный звонок</a><a href="#msk-sources">Источники</a>
    </nav>
@@ -182,6 +182,8 @@ export default async function MoscowCourtPage({params}:Props){
    <p className="court-source">Нельзя автоматически применять один общий срок апелляции ко всем судебным производствам и актам.</p>
   </section>
   <section className="court-section" id="msk-judges">
+   <p><Link href="/courts/moscow/judges" className="text-link">Открыть каталог судей, категорий дел и проверенных решений →</Link></p>
+   <p className="court-source">Для части ранее исследованных судов персональные списки ещё требуют индивидуальной сверки. Общий каталог не заменяет официальный перечень судей.</p>
    <h2>Судьи, руководство и структурные подразделения</h2>
    <p>Председатель суда, заместители, судьи, аппарат, экспедиция, гражданская и уголовная канцелярии выполняют разные функции. Опубликованные ФИО не признаём подтверждением текущих полномочий без проверки назначения, перевода и актуальной редакции.</p>
    <p>Для запросов о судебном деле используйте специализированную канцелярию и номер производства. Пресс-служба и личный приём руководства не заменяют процессуальные жалобы.</p>
