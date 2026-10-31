@@ -24,6 +24,7 @@ class JudicialEvidenceCoverage(unittest.TestCase):
  def test_court_rosters_not_falsely_marked_current_or_full(self):
   names=sum(len(x['judges']) for x in ROSTERS)
   self.assertEqual(names,283)
+  self.assertGreaterEqual(sum(len(x['appointmentNotes']) for x in ROSTERS),45)
   for row in ROSTERS:
    self.assertEqual(len(set(row['judges'])),len(row['judges']))
    self.assertEqual(row['status'],'published_roster_not_live_certification')
