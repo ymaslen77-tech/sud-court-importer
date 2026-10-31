@@ -65,8 +65,8 @@ class MoscowDossierTests(unittest.TestCase):
         sitemap=(APP/'sitemap.ts').read_text(encoding='utf-8')
         for key in ('msk-jurisdiction','msk-case-kinds','msk-cases','msk-appeal','msk-faq','msk-sources'):
             self.assertIn(key,detail)
-        self.assertIn('robots:{index:false,follow:true}',detail)
-        self.assertIn('robots:{index:false,follow:true}',listing)
+        self.assertIn('robots:moscowDistrictSeoRobots()',detail)
+        self.assertIn('robots:moscowDistrictSeoRobots()',listing)
         self.assertIn('moscowCourts()',listing)
         self.assertIn('href="/courts/moscow"',index)
         self.assertNotIn('moscowCourts',sitemap)
