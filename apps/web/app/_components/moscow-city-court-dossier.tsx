@@ -3,14 +3,17 @@ import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 import {
  MGS_BASE,MGS_GUIDE_TOPICS,MGS_OFFICIAL,mgsGuideHref
 } from '../lib/moscow-city-court-guide';
+import {mgsSeoStructuredData} from '../lib/moscow-city-seo';
 
 export function MoscowCityCourtDossier({court}:{court:MoscowOfficialMinimumCourt}){
+ const structured=mgsSeoStructuredData('Московский городской суд — подсудность, дела, адрес и контакты','Московский городской суд: адрес, контакты, подсудность, поиск дел, подача документов и апелляции.',MGS_BASE);
  const firstSteps=[
   {slug:'jurisdiction',number:'01',name:'Проверьте адрес',desc:'Установите районный суд по полному адресу в официальном сервисе.'},
   {slug:'competence',number:'02',name:'Определите инстанцию',desc:'Проверьте, относится ли дело к компетенции Мосгорсуда, а не районного или другого суда.'},
   {slug:'filing',number:'03',name:'Подготовьте обращение',desc:'Выберите правильный процессуальный способ подачи и проверьте необходимые приложения.'}
  ];
  return <article className="moscow-minimum-court-page">
+  {structured?<script type="application/ld+json" dangerouslySetInnerHTML={{__html:structured}}/>:null}
   <nav className="breadcrumb" aria-label="Навигация">
    <Link href="/">Главная</Link><span>/</span>
    <Link href="/courts">Суды России</Link><span>/</span>
