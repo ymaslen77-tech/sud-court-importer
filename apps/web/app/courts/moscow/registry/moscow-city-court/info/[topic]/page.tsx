@@ -22,6 +22,8 @@ export default async function MgsTopicPage({params}:Props){
  const {topic:slug}=await params;
  const topic=mgsGuideTopic(slug);
  if(!topic)notFound();
+ const nextStep=slug==='jurisdiction'?'competence':slug==='competence'?'filing':null;
+ const nextTopic=nextStep?mgsGuideTopic(nextStep):null;
  return <article className="moscow-minimum-court-page">
   <nav className="breadcrumb" aria-label="Навигация">
    <Link href="/">Главная</Link><span>/</span>
@@ -55,6 +57,12 @@ export default async function MgsTopicPage({params}:Props){
    <p>В официальном поиске начните вводить улицу, выберите её из подсказок, укажите дом и при наличии корпус и строение. В результате определите районный суд. Проверка по адресу не устанавливает автоматически подсудность дела Московскому городскому суду: для этого учитывайте категорию дела и инстанцию.</p>
    <p><a className="button button-red" href="https://mos-gorsud.ru/territorial" target="_blank" rel="noopener noreferrer">Открыть официальный сервис подсудности ↗</a></p>
    <p className="court-source">Не вводите ФИО, квартиру и иные лишние персональные данные.</p>
+  </section>:null}
+  {nextTopic?<section className="court-section" id="mgs-next-step">
+   <span className="eyebrow">Маршрут · следующий шаг</span>
+   <h2>{nextTopic.shortTitle}</h2>
+   <p>{nextTopic.lead}</p>
+   <Link className="button button-red" href={mgsGuideHref(nextTopic.slug)}>Перейти к следующему этапу →</Link>
   </section>:null}
   <section className="court-section" id="mgs-topic-related">
    <span className="eyebrow">Внутренняя навигация</span><h2>Следующие полезные разделы</h2>
