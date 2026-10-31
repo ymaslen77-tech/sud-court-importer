@@ -5,7 +5,7 @@ import {MoscowDistrictIndividualDossier} from '../../../../_components/moscow-di
 import {moscowDistrictIndividual} from '../../../../lib/moscow-district-individual';
 import {moscowDistrictReviewedContact} from '../../../../lib/moscow-district-reviewed-contacts';
 import {mgsSeoRobots} from '../../../../lib/moscow-city-seo';
-import {notFound} from 'next/navigation';
+import {notFound,permanentRedirect} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
  MOSCOW_OFFICIAL_MINIMUM_COURTS,getMoscowOfficialMinimumCourt,
@@ -31,7 +31,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  return {
   title:court.name+' — адрес, подсудность, судьи, контакты и дела',
   description:court.name+': опубликованные контакты, руководство, график и адрес; подсудность по дому, поиск дел, госпошлина, подача и обжалование.',
-  alternates:{canonical:'/courts/moscow/registry/'+court.slug},
+  alternates:{canonical:MoscowOfficialCourtHref(court)},
   robots:{index:false,follow:true}
  };
 }
@@ -41,6 +41,8 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
  if(!court)notFound();
  if(slug==='moscow-city-court')return <MoscowCityCourtDossier court={court}/>;
  const detailed=MoscowOfficialCourtHref(court);
+ // Twelve pre-existing researched dossiers are the canonical URLs; registry aliases must not create duplicates.
+ if(detailed!==('/courts/moscow/registry/'+court.slug))permanentRedirect(detailed);
  const hasRich=detailed!==('/courts/moscow/registry/'+court.slug);
  const reviewedContact=moscowDistrictReviewedContact(slug);
  const individual=moscowDistrictIndividual(slug);
