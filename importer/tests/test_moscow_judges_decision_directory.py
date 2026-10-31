@@ -7,6 +7,7 @@ def data(name):return json.loads((APP/'data'/name).read_text(encoding='utf-8'))[
 ROSTERS=data('moscow-district-judges-samples.json')
 LEGACY=data('moscow-legacy-judge-rosters.json')
 ADDITIONAL=data('moscow-additional-judge-rosters.json')
+CHAIRS=data('moscow-judicial-chair-listings.json')
 BRIEFS=data('moscow-judicial-source-briefs.json')
 CASES=data('moscow-judge-case-evidence.json')
 MINIMUM=data('moscow-official-minimum-registry.json')
@@ -21,9 +22,11 @@ def norm(name):return re.sub(r'\s+',' ',name.replace('ё','е').lower()).strip()
 class JudgeEvidenceAcceptance(unittest.TestCase):
  def test_386_unique_published_names_with_court_identity(self):
   people=[(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]
-  people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
-  self.assertEqual(len(people),386)
-  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),386)
+  people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]+
+      [(r['slug'],r['name']) for r in CHAIRS]
+  people += [(r['slug'],r['name']) for r in CHAIRS]
+  self.assertEqual(len(people),391)
+  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),391)
   self.assertEqual(len({r['slug'] for r in ROSTERS}),20)
   self.assertEqual(len({r['slug'] for r in LEGACY}),3)
   self.assertEqual(len({r['slug'] for r in ADDITIONAL}),4)
@@ -39,6 +42,9 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertIn('official_assistant_reference',LIB)
   self.assertIn('legacyRosters.records',LIB)
   self.assertIn('additionalRosters.records',LIB)
+  self.assertIn('chairListings.records',LIB)
+  self.assertEqual(len({r['slug'] for r in CHAIRS}),5)
+  self.assertEqual(len({r['slug'] for r in ROSTERS+LEGACY+ADDITIONAL+CHAIRS}|{r['slug'] for r in BRIEFS}),35)
   self.assertIn('judge.courtVisitNotice',PERSON)
  def test_officially_attributed_cases_are_not_fabricated_full_judgments(self):
   people={(slug,norm(name)) for slug,name in
