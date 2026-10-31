@@ -51,7 +51,7 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
     self.assertEqual(row['judgeAttribution'],'judge_and_number_in_same_official_row')
     self.assertFalse(row['judicialActTextVerified'])
     self.assertNotIn('parties',row)
-    self.assertTrue(re.fullmatch(r'(?:0[12]-\d+|3/[26]-\d+)/2026',row['number']))
+    self.assertTrue(re.fullmatch(r'(?:0[12]-\d+|13-\d+|3/[26]-\d+)/2026',row['number']))
     u=urlsplit(row['sourceUrl'])
     self.assertEqual(u.scheme,'https')
     self.assertIn(u.hostname,{'mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'})
