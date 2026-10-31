@@ -15,7 +15,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
  const docket=moscowCourtCaseExamples(profile.slug);
  const judgeVisits=moscowCourtJudgeVisits(profile.slug);
  const outcome=moscowVerifiedOutcome(profile.slug);
- const judgesLink=official.overview+'/info/structure/judges';
+ const judgesLink=publishedRoster?.sourceUrl??official.courtStructure;
  const emailConflict=Boolean(profile.emailAsPublished&&
   profile.emailAsPublished.toLowerCase()!==court.email.toLowerCase());
  const needsArrivalCheck=Boolean(court.visitor_locations?.length);
@@ -103,7 +103,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    </>:<>
     <p>Для этого суда пока нет локальной подборки судей, прошедшей индивидуальную сверку с официальным списком.
      Откройте официальный раздел суда. Мы не показываем устаревшие или неполные ФИО как актуальный полный состав.</p>
-    <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Проверить состав судей в официальном разделе ↗</a></p>
+    <p><a href={judgesLink} className="text-link" target="_blank" rel="noopener noreferrer">Открыть официальную структуру суда ↗</a></p>
    </>}
   </section>
   {sourceBrief?<section className="court-section" id="district-judicial-publications">
