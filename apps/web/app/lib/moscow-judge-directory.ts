@@ -2,6 +2,7 @@ import rosterFile from '../data/moscow-district-judges-samples.json';
 import legacyRosters from '../data/moscow-legacy-judge-rosters.json';
 import additionalRosters from '../data/moscow-additional-judge-rosters.json';
 import chairListings from '../data/moscow-judicial-chair-listings.json';
+import appointmentAdds from '../data/moscow-confirmed-appointment-additions.json';
 import briefsFile from '../data/moscow-judicial-source-briefs.json';
 import caseFile from '../data/moscow-judge-case-evidence.json';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-official-minimum';
@@ -81,6 +82,18 @@ for(const r of chairListings.records){
   sourceObservedOn:r.observedOn,sourceUpdatedOn:r.sourceUpdatedOn,
   sourceKind:'official_chair_listing',appointmentBasis:'Председатель суда (как опубликовано на официальной карточке)',
   courtVisitNotice:r.visitNotice});
+}
+for(const r of appointmentAdds.records){
+ const court=byCourt.get(r.courtSlug);
+ if(!court||court.kind!=='general-district')continue;
+ const sameCourt=records.some(p=>p.courtSlug===r.courtSlug&&normalize(p.name)===normalize(r.name));
+ if(sameCourt)continue;
+ records.push({courtSlug:r.courtSlug,courtName:court.name,courtHref:MoscowOfficialCourtHref(court),
+  name:r.name,judgeSlug:moscowJudgeSlug(r.name),sourceUrl:r.sourceUrl,
+  sourceObservedOn:r.observedOn,sourceUpdatedOn:null,
+  sourceKind:'official_appointment_news',
+  appointmentBasis:'Указ Президента РФ № '+r.decreeNumber+' от '+r.appointedOn+'; сведения о назначении, не полный актуальный состав',
+  courtVisitNotice:null});
 }
 export const MOSCOW_JUDGE_PROFILES:ReadonlyArray<MoscowJudgeProfile>=records.sort((a,b)=>
  a.courtName.localeCompare(b.courtName,'ru')||a.name.localeCompare(b.name,'ru'));
