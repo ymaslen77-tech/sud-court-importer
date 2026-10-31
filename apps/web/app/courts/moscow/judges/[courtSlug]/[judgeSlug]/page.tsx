@@ -5,6 +5,7 @@ import {
  MOSCOW_JUDGE_PROFILES,moscowJudgeProfile,moscowJudgeCases,
  moscowJudgeCaseCategories,moscowJudgeSourceLabel,moscowJudgeHref
 } from '../../../../../lib/moscow-judge-directory';
+import {moscowJudgeReviewedDecisions} from '../../../../../lib/moscow-judge-reviewed-decisions';
 
 type Params={params:Promise<{courtSlug:string;judgeSlug:string}>};
 export const dynamicParams=false;
@@ -31,6 +32,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
  const judge=moscowJudgeProfile(courtSlug,judgeSlug);
  if(!judge)notFound();
  const cases=moscowJudgeCases(courtSlug,judge.name);
+ const reviewed=moscowJudgeReviewedDecisions(courtSlug,judge.name);
  const categories=moscowJudgeCaseCategories(cases);
  const outcomes=cases.filter(c=>c.status==='outcome_recorded');
  const otherJudges=MOSCOW_JUDGE_PROFILES.filter(p=>p.courtSlug===courtSlug&&p.judgeSlug!==judgeSlug).slice(0,8);
@@ -83,6 +85,21 @@ export default async function MoscowJudgeProfilePage({params}:Params){
    </div>
    <p><a href="https://mos-gorsud.ru/search" target="_blank" rel="noopener noreferrer">Поиск других дел на официальном портале ↗</a></p>
    <p className="court-source">Доля удовлетворённых требований, процент отмен решений и «вероятность исхода» не рассчитываются: выборка неполна, виды дел различаются. Удовлетворение ходатайства об обыске или аресте не является признанием лица виновным.</p>
+  </section>
+  <section className="court-section" id="judge-reasoned-decisions">
+   <span className="eyebrow">Правовые нормы и мотивы только по полному тексту</span>
+   <h2>Проверенные мотивировочные решения</h2>
+   {reviewed.length?<div className="court-practical-grid">{reviewed.map(r=><article key={r.caseNumber}>
+    <h3>Дело № {r.caseNumber}</h3>
+    <p><strong>Дата акта:</strong> {r.decisionDate}. <strong>Верификация текста:</strong> {r.reviewedOn}.</p>
+    <p>{r.judicialReasoningSummary}</p>
+    <ul>{r.legalNorms.map(n=><li key={n.law+'-'+n.article}>
+     <strong>{n.law}, {n.article}</strong> — {n.reasoning}
+    </li>)}</ul>
+    <p className="court-source">Проверен полный текст официального акта. SHA-256: {r.officialFileSha256}.</p>
+    <p className="court-source">{r.appealStatus==='not_checked'?'Наличие и результат апелляции не проверялись.':'Сведения об апелляции требуют просмотра в карточке дела.'}</p>
+    <a href={r.courtCaseUrl} target="_blank" rel="noopener noreferrer">Официальная карточка судебного акта ↗</a>
+   </article>)}</div>:<p>Пока ни один мотивировочный текст в подборке этого судьи не прошёл полную проверку. Категории и результаты выше взяты из официальных карточек дел, но не являются анализом правовой позиции.</p>}
   </section>
   {otherJudges.length>0?<section className="court-section">
    <h2>Другие опубликованные судьи этого суда</h2>
