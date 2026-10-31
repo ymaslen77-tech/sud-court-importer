@@ -43,6 +43,7 @@ export default async function CourtsDirectory() {
         <h2 id="court-regions-title">Выберите регион России</h2>
         <p>Откройте регион, затем конкретный суд. На его странице показываются доступные адрес, контакты, карта, состав судей и дела — только если эти сведения получены и проверены.</p>
       </div><Link className="text-link" href="/courts/coverage">Наполненность базы →</Link></div>
+      <p className="court-source">Подробная справочная карточка: <Link href="/courts/moscow/registry/moscow-city-court">Московский городской суд — адрес, подсудность, поиск дел и апелляции →</Link></p>
       <div className="region-grid court-region-directory">
         <Link className="region-item" href="/courts/moscow">
           <span><strong>Москва</strong><small>Районные суды · справочные досье</small></span>
