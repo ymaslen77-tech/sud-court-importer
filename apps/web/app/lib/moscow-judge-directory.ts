@@ -33,7 +33,8 @@ export type JudgeCaseEvidence={
  sourceUrl:string;
  evidenceLevel:'official_case_list';
  judicialActTextVerified:false;
- judgeAttribution:'judge_and_number_in_same_official_row';
+ judgeAttribution:'judge_and_number_in_same_official_row'|'initials_resolved_to_unique_official_roster_name';
+ sourceJudgeLabel?:string;
  observedOn:string;
  note:string;
 };
