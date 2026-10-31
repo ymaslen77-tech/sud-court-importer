@@ -22,7 +22,7 @@ class MoscowPublishedEvidenceTests(unittest.TestCase):
   for court in ROSTERS:
    self.assertGreaterEqual(len(court["judges"]),8)
    self.assertEqual(len(set(court["judges"])),len(court["judges"]))
-   self.assertIn(court["sourceUrl"],("https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/structure/judges","https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/info/structure/judges"))
+   self.assertEqual(court["sourceUrl"],"https://mos-gorsud.ru/rs/"+court["officialSlug"]+"/structure/judges")
    self.assertEqual(court["status"],"published_roster_not_live_certification")
    self.assertRegex(court["sourceLastUpdated"],r"^20\d\d-\d\d-\d\d$")
    for appointment in court["appointmentNotes"]:
