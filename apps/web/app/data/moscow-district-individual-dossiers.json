@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "description": "Данные отдельных 23 районных судов из индивидуальных официальных страниц. Публикация на портале не подтверждает действующую доступность телефона и кадровый статус на дату посещения.",
+  "records": [
+    {
+      "slug": "butyrskiy",
+      "officialSlug": "butyrskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/butyrskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/butyrskij/help/hours",
+      "expeditionPhone": "+7 (495) 482-30-00",
+      "chairPublished": "Досаева Глера Сулеймановна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "golovinskiy",
+      "officialSlug": "golovinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/golovinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/golovinskij",
+      "expeditionPhone": "+7 (495) 450-28-14",
+      "chairPublished": "Аверченко Елена Павловна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "dorogomilovskiy",
+      "officialSlug": "dorogomilovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/dorogomilovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij",
+      "expeditionPhone": "+7 (499) 766-18-06",
+      "chairPublished": "Кинашева Юлия Евгеньевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "zelenogradskiy",
+      "officialSlug": "zelenogradskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/zelenogradskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/zelenogradskij",
+      "expeditionPhone": "+7 (499) 530-58-06",
+      "chairPublished": "Трефилов Сергей Анатольевич",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "zyuzinskiy",
+      "officialSlug": "zyuzinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/zyuzinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/zyuzinskij",
+      "expeditionPhone": "+7 (499) 125-39-26",
+      "chairPublished": "Назарова Елена Юрьевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "Части подразделений назначены временные помещения: перед посещением проверять подразделение, зал и извещение."
+      ]
+    },
+    {
+      "slug": "izmaylovskiy",
+      "officialSlug": "izmajlovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/izmajlovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/izmajlovskij",
+      "expeditionPhone": "+7 (499) 267-08-18",
+      "chairPublished": "Хуснетдинова Альбина Мяликовна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "koptevskiy",
+      "officialSlug": "koptevskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/koptevskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/koptevskij",
+      "expeditionPhone": "+7 (499) 530-58-06",
+      "chairPublished": "И. о. Петрова Вера Игоревна",
+      "chairStatus": "acting_as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "В опубликованной карточке суда указан статус и. о. руководителя; он может измениться."
+      ]
+    },
+    {
+      "slug": "kuntsevskiy",
+      "officialSlug": "kuncevskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/kuncevskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/kuncevskij",
+      "expeditionPhone": "+7 (495) 416-62-50",
+      "chairPublished": "Мищенко Ольга Анатольевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "lyublinskiy",
+      "officialSlug": "lyublinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/lyublinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/lyublinskij",
+      "expeditionPhone": "+7 (499) 784-76-40",
+      "chairPublished": "И. о. Приданникова Наталья Владимировна",
+      "chairStatus": "acting_as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "nagatinskiy",
+      "officialSlug": "nagatinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/nagatinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/nagatinskij",
+      "expeditionPhone": "+7 (499) 613-96-94",
+      "chairPublished": "Расторгуева Наталья Сергеевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "ostankinskiy",
+      "officialSlug": "ostankinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/ostankinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/ostankinskij",
+      "expeditionPhone": "+7 (495) 602-43-27",
+      "chairPublished": "И. о. Арзамасцева Анна Николаевна",
+      "chairStatus": "acting_as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "perovskiy",
+      "officialSlug": "perovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/perovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/perovskij",
+      "expeditionPhone": "+7 (499) 748-66-36",
+      "chairPublished": "Александрова Светлана Александровна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "preobrazhenskiy",
+      "officialSlug": "preobrazhenskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/preobrazhenskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/preobrazhenskij",
+      "expeditionPhone": "+7 (499) 748-10-97",
+      "chairPublished": "Звягин Евгений Анатольевич",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "savelovskiy",
+      "officialSlug": "savelovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/savelovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/savelovskij",
+      "expeditionPhone": "+7 (499) 251-86-98",
+      "chairPublished": "Поспелова Елена Васильевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "simonovskiy",
+      "officialSlug": "simonovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/simonovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/simonovskij",
+      "expeditionPhone": "+7 (495) 675-37-99",
+      "chairPublished": null,
+      "chairStatus": "conflicting_sources",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "Официальные копии страниц отражают различный статус руководства; не публикуем ни одно имя как актуальное до кадровой сверки."
+      ]
+    },
+    {
+      "slug": "solntsevskiy",
+      "officialSlug": "solncevskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/solncevskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/solncevskij",
+      "expeditionPhone": "+7 (495) 435-63-62",
+      "chairPublished": "Ушников Максим Петрович",
+      "chairStatus": "as_published",
+      "emailAsPublished": "solncevsky.msk@sudrf.ru",
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "На индивидуальной странице суда опубликован адрес электронной почты solncevsky.msk@sudrf.ru, который отличается от сводного реестра; перед отправкой уточнить официальный адрес."
+      ]
+    },
+    {
+      "slug": "tverskoy",
+      "officialSlug": "tverskoj",
+      "officialUrl": "https://mos-gorsud.ru/rs/tverskoj",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/tverskoj/help/hours",
+      "expeditionPhone": "+7 (495) 694-09-24",
+      "chairPublished": "Комиссаров Евгений Валерьевич",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "timiryazevskiy",
+      "officialSlug": "timiryazevskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/timiryazevskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/timiryazevskij",
+      "expeditionPhone": "+7 (495) 482-16-74",
+      "chairPublished": "Бирюкова Светлана Николаевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "troitskiy",
+      "officialSlug": "troickij",
+      "officialUrl": "https://mos-gorsud.ru/rs/troickij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/troickij",
+      "expeditionPhone": "+7 (495) 850-86-80",
+      "chairPublished": "Голованов Владимир Александрович",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    },
+    {
+      "slug": "tushinskiy",
+      "officialSlug": "tushinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/tushinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/tushinskij",
+      "expeditionPhone": "+7 (495) 490-55-92",
+      "chairPublished": "Гудошникова Елена Александровна",
+      "chairStatus": "as_published",
+      "emailAsPublished": "exp@29.msksud.ru",
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "На индивидуальной странице опубликована почта exp@29.msksud.ru, которая отличается от записи сводного каталога; перед отправкой уточнить."
+      ]
+    },
+    {
+      "slug": "khoroshevskiy",
+      "officialSlug": "horoshevskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/horoshevskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/horoshevskij/help/hours",
+      "expeditionPhone": "+7 (499) 530-08-08",
+      "chairPublished": "Соколовский Максим Брониславович",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "Официальная справочная страница указывает для экспедиции номер общей линии +7 (499) 530-08-08; не следует выдавать его за прямой внутренний номер."
+      ]
+    },
+    {
+      "slug": "cheryomushkinskiy",
+      "officialSlug": "cheremushkinskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/cheremushkinskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/cheremushkinskij/help/hours",
+      "expeditionPhone": null,
+      "chairPublished": "Захарчук Сергей Иванович",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": [
+        "В официальном сообщении отмечен временный переезд в помещение на Севастопольском проспекте, д. 12А; почтовый адрес на ул. Кржижановского отличается от адреса посещения.",
+        "Не публикуем +7 (499) 129-88-08 как телефон экспедиции: в подробной официальной карточке этот номер не отнесён к экспедиции."
+      ]
+    },
+    {
+      "slug": "chertanovskiy",
+      "officialSlug": "chertanovskij",
+      "officialUrl": "https://mos-gorsud.ru/rs/chertanovskij",
+      "contactsSourceUrl": "https://mos-gorsud.ru/rs/chertanovskij",
+      "expeditionPhone": "+7 (499) 610-84-08",
+      "chairPublished": "Шевьёва Наталья Сергеевна",
+      "chairStatus": "as_published",
+      "emailAsPublished": null,
+      "sourceObservedOn": "2026-10-31",
+      "remarks": []
+    }
+  ]
+}
