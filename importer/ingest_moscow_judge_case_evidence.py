@@ -97,8 +97,8 @@ def validate_record(row, judges, require_review=False):
   if strip(source_label)!=strip(expected):
    raise ValueError("Official judge initials do not match the attributed full name")
   matches=[name for (court,name) in judges if court==row["courtSlug"]
-           and strip(source_label)==strip(name.split()[0]+name.split()[1][0]+name.split()[2][0])
-           if len(name.split())==3]
+           and len(name.split())==3
+           and strip(source_label)==strip(name.split()[0]+name.split()[1][0]+name.split()[2][0])]
   if len(matches)!=1:
    raise ValueError("Judge initials are not unique within the court; manual verification required")
  elif row.get("sourceJudgeLabel"):
