@@ -22,8 +22,8 @@ export async function generateMetadata({params}:Params):Promise<Metadata>{
   alternates:{canonical:moscowJudgeHref(judge)}
  };
 }
-const proceedingLabel=(c:'civil'|'criminal'|'criminal-materials')=>
- c==='civil'?'Гражданское судопроизводство (ГПК РФ)':c==='criminal'?
+const proceedingLabel=(c:'civil'|'civil-exec'|'criminal'|'criminal-materials')=>
+ c==='civil'?'Гражданское судопроизводство (ГПК РФ)':c==='civil-exec'?'Гражданское производство — стадия исполнения':c==='criminal'?
  'Уголовное судопроизводство (УПК РФ)':'Уголовные процессуальные материалы (УПК РФ)';
 
 export default async function MoscowJudgeProfilePage({params}:Params){
