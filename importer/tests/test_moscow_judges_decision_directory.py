@@ -80,7 +80,7 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertIn('href="/courts/moscow/judges"',RESEARCH)
   self.assertIn('href="/courts/moscow/judges"',MOSCOW)
  def test_no_faked_statistics_or_outcome_inference(self):
-  for key in ('Это не общее количество дел судьи','неполная выборка','полные тексты'):
+  for key in ('Это не общее количество дел судьи','неполная выборка','полный текст'):
    self.assertIn(key.lower(),(SELECTOR+PERSON).lower())
   self.assertNotIn('fetch(',SELECTOR)
   self.assertNotIn('navigator.geolocation',SELECTOR)
