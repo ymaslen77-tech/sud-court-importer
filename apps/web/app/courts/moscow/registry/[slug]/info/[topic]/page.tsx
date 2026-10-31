@@ -7,6 +7,7 @@ import {MOSCOW_DISTRICT_TOPICS,moscowDistrictTopic,moscowDistrictTopicNext,mosco
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowVerifiedOutcome} from '../../../../../../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../../../../../../lib/moscow-judicial-source-briefs';
 import {MoscowDistrictAddressLookup} from '../../../../../../_components/moscow-district-address-lookup';
+import {MoscowFilingWizard} from '../../../../../../_components/moscow-filing-wizard';
 
 type Params={params:Promise<{slug:string;topic:string}>};
 export const dynamicParams=false;
@@ -82,16 +83,8 @@ export default async function MoscowDistrictTopicPage({params}:Params){
     <p><Link href="/courts/moscow/registry/moscow-city-court/info/competence" className="text-link">Чем компетенция Московского городского суда отличается от районного →</Link></p>
    </>:null}
    {topic.slug==='filing'?<>
-    <h2>Подготовка документов для подачи</h2>
-    <ol>
-     <li>Определите вид судопроизводства, требования и подсудность.</li>
-     <li>Подготовьте заявление и обязательные приложения по применимому кодексу.</li>
-     <li>Проверьте госпошлину или основание освобождения и требование направить копии другим участникам.</li>
-     <li>Передайте документы разрешённым процессуальным способом и сохраните подтверждение.</li>
-    </ol>
-    <p>Электронная почта {court.email} — не универсальный канал подачи исков и жалоб. Электронное обращение по 59-ФЗ также не подменяет процессуальную подачу.</p>
-    <p><a className="text-link" href={official.overview} target="_blank" rel="noopener noreferrer">Официальная страница суда: способы обращения ↗</a></p>
-    <p><a className="text-link" href="https://mos-gorsud.ru/lk" target="_blank" rel="noopener noreferrer">Личный кабинет официального портала ↗</a></p>
+    <h2>Пошаговый подбор порядка подачи документов</h2>
+    <MoscowFilingWizard courtName={court.name} officialUrl={official.overview} caseSearchUrl={official.cases}/>
    </>:null}
    {topic.slug==='cases'?<>
     <h2>Как найти дело и судебное заседание</h2>
