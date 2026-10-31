@@ -20,7 +20,7 @@ export default async function sitemap():Promise<MetadataRoute.Sitemap>{
     for(const path of MGS_SEO_PATHS){
       const url=mgsSeoAbsoluteUrl(path);
       if(url&&!listed.has(url)){
-        result.push({url,changeFrequency:'monthly',priority:path===MGS_SEO_PATHS[0]?.8:.6});
+        result.push({url,changeFrequency:'monthly',priority:path===MGS_SEO_PATHS[0] ? 0.8 : 0.6});
         listed.add(url);
       }
     }
