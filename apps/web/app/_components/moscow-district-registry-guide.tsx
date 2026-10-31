@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {moscowDistrictTopicHref} from '../lib/moscow-district-topics';
 import {MoscowDistrictAddressLookup} from './moscow-district-address-lookup';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 
@@ -30,10 +31,11 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
   <section className="court-section" id="district-guide">
    <span className="eyebrow">Практическое досье · 8 разделов</span>
    <h2>Как обратиться в {court.name}</h2>
-   <p>Мы собрали полезные общие сведения и проверяемые официальные сервисы для данного суда. Персональный состав судей, прямые телефоны отделов, реальные дела и список домов будут добавлены только после индивидуальной сверки.</p>
+   <p>Ниже — краткие справочные сведения; восемь отдельных страниц дают пошаговые инструкции и индивидуальные источники по этому суду. Сведения о судьях, делах и адресных границах указываются только в объёме, подтверждённом официальными публикациями.</p>
+   <p>Рекомендуемый путь: <Link href={moscowDistrictTopicHref(court.slug,'jurisdiction')}>проверить подсудность</Link> → <Link href={moscowDistrictTopicHref(court.slug,'competence')}>установить компетенцию</Link> → <Link href={moscowDistrictTopicHref(court.slug,'filing')}>подготовить документы</Link>. Можно сразу перейти к официальному источнику — обязательных промежуточных переходов нет.</p>
    <nav className="court-toc" aria-label="Практические вопросы по суду">
     <strong>Выберите вопрос</strong>
-    {items.map(([id,title])=><a key={id} href={'#district-'+id}>{title}</a>)}
+    {items.map(([id,title])=><Link key={id} href={moscowDistrictTopicHref(court.slug,id)}>{title} →</Link>)}
    </nav>
   </section>
   <section className="court-section" id="district-jurisdiction">
