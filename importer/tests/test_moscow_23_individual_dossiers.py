@@ -42,7 +42,7 @@ class DistrictIndividualDossiers(unittest.TestCase):
   self.assertEqual(sum(bool(x['expeditionPhone']) for x in INDIVIDUAL),22)
   self.assertEqual(sum(bool(x['chairPublished']) for x in INDIVIDUAL),23)
   by_slug={x['slug']:x for x in INDIVIDUAL}
-  self.assertEqual(by_slug['simonovskiy']['chairPublished'],'И. о. Орловцева Елена Юрьевна')
+  self.assertEqual(by_slug['simonovskiy']['chairPublished'],'Дёмина Евгения Александровна')
   self.assertIsNone(by_slug['cheryomushkinskiy']['expeditionPhone'])
   self.assertTrue(by_slug['cheryomushkinskiy']['remarks'])
   self.assertNotEqual(by_slug['tushinskiy']['emailAsPublished'],'')
