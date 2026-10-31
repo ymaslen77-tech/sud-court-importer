@@ -25,7 +25,7 @@ export function moscowDistrictOfficialPages(court:MoscowDistrictIndividual){
   cases:root+'/services/cases',
   territory:root+'/services/territorial',
   courtStructure:root+'/structure',
-  stateDuty:root+'/services/gosposhlina',
-  appeal:root+'/services/appeal-order'
+  stateDuty:root,
+  appeal:root
  };
 }
