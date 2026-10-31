@@ -40,9 +40,9 @@ class DistrictIndividualDossiers(unittest.TestCase):
 
  def test_noninvented_phone_and_leadership_warnings(self):
   self.assertEqual(sum(bool(x['expeditionPhone']) for x in INDIVIDUAL),22)
-  self.assertEqual(sum(bool(x['chairPublished']) for x in INDIVIDUAL),22)
+  self.assertEqual(sum(bool(x['chairPublished']) for x in INDIVIDUAL),23)
   by_slug={x['slug']:x for x in INDIVIDUAL}
-  self.assertIsNone(by_slug['simonovskiy']['chairPublished'])
+  self.assertEqual(by_slug['simonovskiy']['chairPublished'],'И. о. Орловцева Елена Юрьевна')
   self.assertIsNone(by_slug['cheryomushkinskiy']['expeditionPhone'])
   self.assertTrue(by_slug['cheryomushkinskiy']['remarks'])
   self.assertNotEqual(by_slug['tushinskiy']['emailAsPublished'],'')
