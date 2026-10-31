@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {MoscowDistrictAddressLookup} from './moscow-district-address-lookup';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 
 type Props={court:MoscowOfficialMinimumCourt};
@@ -46,6 +47,7 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
    </ol>
    <p><a className="text-link" href={OFFICIAL.jurisdiction} rel="noopener noreferrer" target="_blank">Проверить адрес на официальном портале Москвы ↗</a></p>
    <p className="court-source">Наша локальная база не подтверждает полный перечень домов. Результат проверки по адресу не определяет автоматически исключительную или альтернативную подсудность.</p>
+   <MoscowDistrictAddressLookup courtName={court.name}/>
   </section>
   <section className="court-section" id="district-competence">
    <span className="eyebrow">02 · Компетенция</span>
