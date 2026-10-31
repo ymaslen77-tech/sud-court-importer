@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {MoscowCityCourtDossier} from '../../../../_components/moscow-city-court-dossier';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
@@ -26,6 +27,7 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
  const {slug}=await params;
  const court=getMoscowOfficialMinimumCourt(slug);
  if(!court)notFound();
+ if(slug==='moscow-city-court')return <MoscowCityCourtDossier court={court}/>;
  const detailed=MoscowOfficialCourtHref(court);
  const hasRich=detailed!==('/courts/moscow/registry/'+court.slug);
  const related=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.slug!==court.slug&&c.kind===court.kind).slice(0,5);
