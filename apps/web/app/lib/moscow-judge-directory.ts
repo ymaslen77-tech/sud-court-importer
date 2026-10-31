@@ -20,7 +20,7 @@ export type JudgeCaseEvidence={
  courtSlug:string;
  judgeName:string;
  number:string;
- proceeding:'civil'|'criminal-materials';
+ proceeding:'civil'|'criminal'|'criminal-materials';
  topicId:string;
  category:string;
  status:'outcome_recorded'|'pending';
