@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {moscowDistrictTopicHref} from '../lib/moscow-district-topics';
 import {MoscowDistrictAddressLookup} from './moscow-district-address-lookup';
 import {MoscowFilingWizard} from './moscow-filing-wizard';
+import {moscowDistrictIndividual} from '../lib/moscow-district-individual';
 import type {MoscowOfficialMinimumCourt} from '../lib/moscow-official-minimum';
 
 type Props={court:MoscowOfficialMinimumCourt};
@@ -67,7 +68,7 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
   <section className="court-section" id="district-filing">
    <span className="eyebrow">03 · Подача документов</span>
    <h2>Как подать иск, жалобу или ходатайство</h2>
-   <MoscowFilingWizard courtName={court.name} officialUrl={court.source_url}/>
+   <MoscowFilingWizard courtName={court.name} officialUrl={moscowDistrictIndividual(court.slug)?.officialUrl??court.source_url}/>
   </section>
   <section className="court-section" id="district-cases">
    <span className="eyebrow">04 · Делопроизводство</span>
