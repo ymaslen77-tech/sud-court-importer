@@ -16,7 +16,7 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
  def test_current_verified_records_pass(self):
   keys=module.validate_all(self.records,self.judges)
   self.assertEqual(len(keys),21)
-  self.assertGreaterEqual(len(self.judges),335)
+  self.assertGreaterEqual(len(self.judges),386)
  def test_unknown_judge_or_wrong_court_rejected(self):
   row=self.records[0].copy()
   row["judgeName"]="Несуществующий Фиктивный Судья"
