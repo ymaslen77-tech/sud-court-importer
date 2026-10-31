@@ -1,11 +1,12 @@
 import rosterFile from '../data/moscow-district-judges-samples.json';
 import legacyRosters from '../data/moscow-legacy-judge-rosters.json';
 import additionalRosters from '../data/moscow-additional-judge-rosters.json';
+import chairListings from '../data/moscow-judicial-chair-listings.json';
 import briefsFile from '../data/moscow-judicial-source-briefs.json';
 import caseFile from '../data/moscow-judge-case-evidence.json';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-official-minimum';
 
-type JudgeSourceKind='official_roster'|'official_appointment_news'|'official_assistant_reference';
+type JudgeSourceKind='official_roster'|'official_appointment_news'|'official_assistant_reference'|'official_chair_listing';
 export type MoscowJudgeProfile={
  courtSlug:string;
  courtName:string;
@@ -71,6 +72,15 @@ for(const r of briefsFile.records){
     appointmentBasis:item.basis,courtVisitNotice:null});
  }
 }
+for(const r of chairListings.records){
+ const court=byCourt.get(r.slug);
+ if(!court||court.kind!=='general-district')continue;
+ records.push({courtSlug:r.slug,courtName:court.name,courtHref:MoscowOfficialCourtHref(court),
+  name:r.name,judgeSlug:moscowJudgeSlug(r.name),sourceUrl:r.sourceUrl,
+  sourceObservedOn:r.observedOn,sourceUpdatedOn:r.sourceUpdatedOn,
+  sourceKind:'official_chair_listing',appointmentBasis:'Председатель суда (как опубликовано на официальной карточке)',
+  courtVisitNotice:r.visitNotice});
+}
 export const MOSCOW_JUDGE_PROFILES:ReadonlyArray<MoscowJudgeProfile>=records.sort((a,b)=>
  a.courtName.localeCompare(b.courtName,'ru')||a.name.localeCompare(b.name,'ru'));
 export function moscowJudgeProfilesForCourt(slug:string){
@@ -101,5 +111,6 @@ export function moscowJudgeCaseCategories(cases:ReadonlyArray<JudgeCaseEvidence>
 export function moscowJudgeSourceLabel(source:JudgeSourceKind){
  if(source==='official_roster')return 'Официальный опубликованный список судей';
  if(source==='official_appointment_news')return 'Официальное сообщение о назначении';
+ if(source==='official_chair_listing')return 'Имя председателя на официальной странице суда (не полный состав)';
  return 'Упоминание в перечне помощников (полномочия не подтверждены)';
 }
