@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {MoscowCityCourtDossier} from '../../../../_components/moscow-city-court-dossier';
+import {MoscowDistrictRegistryGuide} from '../../../../_components/moscow-district-registry-guide';
 import {mgsSeoRobots} from '../../../../lib/moscow-city-seo';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
@@ -57,7 +58,8 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
    <nav className="court-toc" aria-label="Содержание">
     <strong>На странице</strong>
     <a href="#contacts">Адрес и контакты</a>
-    <a href="#practical">Как пользоваться сведениями</a>
+    <a href="#district-guide">Восемь практических разделов</a>
+    <a href="#practical">Подготовка к посещению</a>
     <a href="#source">Официальные источники</a>
    </nav>
   </section>
@@ -101,6 +103,7 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
     {hasRich?<Link className="button button-outline" href={detailed}>Подробное досье этого суда →</Link>:null}
    </div>
   </section>
+  {court.kind==='general-district'?<MoscowDistrictRegistryGuide court={court}/>:null}
   <section className="court-section" id="source">
    <span className="eyebrow">Происхождение сведений</span>
    <h2>Официальный источник и ограничения</h2>
