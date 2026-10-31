@@ -7,6 +7,7 @@ import {COURT_CATEGORIES} from '../lib/court-taxonomy';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../lib/moscow-official-minimum';
+import {MOSCOW_DISTRICT_INDIVIDUALS} from '../lib/moscow-district-individual';
 import {ALL_REGIONS} from '../lib/regions';
 import {regionalArbitrationCourts} from '../lib/regional-arbitration';
 
@@ -27,6 +28,7 @@ export default async function CourtsDirectory() {
   const pilot = pilotPublicCourts();
   const moscowCount=MOSCOW_OFFICIAL_MINIMUM_COURTS.length;
   const moscowRichCount=moscowCourts().length;
+  const moscowIndividualCount=MOSCOW_DISTRICT_INDIVIDUALS.length;
   const knownSlugs=new Set(['moscow',...research.map(item=>item.slug)]);
   const verifiedOthers=regions.filter(region=>!knownSlugs.has(region.slug));
   const knownFromApi=new Set(regions.map(region=>region.slug));
@@ -48,7 +50,7 @@ export default async function CourtsDirectory() {
       <p className="court-source">Подробная справочная карточка: <Link href="/courts/moscow/registry/moscow-city-court">Московский городской суд — адрес, подсудность, поиск дел и апелляции →</Link></p>
       <div className="region-grid court-region-directory">
         <Link className="region-item" href="/courts/moscow">
-          <span><strong>Москва</strong><small>Московский городской и 35 районных судов · {moscowRichCount} расширенных досье</small></span>
+          <span><strong>Москва</strong><small>Московский городской и 35 районных судов · {moscowRichCount+moscowIndividualCount} районных карточек с индивидуальными сведениями</small></span>
           <small>{moscowCount} карточек</small><span aria-hidden="true">↗</span>
         </Link>
         {research.map(item=><Link className="region-item" key={item.slug} href={'/courts/'+item.slug}>
