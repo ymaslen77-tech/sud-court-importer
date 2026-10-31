@@ -69,5 +69,5 @@ class MoscowPublishedEvidenceTests(unittest.TestCase):
   self.assertIn("/civil/details/",x["sourceUrl"])
   self.assertIn("moscowVerifiedOutcome",UI)
   self.assertIn("подборку обязательно полной",UI)
-  self.assertIn("/info/structure/judges",UI)
+  self.assertIn("judgesLink=publishedRoster?.sourceUrl??official.courtStructure",UI)
 if __name__=="__main__":unittest.main()
