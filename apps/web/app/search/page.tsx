@@ -6,6 +6,7 @@ import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
 import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../lib/research-courts';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../lib/moscow-official-minimum';
 import {findRegion} from '../lib/regions';
 import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional-arbitration';
 import {pushkinskyCourt} from '../lib/court-rich-records';
@@ -26,9 +27,15 @@ export default async function SearchPage({searchParams}:Props){
  const valid=(!q||q.length>=2)&&q.length<=100;
  const hasAny=Boolean(q||kind||region);
  const base=region?(region==='moscow'?[]:researchCourtsByRegion(region)):researchRegions().flatMap(r=>researchCourtsByRegion(r.slug));
- const moscow=(region===''||region==='moscow')&&(!kind||kind==='general-district')
-   ?moscowCourts().filter(c=>!q||[c.name,c.address,c.slug].some(value=>
-      value.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е'))))
+ // Use the complete official list, not only the twelve manually researched dossiers.
+ // MoscowOfficialCourtHref resolves those twelve to their existing detailed pages.
+ const moscow=(region===''||region==='moscow')&&
+   (!kind||kind==='general-district'||kind==='general-regional')
+   ?MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>
+     (!kind||(kind===c.kind))&&
+     (!q||[c.name,c.address,c.slug,c.directory_code??'',c.email].some(value=>
+       value.toLocaleLowerCase('ru').replace(/ё/g,'е')
+         .includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е')))))
    :[];
  const permittedKind=kind?new Set(researchCourtsByKind(kind).map(c=>c.code)):null;
  const research=valid&&hasAny?base.filter(c=>
@@ -155,12 +162,18 @@ export default async function SearchPage({searchParams}:Props){
    <div className="section-intro">
     <span className="eyebrow">Справочные карточки Москвы · официальный портал судов</span>
     <h2 id="moscow-matches">Суды Москвы: {moscow.length}</h2>
-    <p>Двенадцать районных судов с отдельными досье. Источники указаны на страницах, актуальность отдельных сведений пока не аттестована.</p>
+    <p>Полный официальный перечень: 35 районных судов и Московский городской суд. Двенадцать районных судов имеют расширенные досье; остальные — справочные карточки с контактами и ссылками на первоисточники.</p>
    </div>
-   <div className="results">{moscow.map(c=><Link key={c.slug} className="result-row" href={'/courts/moscow/'+c.slug}>
-    <span><strong>{c.name}</strong><small>Москва · Районный суд · {c.address}</small><small>Исследовательское досье по официальным источникам</small></span>
-    <span aria-hidden="true">↗</span>
-   </Link>)}</div>
+   <div className="results">{moscow.map(c=>{
+    const hasRich=moscowCourts().some(d=>d.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
+      .startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
+    return <Link key={c.slug} className="result-row" href={MoscowOfficialCourtHref(c)}>
+     <span><strong>{c.name}</strong>
+      <small>Москва · {c.kind==='general-regional'?'городской суд':'районный суд'} · {c.address}</small>
+      <small>{hasRich?'Расширенное досье':'Официальная справочная запись'} · {c.office_hours}</small>
+     </span><span aria-hidden="true">↗</span>
+    </Link>;
+   })}</div>
   </section>:null}
   {valid&&hasAny&&arbitration.length>0?<section className="section-wrap" aria-labelledby="arbitration-results">
     <div className="section-intro">
