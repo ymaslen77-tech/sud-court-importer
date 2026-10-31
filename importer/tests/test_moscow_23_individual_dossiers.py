@@ -56,7 +56,7 @@ class DistrictIndividualDossiers(unittest.TestCase):
   self.assertIn('moscowDistrictIndividual(slug)',DETAIL)
   self.assertIn('<MoscowDistrictIndividualDossier court={court} profile={individual}',DETAIL)
   self.assertIn("if(slug==='moscow-city-court')return <MoscowCityCourtDossier court={court}/>;",DETAIL)
-  self.assertIn("robots:{index:false,follow:true}",DETAIL)
+  self.assertIn("robots:moscowDistrictSeoRobots()",DETAIL)
   self.assertIn('mgsSeoRobots()',DETAIL)
   self.assertIn('moscowDistrictOfficialPages',UI)
   self.assertIn('moscowDistrictOfficialPages',LIB)
