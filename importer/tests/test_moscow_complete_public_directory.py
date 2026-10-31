@@ -13,6 +13,7 @@ SEARCH=(APP/"search/page.tsx").read_text(encoding="utf-8")
 DETAIL=(APP/"courts/moscow/registry/[slug]/page.tsx").read_text(encoding="utf-8")
 HELP=(APP/"lib/moscow-official-minimum.ts").read_text(encoding="utf-8")
 GUIDE=(APP/"_components/moscow-district-registry-guide.tsx").read_text(encoding="utf-8")
+INDIVIDUAL=(APP/"lib/moscow-district-reviewed-contacts.ts").read_text(encoding="utf-8")
 
 def normalize(s):
  return re.sub(r"\s+"," ",s.lower().replace("ё","е")).strip()
@@ -62,5 +63,19 @@ class MoscowCompleteDirectoryTests(unittest.TestCase):
   self.assertIn("неподтверждённые номера дел",GUIDE)
   self.assertIn("robots:{index:false,follow:true}",DETAIL)
   self.assertIn("Московский городской суд",MOSCOW)
+
+ def test_first_five_individual_court_contacts_have_primary_sources(self):
+  for slug in ("butyrskiy","golovinskiy","izmaylovskiy","savelovskiy","tverskoy"):
+   self.assertIn(slug+":{",INDIVIDUAL)
+   self.assertTrue(any(row["slug"]==slug for row in DATA))
+  self.assertIn("https://mos-gorsud.ru/rs/butyrskij",INDIVIDUAL)
+  self.assertIn("https://mos-gorsud.ru/rs/golovinskij",INDIVIDUAL)
+  self.assertIn("https://mos-gorsud.ru/rs/izmajlovskij",INDIVIDUAL)
+  self.assertIn("https://mos-gorsud.ru/rs/savelovskij",INDIVIDUAL)
+  self.assertIn("https://mos-gorsud.ru/rs/tverskoj",INDIVIDUAL)
+  self.assertIn("archiveHours:",INDIVIDUAL)
+  self.assertIn("reviewedContact.expeditionPhone",DETAIL)
+  self.assertIn("reviewedContact.archivePhone",DETAIL)
+  self.assertIn("rel=\"noopener noreferrer\"",DETAIL)
 
 if __name__=="__main__":unittest.main()
