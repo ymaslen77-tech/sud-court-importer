@@ -9,6 +9,7 @@ import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
+import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -20,7 +21,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   title:court.name+' — адрес, дела, подсудность и обжалование',
   description:court.name+'. '+court.address+'. Контакты суда, судебные дела и категории споров, подсудность по адресу, подача документов и порядок обжалования.',
   alternates:{canonical:'/courts/moscow/'+court.slug},
-  robots:{index:false,follow:true}
+  robots:moscowDistrictSeoRobots()
  };
 }
 const records=[
