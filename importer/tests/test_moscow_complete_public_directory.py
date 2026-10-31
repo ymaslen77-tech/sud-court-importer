@@ -59,7 +59,8 @@ class MoscowCompleteDirectoryTests(unittest.TestCase):
   for url in ("https://mos-gorsud.ru/rs","https://mos-gorsud.ru/territorial",
               "https://mos-gorsud.ru/search","https://mos-gorsud.ru/lk"):
    self.assertIn(url,GUIDE)
-  self.assertIn("Персональный состав судей",GUIDE)
+  self.assertIn("Сведения о судьях, делах и адресных границах",GUIDE)
+  self.assertIn("moscowDistrictTopicHref(court.slug,id)",GUIDE)
   self.assertIn("неподтверждённые номера дел",GUIDE)
   self.assertIn("robots:{index:false,follow:true}",DETAIL)
   self.assertIn("Московский городской суд",MOSCOW)
