@@ -92,6 +92,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
    <h2>Дела, связанные с {judge.name}</h2>
    {cases.length?<div className="moscow-judge-case-cards">{cases.map(c=><article key={c.number}>
     <h3>Дело № {c.number}</h3>
+    {c.uin?<p><strong>УИД:</strong> {c.uin}</p>:null}
     <p><strong>Судопроизводство:</strong> {proceedingLabel(c.proceeding)}</p>
     <p><strong>Категория:</strong> {c.category}</p>
     <p><strong>Результат:</strong> {c.status==='outcome_recorded'?c.outcome:'Результат пока не подтверждён'}
