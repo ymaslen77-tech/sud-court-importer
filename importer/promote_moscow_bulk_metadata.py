@@ -16,6 +16,7 @@ from pathlib import Path
 import re
 import tempfile
 from urllib.parse import urlsplit
+from ingest_moscow_judge_case_evidence import judge_sources
 
 DATA=Path(__file__).resolve().parents[1]/"apps/web/app/data"
 PUBLIC=DATA/"moscow-judge-bulk-cases.json"
@@ -52,13 +53,18 @@ def check_row(x,mode):
   raise ValueError("Bad court ID")
  if not isinstance(x["judgeName"],str) or len(x["judgeName"].split())<2:
   raise ValueError("Judge must have full sourced name")
+ judge_key=(x["courtSlug"]," ".join(x["judgeName"].lower().replace("ё","е").split()))
+ sources=judge_sources()
+ if judge_key not in sources:
+  raise ValueError("Judge is not linked to an official court roster or appointment")
+ official_path="/rs/"+sources[judge_key]+"/services/cases/"
  if x["judgeAttribution"] not in (
   "judge_and_number_in_same_official_row","initials_resolved_to_unique_official_roster_name"):
   raise ValueError("Invalid judicial attribution")
  if x["topicId"]=="restricted":
   raise ValueError("Sensitive/protected categories not accepted")
  u=urlsplit(x["sourceUrl"])
- if u.scheme!="https" or u.hostname not in DOMAINS or u.username or u.password or u.port or "/rs/" not in u.path or "/services/cases/" not in u.path:
+ if u.scheme!="https" or u.hostname not in DOMAINS or u.username or u.password or u.port or not u.path.startswith(official_path):
   raise ValueError("Original court URL required")
  if len(x["category"])>350 or len(x["note"])>600:
   raise ValueError("Overlong public field")
