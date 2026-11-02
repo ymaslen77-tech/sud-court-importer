@@ -18,6 +18,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sqlite3
 import sys
 from urllib.parse import urlsplit
 
@@ -231,69 +232,81 @@ def emit(f,row):
  f.write(json.dumps(row,ensure_ascii=False,separators=(",",":"))+"\n")
 def run(first,appeal,output,max_rows=3000000):
  if not first.is_file() or (appeal and not appeal.is_file()):raise ValueError("Missing local official dataset")
+ if max_rows<1:raise ValueError("max_rows must be positive")
  if output.exists() and any(output.iterdir()):raise ValueError("Output must be a new or empty directory")
  output.mkdir(parents=True,exist_ok=True)
  aliases,official,judges=court_directory()
- counts=Counter(); cases={}; staged=[]; problems=[]
- # All data are PRIVATE until a separate reviewed promotion.
- with (output/"candidates.ndjson").open("w",encoding="utf-8") as good,\
-      (output/"quarantine.ndjson").open("w",encoding="utf-8") as quarantine:
-  for n,raw in enumerate(records(first),1):
-   if n>max_rows:raise ValueError("Input limit exceeded; split files and rerun")
-   counts["first_seen"]+=1
-   result,reason=first_row(raw,aliases,official,judges)
-   if reason:
-    counts[reason]+=1
-    # No raw record or participant names in quarantine.
-    if len(problems)<1000:problems.append({"index":n,"reason":reason})
-    continue
-   key=(result["courtSlug"],result["uin"],result["number"])
-   if key in cases:
-    prev=cases[key]
-    if any(prev[k]!=result[k] for k in ("judgeName","status","outcome","decisionDate","category")):
-     counts["contradictory_duplicates"]+=1
-     prev["verificationLevel"]="conflict_hold"
-     emit(quarantine,{"courtSlug":result["courtSlug"],"uin":result["uin"],"number":result["number"],"reason":"contradictory_duplicate"})
-    else:counts["exact_duplicates"]+=1
-    continue
-   cases[key]=result
-  if appeal:
-   with (output/"appeal_links.ndjson").open("w",encoding="utf-8") as ap:
-    linked=set()
-    for n,raw in enumerate(records(appeal),1):
-     if n>max_rows:raise ValueError("Appeal input limit exceeded")
-     counts["appeal_seen"]+=1
-     a,reason=appeal_row(raw)
-     if reason:counts["appeal_"+reason]+=1;continue
-     matches=[(key,c) for key,c in cases.items() if c["uin"]==a["uin"] and
-              any(l["number"]==c["number"] for l in a["lower"])]
-     if len(matches)!=1:counts["appeal_unmatched_or_ambiguous"]+=1;continue
-     key,c=matches[0]
-     if not any(norm(ref["judgeLabel"]) in
-                (norm(c["sourceJudgeLabel"]),norm(c["judgeName"])) for ref in a["lower"] if ref["number"]==c["number"]):
-      counts["appeal_judge_mismatch"]+=1;continue
-     if key in linked:counts["appeal_duplicate_links"]+=1;continue
-     linked.add(key)
-     if c["verificationLevel"]=="conflict_hold":continue
-     c["verificationLevel"]="official_registers_concordant"
-     counts["appeal_linked"]+=1
-     emit(ap,{"courtSlug":c["courtSlug"],"uin":c["uin"],"number":c["number"],"judgeName":c["judgeName"],
-       "firstInstanceUrl":c["sourceUrl"],"appealUrl":a["appealUrl"],
+ counts=Counter();covered=set();problems=[]
+ # On-disk indexed storage: source files may be hundreds of MB. NEVER load all cases in RAM.
+ db=sqlite3.connect(str(output/"private-stage.sqlite3"))
+ try:
+  db.execute("CREATE TABLE cases (court TEXT, uin TEXT, number TEXT, payload TEXT, held INTEGER DEFAULT 0, PRIMARY KEY(court,uin,number))")
+  db.execute("CREATE INDEX court_uin_idx ON cases(uin)")
+  with (output/"quarantine.ndjson").open("w",encoding="utf-8") as quarantine:
+   for n,raw in enumerate(records(first),1):
+    if n>max_rows:raise ValueError("Input limit exceeded; split files and rerun")
+    counts["first_seen"]+=1
+    result,reason=first_row(raw,aliases,official,judges)
+    if reason:
+     counts[reason]+=1
+     # No raw record, party name or payload in the quarantine log.
+     if len(problems)<500:problems.append({"index":n,"reason":reason})
+     continue
+    covered.add(result["courtSlug"])
+    key=(result["courtSlug"],result["uin"],result["number"])
+    prev=db.execute("SELECT payload,held FROM cases WHERE court=? AND uin=? AND number=?",key).fetchone()
+    if prev:
+     old=json.loads(prev[0])
+     if any(old[k]!=result[k] for k in ("judgeName","status","outcome","decisionDate","category")):
+      counts["contradictory_duplicates"]+=1
+      db.execute("UPDATE cases SET held=1 WHERE court=? AND uin=? AND number=?",key)
+      emit(quarantine,{"courtSlug":result["courtSlug"],"uin":result["uin"],"number":result["number"],"reason":"contradictory_duplicate"})
+     else:counts["exact_duplicates"]+=1
+     continue
+    db.execute("INSERT INTO cases(court,uin,number,payload) VALUES(?,?,?,?)",(*key,json.dumps(result,ensure_ascii=False,separators=(",",":"))))
+    if n%5000==0:db.commit()
+   db.commit()
+   if appeal:
+    with (output/"appeal_links.ndjson").open("w",encoding="utf-8") as ap:
+     linked=set()
+     for n,raw in enumerate(records(appeal),1):
+      if n>max_rows:raise ValueError("Appeal input limit exceeded")
+      counts["appeal_seen"]+=1
+      a,reason=appeal_row(raw)
+      if reason:counts["appeal_"+reason]+=1;continue
+      possible=db.execute("SELECT court,uin,number,payload,held FROM cases WHERE uin=?",(a["uin"],)).fetchall()
+      matches=[v for v in possible if any(l["number"]==v[2] for l in a["lower"])]
+      if len(matches)!=1:counts["appeal_unmatched_or_ambiguous"]+=1;continue
+      court,uin_,number,payload,held=matches[0]
+      item=json.loads(payload)
+      if not any(norm(ref["judgeLabel"]) in (norm(item["sourceJudgeLabel"]),norm(item["judgeName"]))
+                 for ref in a["lower"] if ref["number"]==number):
+       counts["appeal_judge_mismatch"]+=1;continue
+      key=(court,uin_,number)
+      if key in linked:counts["appeal_duplicate_links"]+=1;continue
+      linked.add(key)
+      if held:continue
+      item["verificationLevel"]="official_registers_concordant"
+      db.execute("UPDATE cases SET payload=? WHERE court=? AND uin=? AND number=?",
+       (json.dumps(item,ensure_ascii=False,separators=(",",":")),*key))
+      counts["appeal_linked"]+=1
+      emit(ap,{"courtSlug":court,"uin":uin_,"number":number,"judgeName":item["judgeName"],
+       "firstInstanceUrl":item["sourceUrl"],"appealUrl":a["appealUrl"],
        "appealDocket":a["appealDocket"],"appealRegisteredOn":a["appealRegisteredOn"],
        "appealResult":None,"verificationLevel":"official_registers_concordant"})
-  # We write after reconciliation, NEVER before appeals are checked.
-  for item in cases.values():
-   if item["verificationLevel"]=="conflict_hold":
-    counts["held_conflict"]+=1;continue
-   emit(good,item);counts["staged"]+=1
-  emit(quarantine,{"_summary":"Individual rejected rows are counted, never copied verbatim.","counts":dict(counts),"sample":problems})
- sha1=sha256(first);sha2=sha256(appeal) if appeal else None
+     db.commit()
+   with (output/"candidates.ndjson").open("w",encoding="utf-8") as good:
+    for payload,held in db.execute("SELECT payload,held FROM cases ORDER BY court,uin,number"):
+     if held:counts["held_conflict"]+=1;continue
+     emit(good,json.loads(payload));counts["staged"]+=1
+   emit(quarantine,{"_summary":"Rejected records are counted; no raw payload or participant identities copied.","counts":dict(counts),"sample":problems})
+ finally:
+  db.close()
  report={"schemaVersion":1,"mode":"stage_only","source":"https://data.mos-gorsud.ru/opendata",
-  "firstSha256":sha1,"appealSha256":sha2,"counts":dict(counts),
-  "coveredCourts":len({v["courtSlug"] for v in cases.values()}),
-  "autoPublished":False,"decisionTextsReviewed":0,
-  "warning":"No raw participant data copied. No bulk approval or publication without inspecting export shape and source terms."}
- (output/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+  "firstSha256":sha256(first),"appealSha256":sha256(appeal) if appeal else None,"counts":dict(counts),
+  "coveredCourts":len(covered),"autoPublished":False,"decisionTextsReviewed":0,
+  "warning":"Private stage only. Verify export schema and original court records before any public promotion."}
+ (output/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
  return report
 def main(argv=None):
  p=argparse.ArgumentParser(description=__doc__)
