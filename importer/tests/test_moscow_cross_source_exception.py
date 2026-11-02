@@ -19,5 +19,5 @@ class CrossSourceExceptionTests(unittest.TestCase):
   self.assertEqual(r["status"],"rejected_unrelated_case")
   self.assertEqual(urlsplit(r["secondary"]["sourceUrl"]).hostname,"sudact.ru")
   self.assertIn("/rs/meshchanskij/",r["primary"]["sourceUrl"])
-  self.assertIn("Не",r["reason"])
+  self.assertIn("нельзя",r["reason"].lower())
 if __name__=="__main__":unittest.main()
