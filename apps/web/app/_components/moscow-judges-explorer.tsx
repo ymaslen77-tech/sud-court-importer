@@ -71,7 +71,7 @@ export function MoscowJudgesExplorer({courts,profiles,cases}:Props){
       <p><strong>Судопроизводство:</strong> {c.proceeding==='civil'?'Гражданские дела (ГПК РФ)':c.proceeding==='civil-exec'?'Заявления на стадии исполнения решения':c.proceeding==='criminal'?'Уголовные дела (УПК РФ)':'Уголовно-процессуальные материалы (УПК РФ)'}</p>
       <p><strong>Результат:</strong> {c.status==='outcome_recorded'?c.outcome:noOutcome}
        {c.decisionDate?' · '+c.decisionDate:''}</p>
-      <p className="court-source">{c.note}</p>
+      <p className="court-source">{c.note} {c.verificationLevel==='single_official_record_unchecked_live'?'Источник: одна официальная выгрузка, не подтверждённая вторым реестром.':''}</p>
       <a href={c.sourceUrl} target="_blank" rel="noopener noreferrer">Сверить строку в официальном реестре ↗</a>
      </article>)}
    </div>
