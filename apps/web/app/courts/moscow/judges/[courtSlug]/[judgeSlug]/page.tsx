@@ -97,7 +97,8 @@ export default async function MoscowJudgeProfilePage({params}:Params){
     <p><strong>Категория:</strong> {c.category}</p>
     <p><strong>Результат:</strong> {c.status==='outcome_recorded'?c.outcome:'Результат пока не подтверждён'}
      {c.decisionDate?' · '+c.decisionDate:''}</p>
-    <p><strong>Тип подтверждения:</strong> запись в официальном реестре, содержащая номер дела и ФИО судьи.</p>
+    <p><strong>Тип подтверждения:</strong> {c.evidenceLevel==='official_dataset_record'?'метаданные официальной машиночитаемой выгрузки':'запись официального судебного реестра'}, с привязкой к конкретному судье.</p>
+    {c.verificationLevel?<p className="court-source"><strong>Уровень сверки:</strong> {c.verificationLevel==='official_registers_concordant'?'согласованы записи первой и апелляционной инстанций':'сведения одного официального набора — без независимой повторной проверки'}</p>:null}
     <p className="court-source">{c.note} Полный текст судебного акта и его мотивировка не проверены.</p>
     {crosschecked.filter(v=>v.caseNumber===c.number).map(v=><div className="court-source" key={v.uin}>
      <p><strong>Сверено по двум официальным реестрам:</strong> совпадают УИД {v.uin}, номер дела, судья и категория.
