@@ -130,8 +130,10 @@ def court_directory():
  codes={}
  for c in courts:
   if c["kind"]=="general-district":
-   codes[norm(c["name"])]=c["slug"]
- assert len(codes)==35
+   label=norm(c["name"])
+   codes[label]=c["slug"]
+   codes[label+" города москвы"]=c["slug"]
+ assert len({v for v in codes.values()})==35
  judges=judge_sources()
  official={}
  for (slug,name),code in judges.items():
