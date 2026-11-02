@@ -19,12 +19,18 @@ function supported(row:MoscowJudgeCrosscheckedCase){
   c.courtSlug===row.courtSlug&&c.number===row.caseNumber
   &&moscowJudgeSlug(c.judgeName)===moscowJudgeSlug(row.judgeName));
  if(!original||original.status!=='outcome_recorded'||original.outcome!==row.courtOutcome
-  ||original.decisionDate!==row.courtDecisionDate||row.appealResult!==null||row.fullTextVerified!==false)return false;
+  ||original.decisionDate!==row.courtDecisionDate||row.appealResult!==null||row.fullTextVerified!==false
+  ||(original.uin!==undefined&&original.uin!==row.uin))return false;
  if(row.witnesses.length!==2||new Set(row.witnesses.map(w=>w.kind)).size!==2)return false;
  const first=row.witnesses.find(w=>w.kind==='first_instance');
  const appeal=row.witnesses.find(w=>w.kind==='appeal_registry');
  if(!first||!appeal||first.firstInstanceOutcome!==row.courtOutcome||appeal.firstInstanceOutcome!==null
   ||appeal.appealRegisteredOn!==row.appealRegisteredOn)return false;
+ try{
+  const courtPrefix=new URL(original.sourceUrl).pathname.split('/services/cases/')[0]+'/services/cases/';
+  if(!new URL(first.sourceUrl).pathname.startsWith(courtPrefix)
+   ||!new URL(appeal.sourceUrl).pathname.startsWith('/mgs/services/cases/appeal-'))return false;
+ }catch{return false;}
  return row.witnesses.every(w=>w.uin===row.uin&&w.caseNumber===row.caseNumber
    &&w.categoryCode===row.categoryCode&&w.judgeLabel===first.judgeLabel
    &&(/^https:\/\/(?:m\.|www\.)?mos-gorsud\.ru\//).test(w.sourceUrl));
