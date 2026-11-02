@@ -80,6 +80,7 @@ def promote(prepared,max_per_court=100,max_per_judge=25,mode="official",apply=Fa
  existing=read(KNOWN)["records"]
  dest=read(PUBLIC)
  keys={(x["courtSlug"],x.get("uin") or "",x["number"]) for x in existing+dest["records"]}
+ by_number={(x["courtSlug"],x["number"]):x.get("uin") for x in existing+dest["records"]}
  ccount=Counter(x["courtSlug"] for x in dest["records"])
  jcount=Counter((x["courtSlug"],x["judgeName"]) for x in dest["records"])
  new=[];stats=Counter();today=date.today().isoformat()
@@ -92,6 +93,9 @@ def promote(prepared,max_per_court=100,max_per_judge=25,mode="official",apply=Fa
    if not check_row(x,mode):
     stats["single_source_skipped"]+=1;continue
    key=(x["courtSlug"],x["uin"],x["number"])
+   old_id=by_number.get((x["courtSlug"],x["number"]))
+   if (x["courtSlug"],x["number"]) in by_number and old_id!=x["uin"]:
+    raise ValueError("Same court and case number carry contradictory UIDs; reconcile manually")
    if key in keys:
     stats["already_present"]+=1;continue
    if ccount[x["courtSlug"]]>=max_per_court or jcount[(x["courtSlug"],x["judgeName"])]>=max_per_judge:
@@ -106,7 +110,7 @@ def promote(prepared,max_per_court=100,max_per_judge=25,mode="official",apply=Fa
     "Реестровые данные согласуются с апелляцией; мотивировка акта не проверялась."
      if x["verificationLevel"]=="official_registers_concordant" else
     "Сведения подтверждены одним реестром; требуется проверить актуальность карточки.")
-   keys.add(key);new.append(row)
+   keys.add(key);by_number[(x["courtSlug"],x["number"])]=x["uin"];new.append(row)
    ccount[x["courtSlug"]]+=1;jcount[(x["courtSlug"],x["judgeName"])]+=1
    stats["accepted"]+=1
  if apply:
