@@ -374,7 +374,8 @@
       "evidenceLevel": "official_case_list",
       "judicialActTextVerified": false,
       "judgeAttribution": "initials_resolved_to_unique_official_roster_name",
-      "observedOn": "2026-11-01"
+      "observedOn": "2026-11-01",
+      "uin": "77RS0018-02-2025-009433-55"
     },
     {
       "courtSlug": "nikulinskiy",
@@ -392,7 +393,8 @@
       "evidenceLevel": "official_case_list",
       "judicialActTextVerified": false,
       "judgeAttribution": "initials_resolved_to_unique_official_roster_name",
-      "observedOn": "2026-11-01"
+      "observedOn": "2026-11-01",
+      "uin": "77RS0018-02-2025-003155-71"
     },
     {
       "courtSlug": "nikulinskiy",
@@ -428,7 +430,8 @@
       "evidenceLevel": "official_case_list",
       "judicialActTextVerified": false,
       "judgeAttribution": "initials_resolved_to_unique_official_roster_name",
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "uin": "77RS0016-02-2025-024162-12"
     },
     {
       "courtSlug": "khamovnicheskiy",
@@ -446,7 +449,8 @@
       "evidenceLevel": "official_case_list",
       "judicialActTextVerified": false,
       "judgeAttribution": "initials_resolved_to_unique_official_roster_name",
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "uin": "77RS0030-02-2026-006678-37"
     },
     {
       "courtSlug": "khamovnicheskiy",
@@ -464,7 +468,8 @@
       "evidenceLevel": "official_case_list",
       "judicialActTextVerified": false,
       "judgeAttribution": "initials_resolved_to_unique_official_roster_name",
-      "observedOn": "2026-11-02"
+      "observedOn": "2026-11-02",
+      "uin": "77RS0030-02-2026-004148-61"
     }
   ]
 }
