@@ -9,6 +9,7 @@ Run: python importer/verify_moscow_judge_corroboration.py
 import json
 from pathlib import Path
 from urllib.parse import urlsplit
+from ingest_moscow_judge_case_evidence import judge_sources
 
 DATA=Path(__file__).resolve().parents[1]/"apps/web/app/data"
 CASES=DATA/"moscow-judge-case-evidence.json"
@@ -82,7 +83,7 @@ def verify(row,known_cases,known_judges):
 def validate(records=None):
  current=read(CROSS) if records is None else records
  cases={(c["courtSlug"],c["number"]):c for c in read(CASES)}
- judges={(r["slug"],normalized(n)) for p in ROSTERS for r in read(p) for n in r["judges"]}
+ judges={(court,normalized(name)) for (court,name) in judge_sources()}
  seen=set()
  for r in current:
   key=(r["courtSlug"],r["caseNumber"])
