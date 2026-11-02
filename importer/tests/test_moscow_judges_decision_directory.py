@@ -66,6 +66,9 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),24)
   self.assertEqual(sum(x['status']=='pending' for x in CASES),3)
   self.assertEqual(len({(x['courtSlug'],x['number']) for x in CASES}),27)
+  uids=[x['uin'] for x in CASES if 'uin' in x]
+  self.assertEqual(len(uids),5)
+  self.assertEqual(len(set(uids)),5)
   for row in CASES:
    with self.subTest(case=row['number']):
     self.assertIn((row['courtSlug'],norm(row['judgeName'])),people)
