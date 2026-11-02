@@ -1,0 +1,22 @@
+{
+  "description": "Случаи совпадения номеров дел у разных судов. Вторичный каталог не может использоваться для подтверждения актов другого суда без совпадения УИД, суда и судьи.",
+  "records": [
+    {
+      "caseNumber": "02-2880/2026",
+      "primary": {
+        "courtSlug": "meshchanskiy",
+        "uin": "77RS0016-02-2025-024162-12",
+        "judgeName": "Боярникова Елена Владимировна",
+        "sourceUrl": "https://m.mos-gorsud.ru/rs/meshchanskij/services/cases/civil/details/856e2e61-f5bd-11f0-9701-772943f580b3"
+      },
+      "secondary": {
+        "courtSlug": "perovskiy",
+        "uin": "77RS0020-02-2025-017841-42",
+        "judgeName": "Бородкова Зинаида Владимировна",
+        "sourceUrl": "https://sudact.ru/regular/doc/HXIkspiQi3bj/"
+      },
+      "status": "rejected_unrelated_case",
+      "reason": "Номер дела совпадает, но суд и УИД различаются. Текст решения из СудАкт нельзя приписывать судье Мещанского суда."
+    }
+  ]
+}
