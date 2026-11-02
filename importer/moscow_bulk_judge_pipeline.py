@@ -254,6 +254,12 @@ def run(first,appeal,output,max_rows=3000000):
      continue
     covered.add(result["courtSlug"])
     key=(result["courtSlug"],result["uin"],result["number"])
+    by_number=db.execute("SELECT uin,payload FROM cases WHERE court=? AND number=?",(key[0],key[2])).fetchall()
+    if any(item[0]!=key[1] for item in by_number):
+     counts["conflicting_uin_same_court_number"]+=1
+     db.execute("UPDATE cases SET held=1 WHERE court=? AND number=?",(key[0],key[2]))
+     emit(quarantine,{"courtSlug":key[0],"number":key[2],"reason":"conflicting_uin_same_court_number"})
+     continue
     prev=db.execute("SELECT payload,held FROM cases WHERE court=? AND uin=? AND number=?",key).fetchone()
     if prev:
      old=json.loads(prev[0])
@@ -279,8 +285,11 @@ def run(first,appeal,output,max_rows=3000000):
       if len(matches)!=1:counts["appeal_unmatched_or_ambiguous"]+=1;continue
       court,uin_,number,payload,held=matches[0]
       item=json.loads(payload)
-      if not any(norm(ref["judgeLabel"]) in (norm(item["sourceJudgeLabel"]),norm(item["judgeName"]))
-                 for ref in a["lower"] if ref["number"]==number):
+      if not any(
+       norm(ref["judgeLabel"]) in (norm(item["sourceJudgeLabel"]),norm(item["judgeName"]))
+       or (extract_initials(ref["judgeLabel"]) is not None and
+           extract_initials(ref["judgeLabel"])==extract_initials(item["sourceJudgeLabel"]))
+       for ref in a["lower"] if ref["number"]==number):
        counts["appeal_judge_mismatch"]+=1;continue
       key=(court,uin_,number)
       if key in linked:counts["appeal_duplicate_links"]+=1;continue
