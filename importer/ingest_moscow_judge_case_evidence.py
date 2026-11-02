@@ -33,7 +33,7 @@ FIELDS={
 }
 SOURCE_TAG="judge_and_number_in_same_official_row"
 INITIALS_TAG="initials_resolved_to_unique_official_roster_name"
-OPTIONAL_FIELDS={"sourceJudgeLabel"}
+OPTIONAL_FIELDS={"sourceJudgeLabel","uin"}
 
 def norm(value):
  return re.sub(r"\s+"," ",value.lower().replace("ё","е")).strip()
@@ -93,6 +93,9 @@ def validate_record(row, judges, require_review=False):
   raise ValueError(f"No sourced judge with exact full name in that court: {key}")
  if not isinstance(row["number"],str) or not NUM.fullmatch(row["number"]):
   raise ValueError(f"Invalid official case number: {row['number']}")
+ if "uin" in row and (not isinstance(row["uin"],str)
+     or not re.fullmatch(r"77RS[0-9]{4}-[0-9]{2}-20[0-9]{2}-[0-9]{6}-[0-9]{2}",row["uin"])):
+  raise ValueError("Invalid official UIN format")
  if row["proceeding"] not in ALLOWED_PROCEEDINGS:
   raise ValueError("Unknown case proceeding kind")
  if row["status"] not in ALLOWED_STATUSES:
