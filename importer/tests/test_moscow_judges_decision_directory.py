@@ -59,10 +59,10 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   people={(slug,norm(name)) for slug,name in
       [(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]+
       [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]}
-  self.assertEqual(len(CASES),24)
-  self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),21)
+  self.assertEqual(len(CASES),27)
+  self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),24)
   self.assertEqual(sum(x['status']=='pending' for x in CASES),3)
-  self.assertEqual(len({(x['courtSlug'],x['number']) for x in CASES}),24)
+  self.assertEqual(len({(x['courtSlug'],x['number']) for x in CASES}),27)
   for row in CASES:
    with self.subTest(case=row['number']):
     self.assertIn((row['courtSlug'],norm(row['judgeName'])),people)
