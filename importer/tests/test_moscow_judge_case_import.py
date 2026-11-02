@@ -15,7 +15,7 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
   cls.records=module.read_records(module.EVIDENCE)
  def test_current_verified_records_pass(self):
   keys=module.validate_all(self.records,self.judges)
-  self.assertEqual(len(keys),27
+  self.assertEqual(len(keys),27)
   self.assertGreaterEqual(len(self.judges),418)
  def test_unknown_judge_or_wrong_court_rejected(self):
   row=self.records[0].copy()
