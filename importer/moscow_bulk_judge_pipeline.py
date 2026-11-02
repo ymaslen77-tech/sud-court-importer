@@ -315,7 +315,7 @@ def run(first,appeal,output,max_rows=3000000):
   "firstSha256":sha256(first),"appealSha256":sha256(appeal) if appeal else None,"counts":dict(counts),
   "coveredCourts":len(covered),"autoPublished":False,"decisionTextsReviewed":0,
   "warning":"Private stage only. Verify export schema and original court records before any public promotion."}
- (output/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+ (output/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+chr(10),encoding="utf-8")
  return report
 def main(argv=None):
  p=argparse.ArgumentParser(description=__doc__)
