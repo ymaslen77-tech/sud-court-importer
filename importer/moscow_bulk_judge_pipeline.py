@@ -190,7 +190,7 @@ def first_row(raw,aliases,official,judges):
  # A case-status string is NOT a judicial disposition. Pending is not a denial.
  status="outcome_recorded" if finished and day else "pending"
  return {
-  "courtSlug":court,"judgeName":next(name for (slug,name) in judges if slug==court and name==judge),
+  "courtSlug":court,"judgeName":judge.title(),
   "number":number,"uin":u,
   "proceeding":"civil" if number.startswith("02") else "civil-exec" if number.startswith("13-") else "criminal-materials" if "3/" in number else "civil",
   "topicId":t,"category":category,"status":status,
@@ -236,7 +236,7 @@ def run(first,appeal,output,max_rows=3000000):
  if output.exists() and any(output.iterdir()):raise ValueError("Output must be a new or empty directory")
  output.mkdir(parents=True,exist_ok=True)
  aliases,official,judges=court_directory()
- counts=Counter();covered=set();problems=[]
+ counts=Counter();counts["staged"]=0;covered=set();problems=[]
  # On-disk indexed storage: source files may be hundreds of MB. NEVER load all cases in RAM.
  db=sqlite3.connect(str(output/"private-stage.sqlite3"))
  try:
