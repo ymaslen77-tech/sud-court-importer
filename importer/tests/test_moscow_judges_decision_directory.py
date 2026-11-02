@@ -56,9 +56,12 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertEqual(len({r['slug'] for r in ROSTERS+LEGACY+ADDITIONAL+CHAIRS}|{r['slug'] for r in BRIEFS}),35)
   self.assertIn('judge.courtVisitNotice',PERSON)
  def test_officially_attributed_cases_are_not_fabricated_full_judgments(self):
-  people={(slug,norm(name)) for slug,name in
-      [(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]+
-      [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]}
+  all_people=[(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]
+  all_people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
+  all_people += [(r['slug'],r['name']) for r in CHAIRS]
+  all_people += [(r['courtSlug'],r['name']) for r in APPOINTMENTS]
+  all_people += [(r['courtSlug'],r['name']) for r in EVENTS if r['eventType']=='appointed_chair']
+  people={(slug,norm(name)) for slug,name in all_people}
   self.assertEqual(len(CASES),27)
   self.assertEqual(sum(x['status']=='outcome_recorded' for x in CASES),24)
   self.assertEqual(sum(x['status']=='pending' for x in CASES),3)
