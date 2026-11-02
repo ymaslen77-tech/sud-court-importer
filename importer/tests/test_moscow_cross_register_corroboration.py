@@ -12,14 +12,19 @@ class CrossRegisterCorroborationTests(unittest.TestCase):
   cls.rows=cross.read(cross.CROSS)
   cls.cases={(r["courtSlug"],r["number"]):r for r in cross.read(cross.CASES)}
   cls.judges={(r["slug"],cross.normalized(n)) for p in cross.ROSTERS for r in cross.read(p) for n in r["judges"]}
- def test_one_verified_official_case_join_on_uin_and_judge(self):
-  self.assertEqual(cross.validate(),1)
+ def test_two_verified_official_case_joins_on_uin_and_judge(self):
+  self.assertEqual(cross.validate(),2)
   r=self.rows[0]
   self.assertEqual(r["uin"],"77RS0018-02-2025-003155-71")
   self.assertEqual(r["appealDocket"],"Ж-65034/2026")
   self.assertEqual(r["sourceGroup"],"mos_gorsud_first_instance_and_appeal")
   self.assertIsNone(r["appealResult"])
   self.assertFalse(r["fullTextVerified"])
+  second=self.rows[1]
+  self.assertEqual(second["uin"],"77RS0016-02-2025-024162-12")
+  self.assertEqual(second["appealDocket"],"Ж-64264/2026")
+  self.assertEqual(second["courtOutcome"],"Удовлетворено частично")
+  self.assertIsNone(second["appealResult"])
  def check(self,row):return cross.verify(row,self.cases,self.judges)
  def test_conflicting_case_identifiers_are_blocked(self):
   for field,value in [("uin","WRONG"),("categoryCode","999"),("judgeLabel","Сидорова А.А.")]:
