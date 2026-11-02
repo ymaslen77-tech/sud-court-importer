@@ -11,7 +11,7 @@ class CrossRegisterCorroborationTests(unittest.TestCase):
  def setUpClass(cls):
   cls.rows=cross.read(cross.CROSS)
   cls.cases={(r["courtSlug"],r["number"]):r for r in cross.read(cross.CASES)}
-  cls.judges={(r["slug"],cross.normalized(n)) for p in cross.ROSTERS for r in cross.read(p) for n in r["judges"]}
+  cls.judges={(court,cross.normalized(name)) for court,name in cross.judge_sources()}
  def test_two_verified_official_case_joins_on_uin_and_judge(self):
   self.assertEqual(cross.validate(),2)
   r=self.rows[0]
