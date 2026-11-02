@@ -28,6 +28,8 @@ def verify(row,known_cases,known_judges):
  case=known_cases.get(key)
  if not case:raise ValueError(f"Unknown case: {key}")
  if case["status"]!="outcome_recorded":raise ValueError(f"Pending case cannot be promoted: {key}")
+ if case.get("uin") is not None and case["uin"]!=row["uin"]:
+  raise ValueError("Case-list UIN conflicts with the primary and appellate source records")
  if normalized(row["judgeName"])!=normalized(case["judgeName"]):
   raise ValueError("Judge does not match first-instance case")
  if row["fullTextVerified"] is not False or row["appealResult"] is not None:
