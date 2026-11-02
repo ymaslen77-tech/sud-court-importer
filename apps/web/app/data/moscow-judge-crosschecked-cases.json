@@ -1,0 +1,46 @@
+{
+  "description": "Реестровая сверка фактов между первой инстанцией и апелляционной регистрацией. Две страницы одного официального портала — разные реестровые записи, а не два независимых издателя. Результат апелляции не выдумывается; мотивировка решения не установлена.",
+  "records": [
+    {
+      "courtSlug": "nikulinskiy",
+      "judgeName": "Кузнецова Елена Алексеевна",
+      "caseNumber": "02-0514/2026",
+      "uin": "77RS0018-02-2025-003155-71",
+      "categoryCode": "161",
+      "courtDecisionDate": "2026-05-28",
+      "courtOutcome": "Отказано в удовлетворении",
+      "appealDocket": "Ж-65034/2026",
+      "appealRegisteredOn": "2026-09-30",
+      "appealResult": null,
+      "reviewedOn": "2026-11-02",
+      "verificationLevel": "official_cross_register_agreement",
+      "sourceGroup": "mos_gorsud_first_instance_and_appeal",
+      "fullTextVerified": false,
+      "witnesses": [
+        {
+          "kind": "first_instance",
+          "sourceUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/eeb88361-02f8-11f0-a7f4-b3bf1828314a",
+          "issuer": "Никулинский районный суд",
+          "uin": "77RS0018-02-2025-003155-71",
+          "caseNumber": "02-0514/2026",
+          "judgeLabel": "Кузнецова Е.А.",
+          "categoryCode": "161",
+          "firstInstanceOutcome": "Отказано в удовлетворении",
+          "appealRegisteredOn": null
+        },
+        {
+          "kind": "appeal_registry",
+          "sourceUrl": "https://m.mos-gorsud.ru/mgs/services/cases/appeal-civil/details/f3902a20-bc90-11f1-8aaf-c1237e05dc15",
+          "issuer": "Московский городской суд",
+          "uin": "77RS0018-02-2025-003155-71",
+          "caseNumber": "02-0514/2026",
+          "judgeLabel": "Кузнецова Е.А.",
+          "categoryCode": "161",
+          "firstInstanceOutcome": null,
+          "appealRegisteredOn": "2026-09-30"
+        }
+      ],
+      "note": "Совпали УИД, номер дела нижестоящего суда, судья и категория. Результат отказа опубликован в карточке первой инстанции; апелляционная карточка подтверждает регистрацию жалобы, а не её рассмотрение."
+    }
+  ]
+}
