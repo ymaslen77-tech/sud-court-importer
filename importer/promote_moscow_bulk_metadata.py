@@ -119,15 +119,18 @@ def promote(prepared,max_per_court=100,max_per_judge=25,mode="official",apply=Fa
    keys.add(key);by_number[(x["courtSlug"],x["number"])]=x["uin"];new.append(row)
    ccount[x["courtSlug"]]+=1;jcount[(x["courtSlug"],x["judgeName"])]+=1
    stats["accepted"]+=1
- if apply:
-  # Atomic write: prior content preserved until JSON payload is complete.
+ if apply and new:
+  # Atomic write. Private original backup must never be copied into the public web image.
   result={**dest,"records":dest["records"]+new,"source":SOURCE_URL}
-  if PUBLIC.exists():
-   backup=PUBLIC.with_suffix(".backup.json")
-   if backup.exists():raise ValueError("Existing backup: move it to a secure location before another apply")
-   backup.write_bytes(PUBLIC.read_bytes())
+  private=Path(os.environ.get("MOSCOW_PRIVATE_BACKUP_DIR",
+   str(Path(__file__).resolve().parents[1]/"data/import/backups")))
+  private.mkdir(parents=True,exist_ok=True)
+  backup=private/("moscow-judge-bulk-"+date.today().isoformat()+".json")
+  if backup.exists():raise ValueError("Existing private backup; move it before another apply")
+  backup.write_bytes(PUBLIC.read_bytes())
   with tempfile.NamedTemporaryFile(mode="w",encoding="utf-8",dir=str(PUBLIC.parent),suffix=".tmp",delete=False) as tmp:
-   json.dump(result,tmp,ensure_ascii=False,indent=2);tmp.write("\n");staged=Path(tmp.name)
+   json.dump(result,tmp,ensure_ascii=False,indent=2)
+   tmp.write(chr(10));staged=Path(tmp.name)
   os.replace(staged,PUBLIC)
  return {"mode":"applied" if apply else "dry_run","sourceDatasetSha256":report["firstSha256"],
   "accepted":len(new),"existing":len(dest["records"]),"total":len(dest["records"])+len(new),
