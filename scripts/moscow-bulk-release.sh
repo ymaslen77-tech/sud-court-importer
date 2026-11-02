@@ -71,6 +71,15 @@ echo "Private preflight: $STAGE"
 ARGS=(--first "$FIRST" --output "$STAGE/prepared")
 if [[ -n "$APPEAL" ]]; then ARGS+=(--appeal "$APPEAL"); fi
 "$PY" importer/moscow_bulk_judge_pipeline.py "${ARGS[@]}"
+if (( DO_APPLY )); then
+ "$PY" - "$STAGE/prepared/report.json" <<'PY_CHECK'
+import json,sys
+report=json.load(open(sys.argv[1],encoding="utf-8"))
+if report["counts"].get("staged",0)<1:
+ raise SystemExit("No safe candidates detected. Inspect source schema and quarantine; refusing --apply.")
+print("Preflight candidate count:",report["counts"].get("staged",0))
+PY_CHECK
+fi
 echo "Promotion report (no write):"
 "$PY" importer/promote_moscow_bulk_metadata.py \
  --prepared "$STAGE/prepared" --mode "$MODE" \
@@ -87,8 +96,12 @@ if (( DO_APPLY )); then
   git add -- "$TARGET"
   STAGED="$(git diff --cached --name-only)"
   [[ "$STAGED" == "$TARGET" ]] || { echo "Unexpected staged paths; refusing to commit" >&2; exit 2; }
-  git commit -m "data(moscow): import reviewed official court judge metadata"
-  git push origin infra/coolify-russian-vps
+  if git diff --cached --quiet; then
+   echo "No new public metadata: nothing to commit or push."
+  else
+   git commit -m "data(moscow): import reviewed official court judge metadata"
+   git push origin infra/coolify-russian-vps
+  fi
   echo "GitHub updated. Redeploy ONLY sudy-web in Coolify after GitHub CI Success."
  fi
 fi
