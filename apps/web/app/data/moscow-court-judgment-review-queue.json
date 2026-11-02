@@ -70,6 +70,40 @@
       "reviewedOn": null,
       "note": "Официальная карточка отмечает «Готовится к публикации». Не интерпретировать содержание до фактической публикации.",
       "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "number": "02-2880/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/meshchanskij/services/cases/civil/details/856e2e61-f5bd-11f0-9701-772943f580b3",
+      "documentDate": "2026-06-09",
+      "publicationStatus": "file_listed_unreviewed",
+      "judgeAttribution": "Боярникова Елена Владимировна (в карточке Боярникова Е.В.)",
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "Официальная карточка содержит «Скачать файл» для решения; оригинал не скачан и не прочитан. Правовая мотивировка не установлена.",
+      "observedOn": "2026-11-02",
+      "uin": "77RS0016-02-2025-024162-12"
+    },
+    {
+      "courtSlug": "khamovnicheskiy",
+      "number": "02-2070/2026",
+      "courtCaseUrl": "https://m.mos-gorsud.ru/rs/hamovnicheskij/services/cases/civil/details/ee73bd21-542d-11f1-a3f9-333d189f0a8e",
+      "documentDate": "2026-08-04",
+      "publicationStatus": "file_listed_unreviewed",
+      "judgeAttribution": "Бычков Андрей Владимирович (в карточке Бычков А.В.)",
+      "publicTextUrl": null,
+      "decisionTextHash": null,
+      "extractedLegalNorms": [],
+      "reasoningReviewed": false,
+      "publicationRestrictionsChecked": false,
+      "reviewedOn": null,
+      "note": "Официальная карточка содержит «Скачать файл» для решения; оригинал не скачан и не прочитан. Правовая мотивировка не установлена.",
+      "observedOn": "2026-11-02",
+      "uin": "77RS0030-02-2026-004148-61"
     }
   ]
 }
