@@ -30,6 +30,13 @@ class CrossRegisterCorroborationTests(unittest.TestCase):
                       ("fullTextVerified",True),("appealRegisteredOn","2026-10-01")]:
    row=copy.deepcopy(self.rows[0]);row[field]=value
    with self.subTest(field=field),self.assertRaises(ValueError):self.check(row)
+ def test_conflicting_case_list_uin_is_rejected(self):
+  r=copy.deepcopy(self.rows[0])
+  self.cases[(r["courtSlug"],r["caseNumber"])]["uin"]="77RS0000-02-2026-000001-10"
+  try:
+   with self.assertRaises(ValueError):self.check(r)
+  finally:
+   self.cases[(r["courtSlug"],r["caseNumber"])]["uin"]=r["uin"]
  def test_two_mirrors_do_not_count_as_distinct_registers(self):
   row=copy.deepcopy(self.rows[0])
   row["witnesses"][1]["kind"]="first_instance"
