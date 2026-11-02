@@ -17,6 +17,12 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
   keys=module.validate_all(self.records,self.judges)
   self.assertEqual(len(keys),27)
   self.assertGreaterEqual(len(self.judges),418)
+ def test_strict_unique_identifier_format(self):
+  case=next(x for x in self.records if x.get("uin")).copy()
+  module.validate_record(case,self.judges)
+  case["uin"]="invalid"
+  with self.assertRaises(ValueError):
+   module.validate_record(case,self.judges)
  def test_unknown_judge_or_wrong_court_rejected(self):
   row=self.records[0].copy()
   row["judgeName"]="Несуществующий Фиктивный Судья"
