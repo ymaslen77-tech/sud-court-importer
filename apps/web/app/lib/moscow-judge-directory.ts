@@ -6,6 +6,7 @@ import appointmentAdds from '../data/moscow-confirmed-appointment-additions.json
 import {MOSCOW_RECENT_CHAIR_APPOINTMENTS} from './moscow-judge-appointment-events';
 import briefsFile from '../data/moscow-judicial-source-briefs.json';
 import caseFile from '../data/moscow-judge-case-evidence.json';
+import bulkFile from '../data/moscow-judge-bulk-cases.json';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-official-minimum';
 
 type JudgeSourceKind='official_roster'|'official_appointment_news'|'official_assistant_reference'|'official_chair_listing';
@@ -34,7 +35,8 @@ export type JudgeCaseEvidence={
  outcome:string;
  decisionDate:string|null;
  sourceUrl:string;
- evidenceLevel:'official_case_list';
+ evidenceLevel:'official_case_list'|'official_dataset_record';
+ verificationLevel?:'official_registers_concordant'|'single_official_record_unchecked_live';
  judicialActTextVerified:false;
  judgeAttribution:'judge_and_number_in_same_official_row'|'initials_resolved_to_unique_official_roster_name';
  sourceJudgeLabel?:string;
@@ -119,7 +121,7 @@ export function moscowJudgeProfile(courtSlug:string,judgeSlug:string){
 export function moscowJudgeHref(p:MoscowJudgeProfile){
  return '/courts/moscow/judges/'+p.courtSlug+'/'+p.judgeSlug;
 }
-export const MOSCOW_JUDGE_CASE_EVIDENCE:ReadonlyArray<JudgeCaseEvidence>=caseFile.records as JudgeCaseEvidence[];
+export const MOSCOW_JUDGE_CASE_EVIDENCE:ReadonlyArray<JudgeCaseEvidence>=[...caseFile.records,...bulkFile.records] as JudgeCaseEvidence[];
 export function moscowJudgeCases(courtSlug:string,name:string):JudgeCaseEvidence[]{
  const judge=moscowJudgeProfile(courtSlug,moscowJudgeSlug(name));
  if(!judge)return [];
