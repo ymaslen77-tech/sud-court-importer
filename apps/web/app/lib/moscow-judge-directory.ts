@@ -26,6 +26,7 @@ export type JudgeCaseEvidence={
  courtSlug:string;
  judgeName:string;
  number:string;
+ uin?:string;
  proceeding:'civil'|'civil-exec'|'criminal'|'criminal-materials';
  topicId:string;
  category:string;
