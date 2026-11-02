@@ -6,6 +6,7 @@ import {
  moscowJudgeCaseCategories,moscowJudgeSourceLabel,moscowJudgeHref
 } from '../../../../../lib/moscow-judge-directory';
 import {moscowJudgeReviewedDecisions} from '../../../../../lib/moscow-judge-reviewed-decisions';
+import {moscowJudgeVerifiedCrosschecks} from '../../../../../lib/moscow-judge-crosschecks';
 import {moscowJudgeAppointmentEvents} from '../../../../../lib/moscow-judge-appointment-events';
 import {moscowJudicialSourceConflict} from '../../../../../lib/moscow-judicial-discrepancies';
 
@@ -35,6 +36,7 @@ export default async function MoscowJudgeProfilePage({params}:Params){
  if(!judge)notFound();
  const cases=moscowJudgeCases(courtSlug,judge.name);
  const reviewed=moscowJudgeReviewedDecisions(courtSlug,judge.name);
+ const crosschecked=moscowJudgeVerifiedCrosschecks(courtSlug,judge.name);
  const appointmentEvents=moscowJudgeAppointmentEvents(courtSlug,judge.name);
  const sourceConflict=moscowJudicialSourceConflict(courtSlug,judge.name);
  const categories=moscowJudgeCaseCategories(cases);
@@ -96,16 +98,29 @@ export default async function MoscowJudgeProfilePage({params}:Params){
      {c.decisionDate?' · '+c.decisionDate:''}</p>
     <p><strong>Тип подтверждения:</strong> запись в официальном реестре, содержащая номер дела и ФИО судьи.</p>
     <p className="court-source">{c.note} Полный текст судебного акта и его мотивировка не проверены.</p>
+    {crosschecked.filter(v=>v.caseNumber===c.number).map(v=><div className="court-source" key={v.uin}>
+     <p><strong>Сверено по двум официальным реестрам:</strong> совпадают УИД {v.uin}, номер дела, судья и категория.
+      Жалоба {v.appealDocket} зарегистрирована {v.appealRegisteredOn}. Результат апелляции в проверенной карточке не указан.</p>
+     <p><strong>Источники:</strong> <a href={v.witnesses[0].sourceUrl} target="_blank" rel="noopener noreferrer">первая инстанция ↗</a>
+      {' · '}<a href={v.witnesses[1].sourceUrl} target="_blank" rel="noopener noreferrer">апелляционный реестр ↗</a></p>
+     <p>Это две реестровые записи одного официального портала, а не независимые публикации полного решения.</p>
+    </div>)}
     <a href={c.sourceUrl} rel="noopener noreferrer" target="_blank">Официальный реестр: проверить по номеру дела ↗</a>
    </article>)}</div>:<p>Проверенных персонально привязанных записей пока нет. Перейдите к официальному реестру и введите фамилию с инициалами и год.</p>}
    <div className="moscow-registry-summary">
     <div><strong>{cases.length}</strong><span>Записей в нашей выборке</span></div>
     <div><strong>{outcomes.length}</strong><span>Результатов по реестру</span></div>
-    <div><strong>0</strong><span>Проверенных полных текстов в этой подборке</span></div>
+    <div><strong>{reviewed.length}</strong><span>Проверенных полных текстов в этой подборке</span></div>
    </div>
    <p><a href="https://mos-gorsud.ru/search" target="_blank" rel="noopener noreferrer">Поиск других дел на официальном портале ↗</a></p>
    <p className="court-source">Доля удовлетворённых требований, процент отмен решений и «вероятность исхода» не рассчитываются: выборка неполна, виды дел различаются. Удовлетворение ходатайства об обыске или аресте не является признанием лица виновным.</p>
   </section>
+  {crosschecked.length>0?<section className="court-section" id="judge-crosschecked-records">
+   <span className="eyebrow">Сверка нескольких официальных реестров</span>
+   <h2>Подтверждённые связи первой инстанции и апелляции</h2>
+   <p>По {crosschecked.length} делу/делам номер, УИД и судья подтверждены отдельными записями первой и апелляционной инстанций.
+   Это позволяет подтвердить прохождение жалобы, но не результат её рассмотрения или мотивировочную часть решения.</p>
+  </section>:null}
   <section className="court-section" id="judge-reasoned-decisions">
    <span className="eyebrow">Правовые нормы и мотивы только по полному тексту</span>
    <h2>Проверенные мотивировочные решения</h2>
