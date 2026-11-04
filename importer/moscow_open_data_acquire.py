@@ -9,11 +9,13 @@ from collections import Counter
 from datetime import datetime, timezone
 import gzip
 import hashlib
+import zipfile
 import json
 import os
 from pathlib import Path
 import shutil
 import tempfile
+from pathlib import PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, HTTPRedirectHandler, HTTPSHandler, build_opener
 from urllib.error import URLError, HTTPError
@@ -82,13 +84,16 @@ def fetch_one(d, folder, max_size, opener):
     target = folder / (d.identifier + ".json")
     if target.exists():
         return {"id":d.identifier,"status":"existing_not_overwritten",**inspection(target)}
+    # ZIP needs space for the downloaded archive AND decompressed JSON.
+    if shutil.disk_usage(folder).free < 2*max_size + 256*1024**2:
+        raise ValueError("Not enough free disk for archive plus extracted JSON")
     fd, tmpname = tempfile.mkstemp(prefix=".moscow-",suffix=".partial",dir=folder)
     os.close(fd)
     temp = Path(tmpname)
     expanded = None
     try:
         req = Request(safe_endpoint(d),headers={"User-Agent":"SudyRussia/1.0 manual-dataset-download",
-                     "Accept":"application/json,application/octet-stream,application/gzip"})
+                     "Accept":"application/json,application/zip,application/octet-stream,application/gzip"})
         with opener.open(req,timeout=120) as response, temp.open("wb") as out:
             if urlsplit(response.geturl()).hostname != "data.mos-gorsud.ru":
                 raise ValueError("Official host changed")
@@ -103,19 +108,46 @@ def fetch_one(d, folder, max_size, opener):
                 if n > max_size: raise ValueError("Dataset exceeds configured maximum")
                 out.write(block)
         with temp.open("rb") as src:
-            packed = src.read(2) == b"\x1f\x8b"
-        if packed:
+            signature = src.read(4)
+        is_gzip = signature[:2] == b"\x1f\x8b"
+        is_zip = signature == b"PK\x03\x04"
+        if is_gzip or is_zip:
             fd, newname = tempfile.mkstemp(prefix=".moscow-expanded-",suffix=".json",dir=folder)
             os.close(fd)
             expanded = Path(newname)
             size=0
-            with gzip.open(temp,"rb") as src, expanded.open("wb") as out:
-                while True:
-                    chunk=src.read(1024*1024)
-                    if not chunk: break
-                    size += len(chunk)
-                    if size>max_size: raise ValueError("Uncompressed data exceeds size cap")
-                    out.write(chunk)
+            if is_zip:
+                # Never call extract/extractall: stream ONE JSON member to a fixed path.
+                # Reject traversal, symlinks, multiple payloads, encryption, and ZIP bombs.
+                with zipfile.ZipFile(temp) as archive:
+                    members = [x for x in archive.infolist() if not x.is_dir()]
+                    if len(members) != 1:
+                        raise ValueError("ZIP must contain exactly one JSON file")
+                    info = members[0]
+                    part = PurePosixPath(info.filename)
+                    if (info.filename.startswith(("/", "\\\\")) or "\\\\" in info.filename
+                        or ".." in part.parts or not info.filename.lower().endswith(".json")
+                        or info.flag_bits & 0x1 or (info.external_attr >> 16) & 0o170000 == 0o120000):
+                        raise ValueError("Unsafe ZIP member or non-JSON payload")
+                    if info.file_size > max_size:
+                        raise ValueError("Uncompressed ZIP member exceeds configured cap")
+                    with archive.open(info) as src, expanded.open("wb") as out:
+                        while True:
+                            chunk=src.read(1024*1024)
+                            if not chunk: break
+                            size+=len(chunk)
+                            if size>max_size:
+                                raise ValueError("Uncompressed ZIP stream exceeds cap")
+                            out.write(chunk)
+            else:
+                with gzip.open(temp,"rb") as src, expanded.open("wb") as out:
+                    while True:
+                        chunk=src.read(1024*1024)
+                        if not chunk: break
+                        size+=len(chunk)
+                        if size>max_size:
+                            raise ValueError("Uncompressed GZIP stream exceeds cap")
+                        out.write(chunk)
             temp.unlink()
             temp=expanded
             expanded=None
@@ -155,8 +187,8 @@ def main(argv=None):
     os.chmod(a.output_dir,0o700)
     limit=a.max_file_mib*1024**2
     total_limit=a.max_total_gib*1024**3
-    if a.action=="fetch" and shutil.disk_usage(a.output_dir).free<limit+256*1024**2:
-        p.error("Insufficient free disk for configured single-file bound")
+    if a.action=="fetch" and shutil.disk_usage(a.output_dir).free<2*limit+256*1024**2:
+        p.error("Insufficient free disk for bounded ZIP download plus extraction")
     opener=build_opener(HTTPSHandler(),NoRedirect())
     entries=[]
     used=0
@@ -172,7 +204,8 @@ def main(argv=None):
                 record=({"id":d.identifier,"status":"not_downloaded"} if not path.is_file()
                         else {"id":d.identifier,"status":"inspected",**inspection(path)})
             entries.append(record)
-        except (ValueError,OSError,URLError,HTTPError,EOFError) as exc:
+        except (ValueError,OSError,URLError,HTTPError,EOFError,zipfile.BadZipFile,
+                zipfile.LargeZipFile,RuntimeError,NotImplementedError) as exc:
             entries.append({"id":d.identifier,"status":"blocked_review",
                             "error":type(exc).__name__,"details":str(exc)[:150]})
             break

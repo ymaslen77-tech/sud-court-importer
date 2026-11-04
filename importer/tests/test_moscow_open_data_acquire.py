@@ -45,4 +45,42 @@ class RegistryTests(unittest.TestCase):
    p=Path(root)/"bad.json"
    p.write_text("<html>error</html>",encoding="utf-8")
    with self.assertRaises(ValueError):a.check_json_header(p)
+
+ def test_zip_single_json_file_streamed_to_fixed_name(self):
+  import io
+  import zipfile
+  from unittest.mock import patch
+  class Response(io.BytesIO):
+   def __init__(self,raw):
+    super().__init__(raw)
+    self.headers={"Content-Length":str(len(raw))}
+   def geturl(self):return "https://data.mos-gorsud.ru/verified"
+   def __enter__(self):return self
+   def __exit__(self,*exc):self.close()
+  def invoke(entries,uncompressed_max=1024*1024):
+   data=io.BytesIO()
+   with zipfile.ZipFile(data,"w",compression=zipfile.ZIP_DEFLATED) as z:
+    for name,content in entries:z.writestr(name,content)
+   raw=data.getvalue()
+   opener=type("FakeOpener",(),{"open":lambda self,request,timeout:Response(raw)})()
+   with tempfile.TemporaryDirectory() as root:
+    folder=Path(root)
+    with patch.object(a.shutil,"disk_usage",return_value=type("D",(),{"free":8*1024**3})()):
+     out=a.fetch_one(c.BY_ID[a.CIVIL_FIRST],folder,uncompressed_max,opener)
+    self.assertNotIn("SECRET-PERSON",json.dumps(out))
+    self.assertEqual(list(folder.glob(".*partial")),[])
+    return out,(folder/(a.CIVIL_FIRST+".json")).read_bytes()
+  out,payload=invoke([("data.json",b'[{"case":"fake"}]')])
+  self.assertEqual(out["status"],"downloaded_private")
+  self.assertEqual(payload,b'[{"case":"fake"}]')
+  self.assertFalse(out["published"])
+  for entries in [
+   [("../evil.json",b'[]')],
+   [("a.json",b'[]'),("b.json",b'[]')],
+   [("notes.txt",b'nope')],
+  ]:
+   with self.subTest(entries=entries), self.assertRaises(ValueError):
+    invoke(entries)
+  with self.assertRaises(ValueError):
+   invoke([("data.json",b"[" + b"0"*100 + b"]")],uncompressed_max=90)
 if __name__=="__main__":unittest.main()
