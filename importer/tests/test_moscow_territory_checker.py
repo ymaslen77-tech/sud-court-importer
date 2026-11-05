@@ -51,5 +51,5 @@ class MoscowTerritoryUITests(unittest.TestCase):
         pilots=json.loads((APP/'lib/pilot-review-matrix.json').read_text(encoding='utf-8'))
         self.assertEqual(len(pilots['records']),10)
         page=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
-        self.assertIn('robots:{index:false,follow:true}',page)
+        self.assertIn('robots:moscowDistrictSeoRobots()',page)
 if __name__=='__main__':unittest.main()

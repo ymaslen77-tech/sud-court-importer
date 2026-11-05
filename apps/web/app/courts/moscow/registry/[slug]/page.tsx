@@ -1,5 +1,11 @@
 import Link from 'next/link';
-import {notFound} from 'next/navigation';
+import {MoscowCityCourtDossier} from '../../../../_components/moscow-city-court-dossier';
+import {MoscowDistrictRegistryGuide} from '../../../../_components/moscow-district-registry-guide';
+import {MoscowDistrictIndividualDossier} from '../../../../_components/moscow-district-individual-dossier';
+import {moscowDistrictIndividual} from '../../../../lib/moscow-district-individual';
+import {moscowDistrictReviewedContact} from '../../../../lib/moscow-district-reviewed-contacts';
+import {mgsSeoRobots,moscowDistrictSeoRobots} from '../../../../lib/moscow-city-seo';
+import {notFound,permanentRedirect} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
  MOSCOW_OFFICIAL_MINIMUM_COURTS,getMoscowOfficialMinimumCourt,
@@ -15,19 +21,31 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {slug}=await params;
  const court=getMoscowOfficialMinimumCourt(slug);
  if(!court)return {title:'Суд не найден',robots:{index:false,follow:false}};
+ if(slug==='moscow-city-court'){
+  const title='Московский городской суд — подсудность, дела, адрес и контакты';
+  const description='Московский городской суд: адрес и часы работы, проверка подсудности по адресу, поиск дел, апелляции, госпошлина и правила подачи документов.';
+  const url='/courts/moscow/registry/moscow-city-court';
+  return {title,description,alternates:{canonical:url},robots:mgsSeoRobots(),
+   openGraph:{type:'article',title,description,url,locale:'ru_RU',siteName:'Суды России'}};
+ }
  return {
-  title:court.name+' — адрес, часы работы и контакты, Москва',
-  description:court.name+': '+court.address+'. Расписание и контакты из официального каталога московских судов.',
-  alternates:{canonical:'/courts/moscow/registry/'+court.slug},
-  robots:{index:false,follow:true}
+  title:court.name+' — адрес, подсудность, судьи, контакты и дела',
+  description:court.name+': опубликованные контакты, руководство, график и адрес; подсудность по дому, поиск дел, госпошлина, подача и обжалование.',
+  alternates:{canonical:MoscowOfficialCourtHref(court)},
+  robots:moscowDistrictSeoRobots()
  };
 }
 export default async function MoscowOfficialRegistryDetail({params}:Props){
  const {slug}=await params;
  const court=getMoscowOfficialMinimumCourt(slug);
  if(!court)notFound();
+ if(slug==='moscow-city-court')return <MoscowCityCourtDossier court={court}/>;
  const detailed=MoscowOfficialCourtHref(court);
+ // Twelve pre-existing researched dossiers are the canonical URLs; registry aliases must not create duplicates.
+ if(detailed!==('/courts/moscow/registry/'+court.slug))permanentRedirect(detailed);
  const hasRich=detailed!==('/courts/moscow/registry/'+court.slug);
+ const reviewedContact=moscowDistrictReviewedContact(slug);
+ const individual=moscowDistrictIndividual(slug);
  const related=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.slug!==court.slug&&c.kind===court.kind).slice(0,5);
  return <article className="moscow-minimum-court-page">
   <nav className="breadcrumb" aria-label="Навигация">
@@ -47,7 +65,9 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
    <nav className="court-toc" aria-label="Содержание">
     <strong>На странице</strong>
     <a href="#contacts">Адрес и контакты</a>
-    <a href="#practical">Как пользоваться сведениями</a>
+    <a href="#district-individual-dossier">Индивидуальное досье суда</a>
+    <a href="#district-guide">Восемь практических разделов</a>
+    <a href="#practical">Подготовка к посещению</a>
     <a href="#source">Официальные источники</a>
    </nav>
   </section>
@@ -76,6 +96,20 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
     {court.metro?<div><dt>Метро, указанное в справочнике</dt><dd>{court.metro}</dd></div>:null}
    </dl>
    <p className="court-source">Обычная электронная почта не заменяет предусмотренный процессуальными правилами способ подачи документов.</p>
+   {reviewedContact?<div className="court-practical-grid">
+    <article>
+     <h3>Экспедиция: прямой телефон</h3>
+     <p>{reviewedContact.expeditionPhone}</p>
+     <p className="court-source">Данные опубликованы на индивидуальном официальном сайте суда; повторная проверка источника: {reviewedContact.observedOn}.</p>
+     <a className="text-link" href={reviewedContact.courtUrl} rel="noopener noreferrer" target="_blank">Перейти к официальной странице суда ↗</a>
+    </article>
+    {reviewedContact.archivePhone?<article>
+      <h3>Архив суда</h3><p>Телефон: {reviewedContact.archivePhone}</p>
+      {reviewedContact.archiveHours?<p>{reviewedContact.archiveHours}</p>:null}
+      {reviewedContact.hoursSourceUrl?<a className="text-link" href={reviewedContact.hoursSourceUrl} rel="noopener noreferrer" target="_blank">Официальные часы приёма ↗</a>:null}
+      <p className="court-source">Уточняйте часы конкретного отдела перед посещением.</p>
+    </article>:null}
+   </div>:null}
   </section>
   <section className="court-section" id="practical">
    <span className="eyebrow">Перед обращением</span>
@@ -91,6 +125,8 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
     {hasRich?<Link className="button button-outline" href={detailed}>Подробное досье этого суда →</Link>:null}
    </div>
   </section>
+  {individual?<MoscowDistrictIndividualDossier court={court} profile={individual} legacyPhoneShown={Boolean(reviewedContact)}/>:null}
+  {court.kind==='general-district'?<MoscowDistrictRegistryGuide court={court}/>:null}
   <section className="court-section" id="source">
    <span className="eyebrow">Происхождение сведений</span>
    <h2>Официальный источник и ограничения</h2>

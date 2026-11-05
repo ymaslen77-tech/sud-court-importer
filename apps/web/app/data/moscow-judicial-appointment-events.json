@@ -1,0 +1,85 @@
+{
+  "description": "Датированные события назначений судей; события в другом суде сигнализируют о необходимости уточнить старый список, но не удаляют историческую запись.",
+  "records": [
+    {
+      "courtSlug": "lyublinskiy",
+      "name": "Вырышева Ирина Владимировна",
+      "eventType": "appointed_chair",
+      "newCourt": "same",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "ostankinskiy",
+      "name": "Максимова Елена Викторовна",
+      "eventType": "appointed_chair",
+      "newCourt": "same",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "simonovskiy",
+      "name": "Дёмина Евгения Александровна",
+      "eventType": "appointed_chair",
+      "newCourt": "same",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "solntsevskiy",
+      "name": "Ушников Максим Петрович",
+      "eventType": "appointed_chair",
+      "newCourt": "same",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "taganskiy",
+      "name": "Строгонов Михаил Викторович",
+      "eventType": "appointed_to_moscow_city_court",
+      "newCourt": "Московский городской суд",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "khoroshevskiy",
+      "name": "Асауленко Дмитрий Валентинович",
+      "eventType": "appointed_to_moscow_city_court",
+      "newCourt": "Московский городской суд",
+      "appointmentDate": "2026-07-27",
+      "decreeNumber": "514",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/719f1798-1b6b-4cc9-adef-449fc78f9470",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "izmaylovskiy",
+      "name": "Тугушева Ольга Александровна",
+      "eventType": "appointed_to_moscow_city_court",
+      "newCourt": "Московский городской суд",
+      "appointmentDate": "2026-07-27",
+      "decreeNumber": "514",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/719f1798-1b6b-4cc9-adef-449fc78f9470",
+      "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "solntsevskiy",
+      "name": "Демочкина Ольга Валентиновна",
+      "eventType": "appointed_to_moscow_city_court",
+      "newCourt": "Московский городской суд",
+      "appointmentDate": "2026-07-27",
+      "decreeNumber": "514",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/719f1798-1b6b-4cc9-adef-449fc78f9470",
+      "observedOn": "2026-11-01"
+    }
+  ]
+}
