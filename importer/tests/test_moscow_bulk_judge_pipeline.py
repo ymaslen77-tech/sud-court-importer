@@ -109,4 +109,39 @@ class MoscowBulkJudgePipelineTests(unittest.TestCase):
   p.run(first,None,root/"out")
   with self.assertRaises(ValueError):
    p.run(first,None,root/"out")
+ def test_real_export_aliases_are_recognized_without_guessing_judge_or_outcome(self):
+  # Synthetic lowerCamelCase fields match names observed in the real JSON export.
+  record={
+   "courtName":FIRST["Наименование суда"],
+   "number":FIRST["Номер дела, материала, жалобы или производства"],
+   "uid":FIRST["Уникальный идентификатор дела"],
+   "url":FIRST["Ссылка на карточку дела"],
+   "category":FIRST["Категория дела"],
+   "dateFinal":"2026-05-28",
+   "judgeTeam":[{"judge":"ПЕРСОНАЛЬНЫЕ-ДАННЫЕ-НЕ-КОПИРОВАТЬ"}],
+   "participants":[{"name":"ПЕРСОНАЛЬНЫЕ-ДАННЫЕ-НЕ-КОПИРОВАТЬ"}],
+  }
+  self.assertEqual(p.value(record,"uin"),FIRST["Уникальный идентификатор дела"])
+  self.assertEqual(p.value(record,"number"),FIRST["Номер дела, материала, жалобы или производства"])
+  _,reason=p.first_row(record,self.courts,self.official,self.judges)
+  self.assertEqual(reason,"unknown_or_ambiguous_judge")
+  record["judge"]="Кузнецова Е.А."
+  accepted,reason=p.first_row(record,self.courts,self.official,self.judges)
+  self.assertIsNone(reason)
+  self.assertEqual(accepted["status"],"pending")
+  self.assertIsNone(accepted["decisionDate"])
+  self.assertNotIn("participants",accepted)
+  self.assertNotIn("judgeTeam",accepted)
+ def test_lowercamel_appeal_links_read_without_claiming_appeal_outcome(self):
+  row={"uid":APPEAL["Уникальный идентификатор дела"],
+   "url":APPEAL["Ссылка на карточку дела"],
+   "dateReg":"30.09.2026", "number":"Ж-65034/2026",
+   "lower":[{"number":"02-0514/2026","judge":"Кузнецова Е.А."}],
+   "participants":[{"name":"ПЕРСОНАЛЬНЫЕ-ДАННЫЕ-НЕ-КОПИРОВАТЬ"}]}
+  got,reason=p.appeal_row(row)
+  self.assertIsNone(reason)
+  self.assertEqual(got["lower"][0]["number"],"02-0514/2026")
+  self.assertEqual(got["lower"][0]["judgeLabel"],"Кузнецова Е.А.")
+  self.assertEqual(got["appealRegisteredOn"],"2026-09-30")
+  self.assertNotIn("participants",got)
 if __name__=="__main__":unittest.main()

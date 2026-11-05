@@ -30,16 +30,16 @@ from ingest_moscow_judge_case_evidence import judge_sources,read_records
 OFFICIAL={"mos-gorsud.ru","www.mos-gorsud.ru","m.mos-gorsud.ru"}
 FIELDS={
  "court":("Наименование суда","Наименование судебного органа","courtName","court_name","Суд"),
- "number":("Номер дела, материала, жалобы или производства","Номер дела","Номер судебного дела","caseNumber","case_number"),
- "uin":("Уникальный идентификатор дела","УИД","uniqueCaseId","uin"),
+ "number":("Номер дела, материала, жалобы или производства","Номер дела","Номер судебного дела","caseNumber","case_number","number"),
+ "uin":("Уникальный идентификатор дела","УИД","uniqueCaseId","uin","uid"),
  "judge":("Судья","Судья первой инстанции","judge","judgeName"),
  "category":("Категория судебного дела, материала, жалобы или производства","Категория дела","Категория судебного дела","category"),
  "outcome":("Результат рассмотрения","Результат рассмотрения дела","result","resultName"),
  "date":("Дата окончания","Дата решения","Дата рассмотрения","decisionDate","finishDate"),
- "url":("Ссылка на карточку дела","Ссылка на карточку судебного дела","caseUrl","case_url"),
+ "url":("Ссылка на карточку дела","Ссылка на карточку судебного дела","caseUrl","case_url","url"),
  "acts":("Судебные акты","acts","documents"),
- "first":("Дело/документ в нижестоящей инстанции","Дело в нижестоящей инстанции","lowerCourtCases"),
- "regdate":("Дата поступления дела в апелляционную инстанцию","Дата регистрации","registrationDate"),
+ "first":("Дело/документ в нижестоящей инстанции","Дело в нижестоящей инстанции","lowerCourtCases","lower"),
+ "regdate":("Дата поступления дела в апелляционную инстанцию","Дата регистрации","registrationDate","dateReg"),
 }
 NUMBER=re.compile(r"^(?:0[12](?:а)?-\d+|13-\d+|3/[26]-\d+)/20\d\d$")
 UIN=re.compile(r"^77RS\d{4}-\d{2}-20\d{2}-\d{6}-\d{2}$")
@@ -168,6 +168,8 @@ def safe_act_links(raw):
   if url_check(u,"/rs/") or url_check(u,"/mgs/"):links.append(u)
  return links[:5]
 
+# IMPORTANT: judgeTeam is not treated as an identified judge without evidence of its structure.
+# dateFinal is not treated as a verified judicial decision date.
 def first_row(raw,aliases,official,judges):
  if not isinstance(raw,dict):return None,"not_object"
  label=norm(plain(value(raw,"court"),150))
@@ -211,7 +213,7 @@ def lower_refs(raw):
  out=[]
  for x in value_:
   if not isinstance(x,dict):continue
-  n=plain(next((x[k] for k in ("Номер дела в суде нижестоящей инстанции","Номер дела","caseNumber") if k in x),""))
+  n=plain(next((x[k] for k in ("Номер дела в суде нижестоящей инстанции","Номер дела","caseNumber","number") if k in x),""))
   judge=plain(next((x[k] for k in ("Судья первой инстанции","Судья","judge") if k in x),""))
   if n and NUMBER.fullmatch(n):out.append({"number":n,"judgeLabel":judge})
  return out

@@ -8,7 +8,7 @@ import argparse
 from collections import Counter, defaultdict
 import json
 from pathlib import Path
-from moscow_bulk_judge_pipeline import FIELDS, records, value, first_row, appeal_row, court_directory
+from moscow_bulk_judge_pipeline import FIELDS, NUMBER, UIN, records, value, first_row, appeal_row, court_directory, date_str, url_check
 
 FIRST = "1577116594824-casesgroupfirstcivilhxvgb"
 APPEAL = "1577117744056-casesgroupmgsappealcivilwtxga"
@@ -40,6 +40,7 @@ def audit(path, role, limit, mapping=None):
     nested = defaultdict(lambda: defaultdict(Counter))
     existing_aliases = Counter()
     outcomes = Counter()
+    formats = defaultdict(Counter)
     count = 0
     stream = records(path)
     try:
@@ -65,6 +66,41 @@ def audit(path, role, limit, mapping=None):
             for name in FIELDS:
                 if value(row, name) is not None:
                     existing_aliases[name] += 1
+            # Aggregate format validation ONLY; never output values or samples.
+            # "uid" field existence does not prove it is a valid 77RS UIN.
+            uid_candidate = value(row, "uin")
+            if uid_candidate in (None, ""):
+                formats["uin"]["missing"] += 1
+            elif not isinstance(uid_candidate, str):
+                formats["uin"]["non_string"] += 1
+            elif UIN.fullmatch(uid_candidate.strip()):
+                formats["uin"]["matches_current_pattern"] += 1
+            else:
+                formats["uin"]["other_format"] += 1
+            case_number = value(row, "number")
+            if case_number in (None, ""):
+                formats["number"]["missing"] += 1
+            elif isinstance(case_number, str) and NUMBER.fullmatch(case_number.strip()):
+                formats["number"]["matches_current_pattern"] += 1
+            else:
+                formats["number"]["other_format"] += 1
+            official_url = value(row, "url")
+            prefix = "/rs/" if role == "first" else "/mgs/services/cases/appeal-"
+            formats["url"]["official_expected_path" if url_check(official_url, prefix)
+                           else "missing_or_other_path"] += 1
+            for key in ("judgeTeam", "lower", "dateReg", "dateFinal"):
+                if key in row:
+                    formats[key][kind(row[key])] += 1
+                else:
+                    formats[key]["missing"] += 1
+            for field in ("date", "regdate"):
+                raw_date = value(row, field)
+                if raw_date is None:
+                    formats[field]["missing"] += 1
+                elif date_str(raw_date):
+                    formats[field]["recognized_date"] += 1
+                else:
+                    formats[field]["other_date_format"] += 1
             if mapping is not None:
                 if role == "first":
                     aliases, official, judges = mapping
@@ -81,6 +117,7 @@ def audit(path, role, limit, mapping=None):
             k: {x: dict(types) for x, types in sorted(children.items())}
             for k, children in sorted(nested.items())},
         "existingAliasMatches": dict(sorted(existing_aliases.items())),
+        "fieldFormatCounts": {k: dict(v) for k, v in sorted(formats.items())},
         "existingImporterOutcomes": dict(sorted(outcomes.items())),
         "containsPersonalDataValues": False,
         "published": False,
@@ -108,6 +145,10 @@ def main(argv=None):
                     key: sorted(children)
                     for key, children in section["nestedFieldNamesOnly"].items()},
                 "existingAliasMatches": section["existingAliasMatches"],
+                "fieldFormatCounts": section["fieldFormatCounts"],
+                "fieldTypes": {key: section["topLevel"].get(key, {})
+                               for key in ("uid", "number", "url", "judgeTeam", "lower",
+                                           "category", "dateFinal", "dateReg")},
                 "existingImporterOutcomes": section["existingImporterOutcomes"],
             }
             for name, section in data.items()

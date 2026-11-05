@@ -34,5 +34,28 @@ class MoscowSchemaAuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit.audit(Path("/nonexistent.json"), "first", 3001)
 
+    def test_validity_aggregate_does_not_emit_values(self):
+        from moscow_bulk_judge_pipeline import FIELDS
+        cases=[
+            {"uid":"77RS0018-02-2025-003155-71","number":"02-0514/2026",
+             "url":"https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/test",
+             "dateReg":"30.09.2026","judgeTeam":["VERY-SECRET-NAME"],
+             "participants":[{"name":"TOP-SECRET"}]},
+            {"uid":"NOT_A_VALID_UID","number":"unknown","url":"https://evil.example/",
+             "dateFinal":"2026-05-28","lower":[{"judge":"TOP-SECRET"}],
+             "participants":[{"name":"TOP-SECRET"}]}]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "cases.json"
+            path.write_text(json.dumps(cases),encoding="utf-8")
+            result = audit.audit(path, "first", 2)
+        self.assertEqual(result["existingAliasMatches"]["uin"], 2)
+        self.assertEqual(result["fieldFormatCounts"]["uin"]["matches_current_pattern"], 1)
+        self.assertEqual(result["fieldFormatCounts"]["uin"]["other_format"], 1)
+        self.assertEqual(result["fieldFormatCounts"]["number"]["matches_current_pattern"], 1)
+        self.assertEqual(result["fieldFormatCounts"]["judgeTeam"]["array"], 1)
+        self.assertNotIn("TOP-SECRET", json.dumps(result))
+        self.assertNotIn("VERY-SECRET-NAME", json.dumps(result))
+        self.assertFalse(result["published"])
+
 if __name__ == "__main__":
     unittest.main()

@@ -25,3 +25,32 @@ data/import/.moscow-venv/bin/python importer/moscow_schema_audit.py --limit 300 
 Никаких фактических ФИО, номеров дела, судебных текстов или значений полей
 не выводится. Расшифровка полей и настройка маппинга выполняются после
 анализа отчёта. Не запускать `--apply`, `--push` или Coolify Redeploy.
+
+## 05.11.2026 — диагностический результат и корректировка
+
+В одном из отчётов по 300 апелляционным записям было
+`missing_or_invalid_uin: 300`. Это старое сообщение объединяло **два**
+случая: поле УИД отсутствует в словаре импортёра или его значение не
+соответствует жёсткому шаблону. Нельзя утверждать, что сами УИД неверные.
+
+Установлены безопасные альтернативные имена полей:
+`uid`, `number`, `url`, `dateReg`, `lower`, а также во вложенных
+ссылках `lower[].number`. Они допускаются лишь после обычной проверки
+УИД, URL, даты, номера и связанного судьи. Старый формат продолжает работать.
+
+`judgeTeam` не преобразуется автоматически в ФИО судьи:
+без подтверждения типа и содержимого это было бы выдуманным
+установлением судьи. `dateFinal` не считается датой вынесения решения,
+и неизвестный результат не становится «удовлетворено/отказано».
+
+Обновлённый аудит печатает `fieldFormatCounts`, `fieldTypes`,
+`existingImporterOutcomes` **без значений** оригинальных полей.
+Повторно выполнить:
+```bash
+cd /srv/sudy-bulk-work && git pull --ff-only origin infra/coolify-russian-vps
+data/import/.moscow-venv/bin/python -m unittest discover -s importer/tests -p 'test_moscow_bulk_judge_pipeline.py' -v
+data/import/.moscow-venv/bin/python -m unittest discover -s importer/tests -p 'test_moscow_schema_audit.py' -v
+data/import/.moscow-venv/bin/python importer/moscow_schema_audit.py --limit 300 --compact
+```
+Вывод содержит только количество форматов и причин отказа; без ФИО,
+номеров дел и другой информации об участниках.
