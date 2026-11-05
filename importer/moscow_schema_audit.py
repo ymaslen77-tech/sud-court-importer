@@ -8,7 +8,8 @@ import argparse
 from collections import Counter, defaultdict
 import json
 from pathlib import Path
-from moscow_bulk_judge_pipeline import FIELDS, NUMBER, UIN, records, value, first_row, appeal_row, court_directory, date_str, url_check
+from moscow_bulk_judge_pipeline import (FIELDS, NUMBER, UIN, records, value, first_row,
+    appeal_row, court_directory, date_str, url_check, judge_for, norm, plain)
 
 FIRST = "1577116594824-casesgroupfirstcivilhxvgb"
 APPEAL = "1577117744056-casesgroupmgsappealcivilwtxga"
@@ -41,6 +42,8 @@ def audit(path, role, limit, mapping=None):
     existing_aliases = Counter()
     outcomes = Counter()
     formats = defaultdict(Counter)
+    judge_team_matches = Counter()
+    lower_reference_formats = Counter()
     count = 0
     stream = records(path)
     try:
@@ -101,6 +104,40 @@ def audit(path, role, limit, mapping=None):
                     formats[field]["recognized_date"] += 1
                 else:
                     formats[field]["other_date_format"] += 1
+            # Determine whether judgeTeam equals one known judge for this exact court,
+            # without publishing a name or interpreting arbitrary team strings as judges.
+            if mapping is not None:
+                aliases, _, judges = mapping
+                court_slug = aliases.get(norm(plain(value(row, "court"), 150)))
+                team = row.get("judgeTeam")
+                if not isinstance(team, str):
+                    judge_team_matches["not_a_string"] += 1
+                elif not team.strip():
+                    judge_team_matches["empty_string"] += 1
+                elif not court_slug:
+                    judge_team_matches["court_not_in_35"] += 1
+                else:
+                    matched, basis = judge_for(team, court_slug, judges)
+                    judge_team_matches[basis if matched else "unknown_or_ambiguous"] += 1
+            lower = row.get("lower")
+            if not isinstance(lower, list):
+                lower_reference_formats["missing_or_not_array"] += 1
+            elif not lower:
+                lower_reference_formats["empty_array"] += 1
+            else:
+                for item in lower[:100]:
+                    if not isinstance(item, dict):
+                        lower_reference_formats["not_an_object"] += 1
+                        continue
+                    number = item.get("number")
+                    if not isinstance(number, str) or not number.strip():
+                        lower_reference_formats["number_missing_or_wrong_type"] += 1
+                    elif NUMBER.fullmatch(number.strip()):
+                        lower_reference_formats["number_matches_current_pattern"] += 1
+                    else:
+                        lower_reference_formats["number_other_format"] += 1
+                    lower_reference_formats["judge_present" if isinstance(item.get("judge"), str)
+                                            and item["judge"].strip() else "judge_missing"] += 1
             if mapping is not None:
                 if role == "first":
                     aliases, official, judges = mapping
@@ -118,6 +155,8 @@ def audit(path, role, limit, mapping=None):
             for k, children in sorted(nested.items())},
         "existingAliasMatches": dict(sorted(existing_aliases.items())),
         "fieldFormatCounts": {k: dict(v) for k, v in sorted(formats.items())},
+        "judgeTeamRosterMatch": dict(sorted(judge_team_matches.items())),
+        "lowerReferenceFormat": dict(sorted(lower_reference_formats.items())),
         "existingImporterOutcomes": dict(sorted(outcomes.items())),
         "containsPersonalDataValues": False,
         "published": False,
@@ -146,6 +185,8 @@ def main(argv=None):
                     for key, children in section["nestedFieldNamesOnly"].items()},
                 "existingAliasMatches": section["existingAliasMatches"],
                 "fieldFormatCounts": section["fieldFormatCounts"],
+                "judgeTeamRosterMatch": section["judgeTeamRosterMatch"],
+                "lowerReferenceFormat": section["lowerReferenceFormat"],
                 "fieldTypes": {key: section["topLevel"].get(key, {})
                                for key in ("uid", "number", "url", "judgeTeam", "lower",
                                            "category", "dateFinal", "dateReg")},

@@ -57,5 +57,29 @@ class MoscowSchemaAuditTests(unittest.TestCase):
         self.assertNotIn("VERY-SECRET-NAME", json.dumps(result))
         self.assertFalse(result["published"])
 
+    def test_official_roster_and_lower_reference_aggregates_without_names(self):
+        from moscow_bulk_judge_pipeline import court_directory
+        rows = [
+            {"courtName": "Никулинский районный суд города Москвы",
+             "judgeTeam": "Кузнецова Е.А.",
+             "lower": [{"number": "02-0514/2026", "judge": "SECRET-LOWER-JUDGE"},
+                       {"number": "invalid!", "judge": "SECRET-LOWER-JUDGE"}],
+             "participants": [{"fullName": "SECRET-PARTICIPANT"}]},
+            {"courtName": "Никулинский районный суд города Москвы",
+             "judgeTeam": "SECRET-UNKNOWN-JUDGE", "lower": []}
+        ]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "cases.json"
+            path.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+            result = audit.audit(path, "first", 2, court_directory())
+        self.assertEqual(result["judgeTeamRosterMatch"]["unique_official_initials"], 1)
+        self.assertEqual(result["judgeTeamRosterMatch"]["unknown_or_ambiguous"], 1)
+        self.assertEqual(result["lowerReferenceFormat"]["number_matches_current_pattern"], 1)
+        self.assertEqual(result["lowerReferenceFormat"]["number_other_format"], 1)
+        self.assertEqual(result["lowerReferenceFormat"]["empty_array"], 1)
+        string_result = json.dumps(result, ensure_ascii=False)
+        for secret in ("SECRET-LOWER-JUDGE", "SECRET-UNKNOWN-JUDGE", "SECRET-PARTICIPANT"):
+            self.assertNotIn(secret, string_result)
+
 if __name__ == "__main__":
     unittest.main()

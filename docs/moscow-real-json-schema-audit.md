@@ -54,3 +54,32 @@ data/import/.moscow-venv/bin/python importer/moscow_schema_audit.py --limit 300 
 ```
 Вывод содержит только количество форматов и причин отказа; без ФИО,
 номеров дел и другой информации об участниках.
+
+
+## Продолжение проверки по реальным выгрузкам (05.11.2026)
+
+Из 300 апелляционных записей 273 прошли предварительный разбор
+`appeal_row`, 17 не содержали распознаваемых `lower[].number`,
+10 не прошли проверку УИД. Это **не число связанных судебных дел**:
+связь первой и апелляционной инстанций устанавливается только после
+сопоставления УИД, номера и судьи с первой инстанцией.
+
+Для диагностики без раскрытия ФИО добавлены:
+- `judgeTeamRosterMatch`: число точных/однозначных совпадений
+  строки `judgeTeam` с официальным перечнем конкретного суда;
+- `lowerReferenceFormat`: причины отсутствия связей `lower`
+  и количество номеров, проходящих существующий шаблон.
+
+Совпадение по кадровому справочнику — лишь **кандидат на атрибуцию**,
+не достаточная юридическая проверка судьи. `dateFinal` и результат
+апелляции по-прежнему нельзя использовать как проверенную мотивировку.
+
+Краткая безопасная сводка, по 1000 записей каждого реестра:
+
+```bash
+cd /srv/sudy-bulk-work
+data/import/.moscow-venv/bin/python importer/moscow_schema_audit.py --limit 1000 --compact \
+  | python3 -c 'import json,sys; d=json.load(sys.stdin); print(json.dumps({k:{"sampledRecords":d[k]["sampledRecords"],"existingImporterOutcomes":d[k]["existingImporterOutcomes"],"judgeTeamRosterMatch":d[k]["judgeTeamRosterMatch"],"lowerReferenceFormat":d[k]["lowerReferenceFormat"],"fieldFormatCounts":d[k]["fieldFormatCounts"]} for k in ("first","appeal")},ensure_ascii=False,indent=2))'
+```
+
+Команда не сохраняет в Git никакие реальные записи и ничего не публикует.
