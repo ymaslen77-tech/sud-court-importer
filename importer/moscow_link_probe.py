@@ -102,6 +102,8 @@ def appeal_sample(path, limit, index, first_uids):
             matched.add(case_key)
     finally:
         stream.close()
+    # Keep the zero result explicit: an unmatched sample is not an exception.
+    totals["technical_correspondence"] += 0
     totals["distinct_first_cases_with_candidate_appeal"] = len(matched)
     return dict(totals)
 
