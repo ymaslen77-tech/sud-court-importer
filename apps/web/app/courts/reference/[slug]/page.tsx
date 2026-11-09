@@ -69,21 +69,23 @@ export default async function OfficialCourtReferencePage({params}:Props){
    <div className="section-intro">
     <span className="eyebrow">Дела и судебные решения</span>
     <h2>Официальное судебное делопроизводство</h2>
-    <p>Дела и тексты решений не перенесены в нашу базу без индивидуальной проверки. Для поиска дела, движения производства и опубликованных судебных актов используйте официальный сервис.</p>
+    <p>Дела и тексты решений не перенесены в нашу базу без индивидуальной проверки. Проверять стадии и результаты нужно по отдельным официальным карточкам, а не по одному названию суда.</p>
+    {court.region==='region-50'?<p>Контактный справочник не содержит подтверждённого адреса прямого поиска дел этого суда. Ниже доступна главная страница суда с официальными разделами, а также поиск по нашему каталогу.</p>:null}
+    <p><Link href={'/search?region='+encodeURIComponent(court.region)} className="text-link">Поискать сведения на «Судах России» →</Link></p>
    </div>
    <div className="results">
     <a className="result-row" href={court.casesUrl} target="_blank" rel="noopener noreferrer">
-     <span><strong>Открыть официальный поиск дел и решений</strong><small>Первоисточник суда, а не неподтверждённые записи</small></span><span aria-hidden="true">↗</span>
+     <span><strong>{court.casesUrl===court.officialUrl?'Официальная страница суда':'Официальный раздел дел и решений'}</strong><small>{court.casesUrl===court.officialUrl?'Раздел делопроизводства необходимо найти на сайте суда':'Первоисточник суда, а не неподтверждённые записи'}</small></span><span aria-hidden="true">↗</span>
     </a>
    </div>
   </section>
   <section className="section-wrap">
    <div className="section-intro">
     <span className="eyebrow">Судьи и состав суда</span>
-    <h2>Действующий состав</h2>
-    <p>Именные сведения не публикуются без отдельной сверки официального состава и оснований полномочий. Сведения о составе проверяйте в первоисточнике.</p>
+    <h2>Сведения о составе судей</h2>
+    <p>Именные сведения не публикуются без отдельной сверки официального состава и оснований полномочий. Наличие ФИО в опубликованной справке ещё не подтверждает действующий статус судьи.</p>
    </div>
-   <a className="text-link" href={court.judgesUrl??court.officialUrl} target="_blank" rel="noopener noreferrer">Официальный сайт суда и сведения о составе ↗</a>
+   <a className="text-link" href={court.judgesUrl??court.officialUrl} target="_blank" rel="noopener noreferrer">{court.judgesUrl?'Официальный опубликованный список судей ↗':'Официальная страница суда для проверки состава ↗'}</a>
   </section>
   <section className="callout">
    <div><span className="eyebrow">Возврат к каталогу</span><h2>Найти другие суды</h2>
