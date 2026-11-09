@@ -244,6 +244,7 @@ def run(first,appeal,output,max_rows=3000000):
  try:
   db.execute("CREATE TABLE cases (court TEXT, uin TEXT, number TEXT, payload TEXT, held INTEGER DEFAULT 0, PRIMARY KEY(court,uin,number))")
   db.execute("CREATE INDEX court_uin_idx ON cases(uin)")
+  db.execute("CREATE INDEX court_number_idx ON cases(court,number)")
   with (output/"quarantine.ndjson").open("w",encoding="utf-8") as quarantine:
    for n,raw in enumerate(records(first),1):
     if n>max_rows:raise ValueError("Input limit exceeded; split files and rerun")
@@ -256,7 +257,7 @@ def run(first,appeal,output,max_rows=3000000):
      continue
     covered.add(result["courtSlug"])
     key=(result["courtSlug"],result["uin"],result["number"])
-    by_number=db.execute("SELECT uin,payload FROM cases WHERE court=? AND number=?",(key[0],key[2])).fetchall()
+    by_number=db.execute("SELECT uin FROM cases WHERE court=? AND number=?",(key[0],key[2])).fetchall()
     if any(item[0]!=key[1] for item in by_number):
      counts["conflicting_uin_same_court_number"]+=1
      db.execute("UPDATE cases SET held=1 WHERE court=? AND number=?",(key[0],key[2]))

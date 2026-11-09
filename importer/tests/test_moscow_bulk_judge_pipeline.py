@@ -1,5 +1,6 @@
 """End-to-end OFFLINE rehearsal of official bulk preimport: no network or publication."""
 import json
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -59,6 +60,12 @@ class MoscowBulkJudgePipelineTests(unittest.TestCase):
   report=p.run(first,appeal,root/"out")
   self.assertEqual(report["counts"]["staged"],1)
   self.assertEqual(report["counts"]["appeal_linked"],1)
+  with sqlite3.connect(root/"out/private-stage.sqlite3") as db:
+   indices={row[1] for row in db.execute("PRAGMA index_list(cases)")}
+   self.assertIn("court_number_idx",indices)
+   plan=db.execute("EXPLAIN QUERY PLAN SELECT uin FROM cases WHERE court=? AND number=?",
+                   ("nikulinskiy","02-0514/2026")).fetchall()
+   self.assertTrue(any("court_number_idx" in str(row) for row in plan))
   staged=[json.loads(x) for x in (root/"out/candidates.ndjson").read_text().splitlines()]
   self.assertEqual(len(staged),1)
   self.assertEqual(staged[0]["verificationLevel"],"official_registers_concordant")
