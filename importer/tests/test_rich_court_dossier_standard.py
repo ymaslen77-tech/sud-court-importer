@@ -31,6 +31,12 @@ class RichCourtCardTests(unittest.TestCase):
   self.assertIn("modules.php?name=sud_delo",self.data)
   self.assertIn("временно сообщает о недоступности",self.data)
 
+ def test_official_contact_discrepancy_is_not_silently_resolved(self):
+  self.assertIn("Расхождение официальных телефонов",self.data)
+  self.assertIn("https://usd--mo.sudrf.ru/modules.php?name=sud",self.data)
+  self.assertIn("+7 (991) 787-68-28",self.data)
+  self.assertIn("универсальный телефон не назначается",self.data)
+
  def test_all_13_sections_and_rich_sections_have_links(self):
   self.assertEqual(self.matrix.count("key:'"),13)
   for marker in ["rich-addresses","rich-judges","rich-staff","rich-hours",
