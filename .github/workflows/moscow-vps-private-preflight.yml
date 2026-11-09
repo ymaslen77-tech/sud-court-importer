@@ -23,6 +23,7 @@ jobs:
       - name: Validate strictly allowlisted job request
         run: |
           python3 -m unittest discover -s ops/vps/tests -p 'test_*.py' -v
+          bash -n ops/vps/sudy-stage-ssh-gate.sh ops/vps/sudy-stage-preflight.sh ops/vps/install-moscow-operator.sh
           python3 ops/vps/validate_request.py ops/vps/request.json
       - name: Verify Moscow preflight tests before touching VPS
         run: python3 -m unittest discover -s importer/tests -p 'test_moscow_bulk_judge_pipeline.py' -v
