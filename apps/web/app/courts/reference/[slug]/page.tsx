@@ -36,10 +36,10 @@ export default async function OfficialCourtReferencePage({params}:Props){
    <span>/</span>{court.name}
   </div>
   <section className="section-hero">
-   <span className="kicker">Официальные справочные сведения · дата сверки источника 27.10.2026</span>
+   <span className="kicker">Официальные справочные сведения · дата изучения источника {court.observedOn??"27.10.2026"}</span>
    <h1>{court.name}</h1>
    <p className="lead">{court.regionName} · {findCategory(court.kind)?.short}</p>
-   <p className="notice">Это справочная карточка по опубликованному первоисточнику, а не редакционно принятая запись реестра. Перед обращением проверьте актуальность реквизитов на сайте суда.</p>
+   <p className="notice">Это справочная карточка по опубликованному первоисточнику, а не редакционно принятая запись реестра. Перед обращением проверьте актуальность реквизитов на сайте суда. {court.region==='region-50'?'Для Московской области сведения получены из официального перечня Управления Судебного департамента; состав судей, судебные дела, подразделения и изменение адресов требуют отдельной проверки.':''}</p>
   </section>
   <div className="court-detail-grid">
    <section className="detail-card">
