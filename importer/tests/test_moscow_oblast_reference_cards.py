@@ -1,4 +1,4 @@
-"""Quality gates for the initial Moscow Oblast official-reference dossiers.
+"""Quality gates for the official-directory Moscow Oblast official-reference dossiers.
 
 These cards record sourced contacts ONLY. This test deliberately does not infer
 judge employment, hearing schedules, case outcomes or legal conclusions.
@@ -15,9 +15,9 @@ class MoscowOblastReferenceCoverage(unittest.TestCase):
     def test_official_source_and_observation_dates(self):
         text = SOURCE.read_text(encoding="utf-8")
         sections = text.split("region:'region-50'")
-        self.assertEqual(len(sections)-1, 15)
-        self.assertEqual(text.count("sourceUrl:'https://usd--mo.sudrf.ru/modules.php?name=sud'"), 15)
-        self.assertEqual(text.count("observedOn:'2026-11-09'"), 15)
+        self.assertEqual(len(sections)-1, 45)
+        self.assertEqual(text.count("sourceUrl:'https://usd--mo.sudrf.ru/modules.php?name=sud'"), 45)
+        self.assertEqual(text.count("observedOn:'2026-11-09'"), 45)
         slugs = re.findall(r'slug:"(.*?)"', text)
         self.assertEqual(len(slugs), len(set(slugs)))
         for item in ("moscow-oblast-court","vidnoe-city-court","dubna-city-court",

@@ -40,3 +40,28 @@ python3 importer/moscow_research_readiness.py
 
 This stage does not touch the VPS database, update raw files, call external
 services, push public data, or deploy Coolify.
+
+
+## Extended official Moscow Oblast directory — 9 November 2026
+
+The official Judicial Department's public directory
+https://usd--mo.sudrf.ru/modules.php?name=sud includes a Moscow oblast
+regional court and district/city courts. The project now has 45
+region-50 basic **reference** cards, including 30 added in this
+pass. An independently maintained rich profile of Pushkinsky city court
+is kept as a separate dossier and is NOT duplicated in the basic cards.
+
+Official directories are not real-time guarantees of unchanged opening hours,
+accessibility, premises, court composition or territorial jurisdiction. Several
+entries include two addresses and offices; the user is instructed to check the
+correct building by case notice. Names and primary phones copied from the
+official directory are historical official publications, not freshly verified
+with all individual courts.
+
+The directory contains rare transcription typos. The normalized spelling of the
+court type is not evidence of a new court or changed jurisdiction. Do not add
+synthetic case records or full-text legal conclusions to these source cards.
+
+After directory data is fully cross-checked against individual court websites,
+consider lifting noindex only for sufficiently substantive, editorially reviewed
+cards. Leave fake, thin or contradictory material noindex.
