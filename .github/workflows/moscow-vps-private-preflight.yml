@@ -1,0 +1,69 @@
+name: Moscow VPS private preflight (opt in)
+
+on:
+  push:
+    branches:
+      - infra/coolify-russian-vps
+    paths:
+      - ops/vps/request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sudy-vps-private-preflight
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate strictly allowlisted job request
+        run: |
+          python3 -m unittest discover -s ops/vps/tests -p 'test_*.py' -v
+          python3 ops/vps/validate_request.py ops/vps/request.json
+      - name: Verify Moscow preflight tests before touching VPS
+        run: python3 -m unittest discover -s importer/tests -p 'test_moscow_bulk_judge_pipeline.py' -v
+
+  private-preflight:
+    needs: validate
+    if: ${{ vars.SUDY_VPS_AUTOMATION_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment: vps-stage
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run fixed non-root VPS preflight through verified SSH host
+        env:
+          SUDY_HOST: ${{ secrets.SUDY_VPS_HOST }}
+          SUDY_USER: ${{ secrets.SUDY_VPS_USER }}
+          SUDY_PORT: ${{ secrets.SUDY_VPS_PORT }}
+          SUDY_PRIVATE_KEY: ${{ secrets.SUDY_VPS_STAGE_SSH_KEY }}
+          SUDY_KNOWN_HOSTS: ${{ secrets.SUDY_VPS_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          : "${SUDY_HOST:?Missing private environment secret SUDY_VPS_HOST}"
+          : "${SUDY_USER:?Missing private environment secret SUDY_VPS_USER}"
+          : "${SUDY_PRIVATE_KEY:?Missing private environment secret SUDY_VPS_STAGE_SSH_KEY}"
+          : "${SUDY_KNOWN_HOSTS:?Missing private environment secret SUDY_VPS_KNOWN_HOSTS}"
+          SUDY_PORT="${SUDY_PORT:-22}"
+          [[ "$SUDY_HOST" =~ ^[a-zA-Z0-9.-]+$ ]] || exit 64
+          [[ "$SUDY_USER" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]] || exit 64
+          [[ "$SUDY_PORT" =~ ^[0-9]{1,5}$ ]] || exit 64
+          dir="$(mktemp -d)"
+          trap 'rm -rf -- "$dir"' EXIT
+          chmod 700 "$dir"
+          printf '%s\n' "$SUDY_PRIVATE_KEY" > "$dir/id_ed25519"
+          printf '%s\n' "$SUDY_KNOWN_HOSTS" > "$dir/known_hosts"
+          chmod 600 "$dir/id_ed25519" "$dir/known_hosts"
+          # The VPS authorized_keys MUST enforce a root-owned forced command;
+          # the remote account must not have sudo or write access to web data.
+          ssh -F /dev/null -i "$dir/id_ed25519" -o IdentitiesOnly=yes \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$dir/known_hosts" \
+            -o ConnectTimeout=20 -o ConnectionAttempts=1 \
+            -o ClearAllForwardings=yes -p "$SUDY_PORT" \
+            "$SUDY_USER@$SUDY_HOST" "moscow-preflight $GITHUB_SHA"
