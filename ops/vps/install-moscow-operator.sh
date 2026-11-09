@@ -28,7 +28,7 @@ APPEAL=/srv/sudy-private/moscow-open-data/1577117744056-casesgroupmgsappealcivil
 [[ ! -e "$ROOT" ]] || { echo "Staging operator directory already exists; inspect first" >&2;exit 64; }
 [[ -d /srv/sudy-private/moscow-open-data && -d /srv/sudy-private ]] || exit 66
 
-useradd --system --create-home --home-dir /home/sudy-stage --shell /bin/bash sudy-stage
+useradd --system --user-group --create-home --home-dir /home/sudy-stage --shell /bin/bash sudy-stage
 passwd -l sudy-stage >/dev/null 2>&1 || :
 install -d -o sudy-stage -g sudy-stage -m 0700 "$ROOT"
 install -d -o root -g root -m 0755 /usr/local/libexec
