@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "status": "official_page_snapshot_not_live_attestation",
+  "reviewedOn": "2026-11-09",
+  "notice": "Сведения извлечены из официальных опубликованных страниц; время работы и телефонные линии нужно уточнять перед поездкой.",
+  "records": [
+    {
+      "slug": "tverskoy",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/tverskoj/help/hours",
+      "sourceUpdatedOn": "2026-06-24",
+      "accessiblePhone": "+7 (495) 680-78-83",
+      "anticorruptionPhone": "+7 (495) 694-01-71",
+      "travel": "Метро «Красные Ворота», «Проспект Мира», «Комсомольская»; рядом платформа «Каланчёвская» (ориентир из официальной справки).",
+      "serviceHours": [
+        {
+          "label": "Экспедиция, кабинет № 251",
+          "schedule": "Пн–чт 09:00–18:00, пт 09:00–16:45",
+          "phone": "+7 (495) 694-09-24"
+        },
+        {
+          "label": "Архив, кабинет № 248",
+          "schedule": "Приём: среда 09:00–18:00; в остальные будни приём не указан",
+          "phone": "+7 (495) 694-18-52"
+        },
+        {
+          "label": "Приёмная председателя, кабинет № 857",
+          "schedule": "Пн 16:00–18:00, чт 10:00–12:00",
+          "phone": "+7 (495) 694-01-73"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "slug": "tushinskiy",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/tushinskij/help/hours",
+      "sourceUpdatedOn": null,
+      "accessiblePhone": "+7 (495) 491-00-10",
+      "anticorruptionPhone": "+7 (495) 490-97-78",
+      "travel": "Метро «Сходненская», выход № 2; в официальной схеме проезда указана остановка «Детская больница № 7» на трамвайном направлении к Братцеву.",
+      "serviceHours": [
+        {
+          "label": "Приём председателя",
+          "schedule": "Пн 16:00–18:00, чт 11:00–13:00",
+          "phone": null
+        },
+        {
+          "label": "Аппараты судей по гражданским и административным делам",
+          "schedule": "Пн 14:00–18:00, чт 09:00–13:00",
+          "phone": null
+        },
+        {
+          "label": "Архив",
+          "schedule": "Пн 14:00–18:00, чт 09:00–13:00",
+          "phone": null
+        },
+        {
+          "label": "Архив по уголовным и КоАП делам, кабинет № 211",
+          "schedule": "Уточняйте время приёма архива",
+          "phone": "+7 (495) 491-00-01"
+        },
+        {
+          "label": "Архив по гражданским и КАС делам, кабинет № 307",
+          "schedule": "Уточняйте время приёма архива",
+          "phone": "+7 (495) 491-36-74"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "slug": "chertanovskiy",
+      "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/help/hours",
+      "sourceUpdatedOn": "2026-07-14",
+      "accessiblePhone": "+7 (499) 794-08-58",
+      "anticorruptionPhone": "+7 (499) 794-08-48",
+      "travel": "По официальной схеме: метро «Варшавская», выход к Чонгарскому бульвару, затем пешком к улице Артековской.",
+      "serviceHours": [
+        {
+          "label": "Приём председателя",
+          "schedule": "Пн 16:00–18:00, чт 09:00–11:00",
+          "phone": null
+        },
+        {
+          "label": "Аппараты судей по гражданским и административным делам",
+          "schedule": "Пн 14:00–18:00, чт 09:00–13:00",
+          "phone": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "slug": "taganskiy",
+      "sourceUrl": "https://mos-gorsud.ru/rs/taganskij/help/hours",
+      "sourceUpdatedOn": null,
+      "accessiblePhone": "+7 (495) 911-70-96",
+      "anticorruptionPhone": "+7 (495) 911-03-85",
+      "travel": null,
+      "serviceHours": [],
+      "notes": []
+    },
+    {
+      "slug": "dorogomilovskiy",
+      "sourceUrl": "https://mos-gorsud.ru/rs/dorogomilovskij/help/hours",
+      "sourceUpdatedOn": null,
+      "accessiblePhone": "+7 (499) 766-10-09",
+      "anticorruptionPhone": "+7 (499) 766-12-75",
+      "travel": "От метро «Студенческая» пройти к Можайскому переулку, затем к улице Студенческой. Здание суда № 36 находится во дворе.",
+      "serviceHours": [],
+      "notes": []
+    },
+    {
+      "slug": "golovinskiy",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/golovinskij/help/hours",
+      "sourceUpdatedOn": null,
+      "accessiblePhone": "+7 (495) 450-18-34",
+      "anticorruptionPhone": "+7 (495) 450-64-75",
+      "travel": "В официальной справке приведён проезд от метро «Войковская» или «Петровско-Разумовская» на автобусе до остановки «Управа района Коптево». Номера маршрутов необходимо перепроверить.",
+      "serviceHours": [],
+      "notes": []
+    },
+    {
+      "slug": "timiryazevskiy",
+      "sourceUrl": "https://mos-gorsud.ru/rs/timiryazevskij/help/hours",
+      "sourceUpdatedOn": null,
+      "accessiblePhone": "+7 (495) 482-20-59",
+      "anticorruptionPhone": "+7 (495) 482-21-29",
+      "travel": null,
+      "serviceHours": [],
+      "notes": []
+    },
+    {
+      "slug": "khoroshevskiy",
+      "sourceUrl": "https://www.mos-gorsud.ru/rs/horoshevskij/help/hours",
+      "sourceUpdatedOn": "2026-08-31",
+      "accessiblePhone": "+7 (499) 199-60-05",
+      "anticorruptionPhone": "+7 (499) 197-99-46",
+      "travel": "Официальная схема: от метро «Октябрьское Поле» через улицы Маршала Бирюзова, Народного Ополчения и Маршала Тухачевского.",
+      "serviceHours": [
+        {
+          "label": "Отделы обеспечения судопроизводства: приём с 1 сентября 2026 года",
+          "schedule": "Пн–чт 09:00–18:00, перерыв 13:00–13:45; пятница не указана как приёмный день этих отделов",
+          "phone": null
+        },
+        {
+          "label": "Приёмная суда и выдача исполнительных листов",
+          "schedule": "Режим по опубликованной карточке необходимо подтвердить перед визитом",
+          "phone": "+7 (499) 197-93-02"
+        },
+        {
+          "label": "Архив",
+          "schedule": "Режим по опубликованной карточке необходимо подтвердить перед визитом",
+          "phone": "+7 (499) 946-80-45"
+        }
+      ],
+      "notes": [
+        "В официальной публикации от 31.08.2026 указан отдельный график отделов обеспечения судопроизводства с 01.09.2026 — не подменять его общим режимом здания."
+      ]
+    }
+  ]
+}

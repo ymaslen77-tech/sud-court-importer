@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {MoscowCityCourtDossier} from '../../../../_components/moscow-city-court-dossier';
 import {MoscowDistrictRegistryGuide} from '../../../../_components/moscow-district-registry-guide';
 import {MoscowDistrictIndividualDossier} from '../../../../_components/moscow-district-individual-dossier';
+import {MoscowCourtEvidenceAndJourney} from '../../../../_components/moscow-court-evidence-and-journey';
 import {moscowDistrictIndividual} from '../../../../lib/moscow-district-individual';
 import {moscowDistrictReviewedContact} from '../../../../lib/moscow-district-reviewed-contacts';
 import {mgsSeoRobots,moscowDistrictSeoRobots} from '../../../../lib/moscow-city-seo';
@@ -125,6 +126,7 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
     {hasRich?<Link className="button button-outline" href={detailed}>Подробное досье этого суда →</Link>:null}
    </div>
   </section>
+  <MoscowCourtEvidenceAndJourney officialSlug={court.slug} courtName={court.name}/>
   {individual?<MoscowDistrictIndividualDossier court={court} profile={individual} legacyPhoneShown={Boolean(reviewedContact)}/>:null}
   {court.kind==='general-district'?<MoscowDistrictRegistryGuide court={court}/>:null}
   <section className="court-section" id="source">

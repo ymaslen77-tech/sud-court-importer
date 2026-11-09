@@ -11,6 +11,7 @@ import {MoscowFilingWizard} from '../../../_components/moscow-filing-wizard';
 import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
 import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
+import {MoscowCourtEvidenceAndJourney} from '../../../_components/moscow-court-evidence-and-journey';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -85,6 +86,7 @@ export default async function MoscowCourtPage({params}:Props){
     <a href="#msk-lead-callback">Обратный звонок</a><a href="#msk-sources">Источники</a>
    </nav>
   </section>
+  <MoscowCourtEvidenceAndJourney officialSlug={officialMinimum?.slug??c.slug} courtName={c.name}/>
   <section className="court-section" id="msk-contacts">
    <span className="eyebrow">Как связаться с судом</span><h2>Адрес, приёмная и режим работы</h2>
    {moved?<div className="notice moscow-relocation-note" role="note">
