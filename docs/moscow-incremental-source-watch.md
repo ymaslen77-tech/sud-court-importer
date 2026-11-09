@@ -40,3 +40,19 @@ This is preparation for periodic monitoring; no cron/systemd timer,
 GitHub scheduled workflow, or VPS background process is installed
 by these repository changes. The owner can activate the documented
 command after source rights and server resource limits have been accepted.
+
+
+## Activation warning for GitHub Actions
+
+GitHub scheduled workflows are triggered from the repository's **default
+branch**. A workflow file committed only to
+`infra/coolify-russian-vps` is **not** an active recurring checker, even
+if its YAML contains `schedule`. This work branch contains the prepared
+workflow `.github/workflows/moscow-official-source-watch.yml` and can run
+`workflow_dispatch` manually if GitHub Actions permits this workflow.
+
+Activation requires a separate reviewed merge or workflow installation on
+the default branch, and then a conscious setting of repository variable
+`MOSCOW_SOURCE_WATCH_ALLOWED=true` *after* reviewing official source terms.
+The run reads only HTTP HEAD metadata; it never downloads cases or updates
+public court data. No recurrence is enabled by this documentation change.
