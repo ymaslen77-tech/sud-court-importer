@@ -20,7 +20,7 @@ class OfficialReferenceCardsTests(unittest.TestCase):
         self.assertIn("casesUrl:",source)
         self.assertNotIn("verified_at:",source)
         self.assertNotIn("judges:[",source)
-        self.assertEqual(source.count("judgesUrl:null"),5)
+        self.assertEqual(source.count("judgesUrl:null"),20)
         self.assertEqual(len(re.findall(r"slug:'[^']+',name:",source)),5)
 
     def test_constitutional_scope_is_not_regional_and_no_zero_only_result(self):
