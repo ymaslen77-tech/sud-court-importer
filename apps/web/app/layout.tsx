@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4173')),
   title: { default: 'Суды России — информационный правовой портал', template: '%s | Суды России' },
   description: 'Суды Российской Федерации: поиск, официальные контакты, судьи, подсудность, законодательство и судебная практика.',
+  verification: { google: 'dHpFOFOuBpWYODUqg2yPKa6gNYEMYuN7QJIVZZksDQI' },
   robots: { index: true, follow: true },
 };
 
