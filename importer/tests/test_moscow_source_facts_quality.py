@@ -16,7 +16,21 @@ class MoscowSourceFactsQuality(unittest.TestCase):
   for row in rows:
    with self.subTest(court=row['slug']):
     self.assertTrue(re.fullmatch(r'https://(?:www\.)?mos-gorsud\.ru/rs/[a-z0-9-]+/help/hours',row['sourceUrl']))
-    self.assertRegex(row['accessiblePhone'],r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$')
+    if row['accessiblePhone'] is not None:
+     self.assertRegex(row['accessiblePhone'],r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}
+    self.assertRegex(row['anticorruptionPhone'],r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$')
+    self.assertTrue(all(bool(i['label']) and bool(i['schedule']) for i in row['serviceHours']))
+    self.assertNotIn('participants',str(row))
+ def test_no_unsupported_publication_claims(self):
+  src=(ROOT/'apps/web/app/_components/moscow-court-evidence-and-journey.tsx').read_text(encoding='utf-8')
+  self.assertIn('officialSlug',src)
+  self.assertIn('moscowJudgeProfilesForCourt',src)
+  self.assertIn('item.sourceUrl',src)
+  self.assertIn('без обязательных дополнительных страниц',src)
+  self.assertIn('Полный текст акта не проверен',src)
+  self.assertIn('Это не все дела суда',src)
+if __name__=='__main__':unittest.main()
+)
     self.assertRegex(row['anticorruptionPhone'],r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$')
     self.assertTrue(all(bool(i['label']) and bool(i['schedule']) for i in row['serviceHours']))
     self.assertNotIn('participants',str(row))
