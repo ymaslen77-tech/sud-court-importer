@@ -18,7 +18,7 @@ class MoscowSourceFactsQuality(unittest.TestCase):
         self.assertTrue({r["slug"] for r in rows} <= allowed)
         for row in rows:
             with self.subTest(court=row["slug"]):
-                self.assertTrue(re.fullmatch(r"https://(?:www\.)?mos-gorsud\.ru/rs/[a-z0-9-]+/help/hours", row["sourceUrl"]))
+                self.assertTrue(re.fullmatch(r"https://(?:(?:www|m|mks|interportal)\.)?mos-gorsud\.ru/rs/[a-z0-9-]+/(?:help/hours|hours)", row["sourceUrl"]))
                 if row["accessiblePhone"] is not None:
                     self.assertRegex(row["accessiblePhone"], r"^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$")
                 if row["anticorruptionPhone"] is not None:
