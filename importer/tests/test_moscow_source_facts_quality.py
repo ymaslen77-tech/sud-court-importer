@@ -10,8 +10,8 @@ class MoscowSourceFactsQuality(unittest.TestCase):
   courts=json.loads((DATA/'moscow-official-minimum-registry.json').read_text(encoding='utf-8'))
   allowed={r['slug'] for r in courts['records'] if r['kind']=='general-district'}
   rows=data['records']
-  self.assertEqual(len(rows),8)
-  self.assertEqual(len({r['slug'] for r in rows}),8)
+  self.assertEqual(len(rows),15)
+  self.assertEqual(len({r['slug'] for r in rows}),15)
   self.assertTrue(set(r['slug'] for r in rows)<=allowed)
   for row in rows:
    with self.subTest(court=row['slug']):
