@@ -5,6 +5,7 @@ import {getMoscowOfficialMinimumCourt,MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOffic
 import {moscowDistrictIndividual,moscowDistrictOfficialPagesBySlug} from '../../../../../../lib/moscow-district-individual';
 import {moscowCourtPracticalFacts} from '../../../../../../lib/moscow-district-practical-facts';
 import {moscowPublishedLeadership} from '../../../../../../lib/moscow-district-published-leadership';
+import {moscowCourts} from '../../../../../../lib/moscow-courts';
 import {MOSCOW_DISTRICT_TOPICS,moscowDistrictTopic,moscowDistrictTopicNext,moscowDistrictTopicHref} from '../../../../../../lib/moscow-district-topics';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowVerifiedOutcome} from '../../../../../../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../../../../../../lib/moscow-judicial-source-briefs';
@@ -43,6 +44,7 @@ export default async function MoscowDistrictTopicPage({params}:Params){
  const next=moscowDistrictTopicNext(topic.slug);
  const practical=moscowCourtPracticalFacts(slug);
  const leader=moscowPublishedLeadership(slug);
+ const researchedCourt=moscowCourts().find(c=>c.official_url===official.overview);
  const roster=moscowJudgeRoster(slug);
  const brief=moscowJudicialSourceBrief(slug);
  const docket=moscowCourtCaseExamples(slug);
@@ -96,8 +98,19 @@ export default async function MoscowDistrictTopicPage({params}:Params){
      <li>Проверьте стадию, дату и зал заседания в официальной карточке; учитывайте судебные извещения.</li></ol>
     {docket?<div className="court-practical-grid">{docket.cases.map(item=><article key={item.number}>
      <h3>Дело № {item.number}</h3><p>{item.category}. {item.sourceStatus}.</p>
-     <p className="court-source">Пример записи, не подтверждённое решение по существу. Без данных участников.</p>
-    </article>)}</div>:<p>Реальные номера дел без подтверждённого источника пока не копируются на эту страницу.</p>}
+     <p className="court-source">Пример опубликованной записи, не подтверждённое решение по существу. Без сведений об участниках.</p>
+    </article>)}</div>:researchedCourt?.case_examples.length?<div>
+     <p>В нашей подборке имеются записи из опубликованной судебной выдачи именно этого суда. Их текущее движение и окончательные результаты отдельно не подтверждены.</p>
+     <div className="court-practical-grid">{researchedCourt.case_examples.slice(0,8).map(item=><article key={item.number}>
+      <h3>Дело № {item.number}</h3>
+      <p>{item.case_type}: {item.subject}.</p>
+      <p className="court-source">Изучено {item.source_observed_on}. Стадия и текст решения не подтверждены.</p>
+      <details><summary>Источник и поиск дела</summary>
+       <a href={item.source_url} target="_blank" rel="noopener noreferrer">Официальный раздел делопроизводства ↗</a>
+      </details>
+     </article>)}</div>
+    </div>:<p>Реальные номера дел без подтверждённого источника пока не копируются на эту страницу.</p>}
+    {researchedCourt?<p><Link href={hub+'#msk-cases'} className="text-link">Изучить дела и категории на основной странице суда →</Link></p>:null}
     {outcome?<p>По делу № {outcome.number} официальный реестр указывает результат «{outcome.publishedOutcome}». Текст и мотивировка решения не проверялись. <a href={outcome.sourceUrl} target="_blank" rel="noopener noreferrer">Карточка дела ↗</a></p>:null}
     <p><a className="text-link" href={official.cases} target="_blank" rel="noopener noreferrer">Поиск дел {court.name} на официальном портале ↗</a></p>
    </>:null}
