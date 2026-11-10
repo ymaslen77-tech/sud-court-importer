@@ -52,6 +52,9 @@ class MoscovVpsOperatorContractTests(unittest.TestCase):
         self.assertIn("bash scripts/moscow-bulk-release.sh --first",stage)
         self.assertIn('restrict,command="/usr/local/libexec/sudy-stage-ssh-gate"',installer)
         self.assertIn("setfacl -m u:sudy-stage:r--",installer)
+        self.assertIn("usermod --password '*'",installer)
+        self.assertNotIn("passwd -l sudy-stage",installer)
+
         self.assertIn("SUDY_VPS_AUTOMATION_ENABLED == 'true'",workflow)
         self.assertIn("ops/vps/request.json",workflow)
         self.assertIn("StrictHostKeyChecking=yes",workflow)
