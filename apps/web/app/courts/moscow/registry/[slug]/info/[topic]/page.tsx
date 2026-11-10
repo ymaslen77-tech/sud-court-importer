@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
-import {getMoscowOfficialMinimumCourt} from '../../../../../../lib/moscow-official-minimum';
-import {MOSCOW_DISTRICT_INDIVIDUALS,moscowDistrictIndividual,moscowDistrictOfficialPages} from '../../../../../../lib/moscow-district-individual';
+import {getMoscowOfficialMinimumCourt,MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../../../../lib/moscow-official-minimum';
+import {moscowDistrictIndividual,moscowDistrictOfficialPagesBySlug} from '../../../../../../lib/moscow-district-individual';
+import {moscowCourtPracticalFacts} from '../../../../../../lib/moscow-district-practical-facts';
 import {MOSCOW_DISTRICT_TOPICS,moscowDistrictTopic,moscowDistrictTopicNext,moscowDistrictTopicHref} from '../../../../../../lib/moscow-district-topics';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowVerifiedOutcome} from '../../../../../../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../../../../../../lib/moscow-judicial-source-briefs';
@@ -12,14 +13,14 @@ import {MoscowFilingWizard} from '../../../../../../_components/moscow-filing-wi
 type Params={params:Promise<{slug:string;topic:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){
- return MOSCOW_DISTRICT_INDIVIDUALS.flatMap(c=>
+ return MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district').flatMap(c=>
   MOSCOW_DISTRICT_TOPICS.map(t=>({slug:c.slug,topic:t.slug})));
 }
 export async function generateMetadata({params}:Params):Promise<Metadata>{
  const {slug,topic:topicSlug}=await params;
  const court=getMoscowOfficialMinimumCourt(slug);
  const topic=moscowDistrictTopic(topicSlug);
- if(!court||!topic||!moscowDistrictIndividual(slug))
+ if(!court||court.kind!=='general-district'||!topic||!moscowDistrictOfficialPagesBySlug(slug))
   return {title:'Страница не найдена',robots:{index:false,follow:false}};
  const url=moscowDistrictTopicHref(slug,topic.slug);
  return {
@@ -35,16 +36,16 @@ export default async function MoscowDistrictTopicPage({params}:Params){
  const court=getMoscowOfficialMinimumCourt(slug);
  const profile=moscowDistrictIndividual(slug);
  const topic=moscowDistrictTopic(topicSlug);
- if(!court||!profile||!topic||court.kind!=='general-district')notFound();
+ const official=moscowDistrictOfficialPagesBySlug(slug);
+ if(!court||!topic||!official||court.kind!=='general-district')notFound();
  const url=moscowDistrictTopicHref(slug,topic.slug);
  const next=moscowDistrictTopicNext(topic.slug);
- const firstThree=topic.order<=3&&topic.order>0;
- const official=moscowDistrictOfficialPages(profile);
+ const practical=moscowCourtPracticalFacts(slug);
  const roster=moscowJudgeRoster(slug);
  const brief=moscowJudicialSourceBrief(slug);
  const docket=moscowCourtCaseExamples(slug);
  const outcome=moscowVerifiedOutcome(slug);
- const hub='/courts/moscow/registry/'+slug;
+ const hub=MoscowOfficialCourtHref(court);
  return <article className="moscow-minimum-court-page">
   <nav className="breadcrumb" aria-label="Навигация">
    <Link href="/courts">Суды России</Link><span>/</span>
@@ -131,20 +132,24 @@ export default async function MoscowDistrictTopicPage({params}:Params){
      <div><dt>Адрес из официального справочника</dt><dd>{court.address}</dd></div>
      <div><dt>Часы работы суда</dt><dd>{court.office_hours}</dd></div>
      <div><dt>Электронная почта</dt><dd>{court.email}</dd></div>
-     {profile.expeditionPhone?<div><dt>Экспедиция (по опубликованной карточке)</dt><dd>{profile.expeditionPhone}</dd></div>:null}
+     {profile?.expeditionPhone?<div><dt>Экспедиция (по опубликованной карточке)</dt><dd>{profile.expeditionPhone}</dd></div>:null}
+     {practical?.serviceHours.map(unit=><div key={unit.label}><dt>{unit.label}</dt><dd>{unit.schedule}{unit.phone?' · '+unit.phone:''}</dd></div>)}
+     {practical?.travel?<div><dt>Как добраться</dt><dd>{practical.travel}</dd></div>:null}
+     {practical?.accessiblePhone?<div><dt>Помощь посетителям с ограниченной мобильностью</dt><dd>{practical.accessiblePhone}</dd></div>:null}
     </dl>
     {court.visitor_locations?.length?<div className="notice"><strong>Временное расположение подразделений</strong>
       <ul>{court.visitor_locations.map(p=><li key={p.label}>{p.label}: {p.address}</li>)}</ul>
       <p>Место заседания обязательно сверяйте с извещением.</p></div>:null}
+    {practical?.notes.map(note=><p key={note} className="court-source">{note}</p>)}
     <p>Общий график не равен расписанию архива, экспедиции, приёмной и судебных заседаний. Если планируется личное обращение, предварительно уточните время и адрес конкретного подразделения.</p>
     <p><a href={official.overview} target="_blank" rel="noopener noreferrer" className="text-link">Проверить актуальные контакты и часы приёма ↗</a></p>
    </>:null}
   </section>
-  {firstThree&&next&&next.order<=3?<section className="court-section" id="district-route-next">
+  {next?<section className="court-section" id="district-route-next">
    <span className="eyebrow">Рекомендуемый маршрут · следующий шаг</span>
    <h2>{next.title}</h2>
    <p>{next.description}</p>
-   <Link className="button button-red" href={moscowDistrictTopicHref(slug,next.slug)}>Перейти к следующему разделу →</Link>
+   <Link className="button button-red" href={moscowDistrictTopicHref(slug,next.slug)}>Продолжить изучение суда →</Link>
   </section>:null}
   <section className="court-section">
    <span className="eyebrow">Все темы по этому суду</span><h2>Что изучить дальше</h2>

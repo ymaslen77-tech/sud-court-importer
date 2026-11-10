@@ -8,8 +8,8 @@ import {MoscowCasesExplorer} from '../../../_components/moscow-cases-explorer';
 import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 import {MoscowFilingWizard} from '../../../_components/moscow-filing-wizard';
-import {CourtDossierCompleteness} from '../../../_components/court-dossier-completeness';
-import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
+import {MoscowDistrictTopicNavigation} from '../../../_components/moscow-district-topic-navigation';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../lib/moscow-official-minimum';
 import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
 import {MoscowCourtEvidenceAndJourney} from '../../../_components/moscow-court-evidence-and-journey';
 
@@ -56,7 +56,9 @@ export default async function MoscowCourtPage({params}:Props){
   c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
    .startsWith(item.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
  const moved=Boolean(officialMinimum?.visitor_locations?.length);
- const others=moscowCourts().filter(item=>item.slug!==c.slug).slice(0,4);
+ const allDistricts=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(item=>item.kind==='general-district');
+ const currentIndex=allDistricts.findIndex(item=>item.slug===officialMinimum?.slug);
+ const others=[...allDistricts.slice(currentIndex+1),...allDistricts.slice(0,currentIndex)].slice(0,4);
  const intakeReady=process.env.COURT_LEADS_ENABLED==='true' &&
   process.env.COURT_LEADS_RU_STORAGE_ATTESTED==='true' &&
   Boolean(process.env.COURT_LEADS_OPERATOR_NAME?.trim()) &&
@@ -68,11 +70,10 @@ export default async function MoscowCourtPage({params}:Props){
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span>
    <Link href="/courts/moscow">Москва</Link><span>/</span>{c.name}</div>
   <section className="section-hero">
-   <span className="kicker">Москва · районный суд · исследовательское досье</span>
+   <span className="kicker">Москва · районный суд · подробная справка</span>
    <h1>{c.name}</h1>
    <p className="lead">Адрес и контакты, виды рассматриваемых дел, примеры из официальных реестров, территориальная подсудность, порядок подачи и обжалования.</p>
-   <div className="notice" role="note">Сведения изучены по официальным публикациям 18.10.2026; редакционная актуальность на сегодня не подтверждена. Вынесенные решения, стадии дел, работа телефонов и границы адресной подсудности требуют отдельной сверки.</div>
-   <CourtDossierCompleteness withSources={['identity','contacts','sources','filing','cases']}/>
+   <div className="notice" role="note">Сведения изучены по официальным публикациям {c.source_observed_on}; редакционная актуальность на сегодня не подтверждена. Вынесенные решения, стадии дел, работа телефонов и границы адресной подсудности требуют отдельной сверки.</div>
    <nav className="court-toc" aria-label="Содержание досье">
     <strong>Перейти к разделу</strong>
     <a href="#msk-contacts">Адрес и телефоны</a><a href="#msk-map">Как добраться</a>
@@ -86,6 +87,7 @@ export default async function MoscowCourtPage({params}:Props){
     <a href="#msk-lead-callback">Обратный звонок</a><a href="#msk-sources">Источники</a>
    </nav>
   </section>
+  {officialMinimum?<MoscowDistrictTopicNavigation court={officialMinimum}/>:null}
   <MoscowCourtEvidenceAndJourney officialSlug={officialMinimum?.slug??c.slug} courtName={c.name}/>
   <section className="court-section" id="msk-contacts">
    <span className="eyebrow">Как связаться с судом</span><h2>Адрес, приёмная и режим работы</h2>
@@ -209,11 +211,11 @@ export default async function MoscowCourtPage({params}:Props){
    <p>Исследование: {c.source_observed_on}. Текущие полномочия судей, индивидуальные часы приёма, банковские реквизиты, условия доступности и полный адресный реестр ещё не прошли самостоятельную редакционную приёмку.</p>
    <p className="court-source">Страница — независимый справочный материал. До завершения приёмки закрыта от индексирования; это не официальный сайт суда.</p>
   </section>
-  <section className="section-wrap"><h2>Другие суды Москвы</h2>
-   <div className="results">{others.map(item=><Link className="result-row" key={item.slug} href={'/courts/moscow/'+item.slug}>
-    <span><strong>{item.name}</strong><small>{item.address}</small></span><span aria-hidden="true">↗</span>
+  <section className="section-wrap"><h2>Другие районные суды Москвы</h2>
+   <div className="results">{others.map(item=><Link className="result-row" key={item.slug} href={MoscowOfficialCourtHref(item)}>
+    <span><strong>{item.name}</strong><small>{item.address}</small></span><span aria-hidden="true">→</span>
    </Link>)}</div>
-   <p><Link className="text-link" href="/courts/moscow">Все 12 московских карточек →</Link></p>
+   <p><Link className="text-link" href="/courts/moscow">Все 35 районных судов Москвы →</Link></p>
   </section>
  </>;
 }
