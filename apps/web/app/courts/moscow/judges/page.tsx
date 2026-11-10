@@ -15,6 +15,18 @@ export default function MoscowJudgesDirectory(){
  const courts=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district').map(c=>({
   slug:c.slug,name:c.name,href:MoscowOfficialCourtHref(c)
  })).sort((a,b)=>a.name.localeCompare(b.name,'ru'));
+ const rosterRows=courts.map(c=>{
+  const profiles=MOSCOW_JUDGE_PROFILES.filter(p=>p.courtSlug===c.slug);
+  const unique=new Set(profiles.map(p=>p.judgeSlug));
+  const kinds=new Set(profiles.map(p=>p.sourceKind));
+  const summary=kinds.has('official_roster')?'Есть опубликованный список судей':
+   kinds.has('official_assistant_reference')?'Судьи упомянуты в справочнике помощников':
+   kinds.has('official_appointment_news')?'Есть сообщения о назначениях':
+   kinds.has('official_chair_listing')?'Есть опубликованные сведения о председателе':
+   'Сведения о конкретных судьях требуют проверки';
+  return {...c,numberOfMentions:unique.size,summary,hasRoster:kinds.has('official_roster')};
+ });
+ const publishedRosters=rosterRows.filter(c=>c.hasRoster).length;
  const pending=MOSCOW_JUDGE_CASE_EVIDENCE.filter(c=>c.status==='pending').length;
  const outcomes=MOSCOW_JUDGE_CASE_EVIDENCE.filter(c=>c.status==='outcome_recorded').length;
  return <main className="moscow-judge-directory">
@@ -35,6 +47,20 @@ export default function MoscowJudgesDirectory(){
   <section className="court-section" id="choose-judge">
    <h2>Выбор судьи и судебных дел</h2>
    <MoscowJudgesExplorer courts={courts} profiles={[...MOSCOW_JUDGE_PROFILES]} cases={[...MOSCOW_JUDGE_CASE_EVIDENCE]}/>
+  </section>
+  <section className="court-section" id="judges-by-court">
+   <span className="eyebrow">Официально опубликованные сведения</span>
+   <h2>Судьи по каждому из 35 районных судов Москвы</h2>
+   <p>Для {publishedRosters} судов доступен опубликованный список судей. Для остальных судов показаны только те лица, которые названы в отдельных официальных сообщениях о назначениях, справочниках аппарата или на страницах руководства. Число имён ниже не равно штатной численности действующих судей.</p>
+   <div className="results">{rosterRows.map(c=><article className="result-row" key={c.slug}>
+    <span>
+     <strong><Link href={c.href}>{c.name} →</Link></strong>
+     <small>{c.summary}. Опубликованных индивидуальных записей: {c.numberOfMentions}.</small>
+     <small><Link href={'/courts/moscow/registry/'+c.slug+'/info/judges'}>Судьи, назначение и первоисточники →</Link>
+     {' · '}<Link href={'/courts/moscow/registry/'+c.slug+'/info/cases'}>Дела этого суда →</Link></small>
+    </span>
+   </article>)}</div>
+   <p className="court-source">Исторический список не подтверждает актуальность назначения и распределение судебных дел. Для отдельных судей доступны страницы с датами и прямыми ссылками на официальные публикации.</p>
   </section>
   <section className="court-section">
    <h2>Как читать результаты</h2>
