@@ -55,8 +55,9 @@ class MoscowThirtyFiveFullCards(unittest.TestCase):
         self.assertIn("MoscowDistrictPublishedLeader",rich)
         self.assertIn("MoscowDistrictRegistryGuide",guide)
         self.assertIn("MoscowCourtQuickFinder",hub)
-        self.assertIn("court.href",finder) if False else None
         self.assertIn("href={c.href}",finder)
+        self.assertIn("type=\"search\"",finder)
+        self.assertIn("aria-live=\"polite\"",finder)
         self.assertIn("href={'/courts/moscow/registry/'+c.slug+'/info/filing'}",finder)
         self.assertIn("href={'/courts/moscow/registry/'+c.slug+'/info/cases'}",finder)
         self.assertIn("href={'/courts/moscow/registry/'+c.slug+'/info/appeal'}",finder)
