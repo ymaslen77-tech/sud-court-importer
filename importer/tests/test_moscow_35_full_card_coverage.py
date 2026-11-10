@@ -62,6 +62,10 @@ class MoscowThirtyFiveFullCards(unittest.TestCase):
         self.assertIn("href={'/courts/moscow/registry/'+c.slug+'/info/cases'}",finder)
         self.assertIn("href={'/courts/moscow/registry/'+c.slug+'/info/appeal'}",finder)
         self.assertIn("robots:{index:false,follow:true}",topic)
+        self.assertGreaterEqual(topic.count("<details><summary>"),12)
+        for label in ("Как выбрать между мировым судьёй и районным судом?",
+                      "Как получить копию решения", "Что делать, если у суда несколько адресов?"):
+            self.assertIn(label,topic)
 
     def test_user_pages_do_not_claim_there_are_only_twelve_courts(self):
         rich=(APP/"courts/moscow/[slug]/page.tsx").read_text(encoding="utf-8")
