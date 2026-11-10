@@ -70,7 +70,7 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
   {extras?<section className="court-section" id="moscow-specific-visiting">
    <span className="eyebrow">Дополнительные сведения · индивидуальная официальная справка</span>
    <h2>Доступность и приём подразделений: {courtName}</h2>
-   <p>Это сведения опубликованной страницы суда, изученной {MOSCOW_PRACTICAL_SNAPSHOT_DATE}.
+   <p>Это сведения опубликованной страницы суда, изученной {extras.sourceReviewedOn??MOSCOW_PRACTICAL_SNAPSHOT_DATE}.
       {extras.sourceUpdatedOn?' Дата последнего обновления первоисточника: '+extras.sourceUpdatedOn+'.':''}
       Перед посещением уточните время и актуальность телефона.</p>
    <dl className="court-facts">
