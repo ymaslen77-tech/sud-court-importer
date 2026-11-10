@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type {Metadata} from 'next';
+import {MoscowCourtQuickFinder} from '../../_components/moscow-court-quick-finder';
 import {moscowCourts} from '../../lib/moscow-courts';
 import {moscowDistrictSeoRobots} from '../../lib/moscow-city-seo';
 import {MOSCOW_DISTRICT_INDIVIDUALS} from '../../lib/moscow-district-individual';
@@ -39,11 +40,18 @@ export default function MoscowDirectory(){
    <nav className="court-toc" aria-label="Содержание">
     <strong>Разделы</strong>
     <a href="#moscow-city">Московский городской суд</a>
+    <a href="#moscow-find">Найти свой суд</a>
     <a href="#moscow-district">35 районных судов</a>
     <a href="#moscow-arbitration">Арбитражные суды</a>
     <a href="#moscow-sources">Источники и другие виды судов</a>
     <Link href="/courts/moscow/sources">40 наборов открытых данных</Link>
    </nav>
+  </section>
+  <section className="section-wrap" id="moscow-find">
+   <MoscowCourtQuickFinder courts={district.map(c=>({
+    slug:c.slug,name:c.name,href:MoscowOfficialCourtHref(c),address:c.address,
+    metro:c.metro,temporary:Boolean(c.visitor_locations?.length)
+   }))}/>
   </section>
   <section className="section-wrap" id="moscow-city">
    <div className="section-intro"><span className="eyebrow">Общая юрисдикция</span><h2>Московский городской суд</h2></div>
