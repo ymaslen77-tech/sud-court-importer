@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {moscowJudgeAppointmentEvents} from '../lib/moscow-judge-appointment-events';
 import {
  MOSCOW_JUDGE_PROFILES,MOSCOW_JUDGE_CASE_EVIDENCE,
  moscowJudgeProfilesForCourt,moscowJudgeHref,moscowJudgeSlug,
@@ -37,17 +38,20 @@ export function MoscowCourtPublishedJudges({courtSlug}:{courtSlug:string}){
    {hasRoster?' Есть опубликованный официальный список судей, но его актуальность на сегодня не гарантируется.':' Подтверждённый полный список судей пока не получен; перечисленные ниже сведения носят выборочный характер.'}
    Историческая публикация не удостоверяет, что каждый человек продолжает занимать должность в этом суде.</p>
    <div className="results">
-    {people.map(person=><article className="result-row" key={person.judgeSlug}>
+    {people.map(person=>{const transfer=moscowJudgeAppointmentEvents(courtSlug,person.name)
+      .find(e=>e.eventType==='appointed_to_moscow_city_court');
+     return <article className="result-row" key={person.judgeSlug}>
      <span><strong><Link href={moscowJudgeHref(person)}>{person.name} →</Link></strong>
       <small>{moscowJudgeSourceLabel(person.sourceKind)}</small>
       {person.appointmentBasis?<small>Указанное основание: {person.appointmentBasis}</small>:null}
+      {transfer?<small><strong>Позднейшее кадровое событие:</strong> {transfer.appointmentDate} опубликовано назначение в Московский городской суд. Не считайте эту историческую запись подтверждением работы в районном суде сегодня.</small>:null}
       {person.sourceUpdatedOn?<small>Дата обновления первоисточника: {person.sourceUpdatedOn}</small>:null}
       <small>Сведения просмотрены {person.sourceObservedOn}.</small>
       <details><summary>Официальный источник сведений</summary>
        <a href={person.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить опубликованную запись ↗</a>
       </details>
      </span>
-    </article>)}
+    </article>;})}
    </div>
   </>:<p>Для этого суда пока не найдены индивидуальные записи судей, прошедшие проверку официального происхождения. Это не означает отсутствие действующих судей.</p>}
   <p><Link href="/courts/moscow/judges" className="text-link">Каталог судей Москвы, поиск по имени и категории дела →</Link></p>
@@ -59,7 +63,6 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
   .sort((a,b)=>(b.decisionDate??b.observedOn).localeCompare(a.decisionDate??a.observedOn))
   .slice(0,12);
  const people=publishedJudges(courtSlug);
- const reviewedTextCount=0; // No original full texts accepted into this collection.
  return <div id="moscow-source-confirmed-cases">
   <h3>Дела, в которых опубликовано имя судьи и номер производства</h3>
   {cases.length?<><p>Показаны {cases.length} записей из проверенной локальной подборки.
@@ -80,7 +83,7 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
     </article>;
    })}</div>
   </>:<p>Для данного суда в проверенной локальной подборке пока нет записей, где одновременно установлены судья, номер и источник дела. Отсутствие записи у нас не говорит об отсутствии производства в суде.</p>}
-  {reviewedTextCount===0?<p className="court-source">Полные тексты и правовые выводы по этим делам не удостоверены: вымышленные мотивировки, цитаты и результаты апелляций не приводятся.</p>:null}
+  <p className="court-source">Полные тексты и правовые выводы по этим делам не удостоверены: неподтверждённые мотивировки, цитаты и результаты апелляций не приводятся.</p>
   <p><Link className="text-link" href="/courts/moscow/judges">Перейти к каталогу судей и дел →</Link></p>
  </div>;
 }
