@@ -61,7 +61,8 @@ class MoscowCompleteDirectoryTests(unittest.TestCase):
    self.assertIn(url,GUIDE)
   self.assertIn("Сведения о судьях, делах и адресных границах",GUIDE)
   self.assertIn("moscowDistrictTopicHref(court.slug,id)",GUIDE)
-  self.assertIn("неподтверждённые номера дел",GUIDE)
+  self.assertIn("Отсутствие записи в нашей подборке не означает, что дела не было.",GUIDE)
+  self.assertIn("moscowDistrictTopicHref(court.slug,\'cases\')",GUIDE)
   self.assertIn("robots:moscowDistrictSeoRobots()",DETAIL)
   self.assertIn("Московский городской суд",MOSCOW)
 
