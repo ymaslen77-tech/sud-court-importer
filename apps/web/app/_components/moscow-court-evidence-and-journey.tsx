@@ -19,8 +19,8 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
  const caseRows=cases.slice(0,6);
  return <>
   <section className="court-section" id="moscow-research-route">
-   <span className="eyebrow">Исследование суда внутри портала</span>
-   <h2>От карточки суда — к судье, категории дела и судебной записи</h2>
+   <span className="eyebrow">Судьи, дела и полезные сведения</span>
+   <h2>Судьи, судебные дела и ответы на ваши вопросы</h2>
    <p>Все переходы ниже ведут на разделы нашего сайта. Вы можете изучить сведения без перехода на другие ресурсы,
     а первоисточники доступны непосредственно у соответствующих фактов, без обязательных дополнительных страниц.</p>
    <nav className="court-toc" aria-label={'Навигация по сведениям: '+courtName}>
@@ -33,9 +33,9 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
     <Link href="/services">06. Документы и юридические сервисы</Link>
    </nav>
    <div className="court-practical-grid">
-    <article><h3>Судьи в собранных публикациях</h3><p>{judges.length} {judges.length===1?'имя':'ФИО'} из официальных списков, сообщений о назначении или иных датированных упоминаний. Это не полный штат на сегодня.</p>
+    <article><h3>Судьи, упомянутые в официальных источниках</h3><p>{judges.length} {judges.length===1?'имя':'ФИО'} из официальных списков, сообщений о назначении или иных датированных упоминаний. Это не полный штат на сегодня.</p>
      <p><Link href="/courts/moscow/judges" className="text-link">Перейти к каталогу судей →</Link></p></article>
-    <article><h3>Дела в исследовательской выборке</h3><p>{cases.length} записей по этому суду, включая {results.length} с опубликованным результатом. Это не все дела суда и не статистика успешности сторон.</p>
+    <article><h3>Дела, которые можно найти в нашем справочнике</h3><p>{cases.length} записей по этому суду, включая {results.length} с опубликованным результатом. Это не все дела суда и не статистика успешности сторон.</p>
      <p><Link href="/courts/moscow/judges" className="text-link">Выбрать судью и категорию →</Link></p></article>
    </div>
    {judges.length>0?<div>
@@ -50,7 +50,7 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
      {judges.length>8?<p><Link href="/courts/moscow/judges" className="text-link">Открыть поиск по остальным опубликованным именам →</Link></p>:null}
     </div>:<p className="court-source">Для этого суда пока нет достаточного индивидуально подтверждённого списка. Не подставляем неизвестные имена.</p>}
    {caseRows.length>0?<div>
-    <h3>Примеры судебных записей этого суда</h3>
+    <h3>Номера и категории судебных дел</h3>
     <p>Категория и результат приведены только в том объёме, который подтверждает сохранённая официальная запись; полный текст и мотивировка не проверены.</p>
     <div className="court-practical-grid">{caseRows.map(item=>{
      const related=judges.find(p=>p.name===item.judgeName);
@@ -59,7 +59,7 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
       <p><strong>Категория:</strong> {item.category}</p>
       <p><strong>Реестровый результат:</strong> {item.status==='outcome_recorded'?item.outcome:'Не подтверждён'}</p>
       {related?<p><Link href={moscowJudgeHref(related)}>Досье судьи: {related.name} →</Link></p>:null}
-      <p className="court-source">Исследовано: {item.observedOn}. Полный текст акта не проверен.</p>
+      <p className="court-source">Источник изучен {item.observedOn}. Полный текст акта не проверен.</p>
       <details><summary>Официальный источник этой записи</summary>
        <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить запись на портале суда ↗</a>
       </details>
@@ -68,7 +68,7 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
    </div>:null}
   </section>
   {extras?<section className="court-section" id="moscow-specific-visiting">
-   <span className="eyebrow">Дополнительные сведения · индивидуальная официальная справка</span>
+   <span className="eyebrow">Контакты и приём посетителей</span>
    <h2>Доступность и приём подразделений: {courtName}</h2>
    <p>Это сведения опубликованной страницы суда, изученной {extras.sourceReviewedOn??MOSCOW_PRACTICAL_SNAPSHOT_DATE}.
       {extras.sourceUpdatedOn?' Дата последнего обновления первоисточника: '+extras.sourceUpdatedOn+'.':''}
