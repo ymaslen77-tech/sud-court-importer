@@ -45,7 +45,8 @@ class MoscovVpsOperatorContractTests(unittest.TestCase):
         gate=(ROOT/"ops/vps/sudy-stage-ssh-gate.sh").read_text(encoding="utf-8")
         stage=(ROOT/"ops/vps/sudy-stage-preflight.sh").read_text(encoding="utf-8")
         installer=(ROOT/"ops/vps/install-moscow-operator.sh").read_text(encoding="utf-8")
-        workflow=(ROOT/".github/workflows/moscow-vps-private-preflight.yml").read_text(encoding="utf-8")
+        workflow=ROOT/".github/workflows/moscow-vps-private-preflight.yml"
+        self.assertFalse(workflow.exists(), "Retired VPS runner must stay disabled")
         self.assertIn("SSH_ORIGINAL_COMMAND",gate)
         self.assertIn("/usr/local/libexec/sudy-stage-preflight",gate)
         self.assertIn("--mode crosschecked",stage)
@@ -55,9 +56,6 @@ class MoscovVpsOperatorContractTests(unittest.TestCase):
         self.assertIn("usermod --password '*'",installer)
         self.assertNotIn("passwd -l sudy-stage",installer)
 
-        self.assertIn("SUDY_VPS_AUTOMATION_ENABLED == 'true'",workflow)
-        self.assertIn("ops/vps/request.json",workflow)
-        self.assertIn("StrictHostKeyChecking=yes",workflow)
         self.assertNotIn("--apply --ack-source-terms --push",stage)
 
 if __name__=="__main__":
