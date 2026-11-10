@@ -874,3 +874,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d851
 .moscow-judge-case-cards a,.moscow-judge-result a{color:var(--red)}
 .moscow-judge-profile .court-source,.moscow-judge-directory .court-source{line-height:1.7}
 @media(max-width:850px){.moscow-judge-controls{grid-template-columns:1fr}.moscow-judge-case-filters,.moscow-judge-case-cards{grid-template-columns:1fr}}
+
+/* Moscow district court quick finder: readable, keyboard-accessible field. */
+.moscow-court-quick-search{display:block;width:100%;max-width:780px;min-height:52px;
+ border:1px solid #c4ced4;background:#fff;color:var(--ink);
+ border-radius:7px;padding:13px 16px;font:inherit;font-size:16px;
+ box-shadow:0 2px 8px rgba(0,0,0,.04);margin:8px 0 18px}
+.moscow-court-quick-search:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+#moscow-find .result-row small a{color:var(--red);text-decoration:underline;
+ text-underline-offset:3px}
+#moscow-find .result-row small{line-height:1.6}
