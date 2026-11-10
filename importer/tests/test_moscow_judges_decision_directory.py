@@ -33,7 +33,7 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   self.assertEqual(len(people),424)
   self.assertEqual(len({(slug,norm(n)) for slug,n in people}),424)
   self.assertEqual(len(APPOINTMENTS),29)
-  self.assertEqual(len(EVENTS),8)
+  self.assertEqual(len(EVENTS),9)
   self.assertEqual(len({r['slug'] for r in ROSTERS}),20)
   self.assertEqual(len({r['slug'] for r in LEGACY}),3)
   self.assertEqual(len({r['slug'] for r in ADDITIONAL}),4)
