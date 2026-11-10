@@ -33,6 +33,9 @@ class MoscowUnverifiedSourceGates(unittest.TestCase):
   self.assertIn("Историческая публикация не удостоверяет",panel)
   self.assertIn("не все дела суда",panel)
   self.assertIn("Мотивировочный текст судебного акта",panel)
+  self.assertIn("moscowJudgeCaseCrosscheck(courtSlug,row.number)",panel)
+  self.assertIn("Результат пересмотра не подтверждён.",panel)
+  self.assertIn("appeal.witnesses.map",panel)
 
  def test_six_dated_official_appointment_notices_are_not_current_roster_claims(self):
   added=[r for r in rows("moscow-confirmed-appointment-additions.json") if r["observedOn"]=="2026-11-10"]
