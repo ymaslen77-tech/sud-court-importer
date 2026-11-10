@@ -74,8 +74,10 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
    <span className="eyebrow">04 · Делопроизводство</span>
    <h2>Где найти номер дела, заседание и судебный акт</h2>
    <p>На официальном московском портале выберите «{court.name}», затем откройте поиск судебных дел. Используйте номер, год и вид производства. Для участия в заседании ориентируйтесь на официальное судебное извещение и проверяйте возможный перенос.</p>
-   <p><a href={OFFICIAL.cases} target="_blank" rel="noopener noreferrer" className="text-link">Официальный поиск судебных дел ↗</a></p>
-   <p className="court-source">В этой карточке пока не публикуются неподтверждённые номера дел, результаты или обезличенные «примеры» без первоисточников.</p>
+   <p><Link href={moscowDistrictTopicHref(court.slug,'cases')} className="text-link">Поиск дела и подготовка к заседанию — подробное руководство →</Link></p>
+   <details><summary>Официальный поиск судебных дел</summary><a href={OFFICIAL.cases} target="_blank" rel="noopener noreferrer" className="text-link">Проверить движение дела на портале суда ↗</a></details>
+   <p className="court-source">Мы показываем только дела, номера и исходы которых удалось сопоставить с официальными публикациями. Отсутствие записи в нашей подборке не означает, что дела не было.</p>
+   <p><Link href={moscowDistrictTopicHref(court.slug,'cases')} className="text-link">Как найти дело именно в этом суде →</Link></p>
   </section>
   <section className="court-section" id="district-appeal">
    <span className="eyebrow">05 · Обжалование</span>
@@ -87,14 +89,16 @@ export function MoscowDistrictRegistryGuide({court}:{court:MoscowOfficialMinimum
    <span className="eyebrow">06 · Платежи</span>
    <h2>Государственная пошлина и реквизиты</h2>
    <p>Сумма зависит от характера заявления, цены иска, статуса заявителя, льгот и действующего НК РФ. Перед оплатой найдите реквизиты именно выбранного суда на его официальной странице: не используйте неподтверждённую квитанцию или депозитные реквизиты вместо госпошлины.</p>
-   <p><a className="text-link" href={OFFICIAL.directory} target="_blank" rel="noopener noreferrer">Выбрать суд в официальном каталоге и проверить платежи ↗</a></p>
+   <p><Link href={moscowDistrictTopicHref(court.slug,'fees')} className="text-link">Как определить размер пошлины и проверить реквизиты →</Link></p>
+   <details><summary>Официальный каталог для сверки реквизитов</summary><a className="text-link" href={OFFICIAL.directory} target="_blank" rel="noopener noreferrer">Открыть портал судов Москвы ↗</a></details>
   </section>
   <section className="court-section" id="district-judges">
    <span className="eyebrow">07 · Подразделения</span>
    <h2>Судьи, канцелярии, архив и ознакомление</h2>
    <p>Для уточнения персонального состава, режима работы конкретного отдела или записи на ознакомление с материалами выберите «{court.name}» на официальном портале. Общий график из справочника не является подтверждением часов каждой канцелярии.</p>
    <p><a className="text-link" href={OFFICIAL.directory} rel="noopener noreferrer" target="_blank">Официальный список московских судов ↗</a></p>
-   <p className="court-source">Персональные назначения, биографии и прямые номера телефонов этого суда ещё требуют индивидуальной проверки.</p>
+   <p className="court-source">Опубликованные имена судей, должности и телефоны следует отличать от актуально подтверждённых назначений и работающих контактов.</p>
+   <p><Link href={moscowDistrictTopicHref(court.slug,'judges')} className="text-link">Опубликованные сведения о судьях и руководстве этого суда →</Link></p>
   </section>
   <section className="court-section" id="district-faq">
    <span className="eyebrow">08 · Частые вопросы</span>
