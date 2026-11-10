@@ -59,7 +59,7 @@ class RichCourtCardTests(unittest.TestCase):
   for file in ["research-court-preview.tsx","regional-arbitration-preview.tsx",
                "pilot-court-public.tsx","north-caucasus-cassation-dossier.tsx"]:
    self.assertIn("CourtDossierCompleteness",(ROOT/"_components"/file).read_text(encoding="utf-8"))
-  self.assertIn("CourtDossierCompleteness",
+  self.assertIn("MoscowDistrictTopicNavigation",
    (ROOT/"courts/moscow/[slug]/page.tsx").read_text(encoding="utf-8"))
 
 if __name__=="__main__":unittest.main()
