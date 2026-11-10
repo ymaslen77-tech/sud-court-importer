@@ -60,7 +60,8 @@ class GithubMoscowDataGateTests(unittest.TestCase):
                 gate.validate_tracked_paths([path])
         self.assertEqual(gate.validate_tracked_paths([
             "apps/web/app/data/moscow-official-dataset-catalog.json",
-            "importer/tests/fixtures/synthetic_case.json"]),2)
+            "data/import/inbox/.gitkeep",
+            "importer/tests/fixtures/synthetic_case.json"]),3)
 
     def test_live_repo_validation_no_network(self):
         report=gate.run()
