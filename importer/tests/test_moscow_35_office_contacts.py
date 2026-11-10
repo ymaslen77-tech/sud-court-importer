@@ -19,6 +19,7 @@ class MoscowThirtyFiveOfficeCoverage(unittest.TestCase):
   self.assertEqual(len(FACTS),35)
   self.assertEqual({r["slug"] for r in FACTS},set(OFFICIAL))
   self.assertTrue(all(r["serviceHours"] for r in FACTS))
+  self.assertTrue(all(isinstance(r["travel"],str) and len(r["travel"].strip())>15 for r in FACTS))
   for row in FACTS:
    with self.subTest(court=row["slug"]):
     self.assertRegex(row["sourceUrl"],
