@@ -29,7 +29,13 @@ APPEAL=/srv/sudy-private/moscow-open-data/1577117744056-casesgroupmgsappealcivil
 [[ -d /srv/sudy-private/moscow-open-data && -d /srv/sudy-private ]] || exit 66
 
 useradd --system --user-group --create-home --home-dir /home/sudy-stage --shell /bin/bash sudy-stage
-passwd -l sudy-stage >/dev/null 2>&1 || :
+# Mark password hash as unusable, without marking the *account* locked.
+# Some OpenSSH configurations reject locked accounts before evaluating
+# authorized_keys. A literal '*' cannot match any UNIX password.
+usermod --password '*' sudy-stage
+[[ "$(getent shadow sudy-stage | cut -d: -f2)" == '*' ]] || {
+  echo "Failed to mark the service account password unusable" >&2; exit 70;
+}
 install -d -o sudy-stage -g sudy-stage -m 0700 "$ROOT"
 install -d -o root -g root -m 0755 /usr/local/libexec
 install -o root -g root -m 0755 ops/vps/sudy-stage-ssh-gate.sh /usr/local/libexec/sudy-stage-ssh-gate
