@@ -2,6 +2,7 @@
  * Never automatically publish preview/staging hosts to search engines.
  */
 import {MGS_BASE,MGS_GUIDE_TOPICS,mgsGuideHref} from './moscow-city-court-guide';
+import type {MoscowOfficialMinimumCourt} from './moscow-official-minimum';
 
 function canonicalPublicSite():URL|null{
  const raw=process.env.PUBLIC_SITE_URL;
@@ -62,6 +63,39 @@ export function mgsSeoStructuredData(title:string,description:string,path:string
      url:'https://mos-gorsud.ru/mgs'}},
    {'@type':'BreadcrumbList',itemListElement:items.map((item,i)=>({
     '@type':'ListItem',position:i+1,name:item.name,item:item.item}))}
+  ]
+ };
+ return JSON.stringify(data).replace(/</g,'\\u003c');
+}
+
+/** User-facing district hub schema. Never expose structured data on preview
+ * deployments or imply that a court roster/decision has been fully reviewed.
+ * This is based only on the published official court directory.
+ */
+export function moscowDistrictSeoStructuredData(court:MoscowOfficialMinimumCourt,path:string){
+ if(!moscowDistrictSeoIndexable()||court.kind!=='general-district')return null;
+ const url=mgsSeoAbsoluteUrl(path);
+ const moscow=mgsSeoAbsoluteUrl('/courts/moscow');
+ const courts=mgsSeoAbsoluteUrl('/courts');
+ const site=mgsSeoAbsoluteUrl('/');
+ if(!url||!moscow||!courts||!site)return null;
+ const courthouse=url+'#court';
+ const title=court.name+' — адрес, график, документы и судебные дела';
+ const data={
+  '@context':'https://schema.org',
+  '@graph':[
+   {'@type':'Courthouse','@id':courthouse,name:court.name,
+    address:court.address,email:court.email,
+    telephone:court.general_hotline,
+    isBasedOn:court.source_url},
+   {'@type':'WebPage','@id':url,url,name:title,inLanguage:'ru',
+    about:{'@id':courthouse},
+    isPartOf:{'@type':'WebSite',name:'Суды России',url:site}},
+   {'@type':'BreadcrumbList',itemListElement:[
+    { '@type':'ListItem',position:1,name:'Суды России',item:courts },
+    { '@type':'ListItem',position:2,name:'Суды Москвы',item:moscow },
+    { '@type':'ListItem',position:3,name:court.name,item:url }
+   ]}
   ]
  };
  return JSON.stringify(data).replace(/</g,'\\u003c');
