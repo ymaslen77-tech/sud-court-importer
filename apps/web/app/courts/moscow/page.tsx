@@ -42,6 +42,7 @@ export default function MoscowDirectory(){
     <a href="#moscow-district">35 районных судов</a>
     <a href="#moscow-arbitration">Арбитражные суды</a>
     <a href="#moscow-sources">Источники и другие виды судов</a>
+    <Link href="/courts/moscow/sources">40 наборов открытых данных</Link>
    </nav>
   </section>
   <section className="section-wrap" id="moscow-city">
@@ -79,6 +80,7 @@ export default function MoscowDirectory(){
   <section className="section-wrap" id="moscow-sources">
    <h2>Первоисточники и другие категории</h2>
    <p>Каталог составлен по сведениям официального портала, источник перечня — <a href={MOSCOW_DIRECTORY_META.roster_url} target="_blank" rel="noopener noreferrer">список районных судов Москвы ↗</a> и <a href={MOSCOW_DIRECTORY_META.source_url} target="_blank" rel="noopener noreferrer">официальная карта с адресами и режимом работы ↗</a>.</p>
+   <p>Отдельно собран <Link href="/courts/moscow/sources">каталог 40 наборов официальных открытых данных судебной системы Москвы</Link> с происхождением ссылок и правилами проверки. Он не содержит необезличенных выгрузок дел.</p>
    <p>В нашем разделе <Link href="/courts/magistrates">«Мировые судьи»</Link> и <Link href="/courts/arbitration">«Арбитражные суды»</Link> используются отдельные реестры. Наличие информации на этом сайте не подтверждает текущий состав судей, адресную подсудность либо режим работы отдельных подразделений.</p>
   </section>
   <section className="callout"><div><h2>Нужно определить суд по адресу?</h2>
