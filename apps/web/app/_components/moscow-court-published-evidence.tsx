@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {moscowJudgeAppointmentEvents} from '../lib/moscow-judge-appointment-events';
+import {moscowJudgeCaseCrosscheck} from '../lib/moscow-judge-crosschecks';
 import {
  MOSCOW_JUDGE_PROFILES,MOSCOW_JUDGE_CASE_EVIDENCE,
  moscowJudgeProfilesForCourt,moscowJudgeHref,moscowJudgeSlug,
@@ -69,6 +70,7 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
    Это не все дела суда, не статистика результатов и не подборка мотивировочных текстов решений.</p>
    <div className="court-practical-grid">{cases.map(row=>{
     const judge=people.find(p=>moscowJudgeSlug(p.name)===moscowJudgeSlug(row.judgeName));
+    const appeal=moscowJudgeCaseCrosscheck(courtSlug,row.number);
     return <article key={row.number+'-'+row.judgeName}>
      <h4>Дело № {row.number}</h4>
      <p><strong>Категория:</strong> {row.category}</p>
@@ -76,6 +78,15 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
       <p><strong>Судья по опубликованной записи:</strong> {row.judgeName}</p>}
      <p><strong>Результат по реестру:</strong> {row.status==='outcome_recorded'?row.outcome:'Не подтверждён'}</p>
      {row.decisionDate?<p><strong>Дата в судебной записи:</strong> {row.decisionDate}</p>:null}
+     {appeal?<div className="notice">
+      <strong>Установлена регистрация апелляционного материала</strong>
+      <p>В Московском городском суде зарегистрирован материал № {appeal.appealDocket} ({appeal.appealRegisteredOn}). Совпали УИД, номер дела первой инстанции, категория и обозначение судьи.</p>
+      <p><strong>Результат пересмотра не подтверждён.</strong> Регистрация не означает отмену или вступление решения в силу.</p>
+      <details><summary>Две официальные записи</summary>
+       {appeal.witnesses.map(w=><p key={w.kind}><a href={w.sourceUrl} rel="noopener noreferrer" target="_blank">
+        {w.kind==='first_instance'?'Карточка районного суда':'Карточка Мосгорсуда'} ↗</a></p>)}
+      </details>
+     </div>:null}
      <p className="court-source">Источник просмотрен {row.observedOn}. Мотивировочный текст судебного акта и итог апелляции по этой записи не подтверждены.</p>
      <details><summary>Официальная судебная запись</summary>
       <a href={row.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить дело на портале суда ↗</a>
