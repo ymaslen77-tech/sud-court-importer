@@ -6,6 +6,9 @@ on:
       - infra/coolify-russian-vps
     paths:
       - 'apps/web/app/courts/moscow/**'
+      - 'apps/web/app/_components/moscow-*'
+      - 'apps/web/app/lib/moscow-*'
+      - 'apps/web/app/globals.css'
       - 'apps/web/app/data/moscow-*.json'
       - 'importer/**'
       - 'docs/moscow-github-only-workflow.md'
@@ -13,6 +16,9 @@ on:
   pull_request:
     paths:
       - 'apps/web/app/courts/moscow/**'
+      - 'apps/web/app/_components/moscow-*'
+      - 'apps/web/app/lib/moscow-*'
+      - 'apps/web/app/globals.css'
       - 'apps/web/app/data/moscow-*.json'
       - 'importer/**'
       - '.github/workflows/moscow-github-only-quality.yml'
