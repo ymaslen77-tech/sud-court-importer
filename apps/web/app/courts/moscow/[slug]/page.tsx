@@ -9,6 +9,7 @@ import {adjudicatedCasesFor} from '../../../lib/moscow-adjudicated-cases';
 import {MoscowLeadCapture} from '../../../_components/moscow-lead-capture';
 import {MoscowFilingWizard} from '../../../_components/moscow-filing-wizard';
 import {MoscowDistrictTopicNavigation} from '../../../_components/moscow-district-topic-navigation';
+import {MoscowDistrictPublishedLeader} from '../../../_components/moscow-district-published-leader';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../lib/moscow-official-minimum';
 import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
 import {MoscowCourtEvidenceAndJourney} from '../../../_components/moscow-court-evidence-and-journey';
@@ -110,6 +111,7 @@ export default async function MoscowCourtPage({params}:Props){
    </dl>
    <p className="court-source"><External href={c.official_url}>Сведения и сообщения на официальном сайте</External>. Электронная почта не является каналом процессуальной подачи.</p>
   </section>
+  {officialMinimum?<MoscowDistrictPublishedLeader slug={officialMinimum.slug}/>:null}
   <MoscowYandexMap court={moved&&officialMinimum?.visitor_locations?.[0]
     ?{...c,address:officialMinimum.visitor_locations[0].address,
       notes:'Карта показывает лишь первый из временных адресов. Конкретное место заседания и отдел необходимо сверить в официальном сообщении и извещении.'}

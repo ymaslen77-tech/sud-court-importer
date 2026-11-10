@@ -4,6 +4,7 @@ import type {Metadata} from 'next';
 import {getMoscowOfficialMinimumCourt,MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../../../../lib/moscow-official-minimum';
 import {moscowDistrictIndividual,moscowDistrictOfficialPagesBySlug} from '../../../../../../lib/moscow-district-individual';
 import {moscowCourtPracticalFacts} from '../../../../../../lib/moscow-district-practical-facts';
+import {moscowPublishedLeadership} from '../../../../../../lib/moscow-district-published-leadership';
 import {MOSCOW_DISTRICT_TOPICS,moscowDistrictTopic,moscowDistrictTopicNext,moscowDistrictTopicHref} from '../../../../../../lib/moscow-district-topics';
 import {moscowJudgeRoster,moscowCourtCaseExamples,moscowVerifiedOutcome} from '../../../../../../lib/moscow-district-source-evidence';
 import {moscowJudicialSourceBrief} from '../../../../../../lib/moscow-judicial-source-briefs';
@@ -41,6 +42,7 @@ export default async function MoscowDistrictTopicPage({params}:Params){
  const url=moscowDistrictTopicHref(slug,topic.slug);
  const next=moscowDistrictTopicNext(topic.slug);
  const practical=moscowCourtPracticalFacts(slug);
+ const leader=moscowPublishedLeadership(slug);
  const roster=moscowJudgeRoster(slug);
  const brief=moscowJudicialSourceBrief(slug);
  const docket=moscowCourtCaseExamples(slug);
@@ -118,6 +120,7 @@ export default async function MoscowDistrictTopicPage({params}:Params){
    </>:null}
    {topic.slug==='judges'?<>
     <h2>Судьи и сведения об их назначении</h2>
+    {leader?<div className="notice"><strong>Руководство — по официальной странице суда</strong><p>{leader.name}. {leader.positionAsPublished==='acting'?'Исполняющий обязанности председателя (как указано в источнике).':leader.positionAsPublished==='status_disputed'?'Официальные версии расходятся в обозначении статуса руководителя.':'Опубликован как председатель суда.'} Действующие полномочия дополнительно не подтверждены.</p>{leader.notice?<p>{leader.notice}</p>:null}<details><summary>Официальная страница с опубликованными сведениями</summary><a href={leader.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить сведения ↗</a></details></div>:profile?.chairPublished?<div className="notice"><strong>Руководство — по опубликованной справке</strong><p>{profile.chairPublished.replace(/^И\. о\. /,'')}. {profile.chairStatus==='conflicting_sources'?'Опубликованные источники не позволяют подтвердить текущую должность.':profile.chairStatus==='acting_as_published'?'Исполняющий обязанности (по публикации).':'Указан как председатель суда.'} Текущие полномочия требуют отдельной проверки.</p></div>:null}
     {roster?<><p>В локальную подборку внесены {roster.judges.length} ФИО из официального списка, обновлённого {roster.sourceLastUpdated}. Это не доказательство его полноты или действующих полномочий каждого судьи.</p>
      <ul>{roster.judges.map(name=><li key={name}>{name}</li>)}</ul>
      <p><a href={roster.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-link">Официальный список судей ↗</a></p>
