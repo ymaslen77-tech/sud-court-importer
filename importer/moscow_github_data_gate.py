@@ -111,6 +111,9 @@ def validate_tracked_paths(paths):
     forbidden=[]
     for name in paths:
         path=name.replace("\\","/").lstrip("./")
+        if path=="data/import/inbox/.gitkeep":
+            # Deliberate empty tracked scaffold, not an original court export.
+            continue
         if (path.startswith(("data/import/","data/source-snapshots/","sudy-private/",
                               "srv/sudy-private/")) or RAW_FILE_RE.search(path)):
             forbidden.append(path)
