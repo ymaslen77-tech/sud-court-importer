@@ -13,6 +13,7 @@ import {MoscowDistrictPublishedLeader} from '../../../_components/moscow-distric
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../lib/moscow-official-minimum';
 import {moscowDistrictSeoRobots,moscowDistrictSeoStructuredData} from '../../../lib/moscow-city-seo';
 import {MoscowCourtEvidenceAndJourney} from '../../../_components/moscow-court-evidence-and-journey';
+import {MoscowCourtPublishedJudges} from '../../../_components/moscow-court-published-evidence';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
@@ -92,6 +93,7 @@ export default async function MoscowCourtPage({params}:Props){
   </section>
   {officialMinimum?<MoscowDistrictTopicNavigation court={officialMinimum}/>:null}
   <MoscowCourtEvidenceAndJourney officialSlug={officialMinimum?.slug??c.slug} courtName={c.name}/>
+  {officialMinimum?<section className="court-section" id="msk-all-published-judges"><MoscowCourtPublishedJudges courtSlug={officialMinimum.slug}/></section>:null}
   <section className="court-section" id="msk-contacts">
    <span className="eyebrow">Как связаться с судом</span><h2>Адрес, приёмная и режим работы</h2>
    {moved?<div className="notice moscow-relocation-note" role="note">

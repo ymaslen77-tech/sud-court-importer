@@ -11,6 +11,7 @@ import {moscowJudgeRoster,moscowCourtCaseExamples,moscowVerifiedOutcome} from '.
 import {moscowJudicialSourceBrief} from '../../../../../../lib/moscow-judicial-source-briefs';
 import {MoscowDistrictAddressLookup} from '../../../../../../_components/moscow-district-address-lookup';
 import {MoscowFilingWizard} from '../../../../../../_components/moscow-filing-wizard';
+import {MoscowCourtPublishedJudges,MoscowCourtPublishedCases} from '../../../../../../_components/moscow-court-published-evidence';
 
 type Params={params:Promise<{slug:string;topic:string}>};
 export const dynamicParams=false;
@@ -114,6 +115,7 @@ export default async function MoscowDistrictTopicPage({params}:Params){
     {outcome?<p>По делу № {outcome.number} официальный реестр указывает результат «{outcome.publishedOutcome}». Текст и мотивировка решения не проверялись. <a href={outcome.sourceUrl} target="_blank" rel="noopener noreferrer">Карточка дела ↗</a></p>:null}
     <p><a className="text-link" href={official.cases} target="_blank" rel="noopener noreferrer">Поиск дел {court.name} на официальном портале ↗</a></p>
    </>:null}
+   {topic.slug==='cases'?<MoscowCourtPublishedCases courtSlug={slug}/>:null}
    {topic.slug==='appeal'?<>
     <h2>Проверка правильного порядка обжалования</h2>
     <p>Для гражданских решений районного суда Москвы апелляционный маршрут обычно ведёт в Московский городской суд, но жалоба подаётся через суд, вынесший решение. Для иных видов судопроизводства и разных актов правила и сроки различаются.</p>
@@ -133,14 +135,19 @@ export default async function MoscowDistrictTopicPage({params}:Params){
    </>:null}
    {topic.slug==='judges'?<>
     <h2>Судьи и сведения об их назначении</h2>
-    {leader?<div className="notice"><strong>Руководство — по официальной странице суда</strong><p>{leader.name}. {leader.positionAsPublished==='acting'?'Исполняющий обязанности председателя (как указано в источнике).':leader.positionAsPublished==='status_disputed'?'Официальные версии расходятся в обозначении статуса руководителя.':'Опубликован как председатель суда.'} Действующие полномочия дополнительно не подтверждены.</p>{leader.notice?<p>{leader.notice}</p>:null}<details><summary>Официальная страница с опубликованными сведениями</summary><a href={leader.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить сведения ↗</a></details></div>:profile?.chairPublished?<div className="notice"><strong>Руководство — по опубликованной справке</strong><p>{profile.chairPublished.replace(/^И\. о\. /,'')}. {profile.chairStatus==='conflicting_sources'?'Опубликованные источники не позволяют подтвердить текущую должность.':profile.chairStatus==='acting_as_published'?'Исполняющий обязанности (по публикации).':'Указан как председатель суда.'} Текущие полномочия требуют отдельной проверки.</p></div>:null}
-    {roster?<><p>В локальную подборку внесены {roster.judges.length} ФИО из официального списка, обновлённого {roster.sourceLastUpdated}. Это не доказательство его полноты или действующих полномочий каждого судьи.</p>
-     <ul>{roster.judges.map(name=><li key={name}>{name}</li>)}</ul>
-     <p><a href={roster.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-link">Официальный список судей ↗</a></p>
-    </>:brief?<><p>Подтверждены отдельные публикации, а не полный список действующих судей: {brief.note}</p>
-     <ul>{brief.people.map(p=><li key={p.name}>{p.name} — {p.basis}. <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer">Источник ↗</a></li>)}</ul>
-    </>:<p>Для суда пока нет подтверждённой локальной подборки. Проверяйте состав на официальном сайте.</p>}
-    <p>Биографию и юридический статус конкретного судьи необходимо сверять по официальному источнику и указам о назначении; отсутствие данных не означает отсутствие судьи в составе.</p>
+    {leader?<div className="notice"><strong>Руководство — по официальной странице суда</strong>
+     <p>{leader.name}. {leader.positionAsPublished==='acting'?'Исполняющий обязанности председателя (как указано в источнике).':leader.positionAsPublished==='status_disputed'?'В официальных версиях расходится указание должности руководителя.':'Опубликован как председатель суда.'} Действующие полномочия дополнительно не подтверждены.</p>
+     {leader.notice?<p>{leader.notice}</p>:null}
+     <details><summary>Официальная страница руководства</summary><a href={leader.sourceUrl} target="_blank" rel="noopener noreferrer">Проверить запись ↗</a></details>
+    </div>:profile?.chairPublished?<div className="notice">
+     <strong>Руководство — по опубликованной справке</strong>
+     <p>{profile.chairPublished.replace(/^И\. о\. /,'')}. {profile.chairStatus==='conflicting_sources'?'Текущий статус нельзя установить из расходящихся публикаций.':profile.chairStatus==='acting_as_published'?'Исполняющий обязанности по публикации.':'Опубликован как председатель суда.'} Актуальность назначения требует проверки.</p>
+    </div>:null}
+    {roster?<p>Для этого суда имеется отдельная подборка из {roster.judges.length} ФИО, опубликованная в официальном списке. Дата обновления списка: {roster.sourceLastUpdated??'не указана'}. Это не подтверждает действующий состав на сегодняшний день.</p>:
+     brief?<p>Для этого суда пока доступны отдельные официальные кадровые публикации, а не полный подтверждённый состав: {brief.note}</p>:
+     <p>Для этого суда полный актуальный список судей пока не подтверждён отдельным официальным реестром. Опубликованные сведения о председателе и назначениях отображаются ниже в пределах подтверждённых источников.</p>}
+    <MoscowCourtPublishedJudges courtSlug={slug}/>
+    <p>Факт включения в исторический список, сообщение о назначении и работа в составе суда сегодня — разные обстоятельства. Биографии, полномочия и распределение дел нужно сверять по соответствующим первоисточникам.</p>
    </>:null}
    {topic.slug==='faq'?<>
     <h2>Куда обращаться и что проверить перед посещением</h2>
