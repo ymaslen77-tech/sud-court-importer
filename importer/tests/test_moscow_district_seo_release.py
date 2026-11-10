@@ -26,6 +26,6 @@ class MoscowDistrictSeoReleaseTests(unittest.TestCase):
  def test_topic_routes_stay_noindex_until_individual_review(self):
   self.assertIn("robots:{index:false,follow:true}",TOPIC)
   self.assertNotIn("moscowDistrictSeoRobots()",TOPIC)
-  self.assertIn("MOSCOW_DISTRICT_INDIVIDUALS.flatMap",TOPIC)
+  self.assertIn("MOSCOW_OFFICIAL_MINIMUM_COURTS.filter",TOPIC)
   self.assertIn("MOSCOW_DISTRICT_TOPICS.map",TOPIC)
 if __name__=='__main__':unittest.main()
