@@ -22,7 +22,7 @@ MOSCOW=(APP/'courts/moscow/page.tsx').read_text(encoding='utf-8')
 RESEARCH=(APP/'courts/moscow/[slug]/page.tsx').read_text(encoding='utf-8')
 def norm(name):return re.sub(r'\s+',' ',name.replace('ё','е').lower()).strip()
 class JudgeEvidenceAcceptance(unittest.TestCase):
- def test_418_unique_published_names_with_court_identity(self):
+ def test_424_unique_published_names_with_court_identity(self):
   people=[(r['slug'],n) for r in ROSTERS+LEGACY+ADDITIONAL for n in r['judges']]
   people += [(r['slug'],p['name']) for r in BRIEFS for p in r['people']]
   people += [(r['slug'],r['name']) for r in CHAIRS]
@@ -30,9 +30,9 @@ class JudgeEvidenceAcceptance(unittest.TestCase):
   new_names += [(r['courtSlug'],r['name']) for r in EVENTS if r['eventType']=='appointed_chair']
   previous={(slug,norm(n)) for slug,n in people}
   people += [(slug,n) for slug,n in new_names if (slug,norm(n)) not in previous]
-  self.assertEqual(len(people),418)
-  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),418)
-  self.assertEqual(len(APPOINTMENTS),23)
+  self.assertEqual(len(people),424)
+  self.assertEqual(len({(slug,norm(n)) for slug,n in people}),424)
+  self.assertEqual(len(APPOINTMENTS),29)
   self.assertEqual(len(EVENTS),8)
   self.assertEqual(len({r['slug'] for r in ROSTERS}),20)
   self.assertEqual(len({r['slug'] for r in LEGACY}),3)

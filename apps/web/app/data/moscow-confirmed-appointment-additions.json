@@ -207,6 +207,60 @@
       "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
       "observedOn": "2026-11-01",
       "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Вороненко Яна Андреевна",
+      "appointedOn": "2023-11-08",
+      "decreeNumber": "829",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij/news/v-shherbinskij-rajonnyj-sud-goroda-moskvy-naznacheny-sudi",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Патапенкова Юлия Александровна",
+      "appointedOn": "2023-11-08",
+      "decreeNumber": "829",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij/news/v-shherbinskij-rajonnyj-sud-goroda-moskvy-naznacheny-sudi",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Слизовский Алексей Александрович",
+      "appointedOn": "2023-11-08",
+      "decreeNumber": "829",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij/news/v-shherbinskij-rajonnyj-sud-goroda-moskvy-naznacheny-sudi",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Шаболтас Анна Владимировна",
+      "appointedOn": "2023-11-08",
+      "decreeNumber": "829",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij/news/v-shherbinskij-rajonnyj-sud-goroda-moskvy-naznacheny-sudi",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "tushinskiy",
+      "name": "Курахтанов Андрей Владимирович",
+      "appointedOn": "2024-12-13",
+      "decreeNumber": "1067",
+      "sourceUrl": "https://mos-gorsud.ru/rs/tushinskij/news/ukazom-prezidenta-rossijskoj-federatsii-ot-13-dekabrya-2024-goda-1067-v-tushinskij-rajonnyj-sud-goroda-moskvy-byl-naznachen-sudya-kurahtanov-andrej-vladimirovich",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
+    },
+    {
+      "courtSlug": "tverskoy",
+      "name": "Комлев Сергей Владимирович",
+      "appointedOn": "2025-11-14",
+      "decreeNumber": "840",
+      "sourceUrl": "https://mos-gorsud.ru/rs/tverskoj/news/v-tverskoj-rajonnyj-sud-goroda-moskvy-naznachen-sudya",
+      "observedOn": "2026-11-10",
+      "kind": "official_appointment_not_current_roster"
     }
   ]
 }

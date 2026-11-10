@@ -80,6 +80,16 @@
       "decreeNumber": "514",
       "sourceUrl": "https://mos-gorsud.ru/mgs/news/719f1798-1b6b-4cc9-adef-449fc78f9470",
       "observedOn": "2026-11-01"
+    },
+    {
+      "courtSlug": "shcherbinskiy",
+      "name": "Слизовский Алексей Александрович",
+      "eventType": "appointed_to_moscow_city_court",
+      "newCourt": "Московский городской суд",
+      "appointmentDate": "2026-10-12",
+      "decreeNumber": "723",
+      "sourceUrl": "https://mos-gorsud.ru/mgs/news/f94ecd2f-9bdc-41ed-a0c1-e85e71c5e9b3",
+      "observedOn": "2026-11-10"
     }
   ]
 }
