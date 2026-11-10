@@ -5,7 +5,7 @@ import {MoscowDistrictIndividualDossier} from '../../../../_components/moscow-di
 import {MoscowCourtEvidenceAndJourney} from '../../../../_components/moscow-court-evidence-and-journey';
 import {moscowDistrictIndividual} from '../../../../lib/moscow-district-individual';
 import {moscowDistrictReviewedContact} from '../../../../lib/moscow-district-reviewed-contacts';
-import {mgsSeoRobots,moscowDistrictSeoRobots} from '../../../../lib/moscow-city-seo';
+import {mgsSeoRobots,moscowDistrictSeoRobots,moscowDistrictSeoStructuredData} from '../../../../lib/moscow-city-seo';
 import {notFound,permanentRedirect} from 'next/navigation';
 import type {Metadata} from 'next';
 import {
@@ -45,10 +45,12 @@ export default async function MoscowOfficialRegistryDetail({params}:Props){
  // Twelve pre-existing researched dossiers are the canonical URLs; registry aliases must not create duplicates.
  if(detailed!==('/courts/moscow/registry/'+court.slug))permanentRedirect(detailed);
  const hasRich=detailed!==('/courts/moscow/registry/'+court.slug);
+ const structured=moscowDistrictSeoStructuredData(court,detailed);
  const reviewedContact=moscowDistrictReviewedContact(slug);
  const individual=moscowDistrictIndividual(slug);
  const related=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.slug!==court.slug&&c.kind===court.kind).slice(0,5);
  return <article className="moscow-minimum-court-page">
+  {structured?<script type="application/ld+json" dangerouslySetInnerHTML={{__html:structured}}/>:null}
   <nav className="breadcrumb" aria-label="Навигация">
    <Link href="/">Главная</Link><span>/</span>
    <Link href="/courts">Суды России</Link><span>/</span>

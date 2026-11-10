@@ -11,7 +11,7 @@ import {MoscowFilingWizard} from '../../../_components/moscow-filing-wizard';
 import {MoscowDistrictTopicNavigation} from '../../../_components/moscow-district-topic-navigation';
 import {MoscowDistrictPublishedLeader} from '../../../_components/moscow-district-published-leader';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../../../lib/moscow-official-minimum';
-import {moscowDistrictSeoRobots} from '../../../lib/moscow-city-seo';
+import {moscowDistrictSeoRobots,moscowDistrictSeoStructuredData} from '../../../lib/moscow-city-seo';
 import {MoscowCourtEvidenceAndJourney} from '../../../_components/moscow-court-evidence-and-journey';
 
 type Props={params:Promise<{slug:string}>};
@@ -57,6 +57,7 @@ export default async function MoscowCourtPage({params}:Props){
   c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
    .startsWith(item.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
  const moved=Boolean(officialMinimum?.visitor_locations?.length);
+ const structured=officialMinimum?moscowDistrictSeoStructuredData(officialMinimum,'/courts/moscow/'+c.slug):null;
  const allDistricts=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(item=>item.kind==='general-district');
  const currentIndex=allDistricts.findIndex(item=>item.slug===officialMinimum?.slug);
  const others=[...allDistricts.slice(currentIndex+1),...allDistricts.slice(0,currentIndex)].slice(0,4);
@@ -68,6 +69,7 @@ export default async function MoscowCourtPage({params}:Props){
   Boolean(process.env.COURT_LEADS_WEBHOOK_TOKEN && process.env.COURT_LEADS_WEBHOOK_TOKEN.length>=32);
  const privacyUrl=intakeReady?process.env.COURT_LEADS_PRIVACY_URL!:null;
  return <>
+  {structured?<script type="application/ld+json" dangerouslySetInnerHTML={{__html:structured}}/>:null}
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды России</Link><span>/</span>
    <Link href="/courts/moscow">Москва</Link><span>/</span>{c.name}</div>
   <section className="section-hero">
