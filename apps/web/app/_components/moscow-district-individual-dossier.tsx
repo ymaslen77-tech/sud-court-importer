@@ -97,6 +97,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
     <p>В нашу локальную подборку внесены {publishedRoster.judges.length} ФИО из опубликованной страницы суда. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated}.
      Не следует считать подборку обязательно полной или удостоверением действующего кадрового состава на сегодняшний день.
      Для назначения и полномочий конкретного судьи сверяйте указ Президента РФ и свежие сообщения суда.</p>
+    {publishedRoster.notice?<p className="court-source">{publishedRoster.notice}</p>:null}
     <ul>{publishedRoster.judges.map(name=><li key={name}>
      <Link href={'/courts/moscow/judges/'+court.slug+'/'+moscowJudgeSlug(name)}>{name} →</Link>
      {publishedRoster.appointmentNotes.find(p=>p.name===name)?.decree?
