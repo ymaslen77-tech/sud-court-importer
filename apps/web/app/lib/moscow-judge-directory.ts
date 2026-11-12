@@ -1,6 +1,7 @@
 import rosterFile from '../data/moscow-district-judges-samples.json';
 import legacyRosters from '../data/moscow-legacy-judge-rosters.json';
 import additionalRosters from '../data/moscow-additional-judge-rosters.json';
+import refreshedRosters from '../data/moscow-2026-roster-refresh.json';
 import chairListings from '../data/moscow-judicial-chair-listings.json';
 import appointmentAdds from '../data/moscow-confirmed-appointment-additions.json';
 import {MOSCOW_RECENT_CHAIR_APPOINTMENTS} from './moscow-judge-appointment-events';
@@ -55,7 +56,7 @@ export function moscowJudgeSlug(name:string):string{
 }
 const byCourt=new Map(MOSCOW_OFFICIAL_MINIMUM_COURTS.map(c=>[c.slug,c]));
 const records:MoscowJudgeProfile[]=[];
-for(const r of [...rosterFile.records,...legacyRosters.records,...additionalRosters.records]){
+for(const r of [...rosterFile.records,...legacyRosters.records,...additionalRosters.records,...refreshedRosters.records]){
  const court=byCourt.get(r.slug);
  if(!court||court.kind!=='general-district')continue;
  for(const name of r.judges){
