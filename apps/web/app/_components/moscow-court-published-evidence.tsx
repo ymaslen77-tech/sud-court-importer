@@ -95,6 +95,7 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
    })}</div>
   </>:<p>Для данного суда в проверенной локальной подборке пока нет записей, где одновременно установлены судья, номер и источник дела. Отсутствие записи у нас не говорит об отсутствии производства в суде.</p>}
   <p className="court-source">Полные тексты и правовые выводы по этим делам не удостоверены: неподтверждённые мотивировки, цитаты и результаты апелляций не приводятся.</p>
-  <p><Link className="text-link" href="/courts/moscow/judges">Перейти к каталогу судей и дел →</Link></p>
+  <p><Link className="text-link" href="/courts/moscow/cases">Найти дело по номеру, категории и суду во всей московской подборке →</Link></p>
+  <p><Link className="text-link" href="/courts/moscow/judges">Перейти к каталогу судей →</Link></p>
  </div>;
 }
