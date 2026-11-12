@@ -13,6 +13,7 @@ export type MoscowJudgeRoster={
  status:'published_roster_not_live_certification';
  judges:string[];
  appointmentNotes:{name:string;decree:string}[];
+ notice?:string;
 };
 export type MoscowDocketExample={
  number:string;
