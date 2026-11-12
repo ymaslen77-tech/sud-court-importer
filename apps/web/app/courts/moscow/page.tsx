@@ -26,7 +26,10 @@ export default function MoscowDirectory(){
    <span className="kicker">Москва · официальный справочный реестр</span>
    <h1>Суды Москвы: адреса, график работы и контакты</h1>
    <p className="lead">Московский городской суд и все 35 районных судов, перечисленных на официальном портале судов общей юрисдикции Москвы. Для каждого указаны адрес, общий режим работы, почта и источник.</p>
-   <p><Link href="/courts/moscow/judges" className="button button-red">Выбрать судью: дела, категории и решения →</Link></p>
+   <div className="court-filter-actions">
+    <Link href="/courts/moscow/cases" className="button button-red">Найти судебное дело по номеру или категории →</Link>
+    <Link href="/courts/moscow/judges" className="button button-outline">Судьи, дела и опубликованные сведения →</Link>
+   </div>
    <div className="moscow-registry-summary">
     <div><strong>{MOSCOW_OFFICIAL_MINIMUM_COURTS.length}</strong><span>Судебных органов в перечне</span></div>
     <div><strong>{district.length}</strong><span>Районных судов</span></div>
