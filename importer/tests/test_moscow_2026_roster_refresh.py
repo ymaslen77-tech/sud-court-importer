@@ -35,6 +35,25 @@ class DatedRosterTests(unittest.TestCase):
   self.assertIn("Гудошникова Елена Александровна",row["judges"])
   self.assertIn("Курахтанов Андрей Владимирович",row["judges"])
 
+ def test_28_dated_published_roster_sets_not_35_current_staffs(self):
+  filenames=[
+   "moscow-district-judges-samples.json",
+   "moscow-legacy-judge-rosters.json",
+   "moscow-additional-judge-rosters.json",
+   "moscow-2026-roster-refresh.json",
+  ]
+  rows=[row for name in filenames for row in json.loads((DATA/name).read_text(encoding="utf-8"))["records"]]
+  all_slugs=[r["slug"] for r in rows]
+  self.assertEqual(len(all_slugs),len(set(all_slugs)))
+  self.assertEqual(len(all_slugs),28)
+  for row in rows:
+   self.assertEqual(row["status"],"published_roster_not_live_certification")
+  districts=[r["slug"] for r in json.loads((DATA/"moscow-official-minimum-registry.json").read_text(encoding="utf-8"))["records"]
+             if r["kind"]=="general-district"]
+  missing=set(districts)-set(all_slugs)
+  self.assertEqual(missing,{"zamoskvoretskiy","kuzminskiy","meshchanskiy","tverskoy",
+                             "khamovnicheskiy","chertanovskiy","shcherbinskiy"})
+
  def test_same_source_reused_without_relabeling_live_judges(self):
   self.assertIn("moscow-2026-roster-refresh.json",JUDGES)
   self.assertIn("...refreshedRosters.records",JUDGES)
