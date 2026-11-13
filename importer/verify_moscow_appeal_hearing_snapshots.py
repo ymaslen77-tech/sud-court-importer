@@ -54,8 +54,8 @@ def validate(rows=None,links=None):
    datetime.strptime(x["hearingTime"],"%H:%M")
   except (ValueError,TypeError) as exc:
    raise ValueError("Invalid official schedule date or time") from exc
-  if observed>hearing or observed>date(2026,11,13):
-   raise ValueError("Snapshot must be grounded on or before 13 Nov 2026")
+  if observed>hearing or observed>date.today():
+   raise ValueError("Observed date must not be after the appointment or in the future")
   if x["statusAsPublished"]!=(
    "Назначено судебное заседание на "+hearing.strftime("%d.%m.%Y")+" "+x["hearingTime"]):
    raise ValueError("Hearing status must agree with observed date/time")
