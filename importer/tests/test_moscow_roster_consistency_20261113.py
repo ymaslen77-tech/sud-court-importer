@@ -45,6 +45,12 @@ class MoscowAllRosterSources(unittest.TestCase):
   self.assertIn("unique.set(person.judgeSlug,person)",component)
   self.assertIn("rank[person.sourceKind]<rank[previous.sourceKind]",component)
   self.assertIn("distinctPublishedNames",page)
+  evidence=(APP/"lib/moscow-district-source-evidence.ts").read_text(encoding="utf-8")
+  journey=(APP/"_components/moscow-court-evidence-and-journey.tsx").read_text(encoding="utf-8")
+  self.assertIn("...legacyRosters.records,...additionalRosters.records,...refreshedRosters.records",evidence)
+  self.assertIn("moscowJudgeRoster(officialSlug)",journey)
+  self.assertIn("datedRoster.sourceLastUpdated",journey)
+  self.assertIn("rank[person.sourceKind]<rank[previous.sourceKind]",journey)
   self.assertIn("new Set(MOSCOW_JUDGE_PROFILES.map",page)
   self.assertNotIn("<strong>{MOSCOW_JUDGE_PROFILES.length}</strong>",page)
 
