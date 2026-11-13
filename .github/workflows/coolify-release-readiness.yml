@@ -1,0 +1,45 @@
+name: Coolify sudy-web release verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/check-coolify-web-release.cjs'
+      - 'scripts/test-coolify-web-release.cjs'
+      - '.github/workflows/coolify-release-readiness.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  release-checker-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify production checks against synthetic HTML only
+        run: node --test scripts/test-coolify-web-release.cjs
+
+  production-readonly-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    needs: release-checker-unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check deployed public site (does not call Coolify)
+        run: node scripts/check-coolify-web-release.cjs
+      - name: Publish verification boundary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          The test makes read-only GET requests only to https://sud-russia.ru.
+          It does NOT initiate deployment or prove legal acceptance of all
+          judicial rosters, rulings, appeal results or address rules.
+          EOF
