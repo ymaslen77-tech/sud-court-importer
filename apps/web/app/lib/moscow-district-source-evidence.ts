@@ -1,4 +1,6 @@
 import judges from '../data/moscow-district-judges-samples.json';
+import legacyRosters from '../data/moscow-legacy-judge-rosters.json';
+import additionalRosters from '../data/moscow-additional-judge-rosters.json';
 import refreshedRosters from '../data/moscow-2026-roster-refresh.json';
 import cases from '../data/moscow-district-sourced-case-samples.json';
 import visits from '../data/moscow-court-judge-specific-visits.json';
@@ -8,7 +10,7 @@ export type MoscowJudgeRoster={
  slug:string;
  officialSlug:string;
  sourceUrl:string;
- sourceLastUpdated:string;
+ sourceLastUpdated:string|null;
  observedOn:string;
  status:'published_roster_not_live_certification';
  judges:string[];
@@ -29,7 +31,7 @@ export type MoscowCourtDocketExamples={
  finalDecisionConfirmed:boolean;
  cases:MoscowDocketExample[];
 };
-const judgeMap=new Map(([...judges.records,...refreshedRosters.records] as MoscowJudgeRoster[]).map(c=>[c.slug,c]));
+const judgeMap=new Map(([...judges.records,...legacyRosters.records,...additionalRosters.records,...refreshedRosters.records] as MoscowJudgeRoster[]).map(c=>[c.slug,c]));
 const caseMap=new Map((cases.records as MoscowCourtDocketExamples[]).map(c=>[c.slug,c]));
 export function moscowJudgeRoster(slug:string){return judgeMap.get(slug)??null;}
 export function moscowCourtCaseExamples(slug:string){return caseMap.get(slug)??null;}
