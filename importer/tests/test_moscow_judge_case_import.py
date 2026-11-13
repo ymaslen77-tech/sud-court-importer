@@ -17,6 +17,8 @@ class MoscowJudgeCaseImportTests(unittest.TestCase):
   keys=module.validate_all(self.records,self.judges)
   self.assertEqual(len(keys),27)
   self.assertGreaterEqual(len(self.judges),418)
+  self.assertIn(("tushinskiy",module.norm("Курахтанов Андрей Владимирович")),self.judges)
+  self.assertIn(("tushinskiy",module.norm("Гудошникова Елена Александровна")),self.judges)
  def test_strict_unique_identifier_format(self):
   case=next(x for x in self.records if x.get("uin")).copy()
   module.validate_record(case,self.judges)
