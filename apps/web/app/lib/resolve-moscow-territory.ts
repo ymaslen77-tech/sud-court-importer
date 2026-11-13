@@ -56,7 +56,7 @@ function officialUrl(raw:string,expectedCourtSlug:string):boolean{
   return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&
     !u.search&&!u.hash&&
     ['mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'].includes(u.hostname)&&
-    acceptedPaths.has(u.pathname.replace(/\\/$/,''));
+    acceptedPaths.has(u.pathname.replace(/\/$/,''));
  }catch{return false;}
 }
 function validRule(rule:TerritoryRule,now:string):boolean{
