@@ -15,6 +15,7 @@ ROSTER_FILES = (
     "moscow-district-judges-samples.json",
     "moscow-legacy-judge-rosters.json",
     "moscow-additional-judge-rosters.json",
+    "moscow-2026-roster-refresh.json",
 )
 PROHIBITED = {"publication_forbidden", "preparing_publication"}
 

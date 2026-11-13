@@ -13,8 +13,19 @@ export function MoscowJudgesExplorer({courts,profiles,cases}:Props){
  const [category,setCategory]=useState('');
  const [status,setStatus]=useState('all');
  const [search,setSearch]=useState('');
- const options=useMemo(()=>profiles.filter(p=>p.courtSlug===court&&
-   (!search.trim()||p.name.toLocaleLowerCase('ru').includes(search.trim().toLocaleLowerCase('ru')))),[court,profiles,search]);
+ const options=useMemo(()=>{
+  const rank={official_roster:0,official_appointment_news:1,official_chair_listing:2,official_assistant_reference:3};
+  const unique=new Map<string,MoscowJudgeProfile>();
+  for(const person of profiles){
+   if(person.courtSlug!==court||
+     (search.trim()&&!person.name.toLocaleLowerCase('ru').includes(search.trim().toLocaleLowerCase('ru'))))continue;
+   const previous=unique.get(person.judgeSlug);
+   if(!previous||rank[person.sourceKind]<rank[previous.sourceKind]){
+    unique.set(person.judgeSlug,person);
+   }
+  }
+  return [...unique.values()].sort((a,b)=>a.name.localeCompare(b.name,'ru'));
+ },[court,profiles,search]);
  const selected=profiles.find(p=>p.courtSlug===court&&p.judgeSlug===judge);
  const linked=selected?cases.filter(c=>c.courtSlug===court&&c.judgeName===selected.name):[];
  const categories=[...new Map(linked.map(c=>[c.topicId,c.category])).entries()];

@@ -27,6 +27,7 @@ export default function MoscowJudgesDirectory(){
   return {...c,numberOfMentions:unique.size,summary,hasRoster:kinds.has('official_roster')};
  });
  const publishedRosters=rosterRows.filter(c=>c.hasRoster).length;
+ const distinctPublishedNames=new Set(MOSCOW_JUDGE_PROFILES.map(p=>p.courtSlug+'|'+p.judgeSlug)).size;
  const pending=MOSCOW_JUDGE_CASE_EVIDENCE.filter(c=>c.status==='pending').length;
  const outcomes=MOSCOW_JUDGE_CASE_EVIDENCE.filter(c=>c.status==='outcome_recorded').length;
  return <main className="moscow-judge-directory">
@@ -40,7 +41,7 @@ export default function MoscowJudgesDirectory(){
    <p className="court-source">Выбор судьи здесь предназначен только для изучения опубликованных сведений, а не для назначения судьи по вашему делу. Территориальная и родовая подсудность определяются для суда, а распределение дел между судьями осуществляется отдельно.</p>
    <div className="moscow-registry-summary">
     <div><strong>{courts.length}</strong><span>Районных судов в каталоге</span></div>
-    <div><strong>{MOSCOW_JUDGE_PROFILES.length}</strong><span>ФИО из опубликованных списков и сообщений</span></div>
+    <div><strong>{distinctPublishedNames}</strong><span>Уникальных сочетаний суд + ФИО в публикациях</span></div>
     <div><strong>{outcomes}</strong><span>Результатов в проверенной выборке</span></div>
    </div>
    <p className="court-source">Также в выборке {pending} дела без подтверждённого результата. Данные не образуют полный реестр всех дел или действующий штат судей.</p>

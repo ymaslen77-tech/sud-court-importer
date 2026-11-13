@@ -18,6 +18,7 @@ ROSTERS=[
  DATA/"moscow-district-judges-samples.json",
  DATA/"moscow-legacy-judge-rosters.json",
  DATA/"moscow-additional-judge-rosters.json",
+ DATA/"moscow-2026-roster-refresh.json",
 ]
 def read(p):
  result=json.loads(Path(p).read_text(encoding="utf-8"))
