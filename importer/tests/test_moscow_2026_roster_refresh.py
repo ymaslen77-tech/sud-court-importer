@@ -49,6 +49,13 @@ class DatedRosterTests(unittest.TestCase):
                "Абрамкина Алла Олеговна"):
    self.assertIn(name,row["judges"])
   self.assertNotIn("Слизовский Алексей Александрович",row["judges"])
+  events=json.loads((DATA/"moscow-judicial-appointment-events.json").read_text(encoding="utf-8"))["records"]
+  transfers=[e for e in events if e["courtSlug"]=="shcherbinskiy" 
+             and e["name"]=="Слизовский Алексей Александрович"]
+  self.assertEqual(len(transfers),1)
+  self.assertEqual(transfers[0]["eventType"],"appointed_to_moscow_city_court")
+  self.assertEqual(transfers[0]["appointmentDate"],"2026-10-12")
+  self.assertEqual(transfers[0]["decreeNumber"],"723")
   self.assertIn("12.10.2026",row["notice"])
   self.assertIn("21.10.2026",row["notice"])
   self.assertIn("не",row["notice"])
