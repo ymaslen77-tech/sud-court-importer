@@ -33,6 +33,8 @@ class MoscowAllRosterSources(unittest.TestCase):
                "Первовласенко Ксения Александровна"):
    self.assertEqual(persons[("tushinskiy",ingest.norm(name))],"tushinskij")
   self.assertEqual(len(persons),len(set(persons)))
+  self.assertEqual(persons[("shcherbinskiy",ingest.norm("Будигина Наталья Геннадьевна"))],"shcherbinskij")
+  self.assertEqual(persons[("shcherbinskiy",ingest.norm("Патапенкова Юлия Александровна"))],"shcherbinskij")
   self.assertIn("moscow-2026-roster-refresh.json", 
    (ROOT/"importer/verify_moscow_judge_corroboration.py").read_text(encoding="utf-8"))
 
