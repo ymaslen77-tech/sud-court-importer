@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {moscowJudgeAppointmentEvents} from '../lib/moscow-judge-appointment-events';
 import {moscowJudgeCaseCrosscheck} from '../lib/moscow-judge-crosschecks';
+import {moscowAppealHearingSnapshot} from '../lib/moscow-appeal-hearing-snapshots';
 import {
  MOSCOW_JUDGE_PROFILES,MOSCOW_JUDGE_CASE_EVIDENCE,
  moscowJudgeProfilesForCourt,moscowJudgeHref,moscowJudgeSlug,
@@ -71,6 +72,7 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
    <div className="court-practical-grid">{cases.map(row=>{
     const judge=people.find(p=>moscowJudgeSlug(p.name)===moscowJudgeSlug(row.judgeName));
     const appeal=moscowJudgeCaseCrosscheck(courtSlug,row.number);
+    const hearing=moscowAppealHearingSnapshot(courtSlug,row.number);
     return <article key={row.number+'-'+row.judgeName}>
      <h4>Дело № {row.number}</h4>
      <p><strong>Категория:</strong> {row.category}</p>
@@ -86,6 +88,11 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
        {appeal.witnesses.map(w=><p key={w.kind}><a href={w.sourceUrl} rel="noopener noreferrer" target="_blank">
         {w.kind==='first_instance'?'Карточка районного суда':'Карточка Мосгорсуда'} ↗</a></p>)}
       </details>
+     </div>:null}
+     {hearing?<div className="notice" role="note">
+      <p><strong>Назначение апелляционного заседания, зафиксированное {hearing.observedOn}:</strong> {hearing.statusAsPublished} (дело № {hearing.appealCaseNumber}).</p>
+      <p>По опубликованной записи место — {hearing.venueAsPublished}. Дата и зал могут измениться; запись не подтверждает проведение заседания или итог апелляции.</p>
+      <p><a href={hearing.sourceUrl} rel="noopener noreferrer" target="_blank">Проверить актуальную карточку Мосгорсуда ↗</a></p>
      </div>:null}
      <p className="court-source">Источник просмотрен {row.observedOn}. Мотивировочный текст судебного акта и итог апелляции по этой записи не подтверждены.</p>
      <details><summary>Официальная судебная запись</summary>
