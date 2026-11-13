@@ -2,12 +2,14 @@
 import {useMemo,useState} from 'react';
 import Link from 'next/link';
 import type {JudgeCaseEvidence} from '../lib/moscow-judge-directory';
+import type {MoscowAppealHearingSnapshot} from '../lib/moscow-appeal-hearing-snapshots';
 
 type CourtOption={slug:string;name:string};
 export type IndexedMoscowCase=JudgeCaseEvidence&{
  judgeHref:string|null;
  appealDocket:string|null;
  appealRegisteredOn:string|null;
+ appealSchedule:MoscowAppealHearingSnapshot|null;
 };
 type Props={courts:CourtOption[];cases:IndexedMoscowCase[]};
 const proceedingLabels:Record<JudgeCaseEvidence['proceeding'],string>={
@@ -97,6 +99,12 @@ export function MoscowCaseIndexExplorer({courts,cases}:Props){
     {c.appealDocket?<p><strong>Апелляционный материал:</strong> № {c.appealDocket}
      {c.appealRegisteredOn?' (зарегистрирован '+c.appealRegisteredOn+')':''}.
      Результат пересмотра не установлен.</p>:null}
+    {c.appealSchedule?<div className="notice" role="note">
+     <p><strong>Запись о назначении заседания по состоянию на {c.appealSchedule.observedOn}:</strong> {c.appealSchedule.statusAsPublished}.</p>
+     <p>Апелляционное дело № {c.appealSchedule.appealCaseNumber}. Место, указанное в карточке: {c.appealSchedule.venueAsPublished}.</p>
+     <p><strong>Это не текущий статус в реальном времени.</strong> Дату, время и зал перед посещением нужно проверить на портале суда. Заседание может быть перенесено; его исход не установлен.</p>
+     <p><a href={c.appealSchedule.sourceUrl} target="_blank" rel="noopener noreferrer">Сверить апелляционную карточку ↗</a></p>
+    </div>:null}
     <p className="court-source">Источник просмотрен {c.observedOn}.
      {c.verificationLevel==='single_official_record_unchecked_live'?
       ' Запись имеется в одном официальном источнике, повторная сверка не завершена.':''}
