@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import {MoscowCaseIndexExplorer, type IndexedMoscowCase} from '../../../_components/moscow-case-index-explorer';
 import {MOSCOW_JUDGE_CASE_EVIDENCE,MOSCOW_JUDGE_PROFILES,moscowJudgeHref,moscowJudgeSlug} from '../../../lib/moscow-judge-directory';
 import {moscowJudgeCaseCrosscheck} from '../../../lib/moscow-judge-crosschecks';
+import {moscowAppealHearingSnapshot} from '../../../lib/moscow-appeal-hearing-snapshots';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../../lib/moscow-official-minimum';
 
 export const metadata:Metadata={
@@ -21,7 +22,8 @@ export default function MoscowCasesIndexPage(){
   const appeal=moscowJudgeCaseCrosscheck(item.courtSlug,item.number);
   return {...item,judgeHref:judge?moscowJudgeHref(judge):null,
    appealDocket:appeal?.appealDocket??null,
-   appealRegisteredOn:appeal?.appealRegisteredOn??null};
+   appealRegisteredOn:appeal?.appealRegisteredOn??null,
+   appealSchedule:moscowAppealHearingSnapshot(item.courtSlug,item.number)};
  });
  return <main className="moscow-judge-directory">
   <nav className="breadcrumb" aria-label="Навигация">
