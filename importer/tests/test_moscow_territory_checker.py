@@ -56,7 +56,7 @@ class MoscowTerritoryUITests(unittest.TestCase):
         self.assertIn("!u.search&&!u.hash",resolver)
         self.assertIn("Do not accept /help/territorialnaya-podsudnost-mirov",resolver)
         self.assertNotIn("u.pathname.startsWith('/rs/'+expectedCourtSlug+'/')",resolver)
-        self.assertIn("rule.reviewedBy",resolver) if "rule.reviewedBy" in resolver else self.assertIn("rule.reviewedBy?.trim()",resolver)
+        self.assertIn("rule.reviewedBy?.trim()",resolver)
 
     def test_existing_pilot_courts_unchanged_and_new_noindex(self):
         pilots=json.loads((APP/'lib/pilot-review-matrix.json').read_text(encoding='utf-8'))
