@@ -47,6 +47,17 @@ class MoscowTerritoryUITests(unittest.TestCase):
         self.assertIn("localLookupReady?'Проверить в подтверждённом справочнике",component)
         self.assertNotIn('fetch(',component)
 
+    def test_magistrate_territory_pages_cannot_certify_district_court_address(self):
+        resolver=(APP/'lib/resolve-moscow-territory.ts').read_text(encoding='utf-8')
+        self.assertIn("const acceptedPaths=new Set([",resolver)
+        self.assertIn("'/territorial'",resolver)
+        self.assertIn("'/rs/'+expectedCourtSlug+'/services/territorial'",resolver)
+        self.assertIn("acceptedPaths.has(u.pathname",resolver)
+        self.assertIn("!u.search&&!u.hash",resolver)
+        self.assertIn("Do not accept /help/territorialnaya-podsudnost-mirov",resolver)
+        self.assertNotIn("u.pathname.startsWith('/rs/'+expectedCourtSlug+'/')",resolver)
+        self.assertIn("rule.reviewedBy",resolver) if "rule.reviewedBy" in resolver else self.assertIn("rule.reviewedBy?.trim()",resolver)
+
     def test_existing_pilot_courts_unchanged_and_new_noindex(self):
         pilots=json.loads((APP/'lib/pilot-review-matrix.json').read_text(encoding='utf-8'))
         self.assertEqual(len(pilots['records']),10)
