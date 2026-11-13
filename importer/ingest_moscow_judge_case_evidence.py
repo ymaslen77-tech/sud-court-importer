@@ -46,7 +46,8 @@ def read_records(path):
 
 def judge_sources():
  names={}
- for filename in ("moscow-district-judges-samples.json","moscow-legacy-judge-rosters.json","moscow-additional-judge-rosters.json"):
+ for filename in ("moscow-district-judges-samples.json","moscow-legacy-judge-rosters.json",
+                  "moscow-additional-judge-rosters.json","moscow-2026-roster-refresh.json"):
   for row in read_records(DATA/filename):
    for name in row["judges"]:
     key=(row["slug"],norm(name))
@@ -54,14 +55,16 @@ def judge_sources():
     names[key]=row["officialSlug"]
  for row in read_records(DATA/"moscow-judicial-chair-listings.json"):
   key=(row["slug"],norm(row["name"]))
-  if key in names:raise ValueError(f"Duplicate judge identity: {key}")
+  if key in names and names[key]!=row["officialSlug"]:
+   raise ValueError(f"Conflicting official court identity: {key}")
   names[key]=row["officialSlug"]
  for row in read_records(DATA/"moscow-judicial-source-briefs.json"):
   for person in row["people"]:
    key=(row["slug"],norm(person["name"]))
-   if key in names:raise ValueError(f"Duplicate judge identity: {key}")
    source=urlsplit(person["sourceUrl"]).path
    official=source.split("/rs/")[1].split("/")[0]
+   if key in names and names[key]!=official:
+    raise ValueError(f"Conflicting brief/roster official court identity: {key}")
    names[key]=official
  court_slugs={}
  for (court,name),official in names.items():
