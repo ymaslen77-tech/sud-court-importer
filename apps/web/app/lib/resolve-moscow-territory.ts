@@ -46,9 +46,17 @@ function validAnnex(s:string):boolean{return s===''||/^\d{1,5}[а-яa-z]?$/.test
 function officialUrl(raw:string,expectedCourtSlug:string):boolean{
  try{
   const u=new URL(raw);
+  // A district court page about magistrates is NOT evidence of district-court
+  // jurisdiction, even when published on the same official court portal.
+  // Do not accept /help/territorialnaya-podsudnost-mirov or arbitrary news here.
+  const acceptedPaths=new Set([
+    '/territorial',
+    '/rs/'+expectedCourtSlug+'/services/territorial'
+  ]);
   return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&
+    !u.search&&!u.hash&&
     ['mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'].includes(u.hostname)&&
-    (u.pathname==='/territorial'||u.pathname.startsWith('/rs/'+expectedCourtSlug+'/'));
+    acceptedPaths.has(u.pathname.replace(/\\/$/,''));
  }catch{return false;}
 }
 function validRule(rule:TerritoryRule,now:string):boolean{
