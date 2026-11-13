@@ -1,0 +1,120 @@
+{
+  "description": "Судебные сведения для 3 районных судов, где полный официальный список судей не получен. Упоминание в источнике не означает действующие полномочия.",
+  "records": [
+    {
+      "slug": "tverskoy",
+      "sourceType": "official_appointment_notices",
+      "recordDate": "2026-10-31",
+      "people": [
+        {
+          "name": "Бурая Мария Сергеевна",
+          "basis": "Указ Президента РФ № 405 от 09.06.2026",
+          "sourceUrl": "https://mos-gorsud.ru/rs/tverskoj/news/v-tverskoj-rajonnyj-sud-goroda-moskvy-naznacheny-sudi"
+        },
+        {
+          "name": "Покосова Виктория Евгеньевна",
+          "basis": "Указ Президента РФ № 405 от 09.06.2026",
+          "sourceUrl": "https://mos-gorsud.ru/rs/tverskoj/news/v-tverskoj-rajonnyj-sud-goroda-moskvy-naznacheny-sudi"
+        },
+        {
+          "name": "Макарова Ольга Сергеевна",
+          "basis": "Указ Президента РФ № 93 от 16.02.2026",
+          "sourceUrl": "https://mos-gorsud.ru/rs/tverskoj/news/b9f0da2d-5734-4789-9a3b-3da065c1a47e"
+        }
+      ],
+      "note": "Это подтверждённые сообщения о назначениях, а не полный актуальный перечень судей Тверского суда."
+    },
+    {
+      "slug": "tushinskiy",
+      "sourceType": "official_appointment_notices",
+      "recordDate": "2026-10-31",
+      "people": [
+        {
+          "name": "Первовласенко Ксения Александровна",
+          "basis": "Указ Президента РФ № 840 от 14.11.2025",
+          "sourceUrl": "https://mos-gorsud.ru/rs/tushinskij/news/ukazom-prezidenta-rossijskoj-federatsii-ot-14-noyabrya-2025-goda-840-v-tushinskij-rajonnyj-sud-goroda-moskvy-naznachena-sudya-pervovlasenko-kseniya-aleksandrovna"
+        }
+      ],
+      "note": "Официальная новость подтверждает назначение одного судьи; полный состав в текущем источнике не установлен."
+    },
+    {
+      "slug": "chertanovskiy",
+      "sourceType": "official_judicial_assistant_directory",
+      "recordDate": "2026-10-31",
+      "sourceUpdatedOn": "2026-06-02",
+      "people": [
+        {
+          "name": "Цуринова Анжелика Юрьевна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Рудь Александра Игоревна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Булаева Лариса Александровна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Седых Екатерина Анатольевна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Молодцова Екатерина Викторовна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Силаева Марина Викторовна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Ермишина Ирина Александровна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Пономарева Нина Александровна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Черникова Юлия Владимировна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Шабашева Наталья Евгеньевна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Глух Василий Николаевич",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Бадова Оксана Анатольевна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Трушечкина Елена Александровна",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        },
+        {
+          "name": "Задорожный Дмитрий Викторович",
+          "basis": "Упоминание в официальном перечне помощников судей (не указ о назначении)",
+          "sourceUrl": "https://mos-gorsud.ru/rs/chertanovskij/structure/judges-assistant"
+        }
+      ],
+      "note": "ФИО судей приведены в перечне помощников, а не в проверенном реестре назначений; не считать полным составом или доказательством текущих полномочий."
+    }
+  ]
+}

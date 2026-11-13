@@ -13,6 +13,9 @@ assert.equal(diagnostics?.filter(x=>x.category===ts.DiagnosticCategory.Error).le
 const mod={exports:{}};
 new Function('require','module','exports',outputText)(id=>{
  if(id==='../data/moscow-territorial-approved.json')return {schemaVersion:1,city:'Москва',approvedRules:[]};
+ if(id==='./moscow-district-individual')return {moscowDistrictOfficialPagesBySlug:(slug)=>({
+  overview:'https://mos-gorsud.ru/rs/'+({nikulinskiy:'nikulinskij'}[slug]||slug)
+ })};
  if(id==='./moscow-courts')return {moscowCourts:()=>[
   {slug:'lefortovskij',name:'Лефортовский районный суд города Москвы'},
   {slug:'taganskij',name:'Таганский районный суд города Москвы'}]};
@@ -55,6 +58,15 @@ kind(input,[base,second],'unknown','conflicting_records');
 kind(input,[base,{...second,status:'pending'}],'unknown','stale_or_unapproved');
 kind(input,[{...base,validThrough:'2020-01-01'}],'unknown','stale_or_unapproved');
 kind(input,[{...base,sourceUrl:'https://mos-gorsud.ru.evil.ru/territorial'}],'unknown','stale_or_unapproved');
+kind(input,[{...base,sourceUrl:'https://mos-gorsud.ru/rs/lefortovskij/help/territorialnaya-podsudnost-mirov'}],'unknown','stale_or_unapproved');
+kind(input,[{...base,sourceUrl:'https://mos-gorsud.ru/rs/lefortovskij/news/example'}],'unknown','stale_or_unapproved');
+kind(input,[{...base,sourceUrl:'https://mos-gorsud.ru/rs/lefortovskij/services/territorial?kind=mirov'}],'unknown','stale_or_unapproved');
+const officialAlias={...base,courtSlug:'nikulinskiy',courtName:'Никулинский районный суд города Москвы',
+ courtOfficialUrl:'https://mos-gorsud.ru/rs/nikulinskij',
+ sourceUrl:'https://mos-gorsud.ru/rs/nikulinskij/services/territorial'};
+const aliasMatch=kind(input,[officialAlias],'other');
+assert.equal(aliasMatch.courtUrl,officialAlias.courtOfficialUrl);
+kind(input,[{...officialAlias,courtOfficialUrl:'https://mos-gorsud.ru/rs/nikulinskiy'}],'unknown','stale_or_unapproved');
 kind(input,[{...base,reviewedBy:''}],'unknown','stale_or_unapproved');
 kind({...input,house:'13'},[base],'unknown','not_covered');
 kind({...input,corpus:''},[base],'unknown','not_covered');

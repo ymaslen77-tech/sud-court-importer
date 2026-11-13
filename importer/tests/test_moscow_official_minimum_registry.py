@@ -55,7 +55,7 @@ class MoscowOfficialMinimumTests(unittest.TestCase):
 
  def test_only_moscow_general_courts_claimed_and_noindex_stays(self):
   for text in (self.listing,self.details):
-   self.assertIn("robots:{index:false,follow:true}",text)
+   self.assertIn("moscowDistrictSeoRobots()",text)
   self.assertIn("Мировые судьи",self.listing)
   self.assertIn("Арбитражные суды",self.listing)
   self.assertIn("не подтверждена повторно",self.details)

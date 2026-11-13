@@ -3,6 +3,8 @@ import type {Metadata} from 'next';
 import {researchRegions,researchCourtsByRegion} from '../../lib/research-courts';
 import {regionalArbitrationCourts} from '../../lib/regional-arbitration';
 import {ALL_REGIONS} from '../../lib/regions';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS} from '../../lib/moscow-official-minimum';
+import {moscowCourts} from '../../lib/moscow-courts';
 
 export const metadata:Metadata={
   title:'Наполненность каталога судов — исследовательские данные',
@@ -13,6 +15,9 @@ export const metadata:Metadata={
 export default function CourtCoveragePage(){
   const regions=researchRegions();
   const arbitration=regionalArbitrationCourts();
+  const moscowTotal=MOSCOW_OFFICIAL_MINIMUM_COURTS.length;
+  const moscowDistricts=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district').length;
+  const moscowRich=moscowCourts().length;
   const withPreliminaryNames=ALL_REGIONS.filter(region=>regionalArbitrationCourts(region.slug).length>0).length;
   const rows=regions.map(region=>{
     const courts=researchCourtsByRegion(region.slug);
@@ -44,6 +49,14 @@ export default function CourtCoveragePage(){
       <article><strong>{sum('addresses')}</strong><span>Адресов из исходных реестров</span></article>
       <article><strong>0</strong><span>Редакционно одобренных в этом наборе</span></article>
     </div>
+    <section className="section-wrap" id="moscow-coverage">
+      <div className="section-intro">
+        <span className="eyebrow">Отдельная подтверждённая по перечню партия</span>
+        <h2>Москва: {moscowTotal} судов в справочнике</h2>
+        <p>Из официального московского перечня перенесены {moscowDistricts} районных судов и Московский городской суд. Для {moscowRich} районных судов уже есть отдельные расширенные досье, остальные {moscowDistricts-moscowRich} районных судов имеют справочные карточки с практическими разделами, но ещё требуют персональной сверки.</p>
+        <p><Link href="/courts/moscow" className="text-link">Открыть все 36 карточек Москвы →</Link></p>
+      </div>
+    </section>
     <section className="section-wrap">
       <div className="section-intro">
         <span className="eyebrow">Следующий этап · справочник названий</span>

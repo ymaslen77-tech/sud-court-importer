@@ -1,5 +1,6 @@
 import imported from '../data/moscow-territorial-approved.json';
 import {moscowCourts} from './moscow-courts';
+import {moscowDistrictOfficialPagesBySlug} from './moscow-district-individual';
 
 export type TerritoryInput={
  street:string;house:string;corpus:string;structure:string;currentCourtSlug:string
@@ -46,9 +47,20 @@ function validAnnex(s:string):boolean{return s===''||/^\d{1,5}[а-яa-z]?$/.test
 function officialUrl(raw:string,expectedCourtSlug:string):boolean{
  try{
   const u=new URL(raw);
+  // A district court page about magistrates is NOT evidence of district-court
+  // jurisdiction, even when published on the same official court portal.
+  // Do not accept /help/territorialnaya-podsudnost-mirov or arbitrary news here.
+  const official=moscowDistrictOfficialPagesBySlug(expectedCourtSlug);
+  if(!official)return false;
+  const officialCourtPath=new URL(official.overview).pathname;
+  const acceptedPaths=new Set([
+    '/territorial',
+    officialCourtPath+'/services/territorial'
+  ]);
   return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&
+    !u.search&&!u.hash&&
     ['mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'].includes(u.hostname)&&
-    (u.pathname==='/territorial'||u.pathname.startsWith('/rs/'+expectedCourtSlug+'/'));
+    acceptedPaths.has(u.pathname.replace(/\/$/,''));
  }catch{return false;}
 }
 function validRule(rule:TerritoryRule,now:string):boolean{
@@ -61,9 +73,13 @@ function validRule(rule:TerritoryRule,now:string):boolean{
  if(!officialUrl(rule.sourceUrl,rule.courtSlug))return false;
  try{
   const u=new URL(rule.courtOfficialUrl);
+  const official=moscowDistrictOfficialPagesBySlug(rule.courtSlug);
+  if(!official)return false;
+  const officialCourtPath=new URL(official.overview).pathname;
   return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&
+    !u.search&&!u.hash&&
     ['mos-gorsud.ru','www.mos-gorsud.ru','m.mos-gorsud.ru'].includes(u.hostname)&&
-    u.pathname==='/rs/'+rule.courtSlug;
+    u.pathname.replace(/\/$/,'')===officialCourtPath;
  }catch{return false;}
 }
 function key(street:string,h:string,c:string,s:string){return [street,h,c,s].join('|');}

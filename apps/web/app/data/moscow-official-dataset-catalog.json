@@ -1,0 +1,423 @@
+{
+  "meta": {
+    "scope": "moscow_city_official_court_open_data",
+    "sourceRegistry": "importer/moscow_open_data_registry.py",
+    "sourceIndex": "https://data.mos-gorsud.ru/opendata",
+    "datasetCount": 40,
+    "roles": {
+      "excluded": 7,
+      "first": 8,
+      "context": 9,
+      "appeal": 11,
+      "index": 5
+    },
+    "fetchedDatasetBodies": false,
+    "containsCaseParticipants": false,
+    "verifiedDownloadEndpointsLive": false,
+    "legalReuseAuthorizationVerified": false,
+    "publicationPermissionGranted": false,
+    "note": "Это индекс официальных наборов и кандидатов на ссылки, а не содержимое судебных выгрузок. При загрузке необходимо проверить доступность, структуру, условия повторного использования и обезличивание."
+  },
+  "datasets": [
+    {
+      "id": "1571992852413-casesinfodemographiccriminalddzqk",
+      "role": "excluded",
+      "title": "Демография: уголовные дела, 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1571992852413-casesinfodemographiccriminalddzqk",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992852413-casesinfodemographiccriminalddzqk/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992852413-casesinfodemographiccriminalddzqk/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1571992873315-casesinfototaldemographiccriminalatzpo",
+      "role": "excluded",
+      "title": "Демография: уголовные дела, 2015–2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1571992873315-casesinfototaldemographiccriminalatzpo",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992873315-casesinfototaldemographiccriminalatzpo/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992873315-casesinfototaldemographiccriminalatzpo/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116794369-casesgroupfirstadminhgzol",
+      "role": "first",
+      "title": "Административные дела первой инстанции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116794369-casesgroupfirstadminhgzol",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116794369-casesgroupfirstadminhgzol/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116794369-casesgroupfirstadminhgzol/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116594824-casesgroupfirstcivilhxvgb",
+      "role": "first",
+      "title": "Гражданские дела первой инстанции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116594824-casesgroupfirstcivilhxvgb",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116594824-casesgroupfirstcivilhxvgb/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116594824-casesgroupfirstcivilhxvgb/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116849252-casesgrouprsadminihtpb",
+      "role": "first",
+      "title": "Административные правонарушения первой инстанции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116849252-casesgrouprsadminihtpb",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116849252-casesgrouprsadminihtpb/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116849252-casesgrouprsadminihtpb/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116978408-casesgroupfirstadminexecxlifd",
+      "role": "first",
+      "title": "Административные дела: исполнение постановлений",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116978408-casesgroupfirstadminexecxlifd",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116978408-casesgroupfirstadminexecxlifd/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116978408-casesgroupfirstadminexecxlifd/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116924599-casesgroupfirstcivilexecwueus",
+      "role": "first",
+      "title": "Гражданские дела: исполнение постановлений",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116924599-casesgroupfirstcivilexecwueus",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116924599-casesgroupfirstcivilexecwueus/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116924599-casesgroupfirstcivilexecwueus/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116537934-casesgroupclaimadminpcleu",
+      "role": "context",
+      "title": "Административное производство: первичные документы",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116537934-casesgroupclaimadminpcleu",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116537934-casesgroupclaimadminpcleu/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116537934-casesgroupclaimadminpcleu/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116455933-casesgroupclaimcivillefmu",
+      "role": "context",
+      "title": "Гражданское производство: первичные документы",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116455933-casesgroupclaimcivillefmu",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116455933-casesgroupclaimcivillefmu/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116455933-casesgroupclaimcivillefmu/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577116724824-casesgroupfirstcriminalluivn",
+      "role": "first",
+      "title": "Уголовные дела первой инстанции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577116724824-casesgroupfirstcriminalluivn",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116724824-casesgroupfirstcriminalluivn/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577116724824-casesgroupfirstcriminalluivn/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117189318-contactsandhoursgfjvi",
+      "role": "context",
+      "title": "Контакты и часы приема судов",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117189318-contactsandhoursgfjvi",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117189318-contactsandhoursgfjvi/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117189318-contactsandhoursgfjvi/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117780217-casesgroupmgsappealadminpmjqo",
+      "role": "appeal",
+      "title": "МГС: административная апелляция",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117780217-casesgroupmgsappealadminpmjqo",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117780217-casesgroupmgsappealadminpmjqo/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117780217-casesgroupmgsappealadminpmjqo/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117723940-casesgroupmgsappealcoladminkfcqb",
+      "role": "appeal",
+      "title": "МГС: административная апелляционная коллегия",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117723940-casesgroupmgsappealcoladminkfcqb",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117723940-casesgroupmgsappealcoladminkfcqb/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117723940-casesgroupmgsappealcoladminkfcqb/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117744056-casesgroupmgsappealcivilwtxga",
+      "role": "appeal",
+      "title": "МГС: гражданская апелляция",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117744056-casesgroupmgsappealcivilwtxga",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117744056-casesgroupmgsappealcivilwtxga/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117744056-casesgroupmgsappealcivilwtxga/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117680328-casesgroupmgsappealcolcivilagblr",
+      "role": "appeal",
+      "title": "МГС: гражданская апелляционная коллегия",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117680328-casesgroupmgsappealcolcivilagblr",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117680328-casesgroupmgsappealcolcivilagblr/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117680328-casesgroupmgsappealcolcivilagblr/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117356143-casesgroupmgsfirstcriminalexecljwfh",
+      "role": "first",
+      "title": "МГС: исполнение постановлений по уголовным делам",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117356143-casesgroupmgsfirstcriminalexecljwfh",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117356143-casesgroupmgsfirstcriminalexecljwfh/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117356143-casesgroupmgsfirstcriminalexecljwfh/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117435942-casesgroupmgsreviewnotyetrcpnx",
+      "role": "appeal",
+      "title": "МГС: пересмотр постановлений по КоАП",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117435942-casesgroupmgsreviewnotyetrcpnx",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117435942-casesgroupmgsreviewnotyetrcpnx/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117435942-casesgroupmgsreviewnotyetrcpnx/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117758402-casesgroupmgsappealcriminalquiik",
+      "role": "appeal",
+      "title": "МГС: уголовная апелляция",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117758402-casesgroupmgsappealcriminalquiik",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117758402-casesgroupmgsappealcriminalquiik/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117758402-casesgroupmgsappealcriminalquiik/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117711793-casesgroupmgsappealcolcriminalojqgu",
+      "role": "appeal",
+      "title": "МГС: уголовная апелляционная коллегия",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117711793-casesgroupmgsappealcolcriminalojqgu",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117711793-casesgroupmgsappealcolcriminalojqgu/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117711793-casesgroupmgsappealcolcriminalojqgu/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577103912804-casesallwcdeh",
+      "role": "index",
+      "title": "Перечень всех дел",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577103912804-casesallwcdeh",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577103912804-casesallwcdeh/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577103912804-casesallwcdeh/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577103985220-casesadminjnamf",
+      "role": "index",
+      "title": "Перечень административных дел",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577103985220-casesadminjnamf",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577103985220-casesadminjnamf/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577103985220-casesadminjnamf/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577104020864-casescivilydenl",
+      "role": "index",
+      "title": "Перечень гражданских дел",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577104020864-casescivilydenl",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577104020864-casescivilydenl/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577104020864-casescivilydenl/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577188664899-casesreviewvjtjl",
+      "role": "index",
+      "title": "Перечень дел по КоАП",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577188664899-casesreviewvjtjl",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577188664899-casesreviewvjtjl/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577188664899-casesreviewvjtjl/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577104041783-casescriminalshuyq",
+      "role": "index",
+      "title": "Перечень уголовных дел",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577104041783-casescriminalshuyq",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577104041783-casescriminalshuyq/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577104041783-casescriminalshuyq/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117657461-casesgrouprsappealadminkasuzjrw",
+      "role": "appeal",
+      "title": "Районные суды: административные апелляции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117657461-casesgrouprsappealadminkasuzjrw",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117657461-casesgrouprsappealadminkasuzjrw/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117657461-casesgrouprsappealadminkasuzjrw/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117540836-casesgrouprsappealcivilxpydy",
+      "role": "appeal",
+      "title": "Районные суды: гражданские апелляции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117540836-casesgrouprsappealcivilxpydy",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117540836-casesgrouprsappealcivilxpydy/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117540836-casesgrouprsappealcivilxpydy/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117668836-casesgrouprsappealreviewoxycm",
+      "role": "appeal",
+      "title": "Районные суды: апелляции по КоАП",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117668836-casesgrouprsappealreviewoxycm",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117668836-casesgrouprsappealreviewoxycm/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117668836-casesgrouprsappealreviewoxycm/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117031546-casesgrouprscriminalmaterialsdqtwg",
+      "role": "first",
+      "title": "Районные суды: материалы уголовного судопроизводства",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117031546-casesgrouprscriminalmaterialsdqtwg",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117031546-casesgrouprscriminalmaterialsdqtwg/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117031546-casesgrouprscriminalmaterialsdqtwg/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117487205-casesgrouprsclaimcriminalvgcpa",
+      "role": "context",
+      "title": "Районные суды: первичные документы уголовного производства",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117487205-casesgrouprsclaimcriminalvgcpa",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117487205-casesgrouprsclaimcriminalvgcpa/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117487205-casesgrouprsclaimcriminalvgcpa/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117641473-casesgrouprsappealcriminalspeee",
+      "role": "appeal",
+      "title": "Районные суды: уголовные апелляции",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117641473-casesgrouprsappealcriminalspeee",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117641473-casesgrouprsappealcriminalspeee/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117641473-casesgrouprsappealcriminalspeee/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577111367451-courtsessionsscheduledkaay",
+      "role": "context",
+      "title": "Расписание судебных заседаний",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577111367451-courtsessionsscheduledkaay",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577111367451-courtsessionsscheduledkaay/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577111367451-courtsessionsscheduledkaay/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577111228028-dutyateav",
+      "role": "context",
+      "title": "Реквизиты для госпошлины",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577111228028-dutyateav",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577111228028-dutyateav/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577111228028-dutyateav/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577175266593-casesinfotranslationscdmxx",
+      "role": "context",
+      "title": "Доступные видеозаписи заседаний",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577175266593-casesinfotranslationscdmxx",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175266593-casesinfotranslationscdmxx/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175266593-casesinfotranslationscdmxx/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577175311767-casesinfojudicialactsxfwwh",
+      "role": "context",
+      "title": "Статистика судебных актов, 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577175311767-casesinfojudicialactsxfwwh",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175311767-casesinfojudicialactsxfwwh/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175311767-casesinfojudicialactsxfwwh/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1592252385755-anticorruptionjdhmg",
+      "role": "excluded",
+      "title": "Доходы сотрудников районных судов за 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1592252385755-anticorruptionjdhmg",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1592252385755-anticorruptionjdhmg/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1592252385755-anticorruptionjdhmg/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577175992239-anticorruptionemployeemgsgrcnu",
+      "role": "excluded",
+      "title": "Доходы сотрудников МГС за 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577175992239-anticorruptionemployeemgsgrcnu",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175992239-anticorruptionemployeemgsgrcnu/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175992239-anticorruptionemployeemgsgrcnu/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577175974458-anticorruptionmgscdsia",
+      "role": "excluded",
+      "title": "Доходы руководства МГС за 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577175974458-anticorruptionmgscdsia",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175974458-anticorruptionmgscdsia/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577175974458-anticorruptionmgscdsia/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1571992928844-casesinfoamountrecoveredqgqyr",
+      "role": "context",
+      "title": "Статистика взысканий, 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1571992928844-casesinfoamountrecoveredqgqyr",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992928844-casesinfoamountrecoveredqgqyr/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1571992928844-casesinfoamountrecoveredqgqyr/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1585927172829-nonproceduralappealdddqw",
+      "role": "excluded",
+      "title": "Внепроцессуальные обращения, 2018",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1585927172829-nonproceduralappealdddqw",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1585927172829-nonproceduralappealdddqw/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1585927172829-nonproceduralappealdddqw/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    },
+    {
+      "id": "1577117143727-nonproceduralappealltisb",
+      "role": "excluded",
+      "title": "Внепроцессуальные обращения, 2019",
+      "officialPage": "https://data.mos-gorsud.ru/opendata/1577117143727-nonproceduralappealltisb",
+      "officialPassportCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117143727-nonproceduralappealltisb/passport/json",
+      "officialDownloadCandidate": "https://data.mos-gorsud.ru/api/opendata/1577117143727-nonproceduralappealltisb/latest/data/json/",
+      "dataInGitHub": false,
+      "liveEndpointVerified": false
+    }
+  ]
+}
