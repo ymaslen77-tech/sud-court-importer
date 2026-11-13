@@ -94,7 +94,7 @@ export function MoscowDistrictIndividualDossier({court,profile,legacyPhoneShown=
    <span className="eyebrow">Судейский корпус · источник и дата</span>
    <h2>Судьи {court.name}: официально опубликованный список</h2>
    {publishedRoster?<>
-    <p>В нашу локальную подборку внесены {publishedRoster.judges.length} ФИО из опубликованной страницы суда. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated}.
+    <p>В нашу локальную подборку внесены {publishedRoster.judges.length} ФИО из опубликованной страницы суда. Последняя указанная дата обновления первоисточника: {publishedRoster.sourceLastUpdated??'не установлена'}.
      Не следует считать подборку обязательно полной или удостоверением действующего кадрового состава на сегодняшний день.
      Для назначения и полномочий конкретного судьи сверяйте указ Президента РФ и свежие сообщения суда.</p>
     {publishedRoster.notice?<p className="court-source">{publishedRoster.notice}</p>:null}
