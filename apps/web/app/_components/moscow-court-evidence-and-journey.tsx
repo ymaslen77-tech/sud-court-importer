@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {MOSCOW_JUDGE_CASE_EVIDENCE,moscowJudgeProfilesForCourt,moscowJudgeHref,
   moscowJudgeSourceLabel} from '../lib/moscow-judge-directory';
+import {moscowJudgeRoster} from '../lib/moscow-district-source-evidence';
 import {moscowCourtPracticalFacts,MOSCOW_PRACTICAL_SNAPSHOT_DATE} from '../lib/moscow-district-practical-facts';
 
 type Props={officialSlug:string;courtName:string};
@@ -11,7 +12,15 @@ type Props={officialSlug:string;courtName:string};
  */
 export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
  const all=moscowJudgeProfilesForCourt(officialSlug);
- const unique=new Map(all.map(p=>[p.judgeSlug,p]));
+ const rank={official_roster:0,official_appointment_news:1,official_chair_listing:2,official_assistant_reference:3};
+ const unique=new Map<string,typeof all[number]>();
+ for(const person of all){
+  const previous=unique.get(person.judgeSlug);
+  if(!previous||rank[person.sourceKind]<rank[previous.sourceKind]){
+   unique.set(person.judgeSlug,person);
+  }
+ }
+ const datedRoster=moscowJudgeRoster(officialSlug);
  const judges=[...unique.values()].sort((a,b)=>a.name.localeCompare(b.name,'ru'));
  const cases=MOSCOW_JUDGE_CASE_EVIDENCE.filter(c=>c.courtSlug===officialSlug);
  const results=cases.filter(c=>c.status==='outcome_recorded');
@@ -32,6 +41,13 @@ export function MoscowCourtEvidenceAndJourney({officialSlug,courtName}:Props){
     <Link href="/courts/moscow/registry/moscow-city-court/info/appeals">05. Обжалование в Московском городском суде</Link>
     <Link href="/services">06. Документы и юридические сервисы</Link>
    </nav>
+   {datedRoster?<p className="court-source">
+     На официальной странице этого суда опубликован датированный список из {datedRoster.judges.length} ФИО
+     (обновление источника: {datedRoster.sourceLastUpdated}).
+     Историческая публикация не подтверждает действующий состав и актуальность всех назначений.
+     <a href={datedRoster.sourceUrl} target="_blank" rel="noopener noreferrer"> Проверить официальный список ↗</a>
+     {' '}<Link href={'/courts/moscow/registry/'+officialSlug+'/info/judges'}>Все ФИО с источниками и датами →</Link>
+    </p>:null}
    <div className="court-practical-grid">
     <article><h3>Судьи, упомянутые в официальных источниках</h3><p>{judges.length} {judges.length===1?'имя':'ФИО'} из официальных списков, сообщений о назначении или иных датированных упоминаний. Это не полный штат на сегодня.</p>
      <p><Link href="/courts/moscow/judges" className="text-link">Перейти к каталогу судей →</Link></p></article>

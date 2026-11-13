@@ -17,10 +17,10 @@ import moscow_research_readiness as readiness
 import ingest_moscow_judge_case_evidence as ingest
 
 class MoscowAllRosterSources(unittest.TestCase):
- def test_single_consistent_28_court_report(self):
+ def test_single_consistent_29_court_report(self):
   report=readiness.readiness()
-  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],28)
-  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),7)
+  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],29)
+  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),6)
   self.assertFalse(report["historicalRosterIsCurrentEmploymentProof"])
   self.assertFalse(report["autoApprovedForPublicRelease"])
   self.assertEqual(report["editoriallyReviewedFullTexts"],0)
@@ -33,6 +33,8 @@ class MoscowAllRosterSources(unittest.TestCase):
                "Первовласенко Ксения Александровна"):
    self.assertEqual(persons[("tushinskiy",ingest.norm(name))],"tushinskij")
   self.assertEqual(len(persons),len(set(persons)))
+  self.assertEqual(persons[("shcherbinskiy",ingest.norm("Будигина Наталья Геннадьевна"))],"shcherbinskij")
+  self.assertEqual(persons[("shcherbinskiy",ingest.norm("Патапенкова Юлия Александровна"))],"shcherbinskij")
   self.assertIn("moscow-2026-roster-refresh.json", 
    (ROOT/"importer/verify_moscow_judge_corroboration.py").read_text(encoding="utf-8"))
 
@@ -43,6 +45,12 @@ class MoscowAllRosterSources(unittest.TestCase):
   self.assertIn("unique.set(person.judgeSlug,person)",component)
   self.assertIn("rank[person.sourceKind]<rank[previous.sourceKind]",component)
   self.assertIn("distinctPublishedNames",page)
+  evidence=(APP/"lib/moscow-district-source-evidence.ts").read_text(encoding="utf-8")
+  journey=(APP/"_components/moscow-court-evidence-and-journey.tsx").read_text(encoding="utf-8")
+  self.assertIn("...legacyRosters.records,...additionalRosters.records,...refreshedRosters.records",evidence)
+  self.assertIn("moscowJudgeRoster(officialSlug)",journey)
+  self.assertIn("datedRoster.sourceLastUpdated",journey)
+  self.assertIn("rank[person.sourceKind]<rank[previous.sourceKind]",journey)
   self.assertIn("new Set(MOSCOW_JUDGE_PROFILES.map",page)
   self.assertNotIn("<strong>{MOSCOW_JUDGE_PROFILES.length}</strong>",page)
 
