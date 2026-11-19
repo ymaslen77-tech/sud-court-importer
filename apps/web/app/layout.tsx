@@ -1,4 +1,5 @@
 import './globals.css';
+import './readability.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from './_components/site-header';
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return <html lang="ru">
     <body>
+      <a className="skip-link" href="#main-content">Перейти к основному содержанию</a>
       <SiteHeader />
       <main id="main-content" className="container page-shell">{children}</main>
       <footer className="site-footer">
