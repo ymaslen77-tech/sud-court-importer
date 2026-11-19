@@ -9,6 +9,9 @@ on:
       - 'apps/web/app/_components/moscow-*'
       - 'apps/web/app/lib/moscow-*'
       - 'apps/web/app/globals.css'
+      - 'apps/web/app/readability.css'
+      - 'apps/web/app/layout.tsx'
+      - 'apps/web/tests/readability-design-system.test.cjs'
       - 'apps/web/app/data/moscow-*.json'
       - 'importer/**'
       - 'docs/moscow-github-only-workflow.md'
@@ -19,6 +22,9 @@ on:
       - 'apps/web/app/_components/moscow-*'
       - 'apps/web/app/lib/moscow-*'
       - 'apps/web/app/globals.css'
+      - 'apps/web/app/readability.css'
+      - 'apps/web/app/layout.tsx'
+      - 'apps/web/tests/readability-design-system.test.cjs'
       - 'apps/web/app/data/moscow-*.json'
       - 'importer/**'
       - '.github/workflows/moscow-github-only-quality.yml'
@@ -77,4 +83,6 @@ jobs:
           node-version: 22
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm check
+      - name: Test readable legal pages and accessible court navigation
+        run: node --test apps/web/tests/readability-design-system.test.cjs
       - run: pnpm build
