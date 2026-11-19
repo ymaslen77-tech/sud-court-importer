@@ -7,6 +7,7 @@ const ROOT=path.join(__dirname,'..','app');
 const css=fs.readFileSync(path.join(ROOT,'readability.css'),'utf8');
 const base=fs.readFileSync(path.join(ROOT,'globals.css'),'utf8');
 const layout=fs.readFileSync(path.join(ROOT,'layout.tsx'),'utf8');
+const header=fs.readFileSync(path.join(ROOT,'_components/site-header.tsx'),'utf8');
 const page=fs.readFileSync(path.join(ROOT,'courts/moscow/page.tsx'),'utf8');
 const listing=require(path.join(ROOT,'data/moscow-official-minimum-registry.json')).records;
 const courts=listing.filter(x=>x.kind==='general-district');
@@ -34,6 +35,11 @@ test('keyboard navigation and touch targets remain available',()=>{
  assert.match(css,/summary:focus-visible/);
  assert.match(css,/\.main-nav a\s*\{[^}]*min-height:44px/s);
  assert.match(css,/\.page-shell \.court-toc a\s*\{[^}]*min-height:46px/s);
+ assert.match(header,/<details className="mobile-nav">/);
+ assert.match(header,/Навигация на телефоне/);
+ assert.match(header,/Разделы сайта/);
+ assert.match(css,/@media\(max-width:800px\)\s*\{\s*\.main-nav\{display:none\}/s);
+ assert.match(css,/\.mobile-nav nav a\s*\{[^}]*min-height:48px/s);
 });
 test('Moscow district cards are split into exhaustive, exclusive alphabetic groups',()=>{
  assert.equal(courts.length,35);
