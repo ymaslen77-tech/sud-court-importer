@@ -15,6 +15,12 @@ export const metadata:Metadata={
 export default function MoscowDirectory(){
  const district=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-district');
  const city=MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>c.kind==='general-regional');
+ const sortedDistrict=[...district].sort((a,b)=>a.name.localeCompare(b.name,'ru'));
+ const districtGroups=[
+  {id:'a-k',label:'А — К',courts:sortedDistrict.filter(c=>c.name.localeCompare('Л','ru')<0)},
+  {id:'l-r',label:'Л — Р',courts:sortedDistrict.filter(c=>c.name.localeCompare('Л','ru')>=0&&c.name.localeCompare('С','ru')<0)},
+  {id:'s-ya',label:'С — Я',courts:sortedDistrict.filter(c=>c.name.localeCompare('С','ru')>=0)}
+ ];
  const rich=moscowCourts();
  const individualSet=new Set(MOSCOW_DISTRICT_INDIVIDUALS.map(c=>c.slug));
  const arbitration=regionalArbitrationCourts('moscow');
@@ -70,7 +76,16 @@ export default function MoscowDirectory(){
     <h2>Районные суды Москвы</h2>
     <p>Нажмите на суд, чтобы узнать его адрес и рабочее время. Для {rich.length} судов сохранены ранее разработанные расширенные досье; остальные {individualSet.size} получили индивидуальные сведения об официальных контактах, руководстве и сервисах. Непроверенные биографии и судебные дела не добавляются.</p>
    </div>
-   <div className="results">{district.map(c=><Link className="result-row moscow-registry-result" href={MoscowOfficialCourtHref(c)} key={c.slug}>
+   <p>Суды расположены по алфавиту. Найдите название, затем откройте карточку: внутри находятся контакты, порядок обращения, сведения о делах и ссылки на официальный портал.</p>
+   <nav className="moscow-directory-jump" aria-label="Алфавитный указатель районных судов">
+    <strong>Быстрый переход:</strong>
+    {districtGroups.map(group=><a key={group.id} href={'#moscow-group-'+group.id}>{group.label} · {group.courts.length}</a>)}
+   </nav>
+   <div className="moscow-directory-groups">{districtGroups.map(group=><section
+     className="moscow-directory-group" id={'moscow-group-'+group.id}
+     aria-labelledby={'moscow-group-heading-'+group.id} key={group.id}>
+    <h3 id={'moscow-group-heading-'+group.id}>Районные суды: {group.label}</h3>
+    <div className="results">{group.courts.map(c=><Link className="result-row moscow-registry-result" href={MoscowOfficialCourtHref(c)} key={c.slug}>
     <span><strong>{c.name}</strong>
      {c.visitor_locations?.length?<small className="moscow-temporary-location"><strong>Временный адрес посещения:</strong> {c.visitor_locations[0].address} — подробности в карточке</small>:null}
      <small>{c.visitor_locations?.length?'Почтовый адрес: ':'Адрес: '}{c.address}</small>
@@ -78,6 +93,7 @@ export default function MoscowDirectory(){
      <small>{rich.some(x=>x.name.toLocaleLowerCase('ru').replace(/ё/g,'е').startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')))?'Есть подробная справочная карточка':individualSet.has(c.slug)?'Индивидуальная карточка по официальному источнику':'Базовая справочная карточка'}</small>
     </span><span aria-hidden="true">→</span>
    </Link>)}</div>
+   </section>)}</div>
   </section>
   {arbitration.length>0?<section className="section-wrap" id="moscow-arbitration">
    <div className="section-intro"><span className="eyebrow">Отдельная судебная система</span>
