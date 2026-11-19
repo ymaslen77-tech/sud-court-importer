@@ -331,3 +331,75 @@ textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
 @media(prefers-reduced-motion:reduce){
  .skip-link{transition:none}
 }
+
+/* Earlier court and constitutional-law layouts had dense 12–14px prose. */
+.page-shell :is(.constitutional-topic p,.constitutional-faq details p,
+ .constitutional-legal-note,.ksrf-guide-option-body,.ksrf-guide-note,
+ .ksrf-guide-source,.ksrf-guide-list p,.ksrf-guide-checklist li,
+ .ksrf-selfcheck-questions p,.ksrf-selfcheck-finding p,
+ .ksrf-selfcheck-legal-note,.ksrf-selfcheck-pending,
+ .ksrf-generator-status,.ksrf-document-generator label){
+ font-size:16px;
+ line-height:1.75;
+ color:#405263;
+}
+.page-shell .ksrf-selfcheck-result-banner>p:not(.ksrf-selfcheck-result-kicker){
+ font-size:16px;
+ line-height:1.75;
+}
+.page-shell :is(.constitutional-topic h3,.ksrf-guide-list h3){
+ font-size:20px;line-height:1.4;
+}
+.page-shell .constitutional-topic>span{font-size:13px}
+.page-shell .ksrf-selfcheck-finding-top strong{font-size:16px}
+.page-shell :is(.ksrf-guide-option-body a,.ksrf-selfcheck-finding a){
+ font-size:15px;line-height:1.6;
+}
+.page-shell .ksrf-guide-stepper>*{font-size:14px}
+.page-shell .ksrf-check-entry li a strong{font-size:16px}
+.page-shell .ksrf-check-entry li a span{font-size:14px}
+/* Native <details> mobile navigation: all links remain keyboard accessible. */
+.mobile-nav{display:none}
+@media(max-width:800px){
+ .main-nav{display:none}
+ .mobile-nav{
+  display:block;order:3;flex:0 0 100%;
+  min-width:0;border-top:1px solid var(--line);
+  padding-top:11px;
+ }
+ .mobile-nav summary{
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:48px;padding:10px 14px;
+  border-radius:9px;border:1px solid #dce3e8;
+  background:#f6f8fa;color:#213347;
+  font-size:16px;line-height:1.4;font-weight:800;
+  cursor:pointer;list-style:none;
+ }
+ .mobile-nav summary::-webkit-details-marker{display:none}
+ .mobile-nav summary span{
+  margin-left:12px;color:var(--red);
+  font-size:18px;transition:transform .15s ease;
+ }
+ .mobile-nav[open] summary span{transform:rotate(180deg)}
+ .mobile-nav nav{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;padding:14px 0 4px;
+ }
+ .mobile-nav nav a{
+  display:flex;align-items:center;
+  min-height:48px;padding:11px 13px;
+  background:#fff;color:#24384a;
+  border:1px solid #d9e1e7;border-radius:8px;
+  font-size:15px;line-height:1.5;font-weight:700;
+  text-decoration:none;
+ }
+ .mobile-nav nav a:hover,.mobile-nav nav a:focus-visible{
+  background:#fff6f6;border-color:#ae747a;
+ }
+}
+@media(max-width:480px){
+ .mobile-nav nav{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .mobile-nav summary span{transition:none}
+}
