@@ -107,7 +107,7 @@ textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
 .page-shell .court-source{max-width:86ch;margin:16px 0 20px}
 .page-shell .court-source a{color:var(--red-dark)}
 .page-shell .notice{
- display:flex;align-items:flex-start;
+ display:block;
  width:fit-content;max-width:100%;
  padding:16px 20px;
  background:#f8f5f4;border-left:4px solid var(--red);
@@ -157,7 +157,7 @@ textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
  display:block;margin-top:7px;font-size:14px;line-height:1.6;
 }
 .page-shell .moscow-registry-result small{font-size:15px;color:#435464}
-.page-shell .result-row > span:last-child{
+.page-shell .result-row > span:last-child:not(:first-child){
  flex:0 0 auto;color:var(--red);font-size:23px;
 }
 .page-shell .results{gap:13px}
@@ -301,6 +301,7 @@ textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
 }
 @media(max-width:580px){
  .container{padding-inline:18px}
+ .journey{margin-inline:-18px;padding-inline:18px}
  body{font-size:16px;line-height:1.72}
  .page-shell h1,.section-hero h1{font-size:clamp(2rem,8.4vw,2.55rem)}
  .page-shell h2{font-size:clamp(1.55rem,6.5vw,1.95rem)}
