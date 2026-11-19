@@ -39,7 +39,7 @@ body{
 .page-shell p{max-width:var(--reading-width);margin-bottom:1.1em}
 .page-shell :is(ul,ol):not([class]){padding-inline-start:1.5em}
 .page-shell :is(ul,ol):not([class])>li+li{margin-top:.5em}
-.page-shell :is(ul,ol)>li::marker{color:var(--red);font-weight:700}
+.page-shell :is(ul,ol):not([class])>li::marker{color:var(--red);font-weight:700}
 .page-shell :is(h1,h2,h3,h4,h5,h6){color:var(--ink);letter-spacing:-.025em;overflow-wrap:break-word}
 .page-shell h1{font-size:clamp(2.1rem,4vw,3.5rem);line-height:1.14;font-weight:800}
 .page-shell h2{font-size:clamp(1.65rem,2.65vw,2.25rem);line-height:1.23;font-weight:800}
@@ -157,6 +157,7 @@ textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
  display:block;margin-top:7px;font-size:14px;line-height:1.6;
 }
 .page-shell .moscow-registry-result small{font-size:15px;color:#435464}
+.page-shell .result-row small strong{font-size:inherit;line-height:inherit;color:inherit}
 .page-shell .result-row > span:last-child:not(:first-child){
  flex:0 0 auto;color:var(--red);font-size:23px;
 }
