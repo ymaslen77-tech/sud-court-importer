@@ -34,6 +34,8 @@ jobs:
         run: pnpm --dir apps/web exec node tests/moscow-territory.test.cjs
       - name: Test Moscow law-topic keyword search and empty-result handling
         run: pnpm --dir apps/web exec node tests/moscow-case-search.test.cjs
+      - name: Test readable typography, keyboard navigation and court list grouping
+        run: node --test apps/web/tests/readability-design-system.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:

@@ -1,0 +1,55 @@
+{
+  "description": "Пять председателей, опубликованных на персональных страницах судов. Это НЕ судейские составы и НЕ подтверждение актуальных полномочий на дату запроса.",
+  "records": [
+    {
+      "slug": "zamoskvoretskiy",
+      "officialSlug": "zamoskvoreckij",
+      "name": "Устинов Артем Анатольевич",
+      "sourceUrl": "https://mos-gorsud.ru/rs/zamoskvoreckij",
+      "observedOn": "2026-11-01",
+      "sourceUpdatedOn": null,
+      "kind": "chair_as_published_only",
+      "visitNotice": "В официальной новости сообщается о временных адресах судебных заседаний; уточняйте место по извещению."
+    },
+    {
+      "slug": "kuzminskiy",
+      "officialSlug": "kuzminskij",
+      "name": "Гончар Галина Евгеньевна",
+      "sourceUrl": "https://mos-gorsud.ru/rs/kuzminskij",
+      "observedOn": "2026-11-01",
+      "sourceUpdatedOn": null,
+      "kind": "chair_as_published_only",
+      "visitNotice": null
+    },
+    {
+      "slug": "meshchanskiy",
+      "officialSlug": "meshchanskij",
+      "name": "Никитин Максим Владимирович",
+      "sourceUrl": "https://mos-gorsud.ru/rs/meshchanskij",
+      "observedOn": "2026-11-01",
+      "sourceUpdatedOn": null,
+      "kind": "chair_as_published_only",
+      "visitNotice": null
+    },
+    {
+      "slug": "khamovnicheskiy",
+      "officialSlug": "hamovnicheskij",
+      "name": "Бычков Андрей Владимирович",
+      "sourceUrl": "https://mos-gorsud.ru/rs/hamovnicheskij",
+      "observedOn": "2026-11-01",
+      "sourceUpdatedOn": null,
+      "kind": "chair_as_published_only",
+      "visitNotice": null
+    },
+    {
+      "slug": "shcherbinskiy",
+      "officialSlug": "shcherbinskij",
+      "name": "Иваненко Юлия Сергеевна",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij",
+      "observedOn": "2026-11-01",
+      "sourceUpdatedOn": null,
+      "kind": "chair_as_published_only",
+      "visitNotice": null
+    }
+  ]
+}

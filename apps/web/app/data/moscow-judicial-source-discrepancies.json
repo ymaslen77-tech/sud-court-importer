@@ -1,0 +1,16 @@
+{
+  "description": "Разночтения в официальных сообщениях. Нельзя незаметно заменять ФИО и сопоставлять решения до разрешения конфликта первоисточников.",
+  "records": [
+    {
+      "courtSlug": "tverskoy",
+      "publishedName": "Бурая Мария Сергеевна",
+      "alternateSpelling": "Бурова Мария Сергеевна",
+      "courtSource": "https://mos-gorsud.ru/rs/tverskoj/news/v-tverskoj-rajonnyj-sud-goroda-moskvy-naznacheny-sudi",
+      "cityCourtSource": "https://mos-gorsud.ru/mgs/news/268a48e1-da49-468c-ae35-988e13febb6b",
+      "decree": "Указ Президента РФ № 405 от 09.06.2026",
+      "observedOn": "2026-11-01",
+      "status": "official_sources_conflict",
+      "resolution": "Точное написание имени требует проверки опубликованного текста указа и действующего списка судей. Не объединять дела по разным написаниям автоматически."
+    }
+  ]
+}
