@@ -18,6 +18,9 @@ test('global reading scale is loaded last and uses reasonable font sizes',()=>{
  assert.match(css,/\.page-shell h2\s*\{[^}]*clamp\(/s);
  assert.match(css,/\.page-shell :is\(p,li,dd,summary,label,blockquote\)\s*\{[^}]*1rem/s);
  assert.match(css,/--reading-width:78ch/);
+ assert.match(css,/\.page-shell :is\(ul,ol\):not\(\[class\]\)/);
+ assert.match(css,/\.page-shell \.result-row > span:last-child:not\(:first-child\)/);
+ assert.match(css,/\.journey\{margin-inline:-18px;padding-inline:18px\}/);
  assert.match(css,/\.main-nav a\s*\{[^}]*font-size:14px/s);
  assert.match(css,/\.page-shell \.court-source\s*\{[^}]*max-width:86ch/s);
  assert.match(css,/@media\(max-width:580px\)/);
