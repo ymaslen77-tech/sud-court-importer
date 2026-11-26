@@ -35,6 +35,7 @@ export default function MoscowDirectory(){
    <div className="court-filter-actions">
     <Link href="/courts/moscow/cases" className="button button-red">Найти судебное дело по номеру или категории →</Link>
     <Link href="/courts/moscow/judges" className="button button-outline">Судьи, дела и опубликованные сведения →</Link>
+    <Link href="/courts/moscow-region/cases" className="button button-outline">Поиск дел Москвы и Московской области →</Link>
    </div>
    <div className="moscow-registry-summary">
     <div><strong>{MOSCOW_OFFICIAL_MINIMUM_COURTS.length}</strong><span>Судебных органов в перечне</span></div>
