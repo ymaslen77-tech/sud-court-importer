@@ -6,6 +6,9 @@ on:
       - infra/coolify-russian-vps
     paths:
       - 'apps/web/app/courts/moscow/**'
+      - 'apps/web/app/courts/moscow-region/**'
+      - 'apps/web/app/data/moscow-oblast-*.json'
+      - 'apps/web/tests/moscow-region-case-index.test.cjs'
       - 'apps/web/app/_components/moscow-*'
       - 'apps/web/app/lib/moscow-*'
       - 'apps/web/app/globals.css'
@@ -19,6 +22,9 @@ on:
   pull_request:
     paths:
       - 'apps/web/app/courts/moscow/**'
+      - 'apps/web/app/courts/moscow-region/**'
+      - 'apps/web/app/data/moscow-oblast-*.json'
+      - 'apps/web/tests/moscow-region-case-index.test.cjs'
       - 'apps/web/app/_components/moscow-*'
       - 'apps/web/app/lib/moscow-*'
       - 'apps/web/app/globals.css'
@@ -85,4 +91,6 @@ jobs:
       - run: pnpm check
       - name: Test readable legal pages and accessible court navigation
         run: node --test apps/web/tests/readability-design-system.test.cjs
+      - name: Validate Moscow/oblast linked court cases and dated official sources
+        run: node --test apps/web/tests/moscow-region-case-index.test.cjs
       - run: pnpm build
