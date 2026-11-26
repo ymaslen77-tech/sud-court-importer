@@ -1,0 +1,50 @@
+{
+  "description": "Ручная исследовательская подборка по архивному официальному списку заседаний Московского областного суда от 23.07.2026. Только номера дел, суды первой инстанции и опубликованные категории. Никаких сведений о сторонах, итогов пересмотра, мотивировок и утверждений об актуальном движении.",
+  "sourceInstitution": "Московский областной суд",
+  "sourceIndexUrl": "https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo",
+  "listingDate": "2026-07-23",
+  "observedOn": "2026-11-26",
+  "status": "single_official_index_snapshot_not_case_verified",
+  "records": [
+    {
+      "appealNumber": "33-33501/2026",
+      "firstInstanceNumber": "2-69/2026",
+      "courtSlug": "zaraysk-city-court",
+      "courtName": "Зарайский городской суд Московской области",
+      "category": "Жилищные отношения — другие жилищные споры",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261760885&case_uid=54ec6fa6-4bce-4bab-9175-b1e88136a939&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "caseDetailRead": false,
+      "appealResultVerified": false
+    },
+    {
+      "appealNumber": "33-32970/2026",
+      "firstInstanceNumber": "2-3944/2026",
+      "courtSlug": "mytishchi-city-court",
+      "courtName": "Мытищинский городской суд Московской области",
+      "category": "Жилищные отношения — приведение помещения в первоначальное состояние",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261684500&case_uid=5044e53e-b32f-4125-a7f9-284f1efc40dd&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "caseDetailRead": false,
+      "appealResultVerified": false
+    },
+    {
+      "appealNumber": "33-31082/2026",
+      "firstInstanceNumber": "2-439/2026",
+      "courtSlug": "egorievsk-city-court",
+      "courtName": "Егорьевский городской суд Московской области",
+      "category": "Имущественные права — взыскание по договору займа или кредитному договору",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261351553&case_uid=ce374ceb-6968-4ca1-a63c-a52d83b03865&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "caseDetailRead": false,
+      "appealResultVerified": false
+    },
+    {
+      "appealNumber": "33-32252/2026",
+      "firstInstanceNumber": "2-2928/2025",
+      "courtSlug": "khimki-city-court",
+      "courtName": "Химкинский городской суд Московской области",
+      "category": "Жилищные отношения — другие жилищные споры",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261504303&case_uid=ec4dd74d-f6a7-400d-bfd0-d3c2e1c0a383&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "caseDetailRead": false,
+      "appealResultVerified": false
+    }
+  ]
+}
