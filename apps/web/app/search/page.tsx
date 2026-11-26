@@ -89,6 +89,13 @@ export default async function SearchPage({searchParams}:Props){
     <h1>Найти суд</h1>
     <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+    {(!region||region==='moscow'||region==='region-50')?<p className="court-source">
+      Ищете <strong>судебное дело</strong>, а не адрес суда?{' '}
+      <Link href={'/courts/moscow-region/cases'+
+       (region||q?'?'+new URLSearchParams({...region?{region}:{},...q?{q}:{}}).toString():'')}
+       className="text-link">Поиск дел Москвы и Московской области →</Link>
+      {' '}В подборке есть номера и категории, официальные судебные реестры открываются отдельно.
+    </p>:null}
     {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
       По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
       {' '}{arbitration.length===1
