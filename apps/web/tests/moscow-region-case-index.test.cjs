@@ -46,7 +46,7 @@ test('Moscow and Moscow oblast records are legally distinguished',()=>{
  assert.match(index,/MOSCOW_JUDGE_CASE_EVIDENCE/);
  assert.match(index,/OFFICIAL_REFERENCE_COURTS\.filter\(c=>c.region==='region-50'/);
  assert.match(index,/detailRead:false,fullTextVerified:false,appealResultVerified:false/);
- assert.match(index,/status.*?official_case_metadata/s);
+ assert.match(index,/evidenceStatus:'official_case_metadata'/);
  assert.match(view,/single_official_index_snapshot/);
  assert.match(view,/Прямая карточка дела отдельно не прочитана/);
  assert.match(view,/Текущее движение дела и текст акта не проверены/);
