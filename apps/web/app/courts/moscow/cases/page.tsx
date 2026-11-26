@@ -35,7 +35,8 @@ export default function MoscowCasesIndexPage(){
    <h1>Поиск судебных дел Москвы</h1>
    <p className="lead">Номер дела, суд, судья и категория — в одном поиске по имеющейся у нас подборке. Каждая карточка содержит дату просмотра и ссылку на первоисточник.</p>
    <div className="notice" role="note">Здесь нет полного архива решений всех московских судов. Реестровые результаты нельзя считать изученными судебными решениями. Сведения об участниках дел и тексты актов не копируются.</div>
-   <p><Link href="/courts/moscow/judges" className="text-link">Перейти к подробному каталогу судей →</Link></p>
+   <p><Link href="/courts/moscow/judges" className="text-link">Перейти к подробному каталогу судей →</Link>
+    {' · '}<Link href="/courts/moscow-region/cases" className="text-link">Найти дело по Москве и Московской области →</Link></p>
   </section>
   <MoscowCaseIndexExplorer courts={courts} cases={entries}/>
   <section className="court-section">
