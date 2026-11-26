@@ -10,11 +10,13 @@ export const metadata:Metadata={
  robots:{index:false,follow:true},
  alternates:{canonical:'/courts/moscow-region/cases'}
 };
-type Props={searchParams:Promise<{q?:string|string[];region?:string|string[]}>};
+type Props={searchParams:Promise<{q?:string|string[];region?:string|string[];court?:string|string[]}>};
 export default async function MoscowAndOblastCases({searchParams}:Props){
  const p=await searchParams;
  const query=typeof p.q==='string'?p.q.trim().slice(0,100):'';
  const region=p.region==='moscow'||p.region==='region-50'?p.region:'';
+ const requestedCourt=typeof p.court==='string'?p.court:'';
+ const selectedCourt=MOSCOW_REGION_COURTS.some(c=>c.region+':'+c.slug===requestedCourt&&(!region||c.region===region))?requestedCourt:'';
  const moscow=MOSCOW_REGION_CASES.filter(c=>c.region==='moscow').length;
  const oblast=MOSCOW_REGION_CASES.filter(c=>c.region==='region-50').length;
  const oblastCourts=MOSCOW_REGION_COURTS.filter(c=>c.region==='region-50');
@@ -43,7 +45,7 @@ export default async function MoscowAndOblastCases({searchParams}:Props){
   </section>
   <div id="regional-case-search">
    <MoscowRegionCaseExplorer cases={MOSCOW_REGION_CASES}
-    courts={MOSCOW_REGION_COURTS} initialQuery={query} initialRegion={region}/>
+    courts={MOSCOW_REGION_COURTS} initialQuery={query} initialRegion={region} initialCourt={selectedCourt}/>
   </div>
   <section className="court-section" id="official-regional-case-portals">
     <h2>Официальные источники — для полного поиска</h2>
