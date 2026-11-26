@@ -72,6 +72,10 @@ export default async function OfficialCourtReferencePage({params}:Props){
     <p>Дела и тексты решений не перенесены в нашу базу без индивидуальной проверки. Проверять стадии и результаты нужно по отдельным официальным карточкам, а не по одному названию суда.</p>
     {court.region==='region-50'?<p>Контактный справочник не содержит подтверждённого адреса прямого поиска дел этого суда. Ниже доступна главная страница суда с официальными разделами, а также поиск по нашему каталогу.</p>:null}
     <p><Link href={'/search?region='+encodeURIComponent(court.region)} className="text-link">Поискать сведения на «Судах России» →</Link></p>
+    {court.region==='region-50'?<p><Link className="button button-outline"
+     href={'/courts/moscow-region/cases?region=region-50&court='+encodeURIComponent('region-50:'+court.slug)}>
+     Проверить опубликованные записи и найти официальные дела этого суда →
+    </Link></p>:null}
    </div>
    <div className="results">
     <a className="result-row" href={court.casesUrl} target="_blank" rel="noopener noreferrer">

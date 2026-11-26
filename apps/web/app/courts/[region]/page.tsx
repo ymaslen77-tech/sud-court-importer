@@ -65,6 +65,13 @@ export default async function RegionPage({params,searchParams}:Props){
       <h1>Суды: {label}</h1>
       <p className="lead">Суды региона с индивидуальными карточками, контактами, сведениями о судьях и ссылками на проверенные первоисточники.</p>
       <p className="court-source">Каталог содержит только подтверждённые и разрешённые к публикации записи, а не все предварительно собранные названия.</p>
+      {region==='region-50'?<div className="court-filter-actions">
+        <Link className="button button-red" href="/courts/moscow-region/cases?region=region-50">
+         Поиск дел Московской области и Москвы →
+        </Link>
+        <a className="button button-outline" target="_blank" rel="noopener noreferrer"
+         href="https://usd--mo.sudrf.ru/modules.php?name=sud">Официальный список областных судов ↗</a>
+      </div>:null}
     </section>
     <section className="section-wrap">
       <div className="section-intro">
@@ -97,7 +104,7 @@ export default async function RegionPage({params,searchParams}:Props){
       <div className="section-intro">
         <span className="eyebrow">Контакты по официальным судебным источникам</span>
         <h2 id="official-regional-references">Суды с адресами и отдельными карточками: {officialReferences.length}</h2>
-        <p>Для этих судов опубликованы адрес, телефон, электронная почта, карта и прямые ссылки на официальные сервисы дел. Актуальность и состав судей требуют отдельной редакционной проверки.</p>
+        <p>Для этих судов опубликованы адрес, телефон, электронная почта и карта. Прямые адреса разделов делопроизводства проверены не для каждого суда: в остальных карточках есть переход на официальный сайт. Актуальность реквизитов и состав судей требуют отдельной проверки.</p>
       </div>
       <div className="results">{officialReferences.map(c=>
         <Link className="result-row" key={c.slug} href={'/courts/reference/'+c.slug}>
