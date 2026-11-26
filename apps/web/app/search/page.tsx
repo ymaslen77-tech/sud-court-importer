@@ -82,6 +82,10 @@ export default async function SearchPage({searchParams}:Props){
    }catch{failed=true;}
  }
  const label=[q?'«'+q+'»':null,kind?findCategory(kind)?.short:null,region?findRegion(region)?.name:null].filter(Boolean).join(' · ');
+ const caseParams=new URLSearchParams();
+ if(region==='moscow'||region==='region-50')caseParams.set('region',region);
+ if(q)caseParams.set('q',q);
+ const caseSearchHref='/courts/moscow-region/cases'+(caseParams.size?'?'+caseParams.toString():'');
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды</Link><span>/</span>Поиск</div>
   <section className="section-hero">
@@ -91,8 +95,7 @@ export default async function SearchPage({searchParams}:Props){
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
     {(!region||region==='moscow'||region==='region-50')?<p className="court-source">
       Ищете <strong>судебное дело</strong>, а не адрес суда?{' '}
-      <Link href={'/courts/moscow-region/cases'+
-       (region||q?'?'+new URLSearchParams({...region?{region}:{},...q?{q}:{}}).toString():'')}
+      <Link href={caseSearchHref}
        className="text-link">Поиск дел Москвы и Московской области →</Link>
       {' '}В подборке есть номера и категории, официальные судебные реестры открываются отдельно.
     </p>:null}
