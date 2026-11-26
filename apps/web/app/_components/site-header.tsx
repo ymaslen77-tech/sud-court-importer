@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 const navigation = [
   { href: '/courts', label: 'Суды' },
+  { href: '/courts/moscow-region/cases', label: 'Поиск дел' },
   { href: '/jurisdiction', label: 'Подсудность по адресу' },
   { href: '/judges', label: 'Судьи' },
   { href: '/laws', label: 'Законодательство' },
