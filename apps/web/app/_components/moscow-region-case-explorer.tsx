@@ -4,15 +4,15 @@ import Link from 'next/link';
 import type {MoscowRegionCase,MoscowRegionCode,MoscowRegionCourtOption} from '../lib/moscow-region-case-index';
 
 type Props={cases:ReadonlyArray<MoscowRegionCase>;courts:ReadonlyArray<MoscowRegionCourtOption>;
- initialQuery:string;initialRegion:''|MoscowRegionCode};
+ initialQuery:string;initialRegion:''|MoscowRegionCode;initialCourt:string};
 const norm=(s:string)=>s.toLocaleLowerCase('ru').replace(/ё/g,'е')
  .replace(/[‐‑‒–—−]/g,'-').replace(/\s+/g,' ').trim();
 const regionLabel=(r:MoscowRegionCode)=>r==='moscow'?'Москва':'Московская область';
 
-export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegion}:Props){
+export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegion,initialCourt}:Props){
  const [query,setQuery]=useState(initialQuery);
  const [region,setRegion]=useState<''|MoscowRegionCode>(initialRegion);
- const [court,setCourt]=useState('');
+ const [court,setCourt]=useState(initialCourt);
  const [status,setStatus]=useState('');
  const [category,setCategory]=useState('');
  const localCourts=useMemo(()=>courts.filter(c=>!region||c.region===region),[courts,region]);
@@ -29,6 +29,9 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
    (b.recordDate??b.observationDate).localeCompare(a.recordDate??a.observationDate)
     ||a.number.localeCompare(b.number,'ru'));
  const active=Boolean(query.trim()||region||court||status||category);
+ const selectedCourt=localCourts.find(c=>c.region+':'+c.slug===court);
+ const courtMatches=norm(query).length>=2?localCourts.filter(c=>
+  norm(c.name).includes(norm(query))||norm(query).includes(norm(c.name))).slice(0,8):[];
  const officialPortal=region==='region-50'
    ?'https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo'
    :'https://mos-gorsud.ru/search';
@@ -72,6 +75,19 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
   }}>Очистить фильтры</button></div>:null}
   <p role="status" aria-live="polite"><strong>Найдено записей: {shown.length}</strong> из {cases.length} имеющихся в нашей подборке.
    Это не количество всех дел судов.</p>
+  {selectedCourt?<div className="notice" role="note">
+   <p><strong>Выбран суд:</strong> <Link href={selectedCourt.href}>{selectedCourt.name}</Link>.</p>
+   <p>{selectedCourt.officialCaseSearchUrl
+     ?<a href={selectedCourt.officialCaseSearchUrl} target="_blank" rel="noopener noreferrer">Открыть подтверждённую официальную форму поиска дел ↗</a>
+     :<a href={selectedCourt.officialUrl} target="_blank" rel="noopener noreferrer">Перейти на официальный сайт и выбрать «Судебное делопроизводство» ↗</a>}
+    {selectedCourt.officialCaseSearchUrl?'':' Прямая форма этого суда отдельно не проверена.'}</p>
+   </div>:null}
+  {!court&&courtMatches.length>0?<div className="court-source" role="note">
+   <strong>Подходящие названия судов:</strong>{' '}
+   {courtMatches.map((c,i)=><span key={c.region+':'+c.slug}>{i>0?' · ':''}
+    <Link href={c.href}>{c.name}</Link></span>)}
+   <p>Совпадения по названиям не определяют подсудность и не означают, что в локальной выборке есть дело.</p>
+  </div>:null}
   {shown.length?<div className="results">{shown.map(c=><article className="result-row" key={c.id}>
    <div>
     <h3>Дело № {c.number}</h3>
