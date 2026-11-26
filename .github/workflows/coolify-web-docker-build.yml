@@ -1,0 +1,45 @@
+name: Coolify sudy-web Docker build
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile.coolify.web'
+      - '.dockerignore'
+      - '.github/workflows/coolify-web-docker-build.yml'
+  push:
+    branches:
+      - infra/coolify-russian-vps
+    paths:
+      - 'Dockerfile.coolify.web'
+      - '.dockerignore'
+      - '.github/workflows/coolify-web-docker-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build-and-local-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact Coolify web Dockerfile
+        run: docker build --file Dockerfile.coolify.web --tag sudy-web:coolify-ci .
+      - name: Verify pnpm is reusable offline in runtime image
+        run: |
+          test "$(docker run --rm --entrypoint pnpm sudy-web:coolify-ci --version)" = "10.15.0"
+      - name: Boot production image and verify real web routes locally
+        run: |
+          set -eu
+          docker run -d --rm --name sudy-web-ci -p 127.0.0.1:4318:3000 sudy-web:coolify-ci
+          trap 'docker rm -f sudy-web-ci >/dev/null 2>&1 || true' EXIT
+          for n in $(seq 1 50); do
+            if curl --silent --fail http://127.0.0.1:4318/api/status >/dev/null; then break; fi
+            sleep 2
+          done
+          curl --fail --show-error --silent http://127.0.0.1:4318/api/status >/dev/null
+          curl --fail --show-error --silent http://127.0.0.1:4318/courts/moscow-region/cases > /tmp/region-cases.html
+          grep -Fq 'Судебные дела Москвы и Московской области' /tmp/region-cases.html
+          grep -Fq 'noindex' /tmp/region-cases.html
+          curl --fail --show-error --silent http://127.0.0.1:4318/search > /tmp/global-search.html
+          grep -Fq 'Найти суд' /tmp/global-search.html
