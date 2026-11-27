@@ -158,12 +158,13 @@ export default async function SearchPage({searchParams}:Props){
     <h2 id="case-search-matches">Судебные дела по запросу: {sourceCaseMatches.length}</h2>
     <p>Показаны совпадения только из локальной исследовательской выборки, а не все дела.
      В Московской области часть записей относится к архивному списку заседаний от 23.07.2026.
-     Их прямые карточки отдельно не прочитаны, исход апелляций не подтверждён.</p>
+     Их прямые карточки отдельно не прочитаны. Дополнительные записи из сохранённых копий имеют отдельную отметку; исход апелляций не подтверждён.</p>
    </div>
    <div className="results">{sourceCaseMatches.map(c=><article className="result-row" key={c.id}>
     <span><strong>Дело № {c.number}</strong>
      <small>{c.region==='moscow'?'Москва':'Московская область'} · {c.courtName}</small>
      <small>{c.category}</small>
+     {c.evidenceStatus==='cached_official_case_metadata'?<small>Сохранённая копия карточки областного суда; текущий статус и исход не проверены.</small>:null}
      {c.appealNumber?<small>Номер апелляционного дела: № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</small>:null}
      {c.appealDocket?<small>Зарегистрированный апелляционный материал: № {c.appealDocket}
       {c.appealRegisteredOn?' (дата регистрации '+c.appealRegisteredOn+')':''}. Результат пересмотра не установлен.</small>:null}
