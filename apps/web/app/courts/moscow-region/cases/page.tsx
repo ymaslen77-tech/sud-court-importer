@@ -32,7 +32,7 @@ export default async function MoscowAndOblastCases({searchParams}:Props){
    <div className="moscow-registry-summary">
     <div><strong>{moscow}</strong><span>Записей из судебных реестров Москвы</span></div>
     <div><strong>{oblast}</strong><span>Исторических областных апелляционных записей</span></div>
-    <div><strong>{oblastCourts.length}</strong><span>Справочных карточек областных судов для перехода к официальным источникам</span></div>
+    <div><strong>{oblastCourts.length}</strong><span>Известных индивидуальных карточек судов области, включая Пушкинский суд</span></div>
    </div>
    <p className="notice" role="note">Москва и Московская область имеют разные судебные справочники. Подтверждение наличия дела в реестре не означает проверки полного текста решения, вступления акта в силу или результата обжалования.</p>
    <nav className="court-toc" aria-label="Разделы поиска">

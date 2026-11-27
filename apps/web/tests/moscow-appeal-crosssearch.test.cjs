@@ -184,7 +184,7 @@ test('four additional cached oblast cards match both numbers but never imply cur
 
 test('published direct links remain separate from live verification; rich Pushkin dossier participates in search',()=>{
  const ev=compile(read('lib/oblast-portal-evidence.ts'),'oblast-portal-evidence.ts').OBLAST_PORTAL_EVIDENCE;
- assert.equal(Object.keys(ev).length,8);
+ assert.equal(Object.keys(ev).length,39);
  for(const e of Object.values(ev)){
   const u=new URL(e.url);
   assert.equal(u.protocol,'https:');

@@ -7,6 +7,7 @@ import {findRegion} from '../../lib/regions';
 import {regionalArbitrationCourts,regionalArbitrationHref} from '../../lib/regional-arbitration';
 import {pushkinskyCourt} from '../../lib/court-rich-records';
 import {OFFICIAL_REFERENCE_COURTS} from '../../lib/official-reference-courts';
+import {OBLAST_PORTAL_EVIDENCE} from '../../lib/oblast-portal-evidence';
 
 type Props = {
   params:Promise<{region:string}>;
@@ -104,11 +105,11 @@ export default async function RegionPage({params,searchParams}:Props){
       <div className="section-intro">
         <span className="eyebrow">Контакты по официальным судебным источникам</span>
         <h2 id="official-regional-references">Суды с адресами и отдельными карточками: {officialReferences.length}</h2>
-        <p>Для этих судов опубликованы адрес, телефон, электронная почта и карта. Прямые адреса разделов делопроизводства проверены не для каждого суда: в остальных карточках есть переход на официальный сайт. Актуальность реквизитов и состав судей требуют отдельной проверки.</p>
+        <p>Для этих судов опубликованы адрес, телефон, электронная почта и карта. Прямые адреса разделов делопроизводства найдены для {Object.keys(OBLAST_PORTAL_EVIDENCE).length} судов области в опубликованных официальных страницах; их текущая доступность не удостоверена. В остальных карточках есть переход на официальный сайт. Актуальность реквизитов и состав судей требуют отдельной проверки.</p>
       </div>
       <div className="results">{officialReferences.map(c=>
         <Link className="result-row" key={c.slug} href={'/courts/reference/'+c.slug}>
-          <span><strong>{c.name}</strong><small>{c.address} · {c.phone}</small><small>Официальный первоисточник · справочная карточка</small></span>
+          <span><strong>{c.name}</strong><small>{c.address} · {c.phone}</small><small>Официальный первоисточник · индивидуальное досье{c.region==='region-50'&&OBLAST_PORTAL_EVIDENCE[c.slug]?' · опубликованный адрес делопроизводства':''}</small></span>
           <span aria-hidden="true">↗</span>
         </Link>
       )}</div>
