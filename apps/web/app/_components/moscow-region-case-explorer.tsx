@@ -2,7 +2,7 @@
 import {useMemo,useState} from 'react';
 import Link from 'next/link';
 import type {MoscowRegionCase,MoscowRegionCode,MoscowRegionCourtOption} from '../lib/moscow-region-case-index';
-import {matchesSourceBoundMoscowCase} from '../lib/moscow-region-case-search';
+import {matchesSourceBoundMoscowCase,officialCaseSearchDestinations} from '../lib/moscow-region-case-search';
 
 type Props={cases:ReadonlyArray<MoscowRegionCase>;courts:ReadonlyArray<MoscowRegionCourtOption>;
  initialQuery:string;initialRegion:''|MoscowRegionCode;initialCourt:string};
@@ -32,9 +32,7 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
  const selectedCourt=localCourts.find(c=>c.region+':'+c.slug===court);
  const courtMatches=norm(query).length>=2?localCourts.filter(c=>
   norm(c.name).includes(norm(query))||norm(query).includes(norm(c.name))).slice(0,8):[];
- const officialPortal=region==='region-50'
-   ?'https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo'
-   :'https://mos-gorsud.ru/search';
+ const destinations=officialCaseSearchDestinations(region,selectedCourt);
  return <section className="court-section" aria-label="Поиск судебных дел двух регионов">
   <h2>Поиск в проверяемой подборке</h2>
   <p>Можно искать по номеру первой инстанции, подтверждённому номеру апелляционного дела, номеру жалобы, названию суда и категории дела. Это локальные записи из официальных источников, <strong>не полный реестр</strong>. При отсутствии совпадения проверьте официальный сайт суда.</p>
@@ -123,7 +121,11 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
    </div>
   </article>)}</div>:<div className="notice" role="status">
     По выбранным условиям в нашей подборке записей нет. Это не означает отсутствия дела.
-    <a href={officialPortal} target="_blank" rel="noopener noreferrer"> Открыть официальный поиск ↗</a>
+    <div className="court-filter-actions">
+     {destinations.map(d=>d.external
+      ?<a className="text-link" key={d.href} href={d.href} target="_blank" rel="noopener noreferrer">{d.label} ↗</a>
+      :<Link className="text-link" key={d.href} href={d.href}>{d.label} →</Link>)}
+    </div>
    </div>}
   <p className="court-source">Список Московской области содержит исторические указатели из одного официального источника — они не удостоверяют исход апелляции и не являются пересказом судебных решений. Персональные данные сторон не публикуются.</p>
  </section>;

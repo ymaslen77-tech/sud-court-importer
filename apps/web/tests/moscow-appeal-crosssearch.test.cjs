@@ -133,3 +133,22 @@ test('appeal and historical warnings appear in the accessible public search UIs'
  assert.match(unified,/не является актуальным расписанием/);
  assert.match(page,/robots:\{index:false,follow:true\}/);
 });
+
+test('empty case results respect selected court and region instead of redirecting to a different court',()=>{
+ const district={region:'region-50',officialUrl:'http://domodedovo.mo.sudrf.ru/',officialCaseSearchUrl:null};
+ const regional=index.MOSCOW_REGION_COURTS.find(c=>c.slug==='moscow-oblast-court');
+ const moscow=index.MOSCOW_REGION_COURTS.find(c=>c.slug==='nikulinskiy');
+ const hrefs=(region,court)=>search.officialCaseSearchDestinations(region,court).map(x=>x.href);
+ assert.deepEqual(hrefs('region-50',district),[district.officialUrl]);
+ assert.deepEqual(hrefs('',district),[district.officialUrl]);
+ assert.deepEqual(hrefs('region-50',regional),[regional.officialCaseSearchUrl]);
+ assert.deepEqual(hrefs('',moscow),['https://mos-gorsud.ru/search']);
+ assert.deepEqual(hrefs('moscow'),['https://mos-gorsud.ru/search']);
+ assert.deepEqual(hrefs('region-50'),['/courts/region-50','https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo']);
+ assert.deepEqual(hrefs(''),['https://mos-gorsud.ru/search','/courts/region-50','https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo']);
+ assert.equal(search.officialCaseSearchDestinations('region-50')[0].external,false);
+ const view=read('_components/moscow-region-case-explorer.tsx');
+ assert.match(view,/officialCaseSearchDestinations\(region,selectedCourt\)/);
+ assert.match(view,/destinations\.map/);
+ assert.doesNotMatch(view,/officialPortal/);
+});
