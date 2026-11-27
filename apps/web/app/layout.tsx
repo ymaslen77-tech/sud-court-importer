@@ -3,6 +3,7 @@ import './readability.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from './_components/site-header';
+import { YandexMetrika } from './_components/yandex-metrika';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4173')),
@@ -31,6 +32,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         </div>
         <div className="container footer-bottom">© {new Date().getFullYear()} Суды России <span>Информационный проект · Пилотная версия</span></div>
       </footer>
+      <YandexMetrika />
     </body>
   </html>;
 }
