@@ -41,3 +41,32 @@ export function isPastPublishedHearingDate(
   &&/^20\d{2}-\d{2}-\d{2}$/.test(asOfDate)
   &&hearingDate<asOfDate;
 }
+
+type SearchRegion=''|'moscow'|'region-50';
+type CourtSearchTarget={region:Exclude<SearchRegion,''>;officialUrl:string;officialCaseSearchUrl:string|null};
+type SearchDestination={href:string;label:string;external:boolean};
+
+/** Empty local results must not redirect a district-court visitor to a different
+ * court's registry. Only use explicit source-bound destinations. */
+export function officialCaseSearchDestinations(
+ region:SearchRegion,selectedCourt?:CourtSearchTarget
+):SearchDestination[]{
+ const moscow:SearchDestination={href:'https://mos-gorsud.ru/search',
+  label:'Единый официальный поиск судов Москвы',external:true};
+ const oblastDirectory:SearchDestination={href:'/courts/region-50',
+  label:'Выбрать районный или городской суд Московской области',external:false};
+ const oblastCourt:SearchDestination={href:'https://oblsud--mo.sudrf.ru/modules.php?name=sud_delo',
+  label:'Делопроизводство Московского областного суда',external:true};
+ if(selectedCourt){
+  if(selectedCourt.officialCaseSearchUrl){
+   return [{href:selectedCourt.officialCaseSearchUrl,
+    label:selectedCourt.region==='moscow'?moscow.label:'Официальный раздел делопроизводства выбранного суда',
+    external:true}];
+  }
+  return [{href:selectedCourt.officialUrl,
+   label:'Официальный сайт выбранного суда — раздел «Судебное делопроизводство»',external:true}];
+ }
+ if(region==='moscow')return [moscow];
+ if(region==='region-50')return [oblastDirectory,oblastCourt];
+ return [moscow,oblastDirectory,oblastCourt];
+}
