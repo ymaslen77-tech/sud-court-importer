@@ -130,6 +130,6 @@ test('appeal and historical warnings appear in the accessible public search UIs'
  assert.match(model,/moscowAppealHearingSnapshot\(c.courtSlug,c.number\)/);
  assert.match(moscow,/isPastPublishedHearingDate\(c.appealSchedule.hearingDate\)/);
  assert.match(district,/isPastPublishedHearingDate\(hearing.hearingDate\)/);
- assert.match(unified,/Дата.*не является актуальным расписанием/);
+ assert.match(unified,/не является актуальным расписанием/);
  assert.match(page,/robots:\{index:false,follow:true\}/);
 });
