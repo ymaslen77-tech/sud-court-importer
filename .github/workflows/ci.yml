@@ -38,6 +38,8 @@ jobs:
         run: node --test apps/web/tests/readability-design-system.test.cjs
       - name: Validate Moscow/oblast linked court cases and dated official sources
         run: node --test apps/web/tests/moscow-region-case-index.test.cjs
+      - name: Verify Moscow appeal numbers are searchable and elapsed hearing dates are historical
+        run: node --test apps/web/tests/moscow-appeal-crosssearch.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:

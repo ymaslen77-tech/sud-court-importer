@@ -1,4 +1,6 @@
 import {MOSCOW_JUDGE_CASE_EVIDENCE} from './moscow-judge-directory';
+import {moscowJudgeCaseCrosscheck} from './moscow-judge-crosschecks';
+import {moscowAppealHearingSnapshot} from './moscow-appeal-hearing-snapshots';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-official-minimum';
 import {OFFICIAL_REFERENCE_COURTS} from './official-reference-courts';
 import oblastIndex from '../data/moscow-oblast-appeal-index-samples.json';
@@ -10,7 +12,10 @@ export type MoscowRegionCode='moscow'|'region-50';
 export type MoscowRegionCase={
  id:string;region:MoscowRegionCode;courtSlug:string;courtName:string;
  courtHref:string;number:string;firstInstanceNumber:string|null;
- appealNumber:string|null;category:string;judgeName:string|null;
+ appealNumber:string|null;appealDocket:string|null;
+ appealRegisteredOn:string|null;appealSourceUrl:string|null;
+ appealHearingDate:string|null;appealHearingTime:string|null;appealHearingObservedOn:string|null;
+ category:string;judgeName:string|null;
  proceeding:string;disposition:string|null;dispositionScope:'first_instance_registry'|'not_verified';
  observationDate:string;recordDate:string|null;
  sourceUrl:string;sourceIndexUrl:string|null;
@@ -42,11 +47,23 @@ export const MOSCOW_REGION_COURTS:ReadonlyArray<MoscowRegionCourtOption>=[
 const moscowRecords:MoscowRegionCase[]=MOSCOW_JUDGE_CASE_EVIDENCE.flatMap(c=>{
  const court=moscowBySlug.get(c.courtSlug);
  if(!court)return [];
+ // This crosscheck must match both official registers before appeal metadata
+ // is displayed. The later hearing snapshot alone does not prove an outcome.
+ const crosscheck=moscowJudgeCaseCrosscheck(c.courtSlug,c.number);
+ const witness=crosscheck?.witnesses.find(w=>w.kind==='appeal_registry');
+ const schedule=moscowAppealHearingSnapshot(c.courtSlug,c.number);
  return [{
   id:'moscow-'+c.courtSlug+'-'+c.number,
   region:'moscow',courtSlug:c.courtSlug,courtName:court.name,
   courtHref:MoscowOfficialCourtHref(court),
-  number:c.number,firstInstanceNumber:c.number,appealNumber:null,
+  number:c.number,firstInstanceNumber:c.number,
+  appealNumber:schedule?.appealCaseNumber??null,
+  appealDocket:crosscheck?.appealDocket??null,
+  appealRegisteredOn:crosscheck?.appealRegisteredOn??null,
+  appealSourceUrl:witness?.sourceUrl??null,
+  appealHearingDate:schedule?.hearingDate??null,
+  appealHearingTime:schedule?.hearingTime??null,
+  appealHearingObservedOn:schedule?.observedOn??null,
   category:c.category,judgeName:c.judgeName,proceeding:c.proceeding,
   disposition:c.status==='outcome_recorded'?c.outcome:null,
   dispositionScope:c.status==='outcome_recorded'?'first_instance_registry':'not_verified',
@@ -65,7 +82,10 @@ const oblastRecords:MoscowRegionCase[]=oblastIndex.records.flatMap(c=>{
   region:'region-50',courtSlug:c.courtSlug,courtName:c.courtName,
   courtHref:'/courts/reference/'+c.courtSlug,
   number:c.appealNumber,firstInstanceNumber:c.firstInstanceNumber,
-  appealNumber:c.appealNumber,category:c.category,judgeName:null,
+  appealNumber:c.appealNumber,appealDocket:null,
+  appealRegisteredOn:null,appealSourceUrl:null,
+  appealHearingDate:null,appealHearingTime:null,appealHearingObservedOn:null,
+  category:c.category,judgeName:null,
   proceeding:'civil_appeal',
   disposition:null,dispositionScope:'not_verified',
   observationDate:oblastIndex.observedOn,recordDate:oblastIndex.listingDate,

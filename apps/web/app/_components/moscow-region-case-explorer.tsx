@@ -2,6 +2,7 @@
 import {useMemo,useState} from 'react';
 import Link from 'next/link';
 import type {MoscowRegionCase,MoscowRegionCode,MoscowRegionCourtOption} from '../lib/moscow-region-case-index';
+import {matchesSourceBoundMoscowCase} from '../lib/moscow-region-case-search';
 
 type Props={cases:ReadonlyArray<MoscowRegionCase>;courts:ReadonlyArray<MoscowRegionCourtOption>;
  initialQuery:string;initialRegion:''|MoscowRegionCode;initialCourt:string};
@@ -20,8 +21,7 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
    &&(!court||c.region+':'+c.courtSlug===court)
    &&(!status||c.dispositionScope===status)
    &&(!category||c.category===category)
-   &&(!norm(query)||norm([c.number,c.firstInstanceNumber??'',c.category,c.courtName,
-      c.judgeName??'',c.disposition??''].join(' ')).includes(norm(query)))),
+   &&matchesSourceBoundMoscowCase(c,query)),
  [cases,region,court,status,category,query]);
  const categories=useMemo(()=>[...new Set(cases.filter(c=>!region||c.region===region)
   .map(c=>c.category))].sort((a,b)=>a.localeCompare(b,'ru')),[cases,region]);
@@ -37,11 +37,11 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
    :'https://mos-gorsud.ru/search';
  return <section className="court-section" aria-label="Поиск судебных дел двух регионов">
   <h2>Поиск в проверяемой подборке</h2>
-  <p>Можно искать по номеру, названию суда и категории дела. Это локальные записи из официальных источников, <strong>не полный реестр</strong>. При отсутствии совпадения проверьте официальный сайт суда.</p>
+  <p>Можно искать по номеру первой инстанции, подтверждённому номеру апелляционного дела, номеру жалобы, названию суда и категории дела. Это локальные записи из официальных источников, <strong>не полный реестр</strong>. При отсутствии совпадения проверьте официальный сайт суда.</p>
   <div className="moscow-judge-controls">
    <label>Номер дела или категория
     <input type="search" maxLength={100} value={query} onChange={e=>setQuery(e.target.value)}
-     placeholder="Например, 33-32970/2026 или жилищные отношения"/>
+     placeholder="Например, Ж-65034/2026, 33-53951/2026 или жилищный спор"/>
    </label>
    <label>Регион
     <select value={region} onChange={e=>{setRegion(e.target.value as ''|MoscowRegionCode);setCourt('');setCategory('');}}>
@@ -93,7 +93,14 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
     <h3>Дело № {c.number}</h3>
     <p><strong>Регион:</strong> {regionLabel(c.region)}.</p>
     <p><strong>Суд:</strong> <Link href={c.courtHref}>{c.courtName}</Link>.</p>
-    {c.appealNumber?<p><strong>Апелляция:</strong> № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</p>:null}
+    {c.appealNumber?<p><strong>Апелляционное дело:</strong> № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</p>:null}
+    {c.appealDocket?<p><strong>Регистрация апелляционного материала:</strong> № {c.appealDocket}
+     {c.appealRegisteredOn?' ('+c.appealRegisteredOn+')':''}. Результат пересмотра не установлен.</p>:null}
+    {c.appealHearingDate&&c.appealHearingObservedOn?<p className="court-source">
+     <strong>Историческая запись о назначении:</strong> по состоянию на {c.appealHearingObservedOn}
+     заседание назначалось на {c.appealHearingDate} {c.appealHearingTime??''}.
+     Эта дата не является актуальным расписанием; проведение, перенос и исход не подтверждены.
+    </p>:null}
     <p><strong>Категория:</strong> {c.category}.</p>
     {c.judgeName?<p><strong>Судья, названный в реестре:</strong> {c.judgeName}.</p>:null}
     <p><strong>Результат:</strong> {c.dispositionScope==='first_instance_registry'
@@ -108,6 +115,8 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
       <a className="text-link" href={c.sourceUrl} target="_blank" rel="noopener noreferrer">
        {c.detailRead?'Открыть официальную карточку':'Попробовать открыть официальную карточку'} ↗
       </a>
+      {c.appealSourceUrl?<a className="text-link" href={c.appealSourceUrl}
+       target="_blank" rel="noopener noreferrer">Карточка апелляционного материала ↗</a>:null}
       {c.sourceIndexUrl?<a className="text-link" href={c.sourceIndexUrl}
        target="_blank" rel="noopener noreferrer">Официальный реестр областного суда ↗</a>:null}
     </div>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {moscowJudgeAppointmentEvents} from '../lib/moscow-judge-appointment-events';
 import {moscowJudgeCaseCrosscheck} from '../lib/moscow-judge-crosschecks';
 import {moscowAppealHearingSnapshot} from '../lib/moscow-appeal-hearing-snapshots';
+import {isPastPublishedHearingDate} from '../lib/moscow-region-case-search';
 import {
  MOSCOW_JUDGE_PROFILES,MOSCOW_JUDGE_CASE_EVIDENCE,
  moscowJudgeProfilesForCourt,moscowJudgeHref,moscowJudgeSlug,
@@ -91,7 +92,11 @@ export function MoscowCourtPublishedCases({courtSlug}:{courtSlug:string}){
      </div>:null}
      {hearing?<div className="notice" role="note">
       <p><strong>Назначение апелляционного заседания, зафиксированное {hearing.observedOn}:</strong> {hearing.statusAsPublished} (дело № {hearing.appealCaseNumber}).</p>
-      <p>По опубликованной записи место — {hearing.venueAsPublished}. Дата и зал могут измениться; запись не подтверждает проведение заседания или итог апелляции.</p>
+      <p>Место, указанное в исторической записи: {hearing.venueAsPublished}.
+       {' '}{isPastPublishedHearingDate(hearing.hearingDate)
+        ?'Дата назначенного заседания уже прошла. Состоялось ли оно, было перенесено или отменено — не подтверждено.'
+        :'Дата и зал могли измениться; перед посещением их нужно проверить на официальном портале.'}
+       {' '}Эта запись не подтверждает проведение заседания или итог апелляции.</p>
       <p><a href={hearing.sourceUrl} rel="noopener noreferrer" target="_blank">Проверить актуальную карточку Мосгорсуда ↗</a></p>
      </div>:null}
      <p className="court-source">Источник просмотрен {row.observedOn}. Мотивировочный текст судебного акта и итог апелляции по этой записи не подтверждены.</p>
