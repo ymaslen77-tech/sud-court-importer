@@ -76,9 +76,9 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
   {selectedCourt?<div className="notice" role="note">
    <p><strong>Выбран суд:</strong> <Link href={selectedCourt.href}>{selectedCourt.name}</Link>.</p>
    <p>{selectedCourt.officialCaseSearchUrl
-     ?<a href={selectedCourt.officialCaseSearchUrl} target="_blank" rel="noopener noreferrer">Открыть подтверждённую официальную форму поиска дел ↗</a>
+     ?<a href={selectedCourt.officialCaseSearchUrl} target="_blank" rel="noopener noreferrer">Открыть опубликованный официальный раздел поиска дел ↗</a>
      :<a href={selectedCourt.officialUrl} target="_blank" rel="noopener noreferrer">Перейти на официальный сайт и выбрать «Судебное делопроизводство» ↗</a>}
-    {selectedCourt.officialCaseSearchUrl?'':' Прямая форма этого суда отдельно не проверена.'}</p>
+    {selectedCourt.caseSearchAddressOnly?' Адрес раздела найден; текущая доступность не проверена.':selectedCourt.officialCaseSearchUrl?'':' Прямая форма этого суда отдельно не проверена.'}</p>
    </div>:null}
   {!court&&courtMatches.length>0?<div className="court-source" role="note">
    <strong>Подходящие названия судов:</strong>{' '}

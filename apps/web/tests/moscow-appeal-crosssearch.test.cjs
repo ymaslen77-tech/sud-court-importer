@@ -56,6 +56,8 @@ const index=compile(read('lib/moscow-region-case-index.ts'),'moscow-region-case-
  './moscow-official-minimum':{MOSCOW_OFFICIAL_MINIMUM_COURTS:courtFixtures,
   MoscowOfficialCourtHref:c=>'/courts/moscow/'+c.slug},
  './official-reference-courts':{OFFICIAL_REFERENCE_COURTS:[...unique.values()]},
+ './oblast-portal-evidence':compile(read('lib/oblast-portal-evidence.ts'),'oblast-portal-evidence.ts'),
+ './court-rich-records':compile(read('lib/court-rich-records.ts'),'court-rich-records.ts'),
  '../data/moscow-oblast-appeal-index-samples.json':oblast,
  '../data/moscow-oblast-cached-appeals.json':cached
 });
@@ -178,4 +180,43 @@ test('four additional cached oblast cards match both numbers but never imply cur
  }
  assert.match(read('_components/moscow-region-case-explorer.tsx'),/Сохранённая копия официальной карточки/);
  assert.match(read('search/page.tsx'),/текущий статус и исход не проверены/);
+});
+
+test('published direct links remain separate from live verification; rich Pushkin dossier participates in search',()=>{
+ const ev=compile(read('lib/oblast-portal-evidence.ts'),'oblast-portal-evidence.ts').OBLAST_PORTAL_EVIDENCE;
+ assert.equal(Object.keys(ev).length,39);
+ for(const e of Object.values(ev)){
+  const u=new URL(e.url);
+  assert.equal(u.protocol,'https:');
+  assert.ok(u.hostname.endsWith('.sudrf.ru'));
+  assert.equal(u.searchParams.get('name'),'sud_delo');
+ }
+ const push=index.MOSCOW_REGION_COURTS.find(c=>c.slug==='pushkinsky-gorodskoy');
+ assert.ok(push);
+ assert.equal(push.href,'/courts/region-50/pushkinsky-gorodskoy');
+ assert.equal(push.caseSearchAddressOnly,true);
+ const page=read('courts/reference/[slug]/page.tsx');
+ assert.match(page,/OblastIndividualSections court=\{court\}/);
+ assert.match(page,/robots:\{index:false,follow:true\}/);
+ const sections=read('_components/oblast-individual-sections.tsx');
+ for(const id of ['oblast-staff','oblast-filing','oblast-jurisdiction','oblast-fees','oblast-local-cases','oblast-sources'])assert.ok(sections.includes('id="'+id+'"'));
+ assert.match(sections,/результат пересмотра не проверен/);
+ assert.match(sections,/не означает отсутствия дел/);
+});
+
+
+test('Oblast appointment events have three document copies, real court slugs and no live status assertion',()=>{
+ const ap=compile(read('lib/oblast-judge-appointments.ts'),'oblast-judge-appointments.ts');
+ const refs=read('lib/official-reference-courts.ts');
+ assert.equal(ap.OBLAST_APPOINTMENTS.length,27);
+ assert.equal(new Set(ap.OBLAST_APPOINTMENTS.map(x=>x.courtSlug+'|'+x.name+'|'+x.date)).size,27);
+ for(const a of ap.OBLAST_APPOINTMENTS){
+  assert.ok(refs.includes('slug:"'+a.courtSlug+'"'));
+  assert.equal(a.currentStatusVerified,false);
+  assert.equal(new Set(a.sourceUrls.map(u=>new URL(u).hostname)).size,3);
+ }
+ assert.equal(ap.oblastAppointments('odintsovo-city-court').length,4);
+ assert.equal(ap.oblastAppointments('elektrostal-city-court').length,0);
+ assert.ok(ap.oblastAppointments('shelkovo-city-court').some(a=>a.name==='Голочанова Ирина Валерьевна'&&a.role==='председатель суда'));
+ assert.match(read('courts/reference/[slug]/page.tsx'),/Действующий статус не подтверждён/);
 });

@@ -130,6 +130,7 @@ export function CourtRichDossier({court}:{court:CourtDossierData}){
   <h2>Поиск дела, судебные акты и заседания</h2>
   <p>Ищите дело на официальном портале по номеру, виду производства и другим доступным параметрам. {casesNotice?.message??'Проверенные индивидуальные дела и расписание заседаний пока не подключены; не подставляем вымышленные номера, залы и судей.'}</p>
   {cases?<p><a href={cases.url} target="_blank" rel="noopener noreferrer">Официальная система поиска дел ↗</a></p>:null}
+  {court.region==='region-50'?<p><Link href={'/courts/moscow-region/cases?region=region-50&court='+encodeURIComponent('region-50:'+court.slug)}>Поиск по этому суду в объединённом каталоге →</Link></p>:null}
   <p>Публикация судебных актов зависит от правил ограничения доступа и обезличивания. Отсутствие записи на сайте не означает, что дела нет.</p>
  </section>
  <section id="rich-fees" className="court-section">
