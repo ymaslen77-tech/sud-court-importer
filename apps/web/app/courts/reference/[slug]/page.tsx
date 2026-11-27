@@ -5,6 +5,8 @@ import {officialReferenceCourt} from '../../../lib/official-reference-courts';
 import {findCategory} from '../../../lib/court-taxonomy';
 import {YandexCourtMap} from '../../../_components/yandex-court-map';
 import {ConstitutionalCourtDossier} from '../../../_components/constitutional-court-dossier';
+import {OblastIndividualSections} from '../../../_components/oblast-individual-sections';
+import {OBLAST_PORTAL_EVIDENCE} from '../../../lib/oblast-portal-evidence';
 
 type Props={params:Promise<{slug:string}>};
 export const dynamic='force-dynamic';
@@ -27,6 +29,7 @@ export default async function OfficialCourtReferencePage({params}:Props){
  const court=officialReferenceCourt((await params).slug);
  if(!court)notFound();
  if(court.slug==='constitutional-court-rf')return <ConstitutionalCourtDossier/>;
+ const portal=court.region==='region-50'?OBLAST_PORTAL_EVIDENCE[court.slug]:undefined;
  return <>
   <div className="breadcrumb">
    <Link href="/">Главная</Link><span>/</span>
@@ -41,7 +44,7 @@ export default async function OfficialCourtReferencePage({params}:Props){
    <p className="lead">{court.regionName} · {findCategory(court.kind)?.short}</p>
    <p className="notice">Это справочная карточка по опубликованному первоисточнику, а не редакционно принятая запись реестра. Перед обращением проверьте актуальность реквизитов на сайте суда. {court.region==='region-50'?'Для Московской области сведения получены из официального перечня Управления Судебного департамента; состав судей, судебные дела, подразделения и изменение адресов требуют отдельной проверки.':''}</p>
   </section>
-  <div className="court-detail-grid">
+  <div className="court-detail-grid" id="oblast-contacts">
    <section className="detail-card">
     <span className="eyebrow">Адрес и контакты из официальной публикации</span>
     <h2>Реквизиты суда</h2>
@@ -65,12 +68,12 @@ export default async function OfficialCourtReferencePage({params}:Props){
    </aside>
   </div>
   <YandexCourtMap code={'public-'+court.slug} name={court.name} address={court.address}/>
-  <section className="section-wrap">
+  <section className="section-wrap" id="oblast-cases">
    <div className="section-intro">
     <span className="eyebrow">Дела и судебные решения</span>
     <h2>Официальное судебное делопроизводство</h2>
     <p>Дела и тексты решений не перенесены в нашу базу без индивидуальной проверки. Проверять стадии и результаты нужно по отдельным официальным карточкам, а не по одному названию суда.</p>
-    {court.region==='region-50'?<p>Контактный справочник не содержит подтверждённого адреса прямого поиска дел этого суда. Ниже доступна главная страница суда с официальными разделами, а также поиск по нашему каталогу.</p>:null}
+    {court.region==='region-50'?<p>Прямая форма поиска может быть недоступна; проверяйте работу официального сайта.</p>:null}
     <p><Link href={'/search?region='+encodeURIComponent(court.region)} className="text-link">Поискать сведения на «Судах России» →</Link></p>
     {court.region==='region-50'?<p><Link className="button button-outline"
      href={'/courts/moscow-region/cases?region=region-50&court='+encodeURIComponent('region-50:'+court.slug)}>
@@ -78,12 +81,12 @@ export default async function OfficialCourtReferencePage({params}:Props){
     </Link></p>:null}
    </div>
    <div className="results">
-    <a className="result-row" href={court.casesUrl} target="_blank" rel="noopener noreferrer">
-     <span><strong>{court.casesUrl===court.officialUrl?'Официальная страница суда':'Официальный раздел дел и решений'}</strong><small>{court.casesUrl===court.officialUrl?'Раздел делопроизводства необходимо найти на сайте суда':'Первоисточник суда, а не неподтверждённые записи'}</small></span><span aria-hidden="true">↗</span>
+    <a className="result-row" href={portal?.url??court.casesUrl} target="_blank" rel="noopener noreferrer">
+     <span><strong>{portal?'Опубликованный раздел делопроизводства':court.casesUrl===court.officialUrl?'Официальная страница суда':'Официальный раздел дел и решений'}</strong><small>{portal?'Адрес из индексированной официальной публикации; доступность уточняется':court.casesUrl===court.officialUrl?'Раздел делопроизводства необходимо найти на сайте суда':'Первоисточник суда, а не неподтверждённые записи'}</small></span><span aria-hidden="true">↗</span>
     </a>
    </div>
   </section>
-  <section className="section-wrap">
+  <section className="section-wrap" id="oblast-judges">
    <div className="section-intro">
     <span className="eyebrow">Судьи и состав суда</span>
     <h2>Сведения о составе судей</h2>
@@ -91,6 +94,7 @@ export default async function OfficialCourtReferencePage({params}:Props){
    </div>
    <a className="text-link" href={court.judgesUrl??court.officialUrl} target="_blank" rel="noopener noreferrer">{court.judgesUrl?'Официальный опубликованный список судей ↗':'Официальная страница суда для проверки состава ↗'}</a>
   </section>
+  {court.region==='region-50'?<OblastIndividualSections court={court}/>:null}
   <section className="callout">
    <div><span className="eyebrow">Возврат к каталогу</span><h2>Найти другие суды</h2>
     <p>Проверяйте вид суда и его территориальную компетенцию. Судебный регион не всегда совпадает с территорией действия вышестоящей инстанции.</p></div>

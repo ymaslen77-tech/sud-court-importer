@@ -14,8 +14,8 @@ class ResearchReadinessTests(unittest.TestCase):
  def test_existing_reference_counts_and_no_premature_publication(self):
   report=readiness.readiness()
   self.assertEqual(report["sourcedPracticalFactSections"],35)
-  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],33)
-  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),2)
+  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],34)
+  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),1)
   self.assertFalse(report["autoApprovedForPublicRelease"])
   self.assertFalse(report["historicalRosterIsCurrentEmploymentProof"])
   self.assertFalse(report["legalReasoningInferredFromRegister"])

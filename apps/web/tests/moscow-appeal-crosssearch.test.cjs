@@ -56,6 +56,8 @@ const index=compile(read('lib/moscow-region-case-index.ts'),'moscow-region-case-
  './moscow-official-minimum':{MOSCOW_OFFICIAL_MINIMUM_COURTS:courtFixtures,
   MoscowOfficialCourtHref:c=>'/courts/moscow/'+c.slug},
  './official-reference-courts':{OFFICIAL_REFERENCE_COURTS:[...unique.values()]},
+ './oblast-portal-evidence':compile(read('lib/oblast-portal-evidence.ts'),'oblast-portal-evidence.ts'),
+ './court-rich-records':compile(read('lib/court-rich-records.ts'),'court-rich-records.ts'),
  '../data/moscow-oblast-appeal-index-samples.json':oblast,
  '../data/moscow-oblast-cached-appeals.json':cached
 });
@@ -178,4 +180,26 @@ test('four additional cached oblast cards match both numbers but never imply cur
  }
  assert.match(read('_components/moscow-region-case-explorer.tsx'),/Сохранённая копия официальной карточки/);
  assert.match(read('search/page.tsx'),/текущий статус и исход не проверены/);
+});
+
+test('published direct links remain separate from live verification; rich Pushkin dossier participates in search',()=>{
+ const ev=compile(read('lib/oblast-portal-evidence.ts'),'oblast-portal-evidence.ts').OBLAST_PORTAL_EVIDENCE;
+ assert.equal(Object.keys(ev).length,8);
+ for(const e of Object.values(ev)){
+  const u=new URL(e.url);
+  assert.equal(u.protocol,'https:');
+  assert.ok(u.hostname.endsWith('.sudrf.ru'));
+  assert.equal(u.searchParams.get('name'),'sud_delo');
+ }
+ const push=index.MOSCOW_REGION_COURTS.find(c=>c.slug==='pushkinsky-gorodskoy');
+ assert.ok(push);
+ assert.equal(push.href,'/courts/region-50/pushkinsky-gorodskoy');
+ assert.equal(push.caseSearchAddressOnly,true);
+ const page=read('courts/reference/[slug]/page.tsx');
+ assert.match(page,/OblastIndividualSections court=\{court\}/);
+ assert.match(page,/robots:\{index:false,follow:true\}/);
+ const sections=read('_components/oblast-individual-sections.tsx');
+ for(const id of ['oblast-staff','oblast-filing','oblast-jurisdiction','oblast-fees','oblast-local-cases','oblast-sources'])assert.ok(sections.includes('id="'+id+'"'));
+ assert.match(sections,/результат пересмотра не проверен/);
+ assert.match(sections,/не означает отсутствия дел/);
 });

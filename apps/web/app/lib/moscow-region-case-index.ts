@@ -5,6 +5,8 @@ import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-o
 import {OFFICIAL_REFERENCE_COURTS} from './official-reference-courts';
 import oblastIndex from '../data/moscow-oblast-appeal-index-samples.json';
 import cachedAppeals from '../data/moscow-oblast-cached-appeals.json';
+import {OBLAST_PORTAL_EVIDENCE} from './oblast-portal-evidence';
+import {pushkinskyCourt} from './court-rich-records';
 
 /** A convenience index over reviewed public metadata, NOT a complete court database.
  * Moscow oblast entries include dated listings and cached official case metadata, not verified acts.
@@ -24,7 +26,7 @@ export type MoscowRegionCase={
  evidenceStatus:'official_case_metadata'|'single_official_index_snapshot'|'cached_official_case_metadata';
 };
 export type MoscowRegionCourtOption={region:MoscowRegionCode;slug:string;name:string;href:string;
- officialUrl:string;officialCaseSearchUrl:string|null};
+ officialUrl:string;officialCaseSearchUrl:string|null;caseSearchAddressOnly?:boolean};
 
 const moscowCourts=MOSCOW_OFFICIAL_MINIMUM_COURTS
  .filter(c=>c.kind==='general-district'||c.kind==='general-regional');
@@ -42,7 +44,12 @@ export const MOSCOW_REGION_COURTS:ReadonlyArray<MoscowRegionCourtOption>=[
   officialCaseSearchUrl:'https://mos-gorsud.ru/search'})),
  ...oblastCourts.map(c=>({region:'region-50' as const,slug:c.slug,name:c.name,
   href:'/courts/reference/'+c.slug,officialUrl:c.officialUrl,
-  officialCaseSearchUrl:checkedOfficialDockets[c.slug]??null}))
+  officialCaseSearchUrl:checkedOfficialDockets[c.slug]??OBLAST_PORTAL_EVIDENCE[c.slug]?.url??null,
+  caseSearchAddressOnly:!!OBLAST_PORTAL_EVIDENCE[c.slug]})),
+ {region:'region-50' as const,slug:pushkinskyCourt.slug,name:pushkinskyCourt.name,
+  href:'/courts/'+pushkinskyCourt.region+'/'+pushkinskyCourt.slug,officialUrl:pushkinskyCourt.officialUrl,
+  officialCaseSearchUrl:pushkinskyCourt.serviceLinks.find(x=>x.label==='Судебное делопроизводство и поиск дела')?.url??null,
+  caseSearchAddressOnly:true}
 ].sort((a,b)=>a.region.localeCompare(b.region)||a.name.localeCompare(b.name,'ru'));
 
 const moscowRecords:MoscowRegionCase[]=MOSCOW_JUDGE_CASE_EVIDENCE.flatMap(c=>{
