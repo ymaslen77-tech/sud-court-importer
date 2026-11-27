@@ -12,6 +12,7 @@ import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional
 import {pushkinskyCourt} from '../lib/court-rich-records';
 import {officialReferenceMatches,officialReferenceCourt} from '../lib/official-reference-courts';
 import {MOSCOW_REGION_CASES} from '../lib/moscow-region-case-index';
+import {matchesSourceBoundMoscowCase} from '../lib/moscow-region-case-search';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -87,8 +88,7 @@ export default async function SearchPage({searchParams}:Props){
  const sourceCaseMatches=valid&&caseQuery.length>=2&&(!region||region==='moscow'||region==='region-50')
    &&(!kind||kind==='general-district'||kind==='general-regional')
    ?MOSCOW_REGION_CASES.filter(c=>(!region||c.region===region)&&
-     [c.number,c.firstInstanceNumber??'',c.category,c.courtName,c.judgeName??'']
-      .some(value=>value.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(caseQuery)))
+     matchesSourceBoundMoscowCase(c,caseQuery))
       .slice(0,12):[];
  const caseParams=new URLSearchParams();
  if(region==='moscow'||region==='region-50')caseParams.set('region',region);
@@ -164,9 +164,13 @@ export default async function SearchPage({searchParams}:Props){
     <span><strong>Дело № {c.number}</strong>
      <small>{c.region==='moscow'?'Москва':'Московская область'} · {c.courtName}</small>
      <small>{c.category}</small>
-     {c.appealNumber?<small>Первая инстанция: № {c.firstInstanceNumber}. Итог апелляции не подтверждён.</small>:null}
+     {c.appealNumber?<small>Номер апелляционного дела: № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</small>:null}
+     {c.appealDocket?<small>Зарегистрированный апелляционный материал: № {c.appealDocket}
+      {c.appealRegisteredOn?' (дата регистрации '+c.appealRegisteredOn+')':''}. Результат пересмотра не установлен.</small>:null}
      <small><Link href={c.courtHref}>Карточка суда</Link> ·
-      {' '}<a href={c.sourceIndexUrl??c.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a></small>
+      {' '}<a href={c.sourceIndexUrl??c.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>
+      {c.appealSourceUrl?<> · <a href={c.appealSourceUrl}
+       target="_blank" rel="noopener noreferrer">Карточка апелляционного материала ↗</a></>:null}</small>
     </span>
    </article>)}</div>
    <p><Link className="text-link" href={caseSearchHref}>Открыть объединённый поиск дел с фильтрами →</Link></p>
