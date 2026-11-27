@@ -27,6 +27,7 @@ const search=compile(read('lib/moscow-region-case-search.ts'),
 const links=json('data/moscow-judge-crosschecked-cases.json').records;
 const appointments=json('data/moscow-appeal-hearing-snapshots.json').records;
 const oblast=json('data/moscow-oblast-appeal-index-samples.json');
+const cached=json('data/moscow-oblast-cached-appeals.json');
 const courtFixtures=[
  {slug:'nikulinskiy',kind:'general-district',name:'Никулинский районный суд города Москвы',source_url:'https://mos-gorsud.ru/rs/nikulinskij'},
  {slug:'meshchanskiy',kind:'general-district',name:'Мещанский районный суд города Москвы',source_url:'https://mos-gorsud.ru/rs/meshchanskij'}
@@ -38,7 +39,7 @@ const originalRows=links.map(x=>({
  observedOn:x.reviewedOn,decisionDate:x.courtDecisionDate,
  sourceUrl:x.witnesses.find(w=>w.kind==='first_instance').sourceUrl
 }));
-const oblastCourts=oblast.records.map(x=>({
+const oblastCourts=[...oblast.records,...cached.records].map(x=>({
  slug:x.courtSlug,name:x.courtName,region:'region-50',
  kind:'general-district',officialUrl:'https://usd--mo.sudrf.ru/modules.php?name=sud'
 }));
@@ -55,12 +56,13 @@ const index=compile(read('lib/moscow-region-case-index.ts'),'moscow-region-case-
  './moscow-official-minimum':{MOSCOW_OFFICIAL_MINIMUM_COURTS:courtFixtures,
   MoscowOfficialCourtHref:c=>'/courts/moscow/'+c.slug},
  './official-reference-courts':{OFFICIAL_REFERENCE_COURTS:[...unique.values()]},
- '../data/moscow-oblast-appeal-index-samples.json':oblast
+ '../data/moscow-oblast-appeal-index-samples.json':oblast,
+ '../data/moscow-oblast-cached-appeals.json':cached
 });
 const entries=index.MOSCOW_REGION_CASES;
 
 test('all two official Moscow appeal identifiers are indexed; only verified appellate number shown',()=>{
- assert.equal(entries.length,6);
+ assert.equal(entries.length,10);
  const nik=entries.find(x=>x.region==='moscow'&&x.courtSlug==='nikulinskiy');
  const mesh=entries.find(x=>x.region==='moscow'&&x.courtSlug==='meshchanskiy');
  assert.equal(nik.number,'02-0514/2026');
@@ -111,7 +113,7 @@ test('historical appointment date is elapsed without inferring occurrence or app
    assert.equal(x.appealDocket,null);
    assert.equal(x.appealSourceUrl,null);
    assert.equal(x.appealHearingDate,null);
-   assert.equal(x.evidenceStatus,'single_official_index_snapshot');
+   assert.ok(['single_official_index_snapshot','cached_official_case_metadata'].includes(x.evidenceStatus));
   }
  }
 });
@@ -151,4 +153,29 @@ test('empty case results respect selected court and region instead of redirectin
  assert.match(view,/officialCaseSearchDestinations\(region,selectedCourt\)/);
  assert.match(view,/destinations\.map/);
  assert.doesNotMatch(view,/officialPortal/);
+});
+
+test('four additional cached oblast cards match both numbers but never imply current status or result',()=>{
+ assert.equal(cached.status,'cached_official_case_metadata_not_live_verified');
+ assert.equal(cached.records.length,4);
+ const previous=new Set(oblast.records.map(c=>c.appealNumber));
+ for(const c of cached.records){
+  assert.ok(!previous.has(c.appealNumber));
+  assert.deepEqual(Object.keys(c).sort(),['appealNumber','appealResultVerified','category','courtName','courtSlug','firstInstanceNumber','fullTextVerified','sourceCaseUrl'].sort());
+  const url=new URL(c.sourceCaseUrl);
+  assert.equal(url.hostname,'oblsud--mo.sudrf.ru');
+  assert.equal(url.searchParams.get('name_op'),'case');
+  const row=entries.find(x=>x.number===c.appealNumber);
+  assert.ok(row);
+  assert.equal(row.evidenceStatus,'cached_official_case_metadata');
+  assert.ok(search.matchesSourceBoundMoscowCase(row,c.firstInstanceNumber));
+  assert.ok(search.matchesSourceBoundMoscowCase(row,c.appealNumber));
+  assert.equal(row.disposition,null);
+  assert.equal(row.recordDate,null);
+  assert.equal(row.appealResultVerified,false);
+  assert.equal(row.fullTextVerified,false);
+  assert.equal(row.judgeName,null);
+ }
+ assert.match(read('_components/moscow-region-case-explorer.tsx'),/Сохранённая копия официальной карточки/);
+ assert.match(read('search/page.tsx'),/текущий статус и исход не проверены/);
 });

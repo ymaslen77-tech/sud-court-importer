@@ -62,7 +62,7 @@ export default async function MoscowAndOblastCases({searchParams}:Props){
       <p><Link href="/courts/region-50">Найти областной суд по названию →</Link></p>
      </article>
     </div>
-    <p className="court-source">Областные номера и категории взяты из <a href={MOSCOW_OBLAST_LISTING_SOURCE} target="_blank" rel="noopener noreferrer">официального списка заседаний на {MOSCOW_OBLAST_LISTING_DATE}</a>. Список — исторический снимок, не актуальное расписание. Прямые карточки четырёх дел отдельно прочитать не удалось. Фамилии сторон и сведения о закрытых производствах не переносились.</p>
+    <p className="court-source">Часть областных номеров и категорий взята из <a href={MOSCOW_OBLAST_LISTING_SOURCE} target="_blank" rel="noopener noreferrer">официального списка заседаний на {MOSCOW_OBLAST_LISTING_DATE}</a>. Список — исторический снимок, не актуальное расписание. Прямые карточки четырёх дел из этого списка отдельно прочитать не удалось. Дополнительные записи из сохранённых копий официальных карточек имеют отдельную отметку; актуальность и исход не подтверждены. Фамилии сторон и сведения о закрытых производствах не переносились.</p>
   </section>
  </>;
 }

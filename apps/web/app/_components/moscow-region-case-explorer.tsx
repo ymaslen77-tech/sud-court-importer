@@ -90,7 +90,7 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
    <div>
     <h3>Дело № {c.number}</h3>
     <p><strong>Регион:</strong> {regionLabel(c.region)}.</p>
-    <p><strong>Суд:</strong> <Link href={c.courtHref}>{c.courtName}</Link>.</p>
+    <p><strong>{c.region==='region-50'?'Суд первой инстанции:':'Суд:'}</strong> <Link href={c.courtHref}>{c.courtName}</Link>.</p>
     {c.appealNumber?<p><strong>Апелляционное дело:</strong> № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</p>:null}
     {c.appealDocket?<p><strong>Регистрация апелляционного материала:</strong> № {c.appealDocket}
      {c.appealRegisteredOn?' ('+c.appealRegisteredOn+')':''}. Результат пересмотра не установлен.</p>:null}
@@ -107,6 +107,8 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
     {c.evidenceStatus==='single_official_index_snapshot'
       ?<p className="court-source">Архивный список заседаний областного суда от {c.recordDate}.
         Прямая карточка дела отдельно не прочитана. Текущее движение дела и текст акта не проверены.</p>
+      :c.evidenceStatus==='cached_official_case_metadata'
+      ?<p className="court-source">Сохранённая копия официальной карточки Московского областного суда, просмотрена {c.observationDate}. Актуальное движение дела и исход пересмотра не проверены.</p>
       :<p className="court-source">Сведения о деле из официального реестра, просмотрены {c.observationDate}.
         Мотивированный текст судебного акта не проверен.</p>}
     <div className="court-filter-actions">
@@ -127,6 +129,6 @@ export function MoscowRegionCaseExplorer({cases,courts,initialQuery,initialRegio
       :<Link className="text-link" key={d.href} href={d.href}>{d.label} →</Link>)}
     </div>
    </div>}
-  <p className="court-source">Список Московской области содержит исторические указатели из одного официального источника — они не удостоверяют исход апелляции и не являются пересказом судебных решений. Персональные данные сторон не публикуются.</p>
+  <p className="court-source">Список Московской области содержит исторические указатели и сохранённые копии официальных карточек — они не удостоверяют исход апелляции и не являются пересказом судебных решений. Персональные данные сторон не публикуются.</p>
  </section>;
 }

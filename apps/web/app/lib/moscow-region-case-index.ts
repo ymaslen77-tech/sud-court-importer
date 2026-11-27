@@ -4,9 +4,10 @@ import {moscowAppealHearingSnapshot} from './moscow-appeal-hearing-snapshots';
 import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from './moscow-official-minimum';
 import {OFFICIAL_REFERENCE_COURTS} from './official-reference-courts';
 import oblastIndex from '../data/moscow-oblast-appeal-index-samples.json';
+import cachedAppeals from '../data/moscow-oblast-cached-appeals.json';
 
 /** A convenience index over reviewed public metadata, NOT a complete court database.
- * The Moscow oblast cards are a single dated official LISTING, not read court acts.
+ * Moscow oblast entries include dated listings and cached official case metadata, not verified acts.
  */
 export type MoscowRegionCode='moscow'|'region-50';
 export type MoscowRegionCase={
@@ -20,7 +21,7 @@ export type MoscowRegionCase={
  observationDate:string;recordDate:string|null;
  sourceUrl:string;sourceIndexUrl:string|null;
  detailRead:boolean;fullTextVerified:false;appealResultVerified:false;
- evidenceStatus:'official_case_metadata'|'single_official_index_snapshot';
+ evidenceStatus:'official_case_metadata'|'single_official_index_snapshot'|'cached_official_case_metadata';
 };
 export type MoscowRegionCourtOption={region:MoscowRegionCode;slug:string;name:string;href:string;
  officialUrl:string;officialCaseSearchUrl:string|null};
@@ -95,8 +96,23 @@ const oblastRecords:MoscowRegionCase[]=oblastIndex.records.flatMap(c=>{
  } satisfies MoscowRegionCase];
 });
 
+const cachedOblastRecords:MoscowRegionCase[]=cachedAppeals.records.flatMap(c=>{
+ const court=oblastBySlug.get(c.courtSlug);
+ if(!court||court.name!==c.courtName)return [];
+ return [{
+  id:'oblast-'+c.appealNumber,region:'region-50',courtSlug:c.courtSlug,courtName:c.courtName,
+  courtHref:'/courts/reference/'+c.courtSlug,number:c.appealNumber,
+  firstInstanceNumber:c.firstInstanceNumber,appealNumber:c.appealNumber,appealDocket:null,
+  appealRegisteredOn:null,appealSourceUrl:null,appealHearingDate:null,appealHearingTime:null,
+  appealHearingObservedOn:null,category:c.category,judgeName:null,proceeding:'civil_appeal',
+  disposition:null,dispositionScope:'not_verified',observationDate:cachedAppeals.reviewedOn,
+  recordDate:null,sourceUrl:c.sourceCaseUrl,sourceIndexUrl:null,
+  detailRead:false,fullTextVerified:false,appealResultVerified:false,
+  evidenceStatus:'cached_official_case_metadata'
+ } satisfies MoscowRegionCase];
+});
 export const MOSCOW_REGION_CASES:ReadonlyArray<MoscowRegionCase>=[
- ...new Map([...moscowRecords,...oblastRecords].map(c=>[c.id,c])).values()
+ ...new Map([...moscowRecords,...cachedOblastRecords,...oblastRecords].map(c=>[c.id,c])).values()
 ];
 export const MOSCOW_OBLAST_LISTING_DATE=oblastIndex.listingDate;
 export const MOSCOW_OBLAST_LISTING_SOURCE=oblastIndex.sourceIndexUrl;
