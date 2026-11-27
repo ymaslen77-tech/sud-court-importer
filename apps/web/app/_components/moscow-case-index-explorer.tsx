@@ -3,6 +3,7 @@ import {useMemo,useState} from 'react';
 import Link from 'next/link';
 import type {JudgeCaseEvidence} from '../lib/moscow-judge-directory';
 import type {MoscowAppealHearingSnapshot} from '../lib/moscow-appeal-hearing-snapshots';
+import {isPastPublishedHearingDate} from '../lib/moscow-region-case-search';
 
 type CourtOption={slug:string;name:string};
 export type IndexedMoscowCase=JudgeCaseEvidence&{
@@ -102,7 +103,11 @@ export function MoscowCaseIndexExplorer({courts,cases}:Props){
     {c.appealSchedule?<div className="notice" role="note">
      <p><strong>Запись о назначении заседания по состоянию на {c.appealSchedule.observedOn}:</strong> {c.appealSchedule.statusAsPublished}.</p>
      <p>Апелляционное дело № {c.appealSchedule.appealCaseNumber}. Место, указанное в карточке: {c.appealSchedule.venueAsPublished}.</p>
-     <p><strong>Это не текущий статус в реальном времени.</strong> Дату, время и зал перед посещением нужно проверить на портале суда. Заседание может быть перенесено; его исход не установлен.</p>
+     <p><strong>Это не текущий статус в реальном времени.</strong>{' '}
+      {isPastPublishedHearingDate(c.appealSchedule.hearingDate)
+       ?'Дата назначенного заседания уже прошла. Из этого снимка нельзя установить, состоялось ли заседание, было перенесено или отменено.'
+       :'Назначение могло измениться; перед посещением необходимо сверить дату, время и зал на официальном портале.'}
+      {' '}Результат пересмотра не установлен.</p>
      <p><a href={c.appealSchedule.sourceUrl} target="_blank" rel="noopener noreferrer">Сверить апелляционную карточку ↗</a></p>
     </div>:null}
     <p className="court-source">Источник просмотрен {c.observedOn}.
