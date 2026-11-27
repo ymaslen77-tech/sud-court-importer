@@ -1,0 +1,58 @@
+name: Moscow official source metadata watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 05 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  source-watch:
+    # Explicit one-time repository variable (Settings -> Secrets and variables -> Actions)
+    # records owner approval after reading source terms. Default: skip.
+    if: ${{ vars.MOSCOW_SOURCE_WATCH_ALLOWED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore previous private metadata-only baseline
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/moscow-source-watch
+          key: moscow-source-watch-${{ github.run_id }}
+          restore-keys: |
+            moscow-source-watch-
+      - name: Verify monitor tests
+        run: python3 -m unittest discover -s importer/tests -p 'test_moscow_source_watch.py' -v
+      - name: Inspect two official ZIP headers only
+        run: |
+          mkdir -p "${{ runner.temp }}/moscow-source-watch"
+          python3 importer/moscow_source_watch.py \
+            --scope eligible \
+            --only 1577116594824-casesgroupfirstcivilhxvgb 1577117744056-casesgroupmgsappealcivilwtxga \
+            --state "${{ runner.temp }}/moscow-source-watch/source-watch.json" \
+            --ack-source-terms
+      - name: Save private metadata-only baseline
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/moscow-source-watch
+          key: moscow-source-watch-${{ github.run_id }}
+      - name: Retain a reviewable run summary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("${{ runner.temp }}/moscow-source-watch/source-watch.json")
+          data=json.loads(p.read_text(encoding="utf-8"))
+          statuses=[(k,v["reviewState"]) for k,v in data["datasets"].items()]
+          with open(Path(__import__("os").environ["GITHUB_STEP_SUMMARY"]),"a",encoding="utf-8") as out:
+              out.write("## Официальные JSON: только HTTP HEAD, без скачивания дел\n")
+              for ident,status in statuses:
+                  out.write(f"- \`{ident}\`: \`{status}\`\n")
+              out.write("Изменение заголовка требует повторной проверки источника; нет автоматического импорта и Deploy.\n")
+          PY

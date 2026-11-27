@@ -1,0 +1,87 @@
+{
+  "description": "Реестровая сверка фактов между первой инстанцией и апелляционной регистрацией. Две страницы одного официального портала — разные реестровые записи, а не два независимых издателя. Результат апелляции не выдумывается; мотивировка решения не установлена.",
+  "records": [
+    {
+      "courtSlug": "nikulinskiy",
+      "judgeName": "Кузнецова Елена Алексеевна",
+      "caseNumber": "02-0514/2026",
+      "uin": "77RS0018-02-2025-003155-71",
+      "categoryCode": "161",
+      "courtDecisionDate": "2026-05-28",
+      "courtOutcome": "Отказано в удовлетворении",
+      "appealDocket": "Ж-65034/2026",
+      "appealRegisteredOn": "2026-09-30",
+      "appealResult": null,
+      "reviewedOn": "2026-11-02",
+      "verificationLevel": "official_cross_register_agreement",
+      "sourceGroup": "mos_gorsud_first_instance_and_appeal",
+      "fullTextVerified": false,
+      "witnesses": [
+        {
+          "kind": "first_instance",
+          "sourceUrl": "https://m.mos-gorsud.ru/rs/nikulinskij/services/cases/civil/details/eeb88361-02f8-11f0-a7f4-b3bf1828314a",
+          "issuer": "Никулинский районный суд",
+          "uin": "77RS0018-02-2025-003155-71",
+          "caseNumber": "02-0514/2026",
+          "judgeLabel": "Кузнецова Е.А.",
+          "categoryCode": "161",
+          "firstInstanceOutcome": "Отказано в удовлетворении",
+          "appealRegisteredOn": null
+        },
+        {
+          "kind": "appeal_registry",
+          "sourceUrl": "https://m.mos-gorsud.ru/mgs/services/cases/appeal-civil/details/f3902a20-bc90-11f1-8aaf-c1237e05dc15",
+          "issuer": "Московский городской суд",
+          "uin": "77RS0018-02-2025-003155-71",
+          "caseNumber": "02-0514/2026",
+          "judgeLabel": "Кузнецова Е.А.",
+          "categoryCode": "161",
+          "firstInstanceOutcome": null,
+          "appealRegisteredOn": "2026-09-30"
+        }
+      ],
+      "note": "Совпали УИД, номер дела нижестоящего суда, судья и категория. Результат отказа опубликован в карточке первой инстанции; апелляционная карточка подтверждает регистрацию жалобы, а не её рассмотрение."
+    },
+    {
+      "courtSlug": "meshchanskiy",
+      "judgeName": "Боярникова Елена Владимировна",
+      "caseNumber": "02-2880/2026",
+      "uin": "77RS0016-02-2025-024162-12",
+      "categoryCode": "137",
+      "courtDecisionDate": "2026-06-09",
+      "courtOutcome": "Удовлетворено частично",
+      "appealDocket": "Ж-64264/2026",
+      "appealRegisteredOn": "2026-09-28",
+      "appealResult": null,
+      "reviewedOn": "2026-11-02",
+      "verificationLevel": "official_cross_register_agreement",
+      "sourceGroup": "mos_gorsud_first_instance_and_appeal",
+      "fullTextVerified": false,
+      "witnesses": [
+        {
+          "kind": "first_instance",
+          "sourceUrl": "https://m.mos-gorsud.ru/rs/meshchanskij/services/cases/civil/details/856e2e61-f5bd-11f0-9701-772943f580b3",
+          "issuer": "Мещанский районный суд",
+          "uin": "77RS0016-02-2025-024162-12",
+          "caseNumber": "02-2880/2026",
+          "judgeLabel": "Боярникова Е.В.",
+          "categoryCode": "137",
+          "firstInstanceOutcome": "Удовлетворено частично",
+          "appealRegisteredOn": null
+        },
+        {
+          "kind": "appeal_registry",
+          "sourceUrl": "https://m.mos-gorsud.ru/mgs/services/cases/appeal-civil/details/7d3e2fc0-bb19-11f1-a085-a78e23bd9c9f",
+          "issuer": "Московский городской суд",
+          "uin": "77RS0016-02-2025-024162-12",
+          "caseNumber": "02-2880/2026",
+          "judgeLabel": "Боярникова Е.В.",
+          "categoryCode": "137",
+          "firstInstanceOutcome": null,
+          "appealRegisteredOn": "2026-09-28"
+        }
+      ],
+      "note": "Официальные реестры Мещанского суда и Мосгорсуда совпадают по УИД, номеру, судье и категории. Решение первой инстанции частично удовлетворяет иск. Апелляция зарегистрирована; исход пересмотра не подтверждён."
+    }
+  ]
+}

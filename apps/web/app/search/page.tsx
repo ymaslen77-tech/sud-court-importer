@@ -6,10 +6,13 @@ import {COURT_KINDS,findCategory} from '../lib/court-taxonomy';
 import {researchCourtsByKind,researchCourtsByRegion,researchRegions} from '../lib/research-courts';
 import {pilotPublicCourts} from '../lib/pilot-public';
 import {moscowCourts} from '../lib/moscow-courts';
+import {MOSCOW_OFFICIAL_MINIMUM_COURTS,MoscowOfficialCourtHref} from '../lib/moscow-official-minimum';
 import {findRegion} from '../lib/regions';
 import {regionalArbitrationSearch,regionalArbitrationHref} from '../lib/regional-arbitration';
 import {pushkinskyCourt} from '../lib/court-rich-records';
 import {officialReferenceMatches,officialReferenceCourt} from '../lib/official-reference-courts';
+import {MOSCOW_REGION_CASES} from '../lib/moscow-region-case-index';
+import {matchesSourceBoundMoscowCase} from '../lib/moscow-region-case-search';
 
 export const metadata:Metadata={title:'Поиск судов России по виду и региону',robots:{index:false,follow:true}};
 type Props={searchParams:Promise<{q?:string|string[];kind?:string|string[];region?:string|string[]}>};
@@ -26,9 +29,15 @@ export default async function SearchPage({searchParams}:Props){
  const valid=(!q||q.length>=2)&&q.length<=100;
  const hasAny=Boolean(q||kind||region);
  const base=region?(region==='moscow'?[]:researchCourtsByRegion(region)):researchRegions().flatMap(r=>researchCourtsByRegion(r.slug));
- const moscow=(region===''||region==='moscow')&&(!kind||kind==='general-district')
-   ?moscowCourts().filter(c=>!q||[c.name,c.address,c.slug].some(value=>
-      value.toLocaleLowerCase('ru').replace(/ё/g,'е').includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е'))))
+ // Use the complete official list, not only the twelve manually researched dossiers.
+ // MoscowOfficialCourtHref resolves those twelve to their existing detailed pages.
+ const moscow=(region===''||region==='moscow')&&
+   (!kind||kind==='general-district'||kind==='general-regional')
+   ?MOSCOW_OFFICIAL_MINIMUM_COURTS.filter(c=>
+     (!kind||(kind===c.kind))&&
+     (!q||[c.name,c.address,c.slug,c.directory_code??'',c.email].some(value=>
+       value.toLocaleLowerCase('ru').replace(/ё/g,'е')
+         .includes(q.toLocaleLowerCase('ru').replace(/ё/g,'е')))))
    :[];
  const permittedKind=kind?new Set(researchCourtsByKind(kind).map(c=>c.code)):null;
  const research=valid&&hasAny?base.filter(c=>
@@ -75,6 +84,16 @@ export default async function SearchPage({searchParams}:Props){
    }catch{failed=true;}
  }
  const label=[q?'«'+q+'»':null,kind?findCategory(kind)?.short:null,region?findRegion(region)?.name:null].filter(Boolean).join(' · ');
+ const caseQuery=q.toLocaleLowerCase('ru').replace(/ё/g,'е');
+ const sourceCaseMatches=valid&&caseQuery.length>=2&&(!region||region==='moscow'||region==='region-50')
+   &&(!kind||kind==='general-district'||kind==='general-regional')
+   ?MOSCOW_REGION_CASES.filter(c=>(!region||c.region===region)&&
+     matchesSourceBoundMoscowCase(c,caseQuery))
+      .slice(0,12):[];
+ const caseParams=new URLSearchParams();
+ if(region==='moscow'||region==='region-50')caseParams.set('region',region);
+ if(q)caseParams.set('q',q);
+ const caseSearchHref='/courts/moscow-region/cases'+(caseParams.size?'?'+caseParams.toString():'');
  return <>
   <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><Link href="/courts">Суды</Link><span>/</span>Поиск</div>
   <section className="section-hero">
@@ -82,6 +101,12 @@ export default async function SearchPage({searchParams}:Props){
     <h1>Найти суд</h1>
     <p className="lead">Выберите вид суда и регион в выпадающих списках. Название или классификационный код вводить необязательно.</p>
     <CourtSearch initialValue={q} initialKind={kind} initialRegion={region}/>
+    {(!region||region==='moscow'||region==='region-50')?<p className="court-source">
+      Ищете <strong>судебное дело</strong>, а не адрес суда?{' '}
+      <Link href={caseSearchHref}
+       className="text-link">Поиск дел Москвы и Московской области →</Link>
+      {' '}В подборке есть номера и категории, официальные судебные реестры открываются отдельно.
+    </p>:null}
     {valid&&hasAny&&arbitration.length>0?<p className="notice" role="status">
       По выбранным условиям найдено судов в справочнике: <strong>{arbitration.length}</strong>.
       {' '}{arbitration.length===1
@@ -127,6 +152,30 @@ export default async function SearchPage({searchParams}:Props){
       <a className="text-link" href="https://www.consultant.ru/document/cons_doc_LAW_56550/66b0b03f24f6fa0319387bf92a3536b37f1c90bb/" target="_blank" rel="noopener noreferrer">Правовое основание упразднения региональных конституционных судов ↗</a>
     </div>
   </section>:null}
+  {sourceCaseMatches.length>0?<section className="section-wrap" aria-labelledby="case-search-matches">
+   <div className="section-intro">
+    <span className="eyebrow">Дела по официальным реестровым публикациям</span>
+    <h2 id="case-search-matches">Судебные дела по запросу: {sourceCaseMatches.length}</h2>
+    <p>Показаны совпадения только из локальной исследовательской выборки, а не все дела.
+     В Московской области часть записей относится к архивному списку заседаний от 23.07.2026.
+     Их прямые карточки отдельно не прочитаны. Дополнительные записи из сохранённых копий имеют отдельную отметку; исход апелляций не подтверждён.</p>
+   </div>
+   <div className="results">{sourceCaseMatches.map(c=><article className="result-row" key={c.id}>
+    <span><strong>Дело № {c.number}</strong>
+     <small>{c.region==='moscow'?'Москва':'Московская область'} · {c.courtName}</small>
+     <small>{c.category}</small>
+     {c.evidenceStatus==='cached_official_case_metadata'?<small>Сохранённая копия карточки областного суда; текущий статус и исход не проверены.</small>:null}
+     {c.appealNumber?<small>Номер апелляционного дела: № {c.appealNumber}; первоначальное дело № {c.firstInstanceNumber}.</small>:null}
+     {c.appealDocket?<small>Зарегистрированный апелляционный материал: № {c.appealDocket}
+      {c.appealRegisteredOn?' (дата регистрации '+c.appealRegisteredOn+')':''}. Результат пересмотра не установлен.</small>:null}
+     <small><Link href={c.courtHref}>Карточка суда</Link> ·
+      {' '}<a href={c.sourceIndexUrl??c.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>
+      {c.appealSourceUrl?<> · <a href={c.appealSourceUrl}
+       target="_blank" rel="noopener noreferrer">Карточка апелляционного материала ↗</a></>:null}</small>
+    </span>
+   </article>)}</div>
+   <p><Link className="text-link" href={caseSearchHref}>Открыть объединённый поиск дел с фильтрами →</Link></p>
+  </section>:null}
   {official.length>0?<section className="section-wrap" aria-labelledby="official-source-matches">
     <div className="section-intro">
       <span className="eyebrow">Справочные карточки по официальным судебным публикациям</span>
@@ -155,12 +204,18 @@ export default async function SearchPage({searchParams}:Props){
    <div className="section-intro">
     <span className="eyebrow">Справочные карточки Москвы · официальный портал судов</span>
     <h2 id="moscow-matches">Суды Москвы: {moscow.length}</h2>
-    <p>Двенадцать районных судов с отдельными досье. Источники указаны на страницах, актуальность отдельных сведений пока не аттестована.</p>
+    <p>Полный официальный перечень: 35 районных судов и Московский городской суд. Двенадцать районных судов имеют расширенные досье; остальные — справочные карточки с контактами и ссылками на первоисточники.</p>
    </div>
-   <div className="results">{moscow.map(c=><Link key={c.slug} className="result-row" href={'/courts/moscow/'+c.slug}>
-    <span><strong>{c.name}</strong><small>Москва · Районный суд · {c.address}</small><small>Исследовательское досье по официальным источникам</small></span>
-    <span aria-hidden="true">↗</span>
-   </Link>)}</div>
+   <div className="results">{moscow.map(c=>{
+    const hasRich=c.kind==='general-regional'||moscowCourts().some(d=>d.name.toLocaleLowerCase('ru').replace(/ё/g,'е')
+      .startsWith(c.name.toLocaleLowerCase('ru').replace(/ё/g,'е')));
+    return <Link key={c.slug} className="result-row" href={MoscowOfficialCourtHref(c)}>
+     <span><strong>{c.name}</strong>
+      <small>Москва · {c.kind==='general-regional'?'городской суд':'районный суд'} · {c.address}</small>
+      <small>{hasRich?'Расширенное досье':'Официальная справочная запись'} · {c.office_hours}</small>
+     </span><span aria-hidden="true">↗</span>
+    </Link>;
+   })}</div>
   </section>:null}
   {valid&&hasAny&&arbitration.length>0?<section className="section-wrap" aria-labelledby="arbitration-results">
     <div className="section-intro">

@@ -1,18 +1,22 @@
 import './globals.css';
+import './readability.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SiteHeader } from './_components/site-header';
+import { YandexMetrika } from './_components/yandex-metrika';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4173')),
   title: { default: 'Суды России — информационный правовой портал', template: '%s | Суды России' },
   description: 'Суды Российской Федерации: поиск, официальные контакты, судьи, подсудность, законодательство и судебная практика.',
+  verification: { google: 'dHpFOFOuBpWYODUqg2yPKa6gNYEMYuN7QJIVZZksDQI' },
   robots: { index: true, follow: true },
 };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return <html lang="ru">
     <body>
+      <a className="skip-link" href="#main-content">Перейти к основному содержанию</a>
       <SiteHeader />
       <main id="main-content" className="container page-shell">{children}</main>
       <footer className="site-footer">
@@ -28,6 +32,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         </div>
         <div className="container footer-bottom">© {new Date().getFullYear()} Суды России <span>Информационный проект · Пилотная версия</span></div>
       </footer>
+      <YandexMetrika />
     </body>
   </html>;
 }

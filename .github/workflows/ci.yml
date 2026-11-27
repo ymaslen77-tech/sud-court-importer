@@ -34,6 +34,14 @@ jobs:
         run: pnpm --dir apps/web exec node tests/moscow-territory.test.cjs
       - name: Test Moscow law-topic keyword search and empty-result handling
         run: pnpm --dir apps/web exec node tests/moscow-case-search.test.cjs
+      - name: Test readable typography, keyboard navigation and court list grouping
+        run: node --test apps/web/tests/readability-design-system.test.cjs
+      - name: Validate Moscow/oblast linked court cases and dated official sources
+        run: node --test apps/web/tests/moscow-region-case-index.test.cjs
+      - name: Verify Moscow appeal numbers are searchable and elapsed hearing dates are historical
+        run: node --test apps/web/tests/moscow-appeal-crosssearch.test.cjs
+      - name: Yandex Webmaster and Metrika integration
+        run: node --test apps/web/tests/yandex-metrika.test.cjs
       - run: pnpm build
       - name: Smoke production Next.js without configured API or PostgreSQL
         env:

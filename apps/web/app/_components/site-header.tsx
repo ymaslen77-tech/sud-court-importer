@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 const navigation = [
   { href: '/courts', label: 'Суды' },
+  { href: '/courts/moscow-region/cases', label: 'Поиск дел' },
   { href: '/jurisdiction', label: 'Подсудность по адресу' },
   { href: '/judges', label: 'Судьи' },
   { href: '/laws', label: 'Законодательство' },
@@ -19,6 +20,12 @@ export function SiteHeader() {
       <nav aria-label="Основная навигация" className="main-nav">
         {navigation.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
       </nav>
+      <details className="mobile-nav">
+        <summary>Разделы сайта <span aria-hidden="true">▾</span></summary>
+        <nav aria-label="Навигация на телефоне">
+          {navigation.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+        </nav>
+      </details>
       <Link href="/search" className="header-search" aria-label="Поиск по судам">Поиск <span aria-hidden="true">↗</span></Link>
     </div>
   </header>;

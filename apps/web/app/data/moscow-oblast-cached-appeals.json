@@ -1,0 +1,46 @@
+{
+  "reviewedOn": "2026-11-27",
+  "status": "cached_official_case_metadata_not_live_verified",
+  "records": [
+    {
+      "courtSlug": "podolsk-city-court",
+      "courtName": "Подольский городской суд Московской области",
+      "appealNumber": "33-32463/2026",
+      "firstInstanceNumber": "2-5626/2026",
+      "category": "Споры о защите прав потребителей",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261582484&case_uid=ac3a2066-454d-4fce-8a8d-0f88e1b680c4&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "appealResultVerified": false,
+      "fullTextVerified": false
+    },
+    {
+      "courtSlug": "dolgoprudny-city-court",
+      "courtName": "Долгопрудненский городской суд Московской области",
+      "appealNumber": "33-28009/2026",
+      "firstInstanceNumber": "2-645/2026",
+      "category": "Споры о защите прав потребителей",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=260871880&case_uid=782b063e-0784-42f5-b95f-a01769394613&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "appealResultVerified": false,
+      "fullTextVerified": false
+    },
+    {
+      "courtSlug": "vidnoe-city-court",
+      "courtName": "Видновский городской суд Московской области",
+      "appealNumber": "33-32466/2026",
+      "firstInstanceNumber": "2-5896/2026",
+      "category": "Споры о защите прав потребителей",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261582498&case_uid=53826365-6655-46fa-af98-38abb9df1e5f&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "appealResultVerified": false,
+      "fullTextVerified": false
+    },
+    {
+      "courtSlug": "lyubertsy-city-court",
+      "courtName": "Люберецкий городской суд Московской области",
+      "appealNumber": "33-30088/2026",
+      "firstInstanceNumber": "2-3476/2026",
+      "category": "Споры о защите прав потребителей",
+      "sourceCaseUrl": "https://oblsud--mo.sudrf.ru/modules.php?case_id=261128857&case_uid=4c7e4b3a-2d77-4d33-89d6-eb0a1da02dbc&delo_id=5&name=sud_delo&name_op=case&new=5&srv_num=1",
+      "appealResultVerified": false,
+      "fullTextVerified": false
+    }
+  ]
+}

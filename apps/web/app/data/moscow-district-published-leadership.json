@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "sourceType": "individual_official_court_homepage",
+  "observedOn": "2026-11-10",
+  "notice": "Официально опубликованное имя не подтверждает действующее назначение и статус на день обращения. Данные проверяются перед использованием.",
+  "records": [
+    {
+      "slug": "babushkinskiy",
+      "officialSlug": "babushkinskij",
+      "name": "Курышева Наталья Сергеевна",
+      "positionAsPublished": "acting",
+      "expeditionPhone": "+7 (495) 471-04-88",
+      "sourceUrl": "https://mos-gorsud.ru/rs/babushkinskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "И. о. председателя — как указано на официальной странице"
+    },
+    {
+      "slug": "basmanny",
+      "officialSlug": "basmannyj",
+      "name": "Федин Андрей Николаевич",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (499) 975-54-65",
+      "sourceUrl": "https://mos-gorsud.ru/rs/basmannyj",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    },
+    {
+      "slug": "gagarinskiy",
+      "officialSlug": "gagarinskij",
+      "name": "Игнатьева Мария Александровна",
+      "positionAsPublished": "status_disputed",
+      "expeditionPhone": "+7 (499) 236-49-21",
+      "sourceUrl": "https://mos-gorsud.ru/rs/gagarinskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "В разных официальных версиях страницы встречаются обозначения «председатель» и «и. о. председателя»; действующий статус требует уточнения"
+    },
+    {
+      "slug": "zamoskvoretskiy",
+      "officialSlug": "zamoskvoreckij",
+      "name": "Устинов Артем Анатольевич",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (495) 951-69-50",
+      "sourceUrl": "https://mos-gorsud.ru/rs/zamoskvoreckij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "В официальной публикации имеются сведения о временных адресах заседаний. Почтовый адрес и место рассмотрения могут различаться"
+    },
+    {
+      "slug": "kuzminskiy",
+      "officialSlug": "kuzminskij",
+      "name": "Гончар Галина Евгеньевна",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (495) 657-79-85",
+      "sourceUrl": "https://mos-gorsud.ru/rs/kuzminskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    },
+    {
+      "slug": "lefortovskiy",
+      "officialSlug": "lefortovskij",
+      "name": "Голованов Василий Михайлович",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (495) 912-78-86",
+      "sourceUrl": "https://mos-gorsud.ru/rs/lefortovskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    },
+    {
+      "slug": "meshchanskiy",
+      "officialSlug": "meshchanskij",
+      "name": "Никитин Максим Владимирович",
+      "positionAsPublished": "chair",
+      "expeditionPhone": null,
+      "sourceUrl": "https://mos-gorsud.ru/rs/meshchanskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "Телефон на главной странице официального сайта отображается с повреждённым форматированием; номер не переносится без дополнительной сверки"
+    },
+    {
+      "slug": "nikulinskiy",
+      "officialSlug": "nikulinskij",
+      "name": "Толстой Антон Владимирович",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (499) 739-31-51",
+      "sourceUrl": "https://mos-gorsud.ru/rs/nikulinskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    },
+    {
+      "slug": "presnenskiy",
+      "officialSlug": "presnenskij",
+      "name": "Сергеева Ольга Владимировна",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (499) 254-73-94",
+      "sourceUrl": "https://mos-gorsud.ru/rs/presnenskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "При посещении необходимо учитывать официальные сообщения о распределении подразделений"
+    },
+    {
+      "slug": "taganskiy",
+      "officialSlug": "taganskij",
+      "name": "Тимакова Альбина Юрьевна",
+      "positionAsPublished": "acting",
+      "expeditionPhone": "+7 (495) 911-73-08",
+      "sourceUrl": "https://mos-gorsud.ru/rs/taganskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": "И. о. председателя — как указано на официальной странице"
+    },
+    {
+      "slug": "khamovnicheskiy",
+      "officialSlug": "hamovnicheskij",
+      "name": "Бычков Андрей Владимирович",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (499) 248-63-21",
+      "sourceUrl": "https://mos-gorsud.ru/rs/hamovnicheskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    },
+    {
+      "slug": "shcherbinskiy",
+      "officialSlug": "shcherbinskij",
+      "name": "Иваненко Юлия Сергеевна",
+      "positionAsPublished": "chair",
+      "expeditionPhone": "+7 (495) 734-68-07",
+      "sourceUrl": "https://mos-gorsud.ru/rs/shcherbinskij",
+      "observedOn": "2026-11-10",
+      "currentAppointmentVerified": false,
+      "notice": null
+    }
+  ]
+}
