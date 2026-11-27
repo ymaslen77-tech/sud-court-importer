@@ -15,7 +15,7 @@ DETAIL=(APP/"_components/moscow-district-individual-dossier.tsx").read_text(enco
 
 class DatedRosterTests(unittest.TestCase):
  def test_official_snapshot_and_historical_claim_only(self):
-  self.assertEqual(len(ROSTER),3)
+  self.assertEqual(len(ROSTER),6)
   row=ROSTER[0]
   self.assertEqual(row["slug"],"tushinskiy")
   self.assertEqual(row["officialSlug"],"tushinskij")
@@ -65,7 +65,7 @@ class DatedRosterTests(unittest.TestCase):
   self.assertIn("№ 829",notes["Вороненко Яна Андреевна"])
   self.assertIn("№ 829",notes["Патапенкова Юлия Александровна"])
 
- def test_30_dated_published_roster_sets_not_35_current_staffs(self):
+ def test_33_dated_published_roster_sets_not_35_current_staffs(self):
   filenames=[
    "moscow-district-judges-samples.json",
    "moscow-legacy-judge-rosters.json",
@@ -75,14 +75,13 @@ class DatedRosterTests(unittest.TestCase):
   rows=[row for name in filenames for row in json.loads((DATA/name).read_text(encoding="utf-8"))["records"]]
   all_slugs=[r["slug"] for r in rows]
   self.assertEqual(len(all_slugs),len(set(all_slugs)))
-  self.assertEqual(len(all_slugs),30)
+  self.assertEqual(len(all_slugs),33)
   for row in rows:
    self.assertEqual(row["status"],"published_roster_not_live_certification")
   districts=[r["slug"] for r in json.loads((DATA/"moscow-official-minimum-registry.json").read_text(encoding="utf-8"))["records"]
              if r["kind"]=="general-district"]
   missing=set(districts)-set(all_slugs)
-  self.assertEqual(missing,{"zamoskvoretskiy","meshchanskiy","tverskoy",
-                             "khamovnicheskiy","chertanovskiy"})
+  self.assertEqual(missing,{"meshchanskiy","chertanovskiy"})
 
  def test_kuzminsky_dated_published_list(self):
   row=next(r for r in ROSTER if r["slug"]=="kuzminskiy")
@@ -98,6 +97,23 @@ class DatedRosterTests(unittest.TestCase):
   self.assertEqual(len(row["appointmentNotes"]),1)
   self.assertIn("№ 514",row["appointmentNotes"][0]["decree"])
   self.assertIn("не подтверждает текущий штат",row["notice"])
+
+ def test_three_additional_historical_rosters(self):
+  expected={"zamoskvoretskiy":(16,"2026-08-25"),"tverskoy":(17,"2026-10-26"),"khamovnicheskiy":(8,"2026-06-30")}
+  for slug,(count,updated) in expected.items():
+   row=next(r for r in ROSTER if r["slug"]==slug)
+   self.assertEqual(len(row["judges"]),count)
+   self.assertEqual(len(set(row["judges"])),count)
+   self.assertEqual(row["sourceLastUpdated"],updated)
+   self.assertEqual(row["status"],"published_roster_not_live_certification")
+   self.assertIn("не",row["notice"].lower())
+  ham=next(r for r in ROSTER if r["slug"]=="khamovnicheskiy")
+  self.assertIn("Бычков Андрей Владимирович",ham["judges"])
+  self.assertNotIn("Ермольева Татьяна Александровна",ham["judges"])
+  self.assertIn("12.10.2026",ham["notice"])
+  tver=next(r for r in ROSTER if r["slug"]=="tverskoy")
+  self.assertIn("Семина Ольга Николаевна",tver["judges"])
+  self.assertIn("Ильина (Бурая) Мария Сергеевна",tver["judges"])
 
  def test_same_source_reused_without_relabeling_live_judges(self):
   self.assertIn("moscow-2026-roster-refresh.json",JUDGES)
