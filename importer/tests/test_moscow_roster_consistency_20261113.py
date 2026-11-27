@@ -17,10 +17,10 @@ import moscow_research_readiness as readiness
 import ingest_moscow_judge_case_evidence as ingest
 
 class MoscowAllRosterSources(unittest.TestCase):
- def test_single_consistent_29_court_report(self):
+ def test_single_consistent_30_court_report(self):
   report=readiness.readiness()
-  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],29)
-  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),6)
+  self.assertEqual(report["courtsWithHistoricalPublishedRoster"],30)
+  self.assertEqual(len(report["courtsWithoutFullOfficialRosterInLocalArchive"]),5)
   self.assertFalse(report["historicalRosterIsCurrentEmploymentProof"])
   self.assertFalse(report["autoApprovedForPublicRelease"])
   self.assertEqual(report["editoriallyReviewedFullTexts"],0)
@@ -32,6 +32,7 @@ class MoscowAllRosterSources(unittest.TestCase):
                "Гудошникова Елена Александровна",
                "Первовласенко Ксения Александровна"):
    self.assertEqual(persons[("tushinskiy",ingest.norm(name))],"tushinskij")
+  self.assertEqual(persons[("kuzminskiy",ingest.norm("Белова Екатерина Валерьевна"))],"kuzminskij")
   self.assertEqual(len(persons),len(set(persons)))
   self.assertEqual(persons[("shcherbinskiy",ingest.norm("Будигина Наталья Геннадьевна"))],"shcherbinskij")
   self.assertEqual(persons[("shcherbinskiy",ingest.norm("Патапенкова Юлия Александровна"))],"shcherbinskij")
