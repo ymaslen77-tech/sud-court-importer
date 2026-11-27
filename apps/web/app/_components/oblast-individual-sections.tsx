@@ -24,7 +24,7 @@ export function OblastIndividualSections({court}:{court:OfficialReferenceCourt})
   </section>
   <section className="court-section" id="oblast-filing">
    <h2>Подача иска, заявления или жалобы</h2>
-   <p>Перед подачей проверьте компетенцию, требования к документу и приложению, способ подачи и госпошлину. Обычная электронная почта не заменяет процессуальную подачу. {portal?.note}</p>
+   <p>Перед подачей проверьте компетенцию, требования к документу и приложению, способ подачи и госпошлину. Обычная электронная почта не заменяет процессуальную подачу.</p>
    <p><a href="https://ej.sudrf.ru/" target="_blank" rel="noopener noreferrer">Официальный сервис электронной подачи ↗</a></p>
   </section>
   <section className="court-section" id="oblast-jurisdiction">
@@ -50,6 +50,7 @@ export function OblastIndividualSections({court}:{court:OfficialReferenceCourt})
    <h2>Источники и границы проверки</h2>
    <p><a href={court.sourceUrl}>Исходный официальный справочник ↗</a> · дата прежнего изучения {court.observedOn}.</p>
    {portal?<p><a href={portal.url}>Опубликованный раздел делопроизводства ↗</a> · адрес найден в индексированной официальной публикации {OBLAST_PORTAL_OBSERVED_ON}; доступность в текущий момент не проверена.</p>:<p>Прямой адрес раздела делопроизводства ещё не подтверждён.</p>}
+   {portal?.note?<p>{portal.note} <a href={portal.information??portal.url}>Публикация суда ↗</a></p>:null}
    <p>Полный состав судей, тексты актов, актуальное расписание, точные границы подсудности и доступность зданий требуют индивидуальной сверки. Карта по адресу не подтверждает вход или условия доступности.</p>
   </section>
  </>;

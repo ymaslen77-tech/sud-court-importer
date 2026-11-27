@@ -6,6 +6,7 @@ import {findCategory} from '../../../lib/court-taxonomy';
 import {YandexCourtMap} from '../../../_components/yandex-court-map';
 import {ConstitutionalCourtDossier} from '../../../_components/constitutional-court-dossier';
 import {OblastIndividualSections} from '../../../_components/oblast-individual-sections';
+import {oblastAppointments} from '../../../lib/oblast-judge-appointments';
 import {OBLAST_PORTAL_EVIDENCE} from '../../../lib/oblast-portal-evidence';
 
 type Props={params:Promise<{slug:string}>};
@@ -29,6 +30,7 @@ export default async function OfficialCourtReferencePage({params}:Props){
  const court=officialReferenceCourt((await params).slug);
  if(!court)notFound();
  if(court.slug==='constitutional-court-rf')return <ConstitutionalCourtDossier/>;
+ const appointments=court.region==='region-50'?oblastAppointments(court.slug):[];
  const portal=court.region==='region-50'?OBLAST_PORTAL_EVIDENCE[court.slug]:undefined;
  return <>
   <div className="breadcrumb">
@@ -92,6 +94,16 @@ export default async function OfficialCourtReferencePage({params}:Props){
     <h2>Сведения о составе судей</h2>
     <p>Именные сведения не публикуются без отдельной сверки официального состава и оснований полномочий. Наличие ФИО в опубликованной справке ещё не подтверждает действующий статус судьи.</p>
    </div>
+   {appointments.length?<div className="results">
+    <p>Датированные назначения: {appointments.length}. Это выдержки из указов, а не действующий штатный список. Три публикации одного указа не заменяют подтверждение текущих полномочий.</p>
+    {appointments.map(a=><article className="result-row" key={a.name+a.date+a.role}>
+     <span><strong>{a.name}</strong><small>Назначение: {a.role} · указ № {a.decree} от {a.date.split('-').reverse().join('.')}</small>
+      <small>Действующий статус не подтверждён.</small>
+      <small>{a.officialPublicationUrl?<><a href={a.officialPublicationUrl} target="_blank" rel="noopener noreferrer">Официальная публикация (доступность не проверена) ↗</a>{' · '}</>:null}{a.sourceUrls.map((url,i)=><a key={url} href={url} target="_blank" rel="noopener noreferrer">Копия указа {i+1} ↗{' '}</a>)}</small>
+     </span>
+    </article>)}
+   </div>:null}
+   {court.slug==='elektrostal-city-court'?<p>Исторические сведения о руководстве не следует считать текущими: указ № 514 от 27.07.2026 содержит назначение Голочановой Ирины Валерьевны председателем Щёлковского городского суда. <a href="https://pravo.ru/arbitr_practice/order/100154/">Копия указа ↗</a></p>:null}
    <a className="text-link" href={court.judgesUrl??court.officialUrl} target="_blank" rel="noopener noreferrer">{court.judgesUrl?'Официальный опубликованный список судей ↗':'Официальная страница суда для проверки состава ↗'}</a>
   </section>
   {court.region==='region-50'?<OblastIndividualSections court={court}/>:null}

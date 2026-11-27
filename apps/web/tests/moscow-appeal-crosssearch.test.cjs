@@ -203,3 +203,20 @@ test('published direct links remain separate from live verification; rich Pushki
  assert.match(sections,/результат пересмотра не проверен/);
  assert.match(sections,/не означает отсутствия дел/);
 });
+
+
+test('Oblast appointment events have three document copies, real court slugs and no live status assertion',()=>{
+ const ap=compile(read('lib/oblast-judge-appointments.ts'),'oblast-judge-appointments.ts');
+ const refs=read('lib/official-reference-courts.ts');
+ assert.equal(ap.OBLAST_APPOINTMENTS.length,27);
+ assert.equal(new Set(ap.OBLAST_APPOINTMENTS.map(x=>x.courtSlug+'|'+x.name+'|'+x.date)).size,27);
+ for(const a of ap.OBLAST_APPOINTMENTS){
+  assert.ok(refs.includes('slug:"'+a.courtSlug+'"'));
+  assert.equal(a.currentStatusVerified,false);
+  assert.equal(new Set(a.sourceUrls.map(u=>new URL(u).hostname)).size,3);
+ }
+ assert.equal(ap.oblastAppointments('odintsovo-city-court').length,4);
+ assert.equal(ap.oblastAppointments('elektrostal-city-court').length,0);
+ assert.ok(ap.oblastAppointments('shelkovo-city-court').some(a=>a.name==='Голочанова Ирина Валерьевна'&&a.role==='председатель суда'));
+ assert.match(read('courts/reference/[slug]/page.tsx'),/Действующий статус не подтверждён/);
+});
